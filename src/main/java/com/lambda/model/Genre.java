@@ -14,7 +14,6 @@ public class Genre {
     @GeneratedValue
     private Integer id;
 
-    @NotNull
     private String name;
 
     @ManyToMany(fetch = FetchType.EAGER)

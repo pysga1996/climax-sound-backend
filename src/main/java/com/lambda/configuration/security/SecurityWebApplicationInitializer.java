@@ -9,6 +9,7 @@ import javax.servlet.ServletContext;
 public class SecurityWebApplicationInitializer extends AbstractSecurityWebApplicationInitializer {
     @Override
     protected void beforeSpringSecurityFilterChain(ServletContext servletContext) {
+        System.out.println("security initialized");
         CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
         encodingFilter.setEncoding("UTF-8");
         encodingFilter.setForceEncoding(true);

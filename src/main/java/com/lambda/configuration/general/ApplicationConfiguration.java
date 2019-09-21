@@ -33,12 +33,12 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
-import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
-import org.thymeleaf.spring4.view.ThymeleafViewResolver;
-import org.thymeleaf.templatemode.TemplateMode;
+//import org.thymeleaf.TemplateEngine;
+//import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
+//import org.thymeleaf.spring4.SpringTemplateEngine;
+//import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
+//import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+//import org.thymeleaf.templatemode.TemplateMode;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -73,33 +73,33 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter implements
     }
 
     //Thymeleaf Configuration
-    @Bean
-    public SpringResourceTemplateResolver templateResolver() {
-        SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
-        templateResolver.setApplicationContext(applicationContext);
-        templateResolver.setPrefix("/WEB-INF/views/");
-        templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode(TemplateMode.HTML);
-        templateResolver.setCharacterEncoding("UTF-8");
-        return templateResolver;
-    }
+//    @Bean
+//    public SpringResourceTemplateResolver templateResolver() {
+//        SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
+//        templateResolver.setApplicationContext(applicationContext);
+//        templateResolver.setPrefix("/WEB-INF/views/");
+//        templateResolver.setSuffix(".html");
+//        templateResolver.setTemplateMode(TemplateMode.HTML);
+//        templateResolver.setCharacterEncoding("UTF-8");
+//        return templateResolver;
+//    }
 
-    @Bean
-    public TemplateEngine templateEngine() {
-        TemplateEngine templateEngine = new SpringTemplateEngine();
-        templateEngine.setTemplateResolver(templateResolver());
-        // To use thymeleaf spring security
-        templateEngine.addDialect(new SpringSecurityDialect());
-        return templateEngine;
-    }
-
-    @Bean
-    public ThymeleafViewResolver viewResolver() {
-        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
-        viewResolver.setTemplateEngine(templateEngine());
-        viewResolver.setCharacterEncoding("UTF-8");
-        return viewResolver;
-    }
+//    @Bean
+//    public TemplateEngine templateEngine() {
+//        TemplateEngine templateEngine = new SpringTemplateEngine();
+//        templateEngine.setTemplateResolver(templateResolver());
+//        // To use thymeleaf spring security
+//        templateEngine.addDialect(new SpringSecurityDialect());
+//        return templateEngine;
+//    }
+//
+//    @Bean
+//    public ThymeleafViewResolver viewResolver() {
+//        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
+//        viewResolver.setTemplateEngine(templateEngine());
+//        viewResolver.setCharacterEncoding("UTF-8");
+//        return viewResolver;
+//    }
 
     //JPA configuration
     @Bean
@@ -186,12 +186,12 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter implements
 //        return localeResolver;
 //    }
 
-    @Bean(name = "multipartResolver")
-    public CommonsMultipartResolver getResolver() throws IOException {
-        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-        //Set the maximum allowed size (in bytes) for each individual file.
-        resolver.setMaxUploadSizePerFile(5242880);//5MB
-        //You may also set other available properties.
-        return resolver;
-    }
+//    @Bean(name = "multipartResolver")
+//    public CommonsMultipartResolver getResolver() throws IOException {
+//        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+//        //Set the maximum allowed size (in bytes) for each individual file.
+//        resolver.setMaxUploadSizePerFile(5242880);//5MB
+//        //You may also set other available properties.
+//        return resolver;
+//    }
 }

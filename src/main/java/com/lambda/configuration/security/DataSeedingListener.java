@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 
 @Component
-public class DataSeedingListener implements ApplicationListener<ContextRefreshedEvent> {
+public class DataSeedingListener {
     private boolean alreadySetup = false;
 
     @Autowired
@@ -33,8 +33,8 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent event) {
+
+    public void onApplicationEvent() {
         if (alreadySetup)
             return;
         Privilege readNote

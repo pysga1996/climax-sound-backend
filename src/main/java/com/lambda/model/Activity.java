@@ -14,7 +14,6 @@ public class Activity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @NotNull
     private String name;
 
     @OneToMany(mappedBy = "activity", fetch = FetchType.EAGER)

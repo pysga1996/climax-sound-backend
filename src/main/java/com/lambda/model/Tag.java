@@ -14,7 +14,6 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull
     private String name;
 
     @ManyToMany(mappedBy = "tags")

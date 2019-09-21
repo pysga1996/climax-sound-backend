@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -72,7 +73,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         return userRepository.findByUsername(name);
     }
 
-    public User findUserById(Long id) {
+    public Optional<User> findUserById(Long id) {
         return userRepository.findById(id);
     }
 
@@ -81,7 +82,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     }
 
     public void deleteUser(Long id){
-        userRepository.delete(id);
+        userRepository.deleteById(id);
     }
 
 }

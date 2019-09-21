@@ -15,7 +15,6 @@ public class Mood {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @NotNull
     private String name;
 
     @OneToMany(mappedBy = "mood", fetch = FetchType.EAGER)

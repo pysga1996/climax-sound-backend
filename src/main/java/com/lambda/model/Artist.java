@@ -15,13 +15,10 @@ public class Artist {
     @GeneratedValue
     private Long id;
 
-    @NotNull
     private String name;
 
-    @NotNull
     private Date birthDate;
 
-    @NotNull
     private String biography;
 
     @ManyToMany(mappedBy = "artists", fetch = FetchType.EAGER)

@@ -16,7 +16,6 @@ public class Album {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull
     private String name;
 
     private Date publishDate;
