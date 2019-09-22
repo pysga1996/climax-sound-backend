@@ -1,26 +1,32 @@
 package com.lambda.model;
 
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
 @Entity
 @Table(name = "tag")
+@JsonIgnoreProperties(value = {"songs", "albums"}, allowGetters = true)
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank
     private String name;
 
-    @ManyToMany(mappedBy = "tags")
+    @JsonBackReference(value = "song-tag")
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
 
-    @ManyToMany(mappedBy = "tags")
+    @JsonBackReference(value = "album-tag")
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> albums;
 
@@ -65,7 +71,7 @@ public class Tag {
 
     @Override
     public String toString() {
-        return "Tag{" +
+        return "TagRepository{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';

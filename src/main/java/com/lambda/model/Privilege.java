@@ -1,9 +1,11 @@
 package com.lambda.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 
 @Entity
@@ -14,9 +16,11 @@ public class Privilege {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank
     private String name;
 
-    @ManyToMany(mappedBy = "privileges", fetch = FetchType.EAGER)
+    @JsonBackReference
+    @ManyToMany(mappedBy = "privileges", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Role> roles;
 

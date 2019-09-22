@@ -1,13 +1,15 @@
 package com.lambda.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Locale;
 
 @Entity
 @Table(name = "album")
@@ -16,11 +18,13 @@ public class Album {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank
     private String name;
 
-    private Date publishDate;
+    private Date releaseDate;
 
-    @ManyToMany
+    @JsonManagedReference
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "album_genre",
             joinColumns = @JoinColumn(
@@ -30,11 +34,13 @@ public class Album {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Genre> genres;
 
-    @OneToMany(mappedBy = "album", fetch = FetchType.EAGER)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "album", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
 
-    @ManyToMany
+    @JsonManagedReference
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "album_artist",
             joinColumns = @JoinColumn(
@@ -44,7 +50,8 @@ public class Album {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Artist> artists;
 
-    @ManyToMany
+    @JsonManagedReference
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "album_tag",
             joinColumns = @JoinColumn(
@@ -54,14 +61,17 @@ public class Album {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Tag> tags;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonManagedReference("album-mood")
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mood_id")
     private Mood mood;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonManagedReference("album-activity")
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "activity_id")
     private Activity activity;
 
+    @JsonBackReference
     @ManyToMany
     @JoinTable(
             name = "song_user",
@@ -75,9 +85,9 @@ public class Album {
     public Album() {
     }
 
-    public Album(String name, Date publishDate, Collection<Genre> genres, Collection<Song> songs) {
+    public Album(String name, Date releaseDate, Collection<Genre> genres, Collection<Song> songs) {
         this.name = name;
-        this.publishDate = publishDate;
+        this.releaseDate = releaseDate;
         this.genres = genres;
         this.songs = songs;
     }
@@ -98,12 +108,12 @@ public class Album {
         this.name = name;
     }
 
-    public Date getPublishDate() {
-        return publishDate;
+    public Date getReleaseDate() {
+        return releaseDate;
     }
 
-    public void setPublishDate(Date publishDate) {
-        this.publishDate = publishDate;
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
     public Collection<Genre> getGenres() {
@@ -167,7 +177,7 @@ public class Album {
         return "Album{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", publishDate=" + publishDate +
+                ", releaseDate=" + releaseDate +
                 ", songList=" + songs +
                 '}';
     }

@@ -1,26 +1,32 @@
 package com.lambda.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 
 @Entity
 @Table(name = "activity")
+@JsonIgnoreProperties(value = {"songs", "albums"}, allowGetters = true)
 public class Activity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @NotBlank
     private String name;
 
-    @OneToMany(mappedBy = "activity", fetch = FetchType.EAGER)
+    @JsonBackReference("song-activity")
+    @OneToMany(mappedBy = "activity", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
 
-    @OneToMany(mappedBy = "activity", fetch = FetchType.EAGER)
+    @JsonBackReference("album-activity")
+    @OneToMany(mappedBy = "activity", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> albums;
 

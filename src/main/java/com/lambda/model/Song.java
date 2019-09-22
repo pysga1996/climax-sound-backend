@@ -1,10 +1,13 @@
 package com.lambda.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Date;
 
@@ -15,13 +18,15 @@ public class Song {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank
     private String name;
 
     private Date releaseDate;
 
     private String url;
 
-    @ManyToMany
+    @JsonManagedReference(value = "song-artist")
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "song_artist",
             joinColumns = @JoinColumn(
@@ -31,11 +36,13 @@ public class Song {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Artist> artists;
 
-    @ManyToOne
+    @JsonManagedReference(value = "album-song")
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "album_id")
     private Album album;
 
-    @ManyToMany
+    @JsonManagedReference(value = "song-tag")
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "song_tag",
             joinColumns = @JoinColumn(
@@ -45,7 +52,8 @@ public class Song {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Tag> tags;
 
-    @ManyToMany
+    @JsonManagedReference(value = "song-genre")
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "song_genre",
             joinColumns = @JoinColumn(
@@ -55,7 +63,8 @@ public class Song {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Genre> genres;
 
-    @ManyToMany
+    @JsonBackReference(value = "song-user")
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "song_user",
             joinColumns = @JoinColumn(
@@ -65,11 +74,13 @@ public class Song {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<User> users;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonManagedReference(value = "song-mood")
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mood_id")
     private Mood mood;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonManagedReference(value = "song-activity")
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "activity_id")
     private Activity activity;
 

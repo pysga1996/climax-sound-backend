@@ -1,9 +1,11 @@
 package com.lambda.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 
 @Entity
@@ -13,17 +15,18 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "name", nullable = false)
+    @NotBlank
     private String name;
 
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+    @JsonBackReference
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<User> users;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @JsonBackReference
+    @ManyToMany(fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(
             name = "role_privilege",

@@ -1,9 +1,9 @@
 package com.lambda.model;
 
-import org.springframework.security.access.prepost.PreAuthorize;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 
 @Entity
@@ -14,13 +14,14 @@ public class Genre {
     @GeneratedValue
     private Integer id;
 
+    @NotBlank
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-
+    @JsonBackReference
+    @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
     private Collection<Song> songs;
 
-    @ManyToMany(mappedBy = "genres")
+    @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
     private Collection<Album> albums;
 
     public Integer getId() {

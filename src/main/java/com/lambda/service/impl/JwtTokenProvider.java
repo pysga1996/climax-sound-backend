@@ -1,4 +1,4 @@
-package com.lambda.service;
+package com.lambda.service.impl;
 
 import com.lambda.model.CustomUserDetails;
 import io.jsonwebtoken.*;

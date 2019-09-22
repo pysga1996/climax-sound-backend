@@ -1,7 +1,7 @@
 package com.lambda.configuration.security_filter;
 
-import com.lambda.service.JwtTokenProvider;
-import com.lambda.service.UserDetailServiceImpl;
+import com.lambda.service.impl.JwtTokenProvider;
+import com.lambda.service.impl.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

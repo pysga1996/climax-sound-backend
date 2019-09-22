@@ -1,9 +1,12 @@
 package com.lambda.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Date;
@@ -15,17 +18,20 @@ public class Artist {
     @GeneratedValue
     private Long id;
 
+    @NotBlank
     private String name;
 
     private Date birthDate;
 
     private String biography;
 
-    @ManyToMany(mappedBy = "artists", fetch = FetchType.EAGER)
+    @JsonBackReference
+    @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
 
-    @ManyToMany(mappedBy = "artists", fetch = FetchType.EAGER)
+    @JsonBackReference
+    @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> albums;
 

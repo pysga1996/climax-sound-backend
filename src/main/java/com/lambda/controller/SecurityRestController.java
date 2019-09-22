@@ -2,8 +2,9 @@ package com.lambda.controller;
 
 import com.lambda.model.*;
 import com.lambda.repository.RoleRepository;
-import com.lambda.service.JwtTokenProvider;
-import com.lambda.service.UserDetailServiceImpl;
+import com.lambda.service.UserService;
+import com.lambda.service.impl.JwtTokenProvider;
+import com.lambda.service.impl.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,6 +42,9 @@ public class SecurityRestController {
 
     @Autowired
     private UserDetailServiceImpl userDetailService;
+    
+    @Autowired
+    private UserService userService;
 
     @GetMapping(value = "/profile")
     public ResponseEntity<Object> getCurrentUser() {
@@ -53,22 +57,20 @@ public class SecurityRestController {
 
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createUser(@RequestBody User user, Pageable pageable) {
-        Page<User> users = userDetailService.findAll(pageable);
-        for (User currentUser : users) {
-            if (currentUser.getUsername().equals(user.getUsername())) {
-                return new ResponseEntity<>("User Existed!", HttpStatus.BAD_REQUEST);
-            }
+        User checkedUser = userService.findByUsername(user.getUsername());
+        if (checkedUser == null) {
+            return new ResponseEntity<>("User Existed!", HttpStatus.BAD_REQUEST);
         }
         Role role = roleRepository.findByName(DEFAULT_ROLE);
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userDetailService.saveUser(user);
+        userService.save(user);
         return new ResponseEntity<>("Created!", HttpStatus.CREATED);
     }
 
-    @PostMapping(value = "/login")
+    @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<LoginResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         // Xác thực từ username và password.
         Authentication authentication = authenticationManager.authenticate(

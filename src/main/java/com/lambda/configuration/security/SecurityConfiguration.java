@@ -1,9 +1,8 @@
 package com.lambda.configuration.security;
 
-import com.lambda.configuration.security_customization.CustomFailureHandler;
-import com.lambda.configuration.security_customization.CustomSuccessHandler;
+import com.lambda.configuration.security_customization.*;
 import com.lambda.configuration.security_filter.CustomCsrfFilter;
-import com.lambda.service.UserDetailServiceImpl;
+import com.lambda.service.impl.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
-import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -27,10 +25,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private static final String[] CSRF_IGNORE = {"/api/login", "/api/register"};
 
     @Autowired
-    CustomSuccessHandler customSuccessHandler;
+    CustomRestAuthenticationSuccessHandler customRestAuthenticationSuccessHandler;
 
     @Autowired
-    CustomFailureHandler customFailureHandler;
+    CustomRestAuthenticationFailureHandler customRestAuthenticationFailureHandler;
+
+    @Autowired
+    CustomRestAccessDeniedHandler customRestAccessDeniedHandler;
+
+    @Autowired
+    CustomRestAuthenticationEntryPoint customRestAuthenticationEntryPoint;
+
+    @Autowired
+    CustomRestLogoutSuccessHandler customRestLogoutSuccessHandler;
 
     @Autowired
     UserDetailServiceImpl userDetailServiceImpl;
@@ -73,28 +80,27 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/register", "/login", "/", "/home").permitAll()
+                .antMatchers("/api/login", "/api/register").permitAll()
 //                .anyRequest().authenticated()
-//                .antMatchers("/api/user/list").access("hasRole('USER')")
-                .antMatchers("/admin/**").access("hasRole('ADMIN')")
-                .antMatchers("/dba/**").access("hasRole('ADMIN') and hasRole('DBA')")
-                .antMatchers("/note").access("(hasRole('USER')) or hasRole('ADMIN')")
-                .antMatchers("/category").access("(hasRole('USER')) or hasRole('ADMIN')")
-                .and().formLogin().loginPage("/login")
+                .antMatchers("/api/user").access("hasRole('ADMIN')")
+                .antMatchers("/api/**").access("hasRole('USER') or hasRole('ADMIN')")
+                .and().formLogin()
+//                .loginPage("/login")
                 .loginProcessingUrl("/appLogin")
-                .successHandler(customSuccessHandler)
-                .failureHandler(customFailureHandler)
+                .successHandler(customRestAuthenticationSuccessHandler)
+                .failureHandler(customRestAuthenticationFailureHandler)
                 .usernameParameter("ssoId").passwordParameter("password")
-                .and().csrf().ignoringAntMatchers(CSRF_IGNORE)
-                .csrfTokenRepository(csrfTokenRepository()) // defines a repository where tokens are stored
+                .and().csrf().disable()
+//                .ignoringAntMatchers(CSRF_IGNORE)
+//                .csrfTokenRepository(csrfTokenRepository()) // defines a repository where tokens are stored
+//                .and()
+//                .addFilterAfter(new CustomCsrfFilter(), CsrfFilter.class)
+                .exceptionHandling()
+                .authenticationEntryPoint(customRestAuthenticationEntryPoint)
+                .accessDeniedHandler(customRestAccessDeniedHandler)
+//                .accessDeniedPage("/accessDenied")
                 .and()
-                .addFilterAfter(new CustomCsrfFilter(), CsrfFilter.class)
-                .
-//                        headers().addHeaderWriter(
-//                new StaticHeadersWriter("Access-Control-Allow-Origin", "*")).and()
-//                .
-        exceptionHandling().accessDeniedPage("/Access_Denied")
-                .and()
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
+                .logout().logoutSuccessHandler(customRestLogoutSuccessHandler)
+                .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"));
     }
 }

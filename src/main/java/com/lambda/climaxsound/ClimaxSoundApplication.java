@@ -22,6 +22,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.swing.*;
 
@@ -44,5 +46,7 @@ public class ClimaxSoundApplication {
 	public void dataSeeding() {
 		dataSeedingListener.onApplicationEvent();
 	}
+
+
 
 }
