@@ -19,7 +19,7 @@ public class Privilege {
     @NotBlank
     private String name;
 
-    @JsonBackReference
+    @JsonBackReference("role-privilege")
     @ManyToMany(mappedBy = "privileges", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Role> roles;

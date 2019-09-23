@@ -16,10 +16,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -56,18 +59,31 @@ public class SecurityRestController {
     }
 
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createUser(@RequestBody User user, Pageable pageable) {
+    public ResponseEntity<String> createUser(@Valid @RequestBody User user) {
         User checkedUser = userService.findByUsername(user.getUsername());
-        if (checkedUser == null) {
-            return new ResponseEntity<>("User Existed!", HttpStatus.BAD_REQUEST);
+        if (checkedUser != null) {
+            return new ResponseEntity<String>("Username existed in database!", HttpStatus.BAD_REQUEST);
         }
+//        if (bindingResult.hasFieldErrors()) {
+//            List<FieldError> errors = bindingResult.getFieldErrors();
+//            StringBuilder body = new StringBuilder();
+//            for (FieldError error : errors ) {
+//                body.append(error.getDefaultMessage());
+//                body.append("\n");
+//            }
+//            return new ResponseEntity<String>(body.toString(), HttpStatus.BAD_REQUEST);
+//        }
+        String username = user.getUsername();
+        String password = user.getPassword();
         Role role = roleRepository.findByName(DEFAULT_ROLE);
         Set<Role> roles = new HashSet<>();
         roles.add(role);
-        user.setRoles(roles);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userService.save(user);
-        return new ResponseEntity<>("Created!", HttpStatus.CREATED);
+        User newUser = new User(username, password, roles);
+//        user.setRoles(roles);
+//        user.setPassword(user.getPassword());
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        List<Object> result = userService.save(newUser);
+        return new ResponseEntity<String>((String) result.get(0), (HttpStatus) result.get(1));
     }
 
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -84,7 +100,7 @@ public class SecurityRestController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         // Trả về jwt cho người dùng.
         String jwt = tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
-        return new ResponseEntity<>(new LoginResponse(jwt), HttpStatus.OK);
+        return new ResponseEntity<LoginResponse>(new LoginResponse(jwt), HttpStatus.OK);
     }
 
     @GetMapping("/random")

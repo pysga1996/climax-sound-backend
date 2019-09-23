@@ -1,5 +1,6 @@
 package com.lambda.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -12,20 +13,18 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "user")
+@JsonIgnoreProperties(value = {"roles", "favoriteSongs", "favoriteAlbums"}, allowGetters = true, ignoreUnknown = true)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotBlank
-    @Column(unique = true, nullable = false)
     private String username;
 
-    @Column(nullable = false)
-    @Pattern(regexp = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,20})")
     private String password;
 
-    @JsonManagedReference
+    @JsonManagedReference("user-role")
     @ManyToMany(fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(
@@ -35,12 +34,12 @@ public class User {
     )
     private Collection<Role> roles;
 
-    @JsonManagedReference
+    @JsonManagedReference("user-song")
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> favoriteSongs;
 
-    @JsonManagedReference
+    @JsonManagedReference("user-album")
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> favoriteAlbums;

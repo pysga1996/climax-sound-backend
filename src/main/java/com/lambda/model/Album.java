@@ -23,7 +23,7 @@ public class Album {
 
     private Date releaseDate;
 
-    @JsonManagedReference
+    @JsonManagedReference("album-genre")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "album_genre",
@@ -34,7 +34,7 @@ public class Album {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Genre> genres;
 
-    @JsonManagedReference
+    @JsonManagedReference("album-song")
     @OneToMany(mappedBy = "album", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
@@ -71,14 +71,14 @@ public class Album {
     @JoinColumn(name = "activity_id")
     private Activity activity;
 
-    @JsonBackReference
+    @JsonBackReference("user-album")
     @ManyToMany
     @JoinTable(
-            name = "song_user",
+            name = "user_album",
             joinColumns = @JoinColumn(
-                    name = "song_id", referencedColumnName = "id"),
+                    name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
-                    name = "user_id", referencedColumnName = "id"))
+                    name = "album_id", referencedColumnName = "id"))
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<User> users;
 

@@ -36,7 +36,7 @@ public class Song {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Artist> artists;
 
-    @JsonManagedReference(value = "album-song")
+    @JsonBackReference(value = "album-song")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "album_id")
     private Album album;
@@ -52,7 +52,7 @@ public class Song {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Tag> tags;
 
-    @JsonManagedReference(value = "song-genre")
+    @JsonManagedReference("song-genre")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "song_genre",
@@ -63,14 +63,14 @@ public class Song {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Genre> genres;
 
-    @JsonBackReference(value = "song-user")
+    @JsonBackReference("user-song")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "song_user",
+            name = "user_song",
             joinColumns = @JoinColumn(
-                    name = "song_id", referencedColumnName = "id"),
+                    name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
-                    name = "user_id", referencedColumnName = "id"))
+                    name = "song_id", referencedColumnName = "id"))
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<User> users;
 

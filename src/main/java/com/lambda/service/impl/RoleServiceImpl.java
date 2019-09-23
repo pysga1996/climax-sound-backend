@@ -10,7 +10,14 @@ import org.springframework.stereotype.Service;
 public class RoleServiceImpl implements RoleService {
     @Autowired
     RoleRepository roleRepository;
+
+    @Override
     public Role findByName(String name) {
         return roleRepository.findByName(name);
+    }
+
+    @Override
+    public void save(Role role) {
+        roleRepository.save(role);
     }
 }

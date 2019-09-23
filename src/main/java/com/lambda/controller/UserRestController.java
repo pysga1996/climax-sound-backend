@@ -20,13 +20,13 @@ public class UserRestController {
     @Autowired
     private UserService userService;
 
-    @GetMapping(value = "", params = "action=list")
+    @GetMapping(params = "action=list")
     public ResponseEntity<Page<User>> getUserList(Pageable pageable) {
         Page<User> userList = userService.findAll(pageable);
         return new ResponseEntity<Page<User>>(userList, HttpStatus.OK);
     }
 
-    @GetMapping(value = "", params = "id", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(params = "id", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getUserById(@RequestParam Long id) {
         Optional<User> user = userService.findById(id);
         if (user.isPresent()) {

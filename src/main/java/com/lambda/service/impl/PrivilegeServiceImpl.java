@@ -11,7 +11,13 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     @Autowired
     PrivilegeRepository privilegeRepository;
 
+    @Override
     public Privilege findByName(String name) {
         return privilegeRepository.findByName(name);
+    }
+
+    @Override
+    public void save(Privilege privilege) {
+        privilegeRepository.save(privilege);
     }
 }

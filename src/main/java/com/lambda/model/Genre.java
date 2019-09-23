@@ -17,10 +17,11 @@ public class Genre {
     @NotBlank
     private String name;
 
-    @JsonBackReference
+    @JsonBackReference("song-genre")
     @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
     private Collection<Song> songs;
 
+    @JsonBackReference("album-genre")
     @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
     private Collection<Album> albums;
 

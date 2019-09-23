@@ -66,11 +66,11 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter implements
         this.applicationContext = applicationContext;
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        // Password encoder, để Spring Security sử dụng mã hóa mật khẩu người dùng
-        return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        // Password encoder, để Spring Security sử dụng mã hóa mật khẩu người dùng
+//        return new BCryptPasswordEncoder();
+//    }
 
     //Thymeleaf Configuration
 //    @Bean
