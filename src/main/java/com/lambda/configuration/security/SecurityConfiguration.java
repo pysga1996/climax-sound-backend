@@ -44,9 +44,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     UserDetailServiceImpl userDetailServiceImpl;
 
-    @Lazy
-    @Autowired
-    PasswordEncoder passwordEncoder;
+//    @Lazy
+//    @Autowired
+//    PasswordEncoder passwordEncoder;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -82,7 +82,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder)
             throws Exception {
         authenticationManagerBuilder.userDetailsService(userDetailServiceImpl) // Cung cáp userservice cho spring security
-                .passwordEncoder(passwordEncoder); // cung cấp password encoder
+                .passwordEncoder(passwordEncoder()); // cung cấp password encoder
     }
 
     @Override

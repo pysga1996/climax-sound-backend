@@ -54,17 +54,9 @@ import java.util.Properties;
 @ComponentScan("com.lambda")
 @EnableSpringDataWebSupport
 //@PropertySource("classpath:GlobalConfigApp.properties")
-public class ApplicationConfiguration extends WebMvcConfigurerAdapter implements ApplicationContextAware {
+public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 
-    @Autowired
-    Environment env;
 
-    private ApplicationContext applicationContext;
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
 
 //    @Bean
 //    public PasswordEncoder passwordEncoder() {
