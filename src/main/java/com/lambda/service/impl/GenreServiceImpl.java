@@ -20,4 +20,9 @@ public class GenreServiceImpl implements GenreService {
     public Iterable<Genre> findAllByNameContaining(String name) {
         return genreRepository.findAllByNameContaining(name);
     }
+
+    @Override
+    public void save(Genre genre) {
+        genreRepository.save(genre);
+    }
 }

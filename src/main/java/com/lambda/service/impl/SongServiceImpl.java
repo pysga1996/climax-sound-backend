@@ -18,11 +18,18 @@ public class SongServiceImpl implements SongService {
         return songRepository.findByName(name);
     }
 
+    @Override
     public Page<Song> findAllByNameContaining(String name, Pageable pageable) {
         return songRepository.findAllByNameContaining(name, pageable);
     }
 
+    @Override
     public Page<Song> findAllByTags_Name(String name, Pageable pageable) {
         return songRepository.findAllByTags_Name(name, pageable);
+    }
+
+    @Override
+    public void save(Song song) {
+        songRepository.save(song);
     }
 }

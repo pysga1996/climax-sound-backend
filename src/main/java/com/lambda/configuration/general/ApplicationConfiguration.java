@@ -1,5 +1,8 @@
 package com.lambda.configuration.general;
 
+import com.lambda.converter.StringToUploadFormConverter;
+import com.lambda.formatter.LocalDateFormatter;
+import com.lambda.model.MusicUploadForm;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -11,6 +14,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
@@ -55,8 +59,6 @@ import java.util.Properties;
 @EnableSpringDataWebSupport
 //@PropertySource("classpath:GlobalConfigApp.properties")
 public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
-
-
 
 //    @Bean
 //    public PasswordEncoder passwordEncoder() {
@@ -135,10 +137,11 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 //        return properties;
 //    }
 
-//    @Override
-//    public void addFormatters(FormatterRegistry registry) {
-//        registry.addFormatter(new LocalDateTimeFormatter());
-//    }
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addFormatter(new LocalDateFormatter());
+        registry.addConverter(new StringToUploadFormConverter());
+    }
 
 //    @Override
 //    public void addResourceHandlers(ResourceHandlerRegistry registry) {

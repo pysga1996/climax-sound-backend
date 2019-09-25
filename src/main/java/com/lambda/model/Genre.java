@@ -1,6 +1,7 @@
 package com.lambda.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -24,6 +25,13 @@ public class Genre {
     @JsonBackReference("album-genre")
     @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
     private Collection<Album> albums;
+
+    public Genre() {
+    }
+
+    public Genre(@NotBlank String name) {
+        this.name = name;
+    }
 
     public Integer getId() {
         return id;

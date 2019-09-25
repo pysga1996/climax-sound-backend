@@ -3,6 +3,7 @@ package com.lambda.service.impl;
 import com.lambda.model.CustomUserDetails;
 import com.lambda.model.Role;
 import com.lambda.model.User;
+import com.lambda.repository.UserRepository;
 import com.lambda.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,6 +25,9 @@ public class UserDetailServiceImpl implements UserDetailsService {
     private UserService userService;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
@@ -38,6 +42,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         for (Role role : roles) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
         }
+
         return new CustomUserDetails(user.getUsername(), user.getPassword(), grantedAuthorities);
     }
 
@@ -57,5 +62,16 @@ public class UserDetailServiceImpl implements UserDetailsService {
         }
         return user;
     }
+
+//    public boolean checkLogin(User user) {
+//        Iterable<User> users = userRepository.findAll();
+//        boolean isCorrectUser = false;
+//        for (User currentUser: users) {
+//            if (currentUser.getUsername().equals(user.getUsername())) {
+//                isCorrectUser = true;
+//            }
+//        }
+//        return isCorrectUser;
+//    }
 
 }

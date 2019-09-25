@@ -27,4 +27,9 @@ public class ArtistServiceImpl implements ArtistService {
     public Page<Artist> findAllByAlbums_Name(String name, Pageable pageable) {
         return artistRepository.findAllByAlbums_Name(name, pageable);
     }
+
+    @Override
+    public void save(Artist artist) {
+        artistRepository.save(artist);
+    }
 }

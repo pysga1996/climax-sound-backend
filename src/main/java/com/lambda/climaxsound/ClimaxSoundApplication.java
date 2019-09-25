@@ -35,6 +35,4 @@ public class ClimaxSoundApplication extends SpringBootServletInitializer {
 		dataSeedingListener.onApplicationEvent();
 	}
 
-
-
 }

@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -32,7 +31,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             // Retrieve jwt from request
             String jwt = getJwtFromRequest(request);
-
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
                 // Lấy username từ chuỗi jwt
                 String username = tokenProvider.getUsernameFromJWT(jwt);

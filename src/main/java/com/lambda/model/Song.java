@@ -2,6 +2,7 @@ package com.lambda.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -13,6 +14,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "song")
+@JsonIgnoreProperties(value = {"url", "artists", "album", "tags", "genres", "users"}, allowGetters = true)
 public class Song {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -87,10 +89,9 @@ public class Song {
     public Song() {
     }
 
-    public Song(String name, Date releaseDate, String url) {
+    public Song(String name, Date releaseDate) {
         this.name = name;
         this.releaseDate = releaseDate;
-        this.url = url;
     }
 
     public Long getId() {

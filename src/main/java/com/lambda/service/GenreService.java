@@ -7,4 +7,5 @@ import org.springframework.stereotype.Service;
 public interface GenreService {
     Genre findByName(String name);
     Iterable<Genre> findAllByNameContaining(String name);
+    void save(Genre genre);
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -21,6 +22,7 @@ public class Artist {
     @NotBlank
     private String name;
 
+    @DateTimeFormat(pattern = "MM-dd-yyyy")
     private Date birthDate;
 
     private String biography;
@@ -38,7 +40,11 @@ public class Artist {
     public Artist() {
     }
 
-    public Artist(@NotNull String name, Date birthDate, String biography) {
+    public Artist(String name) {
+        this.name = name;
+    }
+
+    public Artist(String name, Date birthDate, String biography) {
         this.name = name;
         this.birthDate = birthDate;
         this.biography = biography;
