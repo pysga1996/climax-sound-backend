@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @ConfigurationProperties(prefix = "music")
-public class MusicStorageProperties {
+public class TrackStorageProperties {
     private String uploadDir;
 
     public String getUploadDir() {

@@ -2,7 +2,7 @@ package com.lambda.service.impl;
 
 import com.lambda.exception.FileNotFoundException;
 import com.lambda.exception.FileStorageException;
-import com.lambda.property.MusicStorageProperties;
+import com.lambda.property.TrackStorageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -22,7 +22,7 @@ public class TrackStorageService {
     private final Path trackStorageLocation;
 
     @Autowired
-    public TrackStorageService(MusicStorageProperties fileStorageProperties) {
+    public TrackStorageService(TrackStorageProperties fileStorageProperties) {
         this.trackStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
                 .toAbsolutePath().normalize();
 

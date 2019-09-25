@@ -26,7 +26,7 @@ public class MusicUploadRestController {
     private TrackStorageService trackStorageService;
 
     @PostMapping(value = "/upload-track")
-    public ResponseEntity<UploadResponse> uploadMusic(@RequestPart("musicUploadForm") MusicUploadForm musicUploadForm, @RequestPart(value = "audio", required = false) MultipartFile file) {
+    public ResponseEntity<UploadResponse> uploadTrack(@RequestPart("musicUploadForm") MusicUploadForm musicUploadForm, @RequestPart(value = "audio", required = false) MultipartFile file) {
         Song song = formConvertService.convertToSong(musicUploadForm);
         if (song == null) return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         String fileName = trackStorageService.storeFile(file);

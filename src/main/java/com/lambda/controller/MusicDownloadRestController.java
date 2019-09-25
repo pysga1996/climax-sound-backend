@@ -25,7 +25,7 @@ public class MusicDownloadRestController {
     private TrackStorageService trackStorageService;
 
     @GetMapping("/download-track/{fileName:.+}")
-    public ResponseEntity<Resource> downloadMusic(@PathVariable String fileName, HttpServletRequest request) {
+    public ResponseEntity<Resource> downloadTrack(@PathVariable String fileName, HttpServletRequest request) {
         // Load file as Resource
         Resource resource = trackStorageService.loadFileAsResource(fileName);
 
