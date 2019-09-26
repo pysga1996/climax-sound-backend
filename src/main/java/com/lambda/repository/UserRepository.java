@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    @Query("SELECT u FROM User u INNER JOIN FETCH u.roles WHERE u.username = :username")
+    @Query("SELECT u FROM User u INNER JOIN FETCH u.roles r JOIN r.privileges WHERE u.username = :username")
     User findByUsername(@Param("username") String username);
     Page<User> findByUsernameContaining(String username, Pageable pageable);
     Page<User> findByRoles_Name(String username, Pageable pageable);

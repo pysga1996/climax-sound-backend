@@ -4,8 +4,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "music")
-public class TrackStorageProperties {
+@ConfigurationProperties(prefix = "audio")
+public class AudioStorageProperties {
     private String uploadDir;
 
     public String getUploadDir() {

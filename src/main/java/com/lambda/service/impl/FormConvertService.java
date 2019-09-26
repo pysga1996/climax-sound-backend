@@ -1,16 +1,13 @@
 package com.lambda.service.impl;
 
 import com.lambda.model.*;
-import com.lambda.repository.SongRepository;
 import com.lambda.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Set;
 
 @Service
 public class FormConvertService {
@@ -32,13 +29,13 @@ public class FormConvertService {
     @Autowired
     ActivityService activityService;
 
-    public Song convertToSong(MusicUploadForm musicUploadForm) {
-        String songName = musicUploadForm.getSongName();
-        Date releaseDate = musicUploadForm.getPublishDate();
+    public Song convertToSong(AudioUploadForm audioUploadForm) {
+        String songName = audioUploadForm.getSongName();
+        Date releaseDate = audioUploadForm.getPublishDate();
         if (songService.findByName(songName)!=null) return null;
         Song song = new Song(songName, releaseDate);
 
-        String[] artistsString = musicUploadForm.getGenres().split(",");
+        String[] artistsString = audioUploadForm.getGenres().split(",");
         Collection<Artist> artistsList = new HashSet<>();
         for (String artistString: artistsString) {
             Artist checkedArtist = artistService.findByName(artistString);
@@ -52,7 +49,7 @@ public class FormConvertService {
         }
         song.setArtists(artistsList);
 
-        String[] genresString = musicUploadForm.getGenres().split(",");
+        String[] genresString = audioUploadForm.getGenres().split(",");
         Collection<Genre> genreList = new HashSet<>();
         for (String genreString: genresString) {
             Genre checkedGenre = genreService.findByName(genreString);
@@ -66,7 +63,7 @@ public class FormConvertService {
         }
         song.setGenres(genreList);
 
-        String[] tagsString = musicUploadForm.getTags().split(",");
+        String[] tagsString = audioUploadForm.getTags().split(",");
         Collection<Tag> tagList = new HashSet<>();
         for (String tagString: tagsString) {
             Tag checkedTag = tagService.findByName(tagString);
@@ -80,18 +77,18 @@ public class FormConvertService {
         }
         song.setTags(tagList);
 
-        Mood checkedMood = moodService.findByName(musicUploadForm.getMood().toLowerCase().trim());
+        Mood checkedMood = moodService.findByName(audioUploadForm.getMood().toLowerCase().trim());
         if (checkedMood == null) {
-            Mood mood = new Mood(musicUploadForm.getMood().toLowerCase().trim());
+            Mood mood = new Mood(audioUploadForm.getMood().toLowerCase().trim());
             moodService.save(mood);
             song.setMood(mood);
         } else {
             song.setMood(checkedMood);
         }
 
-        Activity checkedActivity = activityService.findByName(musicUploadForm.getMood().toLowerCase().trim());
+        Activity checkedActivity = activityService.findByName(audioUploadForm.getMood().toLowerCase().trim());
         if (checkedActivity == null) {
-            Activity activity = new Activity(musicUploadForm.getActivity().toLowerCase().trim());
+            Activity activity = new Activity(audioUploadForm.getActivity().toLowerCase().trim());
             activityService.save(activity);
             song.setActivity(activity);
         } else {

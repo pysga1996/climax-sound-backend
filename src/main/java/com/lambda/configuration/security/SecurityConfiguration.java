@@ -95,13 +95,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/api/login", "/api/register").permitAll()
-//                .anyRequest().authenticated()
+                .antMatchers("/api/login", "/api/register", "/api/download-track/**").permitAll()
                 .antMatchers("/api/user").access("hasRole('ADMIN')")
                 .antMatchers("/api/**").access("hasRole('USER') or hasRole('ADMIN')")
                 .and().formLogin()
 //                .loginPage("/login")
-                .loginProcessingUrl("/appLogin")
+//                .loginProcessingUrl("/appLogin")
                 .successHandler(customRestAuthenticationSuccessHandler)
                 .failureHandler(customRestAuthenticationFailureHandler)
                 .usernameParameter("ssoId").passwordParameter("password")
@@ -122,5 +121,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.cors();
     }
 }

@@ -1,6 +1,7 @@
 package com.lambda.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -10,6 +11,7 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "privilege")
+@JsonIgnoreProperties(value = "roles", allowGetters = true)
 public class Privilege {
 
     @Id

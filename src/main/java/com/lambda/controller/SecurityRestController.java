@@ -50,12 +50,12 @@ public class SecurityRestController {
     private UserService userService;
 
     @GetMapping(value = "/profile")
-    public ResponseEntity<Object> getCurrentUser() {
+    public ResponseEntity<User> getCurrentUser() {
         User user = userDetailService.getCurrentUser();
         if (user != null) {
-            return new ResponseEntity<Object>(user, HttpStatus.OK);
+            return new ResponseEntity<User>(user, HttpStatus.OK);
         }
-        return new ResponseEntity<Object>("Not Found User", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)

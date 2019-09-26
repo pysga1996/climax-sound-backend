@@ -1,6 +1,6 @@
 package com.lambda.controller;
 
-import com.lambda.service.impl.TrackStorageService;
+import com.lambda.service.impl.AudioStorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +18,16 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/api")
-public class MusicDownloadRestController {
-    private static final Logger logger = LoggerFactory.getLogger(MusicDownloadRestController.class);
+public class AudioDownloadRestController {
+    private static final Logger logger = LoggerFactory.getLogger(AudioDownloadRestController.class);
 
     @Autowired
-    private TrackStorageService trackStorageService;
+    private AudioStorageService audioStorageService;
 
-    @GetMapping("/download-track/{fileName:.+}")
-    public ResponseEntity<Resource> downloadTrack(@PathVariable String fileName, HttpServletRequest request) {
+    @GetMapping("/download-audio/{fileName:.+}")
+    public ResponseEntity<Resource> downloadAudio(@PathVariable String fileName, HttpServletRequest request) {
         // Load file as Resource
-        Resource resource = trackStorageService.loadFileAsResource(fileName);
-
+        Resource resource = audioStorageService.loadFileAsResource(fileName);
         // Try to determine file's content type
         String contentType = null;
         try {

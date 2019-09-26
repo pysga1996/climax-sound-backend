@@ -6,7 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
-public class MusicUploadForm {
+public class AudioUploadForm {
     @NotBlank
     private String songName;
 
@@ -24,10 +24,10 @@ public class MusicUploadForm {
 
     private String activity;
 
-    public MusicUploadForm() {
+    public AudioUploadForm() {
     }
 
-    public MusicUploadForm(String songName, String artistName, Date publishDate, String genres, String tags, String mood, String activity) {
+    public AudioUploadForm(String songName, String artistName, Date publishDate, String genres, String tags, String mood, String activity) {
         this.songName = songName;
         this.artistName = artistName;
         this.publishDate = publishDate;
@@ -95,7 +95,7 @@ public class MusicUploadForm {
 
     @Override
     public String toString() {
-        return "MusicUploadForm{" +
+        return "AudioUploadForm{" +
                 "songName='" + songName + '\'' +
                 ", artistName='" + artistName + '\'' +
                 ", publishDate=" + publishDate +

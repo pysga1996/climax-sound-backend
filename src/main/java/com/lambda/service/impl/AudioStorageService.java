@@ -2,7 +2,7 @@ package com.lambda.service.impl;
 
 import com.lambda.exception.FileNotFoundException;
 import com.lambda.exception.FileStorageException;
-import com.lambda.property.TrackStorageProperties;
+import com.lambda.property.AudioStorageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -18,16 +18,16 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 @Service
-public class TrackStorageService {
-    private final Path trackStorageLocation;
+public class AudioStorageService {
+    private final Path audioStorageLocation;
 
     @Autowired
-    public TrackStorageService(TrackStorageProperties fileStorageProperties) {
-        this.trackStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
+    public AudioStorageService(AudioStorageProperties audioStorageProperties) {
+        this.audioStorageLocation = Paths.get(audioStorageProperties.getUploadDir())
                 .toAbsolutePath().normalize();
 
         try {
-            Files.createDirectories(this.trackStorageLocation);
+            Files.createDirectories(this.audioStorageLocation);
         } catch (Exception ex) {
             throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
         }
@@ -36,15 +36,13 @@ public class TrackStorageService {
     public String storeFile(MultipartFile file) {
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-
         try {
             // Check if the file's name contains invalid characters
             if (fileName.contains("..")) {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
-
             // Copy file to the target location (Replacing existing file with the same name)
-            Path targetLocation = this.trackStorageLocation.resolve(fileName);
+            Path targetLocation = this.audioStorageLocation.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             return fileName;
@@ -55,7 +53,7 @@ public class TrackStorageService {
 
     public Resource loadFileAsResource(String fileName) {
         try {
-            Path filePath = this.trackStorageLocation.resolve(fileName).normalize();
+            Path filePath = this.audioStorageLocation.resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());
             if (resource.exists()) {
                 return resource;
