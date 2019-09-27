@@ -8,9 +8,15 @@ import com.lambda.model.util.LoginResponse;
 import com.lambda.model.util.RandomStuff;
 import com.lambda.repository.RoleRepository;
 import com.lambda.service.UserService;
+import com.lambda.service.impl.DownloadService;
+import com.lambda.service.impl.ImageStorageService;
 import com.lambda.service.impl.JwtTokenProvider;
 import com.lambda.service.impl.UserDetailServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +25,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,20 +61,58 @@ public class UserRestController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ImageStorageService imageStorageService;
+
+    @Autowired
+    private DownloadService downloadService;
+
     @GetMapping(value = "/profile")
     public ResponseEntity<User> getCurrentUser() {
         User user = userDetailService.getCurrentUser();
         if (user != null) {
-            return new ResponseEntity<User>(user, HttpStatus.OK);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         }
-        return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping(value = "/profile", params = "action=update")
+    public ResponseEntity<User> updateProfile(@RequestPart("user") User user, @RequestPart("avatar") MultipartFile avatar) {
+        User currentUser = userDetailService.getCurrentUser();
+        if (currentUser != null) {
+            if (currentUser.getUsername().equals(user.getUsername())) {
+                String fileName = imageStorageService.storeFile(avatar, user.getUsername());
+                String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                        .path("/api/avatar/")
+                        .path(fileName)
+                        .toUriString();
+                user.setAvatarUrl(fileDownloadUri);
+                user.setPassword(user.getPassword());
+                user.setRoles(currentUser.getRoles());
+                user.setAccountNonExpired(currentUser.isAccountNonExpired());
+                user.setAccountNonLocked(currentUser.isAccountNonLocked());
+                user.setCredentialsNonExpired(currentUser.isCredentialsNonExpired());
+                user.setEnabled(currentUser.isEnabled());
+                user.setFavoriteSongs(currentUser.getFavoriteSongs());
+                user.setFavoriteAlbums(currentUser.getFavoriteAlbums());
+                user.setRatedSongs(currentUser.getRatedSongs());
+                userService.save(user);
+                return new ResponseEntity<>(user, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(value = "/avatar/{fileName:.+}")
+    public ResponseEntity<Resource> getAvatar(@PathVariable("fileName") String fileName, HttpServletRequest request) {
+        return downloadService.downloadFile(fileName, request, imageStorageService);
     }
 
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createUser(@Valid @RequestBody User user) {
         User checkedUser = userService.findByUsername(user.getUsername());
         if (checkedUser != null) {
-            return new ResponseEntity<String>("Username existed in database!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Username existed in database!", HttpStatus.BAD_REQUEST);
         }
 //        if (bindingResult.hasFieldErrors()) {
 //            List<FieldError> errors = bindingResult.getFieldErrors();
@@ -80,11 +129,9 @@ public class UserRestController {
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         User newUser = new User(username, password, roles);
-//        user.setRoles(roles);
-//        user.setPassword(user.getPassword());
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        newUser.setGender(true);
         List<Object> result = userService.save(newUser);
-        return new ResponseEntity<String>((String) result.get(0), (HttpStatus) result.get(1));
+        return new ResponseEntity<>((String) result.get(0), (HttpStatus) result.get(1));
     }
 
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -101,7 +148,7 @@ public class UserRestController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         // Trả về jwt cho người dùng.
         String jwt = tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
-        return new ResponseEntity<LoginResponse>(new LoginResponse(jwt), HttpStatus.OK);
+        return new ResponseEntity<>(new LoginResponse(jwt), HttpStatus.OK);
     }
 
     @GetMapping("/random")
@@ -133,8 +180,8 @@ public class UserRestController {
         // print arrset2
         System.out.println("Second Set: "
                 + arrset2);
-        Boolean value = arrset1.equals(arrset2);
-        return new RandomStuff(value.toString());
+        boolean value = arrset1.equals(arrset2);
+        return new RandomStuff(Boolean.toString(value));
 //        return new RandomStuff("JWT Hợp lệ mới có thể thấy được message này");
     }
 }

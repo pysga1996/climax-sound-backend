@@ -77,6 +77,7 @@ public class DataSeedingListener {
         roles1.add(roleService.findByName("ROLE_USER"));
         roles1.add(roleService.findByName("ROLE_ADMIN"));
         User admin = new User(username, password, roles1);
+        admin.setGender(true);
         userService.save(admin);
 
         // Member account
@@ -85,6 +86,7 @@ public class DataSeedingListener {
         HashSet<Role> roles2 = new HashSet<>();
         roles2.add(roleService.findByName("ROLE_USER"));
         User member = new User(username, password, roles2);
+        member.setGender(true);
         userService.save(member);
     }
 }

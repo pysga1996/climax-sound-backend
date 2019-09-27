@@ -2,10 +2,8 @@ package com.lambda.service.impl;
 
 import com.lambda.exception.FileNotFoundException;
 import com.lambda.exception.FileStorageException;
-import com.lambda.model.entity.Song;
-import com.lambda.property.AudioStorageProperties;
+import com.lambda.property.ImageStorageProperties;
 import com.lambda.service.StorageService;
-import org.hibernate.mapping.Array;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -21,35 +19,35 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 @Service
-public class AudioStorageService implements StorageService<Song> {
-    private final Path audioStorageLocation;
+public class ImageStorageService implements StorageService<String> {
+    private final Path imageStorageLocation;
 
     @Autowired
-    public AudioStorageService(AudioStorageProperties audioStorageProperties) {
-        this.audioStorageLocation = Paths.get(audioStorageProperties.getUploadDir())
+    public ImageStorageService(ImageStorageProperties imageStorageLocation) {
+        this.imageStorageLocation = Paths.get(imageStorageLocation.getUploadDir())
                 .toAbsolutePath().normalize();
 
         try {
-            Files.createDirectories(this.audioStorageLocation);
+            Files.createDirectories(this.imageStorageLocation);
         } catch (Exception ex) {
             throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
         }
     }
 
     @Override
-    public String storeFile(MultipartFile file, Song song) {
+    public String storeFile(MultipartFile file, String username) {
         String originalFileName = file.getOriginalFilename();
         // Get file extension
         String extension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
         // Normalize file name
-        String fileName = StringUtils.cleanPath(song.getId() + "-" + song.getName() + "." + extension);
+        String fileName = StringUtils.cleanPath(username).concat(".").concat(extension);
         try {
             // Check if the file's name contains invalid characters
             if (fileName.contains("..")) {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
             // Copy file to the target location (Replacing existing file with the same name)
-            Path targetLocation = this.audioStorageLocation.resolve(fileName);
+            Path targetLocation = this.imageStorageLocation.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             return fileName;
@@ -61,7 +59,7 @@ public class AudioStorageService implements StorageService<Song> {
     @Override
     public Resource loadFileAsResource(String fileName) {
         try {
-            Path filePath = this.audioStorageLocation.resolve(fileName).normalize();
+            Path filePath = this.imageStorageLocation.resolve(fileName ).normalize();
             Resource resource = new UrlResource(filePath.toUri());
             if (resource.exists()) {
                 return resource;

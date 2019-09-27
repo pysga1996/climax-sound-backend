@@ -5,6 +5,7 @@ import com.lambda.model.util.AudioUploadForm;
 import com.lambda.model.util.UploadResponse;
 import com.lambda.service.SongService;
 import com.lambda.service.impl.AudioStorageService;
+import com.lambda.service.impl.DownloadService;
 import com.lambda.service.impl.FormConvertService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,13 +36,16 @@ public class SongRestController {
     @Autowired
     private FormConvertService formConvertService;
 
+    @Autowired
+    private DownloadService downloadService;
+
     private static final Logger logger = LoggerFactory.getLogger(SongRestController.class);
 
     @PostMapping("/upload")
     public ResponseEntity<UploadResponse> uploadAudio(@RequestPart("audioUploadForm") AudioUploadForm audioUploadForm, @RequestPart(value = "audio", required = false) MultipartFile file) {
         Song song = formConvertService.convertToSong(audioUploadForm);
         if (song == null) return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-        String fileName = audioStorageService.storeFile(file);
+        String fileName = audioStorageService.storeFile(file, song);
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/download-audio/")
                 .path(fileName)
@@ -52,25 +56,9 @@ public class SongRestController {
                 file.getContentType(), file.getSize()), HttpStatus.OK);
     }
 
-    @GetMapping("/download/{fileName}")
+    @GetMapping("/download/{fileName:.+}")
     public ResponseEntity<Resource> downloadAudio(@PathVariable String fileName, HttpServletRequest request) {
-        // Load file as Resource
-        Resource resource = audioStorageService.loadFileAsResource(fileName);
-        // Try to determine file's content type
-        String contentType = null;
-        try {
-            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-        } catch (IOException ex) {
-            logger.info("Could not determine file type.");
-        }
-        // Fallback to the default content type if type could not be determined
-        if (contentType == null) {
-            contentType = "application/octet-stream";
-        }
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                .body(resource);
+        return downloadService.downloadFile(fileName, request, audioStorageService);
     }
 
     @GetMapping(params = "action=list")

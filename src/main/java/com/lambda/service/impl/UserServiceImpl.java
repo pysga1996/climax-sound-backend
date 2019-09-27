@@ -48,9 +48,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Object> save(User user) {
         List<Object> result = new ArrayList<>();
-        if (userRepository.findByUsername(user.getUsername()) == null) {
+        User checkedUser = userRepository.findByUsername(user.getUsername());
+        if (checkedUser == null || (checkedUser.getId().equals(user.getId()))) {
             if (user.getPassword().matches("^(?=.*[\\d])(?=.*[a-z])(?=.*[A-Z]).{8,20}$")) {
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
+                user.setGender(true);
                 user.setAccountNonExpired(true);
                 user.setAccountNonLocked(true);
                 user.setCredentialsNonExpired(true);
