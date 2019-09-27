@@ -1,5 +1,6 @@
 package com.lambda.service.impl;
 
+import com.lambda.model.entity.Role;
 import com.lambda.model.entity.User;
 import com.lambda.repository.UserRepository;
 import com.lambda.service.UserService;
@@ -76,5 +77,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteById(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public void setFields(User user, String fileDownloadUri, User currentUser) {
+        user.setAvatarUrl(fileDownloadUri);
+        user.setRoles(currentUser.getRoles());
+        user.setAccountNonExpired(currentUser.isAccountNonExpired());
+        user.setAccountNonLocked(currentUser.isAccountNonLocked());
+        user.setCredentialsNonExpired(currentUser.isCredentialsNonExpired());
+        user.setEnabled(currentUser.isEnabled());
+        user.setFavoriteSongs(currentUser.getFavoriteSongs());
+        user.setFavoriteAlbums(currentUser.getFavoriteAlbums());
+        user.setRatedSongs(currentUser.getRatedSongs());
     }
 }

@@ -16,6 +16,9 @@ public class SongServiceImpl implements SongService {
     @Autowired
     SongRepository songRepository;
 
+    @Autowired
+    AudioStorageService audioStorageService;
+
     @Override
     public Optional<Song> findById(Long id) {
         return songRepository.findById(id);
@@ -56,8 +59,15 @@ public class SongServiceImpl implements SongService {
         songRepository.save(song);
     }
 
-    public void delete(Long id) {
+    @Override
+    public Boolean deleteById(Long id) {
         songRepository.deleteById(id);
+        if (songRepository.findById(id).isPresent()) {
+            String fileUrl = songRepository.findById(id).get().getUrl();
+            String filename = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
+            return audioStorageService.deleteFile(filename);
+        }
+        return false;
     }
 
     @Override

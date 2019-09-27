@@ -16,7 +16,7 @@ import java.io.IOException;
 public class DownloadService {
     private static final Logger logger = LoggerFactory.getLogger(DownloadService.class);
 
-    public ResponseEntity<Resource> downloadFile(String fileName, HttpServletRequest request, StorageService storageService) {
+    public ResponseEntity<Resource> generateUrl(String fileName, HttpServletRequest request, StorageService storageService) {
         // Load file as Resource
         Resource resource = storageService.loadFileAsResource(fileName);
         // Try to determine file's content type

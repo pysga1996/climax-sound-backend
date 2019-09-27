@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -71,5 +72,12 @@ public class AudioStorageService implements StorageService<Song> {
         } catch (MalformedURLException ex) {
             throw new FileNotFoundException("File not found " + fileName, ex);
         }
+    }
+
+    @Override
+    public Boolean deleteFile(String fileName) {
+        Path filePath = this.audioStorageLocation.resolve(fileName).normalize();
+        File file = filePath.toFile();
+        return file.delete();
     }
 }

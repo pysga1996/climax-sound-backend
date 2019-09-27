@@ -23,8 +23,8 @@ public class MoodRestController {
         Page<Mood> moodList = moodService.findAll(pageable);
         boolean isEmpty = moodList.getTotalElements() == 0;
         if (isEmpty) {
-            return new ResponseEntity<Page<Mood>>(HttpStatus.NO_CONTENT);
-        } else return new ResponseEntity<Page<Mood>>(moodList, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else return new ResponseEntity<>(moodList, HttpStatus.OK);
     }
 
     @GetMapping(params = "action=search", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -32,42 +32,37 @@ public class MoodRestController {
         Page<Mood> filteredMoodList = moodService.findAllByNameContaining(name, pageable);
         boolean isEmpty = filteredMoodList.getTotalElements() == 0;
         if (isEmpty) {
-            return new ResponseEntity<Page<Mood>>(HttpStatus.NO_CONTENT);
-        } else return new ResponseEntity<Page<Mood>>(filteredMoodList, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else return new ResponseEntity<>(filteredMoodList, HttpStatus.OK);
     }
 
     @PostMapping(params = "action=create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createMood(@Valid @RequestBody Mood mood) {
+    public ResponseEntity<String> createMood(@Valid @RequestBody Mood mood) {
         Mood checkedMood = moodService.findByName(mood.getName());
         if (checkedMood != null) {
-            return new ResponseEntity<Void>(HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>("Mood name has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
         } else {
             moodService.save(mood);
-            return new ResponseEntity<Void>(HttpStatus.CREATED);
+            return new ResponseEntity<>("Mood name created successfully!", HttpStatus.CREATED);
         }
     }
 
     @PutMapping(params = {"action=edit", "id"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> editMood(@Valid @RequestBody Mood mood, @RequestParam Integer id) {
+    public ResponseEntity<String> editMood(@Valid @RequestBody Mood mood, @RequestParam Integer id) {
         Mood checkedMood = moodService.findByName(mood.getName());
         if (checkedMood != null) {
-            return new ResponseEntity<Void>(HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>("Mood name has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
         }
         else {
             mood.setId(id);
             moodService.save(mood);
-            return new ResponseEntity<Void>(HttpStatus.OK);
+            return new ResponseEntity<>("Mood name updated successfully!", HttpStatus.OK);
         }
     }
 
     @DeleteMapping(params = {"action=delete", "id"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> deleteMood(@RequestParam Integer id) {
-        boolean isExist = moodService.findById(id).isPresent();
-        if (isExist) {
-            moodService.deleteById(id);
-            return new ResponseEntity<Void>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<String> deleteMood(@RequestParam Integer id) {
+        moodService.deleteById(id);
+        return new ResponseEntity<>("Mood removed successfully", HttpStatus.OK);
     }
 }

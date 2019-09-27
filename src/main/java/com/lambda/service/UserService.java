@@ -15,4 +15,5 @@ public interface UserService {
     Optional<User> findById(Long id);
     List<Object> save(User user);
     void deleteById(Long id);
+    void setFields(User user, String fileDownloadUri, User currentUser);
 }

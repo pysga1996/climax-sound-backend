@@ -40,16 +40,14 @@ public class AlbumRestController {
     public ResponseEntity<Page<Album>> albumList(Pageable pageable) {
         Page<Album> albumList = albumService.findAll(pageable);
         if (albumList.getTotalElements() == 0) {
-            return new ResponseEntity<Page<Album>>(HttpStatus.NO_CONTENT);
-        } else return new ResponseEntity<Page<Album>>(albumList, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else return new ResponseEntity<>(albumList, HttpStatus.OK);
     }
 
     @GetMapping(params = {"action=detail","id"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Album> albumDetail(@RequestParam("id") Long id) {
         Optional<Album> album = albumService.findById(id);
-        if (album.isPresent()) {
-            return new ResponseEntity<Album>(album.get(), HttpStatus.OK);
-        } else return new ResponseEntity<Album>(HttpStatus.NOT_FOUND);
+        return album.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping(params = "action=search", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -57,8 +55,8 @@ public class AlbumRestController {
         Page<Album> filteredAlbumList = albumService.findAllByNameContaining(name, pageable);
         boolean isEmpty = filteredAlbumList.getTotalElements() == 0;
         if (isEmpty) {
-            return new ResponseEntity<Page<Album>>(HttpStatus.NO_CONTENT);
-        } else return new ResponseEntity<Page<Album>>(filteredAlbumList, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else return new ResponseEntity<>(filteredAlbumList, HttpStatus.OK);
     }
 
     @PostMapping(params = {"action=create"}, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -66,9 +64,9 @@ public class AlbumRestController {
         Album album = formConvertService.convertToAlbum(albumForm);
         if (album != null) {
             albumService.save(album);
-            return new ResponseEntity<String>("Album created successfully", HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>("Album created successfully!", HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        return new ResponseEntity<String>("Album already existed", HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity<>("Album has already already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @PutMapping(params = {"action=edit", "id"}, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -77,8 +75,8 @@ public class AlbumRestController {
         if (album != null) {
             album.setId(id);
             albumService.save(album);
-            return new ResponseEntity<String>("Album updated successfully", HttpStatus.OK);
-        } else return new ResponseEntity<String>("Album existed", HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>("Album updated successfully!", HttpStatus.OK);
+        } else return new ResponseEntity<>("Album has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @DeleteMapping(params = {"action=delete", "id"}, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -88,7 +86,7 @@ public class AlbumRestController {
         songs.forEach(songsToDelete::add);
         songService.deleteAll(songsToDelete);
         albumService.deleteById(id);
-        return new ResponseEntity<String>("Album removed successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Album removed successfully!", HttpStatus.OK);
     }
 
 }

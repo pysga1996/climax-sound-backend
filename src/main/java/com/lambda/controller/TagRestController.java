@@ -18,54 +18,51 @@ public class TagRestController {
     @Autowired
     TagService tagService;
 
-    @GetMapping(value = "", params = "action=list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(params = "action=list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<Tag>> tagList(Pageable pageable) {
         Page<Tag> tagList = tagService.findAll(pageable);
         boolean isEmpty = tagList.getTotalElements() == 0;
         if (isEmpty) {
-            return new ResponseEntity<Page<Tag>>(HttpStatus.NO_CONTENT);
-        } else return new ResponseEntity<Page<Tag>>(tagList, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else return new ResponseEntity<>(tagList, HttpStatus.OK);
     }
 
-    @GetMapping(value = "", params = "action=search", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(params = "action=search", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<Tag>> tagSearch(@RequestParam String name, Pageable pageable) {
         Page<Tag> filteredTagList = tagService.findAllByNameContaining(name, pageable);
         boolean isEmpty = filteredTagList.getTotalElements() == 0;
         if (isEmpty) {
-            return new ResponseEntity<Page<Tag>>(HttpStatus.NO_CONTENT);
-        } else return new ResponseEntity<Page<Tag>>(filteredTagList, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else return new ResponseEntity<>(filteredTagList, HttpStatus.OK);
     }
 
-    @PostMapping(value = "", params = "action=create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createTag(@Valid @RequestBody Tag tag) {
+    @PostMapping(params = "action=create", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> createTag(@Valid @RequestBody Tag tag) {
         Tag checkedTag = tagService.findByName(tag.getName());
         if (checkedTag != null) {
-            return new ResponseEntity<Void>(HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>("Tag name has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
         } else {
             tagService.save(tag);
-            return new ResponseEntity<Void>(HttpStatus.CREATED);
+            return new ResponseEntity<>("Tag name created in database!", HttpStatus.CREATED);
         }
     }
 
-    @PutMapping(value = "", params = {"action=edit", "id"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> editTag(@Valid @RequestBody Tag tag, @RequestParam Long id) {
+    @PutMapping(params = {"action=edit", "id"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> editTag(@Valid @RequestBody Tag tag, @RequestParam Long id) {
         Tag checkedTag = tagService.findByName(tag.getName());
         if (checkedTag != null) {
-            return new ResponseEntity<Void>(HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>("Tag name has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
         } else {
             tag.setId(id);
             tagService.save(tag);
-            return new ResponseEntity<Void>(HttpStatus.OK);
+            return new ResponseEntity<>("Tag name updated in database!", HttpStatus.OK);
         }
     }
 
-    @DeleteMapping(value = "", params = {"action=delete", "id"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> deleteTag(@RequestParam Long id) {
-        boolean isExist = tagService.findById(id).isPresent();
-        if (isExist) {
-            tagService.deleteById(id);
-            return new ResponseEntity<Void>(HttpStatus.OK);
-        } else return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+    @DeleteMapping(params = {"action=delete", "id"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> deleteTag(@RequestParam Long id) {
+        tagService.deleteById(id);
+        return new ResponseEntity<>("Tag name removed in database!", HttpStatus.OK);
     }
 
 

@@ -18,5 +18,6 @@ public interface SongService {
     Iterable<Song> findAllByAlbum_Id(Long id);
     Page<Song> findAllByTags_Name(String name, Pageable pageable);
     void save(Song song);
+    Boolean deleteById(Long id);
     void deleteAll(Collection<Song> songs);
 }

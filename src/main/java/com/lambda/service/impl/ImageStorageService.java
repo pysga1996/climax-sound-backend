@@ -2,6 +2,7 @@ package com.lambda.service.impl;
 
 import com.lambda.exception.FileNotFoundException;
 import com.lambda.exception.FileStorageException;
+import com.lambda.model.entity.User;
 import com.lambda.property.ImageStorageProperties;
 import com.lambda.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -19,7 +21,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 @Service
-public class ImageStorageService implements StorageService<String> {
+public class ImageStorageService implements StorageService<User> {
     private final Path imageStorageLocation;
 
     @Autowired
@@ -35,12 +37,22 @@ public class ImageStorageService implements StorageService<String> {
     }
 
     @Override
-    public String storeFile(MultipartFile file, String username) {
+    public String storeFile(MultipartFile file, User user) {
         String originalFileName = file.getOriginalFilename();
         // Get file extension
-        String extension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
+        String extension = originalFileName!=null?originalFileName.substring(originalFileName.lastIndexOf(".") + 1):"";
+        String avatarUrl = user.getAvatarUrl();
+
+        // check if new image ext is different from old file ext
+        if (avatarUrl != null && !avatarUrl.equals("")) {
+            String oldExtension = avatarUrl.substring(avatarUrl.lastIndexOf(".") + 1);
+            if (!oldExtension.equals(extension)) {
+                String oldFileName = user.getUsername() + "." + oldExtension;
+                deleteFile(oldFileName);
+            }
+        }
         // Normalize file name
-        String fileName = StringUtils.cleanPath(username).concat(".").concat(extension);
+        String fileName = StringUtils.cleanPath(user.getUsername()).concat(".").concat(extension);
         try {
             // Check if the file's name contains invalid characters
             if (fileName.contains("..")) {
@@ -69,5 +81,12 @@ public class ImageStorageService implements StorageService<String> {
         } catch (MalformedURLException ex) {
             throw new FileNotFoundException("File not found " + fileName, ex);
         }
+    }
+
+    @Override
+    public Boolean deleteFile(String fileName) {
+        Path filePath = this.imageStorageLocation.resolve(fileName).normalize();
+        File file = filePath.toFile();
+        return file.delete();
     }
 }

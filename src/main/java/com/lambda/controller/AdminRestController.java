@@ -22,21 +22,18 @@ public class AdminRestController {
     @GetMapping(params = "action=list")
     public ResponseEntity<Page<User>> getUserList(Pageable pageable) {
         Page<User> userList = userService.findAll(pageable);
-        return new ResponseEntity<Page<User>>(userList, HttpStatus.OK);
+        return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 
     @GetMapping(params = "id", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getUserById(@RequestParam Long id) {
+    public ResponseEntity<User> getUserById(@RequestParam Long id) {
         Optional<User> user = userService.findById(id);
-        if (user.isPresent()) {
-            return new ResponseEntity<Object>(user, HttpStatus.OK);
-        }
-        return new ResponseEntity<Object>("Not Found User", HttpStatus.NO_CONTENT);
+        return user.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     @DeleteMapping(value = "", params = "id", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteUserById(@PathVariable Long id) {
         userService.deleteById(id);
-        return new ResponseEntity<String>("Deleted!", HttpStatus.OK);
+        return new ResponseEntity<>("Deleted!", HttpStatus.OK);
     }
 }

@@ -12,11 +12,8 @@ import com.lambda.service.impl.DownloadService;
 import com.lambda.service.impl.ImageStorageService;
 import com.lambda.service.impl.JwtTokenProvider;
 import com.lambda.service.impl.UserDetailServiceImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,15 +21,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,14 +44,11 @@ public class UserRestController {
     private RoleRepository roleRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
     private UserDetailServiceImpl userDetailService;
-    
+
     @Autowired
     private UserService userService;
 
@@ -76,36 +67,29 @@ public class UserRestController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping(value = "/profile", params = "action=update")
+    @PutMapping(value = "/profile")
     public ResponseEntity<User> updateProfile(@RequestPart("user") User user, @RequestPart("avatar") MultipartFile avatar) {
         User currentUser = userDetailService.getCurrentUser();
         if (currentUser != null) {
             if (currentUser.getUsername().equals(user.getUsername())) {
-                String fileName = imageStorageService.storeFile(avatar, user.getUsername());
+                String fileName = imageStorageService.storeFile(avatar, user);
                 String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                         .path("/api/avatar/")
                         .path(fileName)
                         .toUriString();
-                user.setAvatarUrl(fileDownloadUri);
-                user.setPassword(user.getPassword());
-                user.setRoles(currentUser.getRoles());
-                user.setAccountNonExpired(currentUser.isAccountNonExpired());
-                user.setAccountNonLocked(currentUser.isAccountNonLocked());
-                user.setCredentialsNonExpired(currentUser.isCredentialsNonExpired());
-                user.setEnabled(currentUser.isEnabled());
-                user.setFavoriteSongs(currentUser.getFavoriteSongs());
-                user.setFavoriteAlbums(currentUser.getFavoriteAlbums());
-                user.setRatedSongs(currentUser.getRatedSongs());
+                userService.setFields(user, fileDownloadUri, currentUser);
                 userService.save(user);
+                // Nếu không xảy ra exception tức là thông tin hợp lệ
+                // Set thông tin authentication vào Security Context
                 return new ResponseEntity<>(user, HttpStatus.OK);
             }
         }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/avatar/{fileName:.+}")
     public ResponseEntity<Resource> getAvatar(@PathVariable("fileName") String fileName, HttpServletRequest request) {
-        return downloadService.downloadFile(fileName, request, imageStorageService);
+        return downloadService.generateUrl(fileName, request, imageStorageService);
     }
 
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
