@@ -1,6 +1,6 @@
 package com.lambda.service;
 
-import com.lambda.model.Artist;
+import com.lambda.model.entity.Artist;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

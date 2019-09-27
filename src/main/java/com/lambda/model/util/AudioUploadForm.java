@@ -1,20 +1,21 @@
-package com.lambda.model;
+package com.lambda.model.util;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
-public class AudioUploadForm {
+public class AudioUploadForm implements MediaForm {
     @NotBlank
-    private String songName;
+    private String name;
 
     @NotBlank
-    private String artistName;
+    private String artists;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date publishDate;
+    private Date releaseDate;
+
+    private String album;
 
     private String genres;
 
@@ -27,38 +28,47 @@ public class AudioUploadForm {
     public AudioUploadForm() {
     }
 
-    public AudioUploadForm(String songName, String artistName, Date publishDate, String genres, String tags, String mood, String activity) {
-        this.songName = songName;
-        this.artistName = artistName;
-        this.publishDate = publishDate;
+    public AudioUploadForm(@NotBlank String name, @NotBlank String artists, Date releaseDate, String album, String genres, String tags, String mood, String activity) {
+        this.name = name;
+        this.artists = artists;
+        this.releaseDate = releaseDate;
+        this.album = album;
         this.genres = genres;
         this.tags = tags;
         this.mood = mood;
         this.activity = activity;
     }
 
-    public String getSongName() {
-        return songName;
+    public String getName() {
+        return name;
     }
 
-    public void setSongName(String songName) {
-        this.songName = songName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getArtistName() {
-        return artistName;
+    public String getArtists() {
+        return artists;
     }
 
-    public void setArtistName(String artistName) {
-        this.artistName = artistName;
+    public void setArtists(String artists) {
+        this.artists = artists;
     }
 
-    public Date getPublishDate() {
-        return publishDate;
+    public Date getReleaseDate() {
+        return releaseDate;
     }
 
-    public void setPublishDate(Date publishDate) {
-        this.publishDate = publishDate;
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public String getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(String album) {
+        this.album = album;
     }
 
     public String getGenres() {
@@ -96,9 +106,9 @@ public class AudioUploadForm {
     @Override
     public String toString() {
         return "AudioUploadForm{" +
-                "songName='" + songName + '\'' +
-                ", artistName='" + artistName + '\'' +
-                ", publishDate=" + publishDate +
+                "name='" + name + '\'' +
+                ", artists='" + artists + '\'' +
+                ", releaseDate=" + releaseDate +
                 ", tags='" + tags + '\'' +
                 ", mood='" + mood + '\'' +
                 ", activity='" + activity + '\'' +

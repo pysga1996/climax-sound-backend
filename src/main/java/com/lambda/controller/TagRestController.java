@@ -1,6 +1,6 @@
 package com.lambda.controller;
 
-import com.lambda.model.Tag;
+import com.lambda.model.entity.Tag;
 import com.lambda.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/tag")
@@ -39,8 +38,9 @@ public class TagRestController {
 
     @PostMapping(value = "", params = "action=create", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createTag(@Valid @RequestBody Tag tag) {
-        if (tag == null) {
-            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        Tag checkedTag = tagService.findByName(tag.getName());
+        if (checkedTag != null) {
+            return new ResponseEntity<Void>(HttpStatus.UNPROCESSABLE_ENTITY);
         } else {
             tagService.save(tag);
             return new ResponseEntity<Void>(HttpStatus.CREATED);
@@ -49,14 +49,12 @@ public class TagRestController {
 
     @PutMapping(value = "", params = {"action=edit", "id"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> editTag(@Valid @RequestBody Tag tag, @RequestParam Long id) {
-        Optional<Tag> tagToEdit =tagService.findById(id);
-        if (tag == null) {
-            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-        } else if (!tagToEdit.isPresent()) {
-            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+        Tag checkedTag = tagService.findByName(tag.getName());
+        if (checkedTag != null) {
+            return new ResponseEntity<Void>(HttpStatus.UNPROCESSABLE_ENTITY);
         } else {
-            tagToEdit.get().setName(tag.getName());
-            tagService.save(tagToEdit.get());
+            tag.setId(id);
+            tagService.save(tag);
             return new ResponseEntity<Void>(HttpStatus.OK);
         }
     }
@@ -67,9 +65,7 @@ public class TagRestController {
         if (isExist) {
             tagService.deleteById(id);
             return new ResponseEntity<Void>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-        }
+        } else return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
     }
 
 

@@ -1,15 +1,11 @@
 package com.lambda.configuration.security;
 
-import com.lambda.model.Privilege;
-import com.lambda.model.Role;
-import com.lambda.model.User;
-import com.lambda.repository.PrivilegeRepository;
-import com.lambda.repository.RoleRepository;
-import com.lambda.repository.UserRepository;
+import com.lambda.model.entity.Privilege;
+import com.lambda.model.entity.Role;
+import com.lambda.model.entity.User;
 import com.lambda.service.PrivilegeService;
 import com.lambda.service.RoleService;
 import com.lambda.service.UserService;
-import org.apache.tomcat.util.file.Matcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

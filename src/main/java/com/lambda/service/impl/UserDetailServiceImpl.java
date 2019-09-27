@@ -1,8 +1,8 @@
 package com.lambda.service.impl;
 
-import com.lambda.model.CustomUserDetails;
-import com.lambda.model.Role;
-import com.lambda.model.User;
+import com.lambda.model.util.CustomUserDetails;
+import com.lambda.model.entity.Role;
+import com.lambda.model.entity.User;
 import com.lambda.repository.UserRepository;
 import com.lambda.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

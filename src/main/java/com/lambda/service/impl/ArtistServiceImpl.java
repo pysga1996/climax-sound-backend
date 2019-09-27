@@ -1,6 +1,6 @@
 package com.lambda.service.impl;
 
-import com.lambda.model.Artist;
+import com.lambda.model.entity.Artist;
 import com.lambda.repository.ArtistRepository;
 import com.lambda.service.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;

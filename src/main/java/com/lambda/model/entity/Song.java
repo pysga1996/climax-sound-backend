@@ -1,21 +1,23 @@
-package com.lambda.model;
+package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.lambda.model.util.MediaObject;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Date;
 
 @Entity
 @Table(name = "song")
-@JsonIgnoreProperties(value = {"url", "artists", "album", "tags", "genres", "users"}, allowGetters = true)
-public class Song {
+@JsonIgnoreProperties(value = {"ratings", "artists", "album", "tags", "genres", "users"}, allowGetters = true)
+public class Song implements MediaObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -23,9 +25,18 @@ public class Song {
     @NotBlank
     private String name;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date releaseDate;
 
+    @NotBlank
     private String url;
+
+    @JsonManagedReference(value = "song-rating")
+    @OneToMany(mappedBy = "song")
+    private Collection<SongRating> ratings;
+
+    @Size(max = 5)
+    private Double displayRating;
 
     @JsonManagedReference(value = "song-artist")
     @ManyToMany(fetch = FetchType.LAZY)
@@ -128,6 +139,22 @@ public class Song {
 
     public String getUrl() {
         return url;
+    }
+
+    public Collection<SongRating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(Collection<SongRating> ratings) {
+        this.ratings = ratings;
+    }
+
+    public Double getDisplayRating() {
+        return displayRating;
+    }
+
+    public void setDisplayRating(Double displayRating) {
+        this.displayRating = displayRating;
     }
 
     public void setUrl(String url) {

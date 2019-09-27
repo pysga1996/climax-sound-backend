@@ -1,6 +1,6 @@
 package com.lambda.service.impl;
 
-import com.lambda.model.Role;
+import com.lambda.model.entity.Role;
 import com.lambda.repository.RoleRepository;
 import com.lambda.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;

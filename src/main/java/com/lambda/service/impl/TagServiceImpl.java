@@ -1,6 +1,6 @@
 package com.lambda.service.impl;
 
-import com.lambda.model.Tag;
+import com.lambda.model.entity.Tag;
 import com.lambda.repository.TagRepository;
 import com.lambda.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;

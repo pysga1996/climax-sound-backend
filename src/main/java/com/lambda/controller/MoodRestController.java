@@ -1,6 +1,6 @@
 package com.lambda.controller;
 
-import com.lambda.model.Mood;
+import com.lambda.model.entity.Mood;
 import com.lambda.service.MoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/mood")
@@ -39,8 +38,9 @@ public class MoodRestController {
 
     @PostMapping(params = "action=create", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createMood(@Valid @RequestBody Mood mood) {
-        if (mood == null) {
-            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        Mood checkedMood = moodService.findByName(mood.getName());
+        if (checkedMood != null) {
+            return new ResponseEntity<Void>(HttpStatus.UNPROCESSABLE_ENTITY);
         } else {
             moodService.save(mood);
             return new ResponseEntity<Void>(HttpStatus.CREATED);
@@ -49,15 +49,13 @@ public class MoodRestController {
 
     @PutMapping(params = {"action=edit", "id"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> editMood(@Valid @RequestBody Mood mood, @RequestParam Integer id) {
-        Optional<Mood> moodToEdit = moodService.findById(id);
-        if (mood == null) {
-            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-        } else if (!moodToEdit.isPresent()) {
-            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+        Mood checkedMood = moodService.findByName(mood.getName());
+        if (checkedMood != null) {
+            return new ResponseEntity<Void>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
         else {
-            moodToEdit.get().setName(mood.getName());
-            moodService.save(moodToEdit.get());
+            mood.setId(id);
+            moodService.save(mood);
             return new ResponseEntity<Void>(HttpStatus.OK);
         }
     }

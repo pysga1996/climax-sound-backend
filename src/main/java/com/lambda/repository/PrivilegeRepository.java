@@ -1,6 +1,6 @@
 package com.lambda.repository;
 
-import com.lambda.model.Privilege;
+import com.lambda.model.entity.Privilege;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

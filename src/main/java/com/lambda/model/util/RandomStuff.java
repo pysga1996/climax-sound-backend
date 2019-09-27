@@ -1,4 +1,4 @@
-package com.lambda.model;
+package com.lambda.model.util;
 
 public class RandomStuff {
 

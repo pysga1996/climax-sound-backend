@@ -1,7 +1,8 @@
-package com.lambda.model;
+package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.lambda.model.util.MediaObject;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,7 +14,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "album")
-public class Album {
+public class Album implements MediaObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -21,6 +22,7 @@ public class Album {
     @NotBlank
     private String name;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date releaseDate;
 
     @JsonManagedReference("album-genre")
@@ -85,11 +87,9 @@ public class Album {
     public Album() {
     }
 
-    public Album(String name, Date releaseDate, Collection<Genre> genres, Collection<Song> songs) {
+    public Album(String name, Date releaseDate) {
         this.name = name;
         this.releaseDate = releaseDate;
-        this.genres = genres;
-        this.songs = songs;
     }
 
     public Long getId() {

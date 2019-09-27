@@ -1,6 +1,6 @@
 package com.lambda.service.impl;
 
-import com.lambda.model.Activity;
+import com.lambda.model.entity.Activity;
 import com.lambda.repository.ActivityRepository;
 import com.lambda.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;

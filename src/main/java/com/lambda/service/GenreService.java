@@ -1,6 +1,6 @@
 package com.lambda.service;
 
-import com.lambda.model.Genre;
+import com.lambda.model.entity.Genre;
 import org.springframework.stereotype.Service;
 
 @Service

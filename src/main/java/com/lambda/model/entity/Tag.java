@@ -1,4 +1,4 @@
-package com.lambda.model;
+package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.Fetch;

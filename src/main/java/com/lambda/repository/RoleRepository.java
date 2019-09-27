@@ -1,6 +1,6 @@
 package com.lambda.repository;
 
-import com.lambda.model.Role;
+import com.lambda.model.entity.Role;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

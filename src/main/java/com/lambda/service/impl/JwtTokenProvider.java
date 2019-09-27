@@ -1,6 +1,6 @@
 package com.lambda.service.impl;
 
-import com.lambda.model.CustomUserDetails;
+import com.lambda.model.util.CustomUserDetails;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

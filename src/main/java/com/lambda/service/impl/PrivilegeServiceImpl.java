@@ -1,6 +1,6 @@
 package com.lambda.service.impl;
 
-import com.lambda.model.Privilege;
+import com.lambda.model.entity.Privilege;
 import com.lambda.repository.PrivilegeRepository;
 import com.lambda.service.PrivilegeService;
 import org.springframework.beans.factory.annotation.Autowired;

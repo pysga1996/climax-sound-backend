@@ -1,6 +1,7 @@
 package com.lambda.service.impl;
 
-import com.lambda.model.Mood;
+import com.lambda.model.entity.Mood;
+import com.lambda.model.entity.Song;
 import com.lambda.repository.MoodRepository;
 import com.lambda.service.MoodService;
 import org.springframework.beans.factory.annotation.Autowired;

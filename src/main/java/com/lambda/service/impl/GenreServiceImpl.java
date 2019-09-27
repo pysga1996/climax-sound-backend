@@ -1,6 +1,6 @@
 package com.lambda.service.impl;
 
-import com.lambda.model.Genre;
+import com.lambda.model.entity.Genre;
 import com.lambda.repository.GenreRepository;
 import com.lambda.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.lambda.model;
+package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

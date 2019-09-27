@@ -1,4 +1,4 @@
-package com.lambda.model;
+package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -7,13 +7,11 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
 import java.util.Collection;
 
 @Entity
 @Table(name = "user")
-@JsonIgnoreProperties(value = {"roles", "favoriteSongs", "favoriteAlbums"}, allowGetters = true, ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"roles", "favoriteSongs", "favoriteAlbums", "ratedSongs"}, allowGetters = true, ignoreUnknown = true)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -43,6 +41,10 @@ public class User {
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> favoriteAlbums;
+
+    @JsonManagedReference(value = "user-song_rating")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Collection<SongRating> ratedSongs;
 
     private boolean enabled = true;
     private boolean accountNonExpired = true;
@@ -104,6 +106,14 @@ public class User {
 
     public void setFavoriteAlbums(Collection<Album> favoriteAlbums) {
         this.favoriteAlbums = favoriteAlbums;
+    }
+
+    public Collection<SongRating> getRatedSongs() {
+        return ratedSongs;
+    }
+
+    public void setRatedSongs(Collection<SongRating> ratedSongs) {
+        this.ratedSongs = ratedSongs;
     }
 
     public boolean isEnabled() {

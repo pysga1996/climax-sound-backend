@@ -1,7 +1,7 @@
 package com.lambda.configuration.security_customization;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lambda.model.User;
+import com.lambda.model.entity.User;
 import com.lambda.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

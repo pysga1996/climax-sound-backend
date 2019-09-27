@@ -1,0 +1,94 @@
+package com.lambda.controller;
+
+import com.lambda.model.entity.Album;
+import com.lambda.model.entity.Song;
+import com.lambda.model.util.AlbumForm;
+import com.lambda.service.AlbumService;
+import com.lambda.service.ArtistService;
+import com.lambda.service.SongService;
+import com.lambda.service.impl.FormConvertService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.concurrent.ArrayBlockingQueue;
+
+@RestController
+@RequestMapping("/api/album")
+public class AlbumRestController {
+    @Autowired
+    AlbumService albumService;
+
+    @Autowired
+    SongService songService;
+
+    @Autowired
+    ArtistService artistService;
+
+    @Autowired
+    FormConvertService formConvertService;
+
+    @GetMapping(params = "action=list", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Page<Album>> albumList(Pageable pageable) {
+        Page<Album> albumList = albumService.findAll(pageable);
+        if (albumList.getTotalElements() == 0) {
+            return new ResponseEntity<Page<Album>>(HttpStatus.NO_CONTENT);
+        } else return new ResponseEntity<Page<Album>>(albumList, HttpStatus.OK);
+    }
+
+    @GetMapping(params = {"action=detail","id"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Album> albumDetail(@RequestParam("id") Long id) {
+        Optional<Album> album = albumService.findById(id);
+        if (album.isPresent()) {
+            return new ResponseEntity<Album>(album.get(), HttpStatus.OK);
+        } else return new ResponseEntity<Album>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping(params = "action=search", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Page<Album>> albumSearch(@RequestParam String name, Pageable pageable) {
+        Page<Album> filteredAlbumList = albumService.findAllByNameContaining(name, pageable);
+        boolean isEmpty = filteredAlbumList.getTotalElements() == 0;
+        if (isEmpty) {
+            return new ResponseEntity<Page<Album>>(HttpStatus.NO_CONTENT);
+        } else return new ResponseEntity<Page<Album>>(filteredAlbumList, HttpStatus.OK);
+    }
+
+    @PostMapping(params = {"action=create"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> createAlbum(@Valid @RequestBody AlbumForm albumForm) {
+        Album album = formConvertService.convertToAlbum(albumForm);
+        if (album != null) {
+            albumService.save(album);
+            return new ResponseEntity<String>("Album created successfully", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        return new ResponseEntity<String>("Album already existed", HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @PutMapping(params = {"action=edit", "id"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> editAlbum(@Valid @RequestBody AlbumForm albumForm, @RequestParam Long id) {
+        Album album = formConvertService.convertToAlbum(albumForm);
+        if (album != null) {
+            album.setId(id);
+            albumService.save(album);
+            return new ResponseEntity<String>("Album updated successfully", HttpStatus.OK);
+        } else return new ResponseEntity<String>("Album existed", HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @DeleteMapping(params = {"action=delete", "id"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> deleteAlbum(@RequestParam Long id) {
+        Collection<Song> songsToDelete = new ArrayList<>();
+        Iterable<Song> songs = songService.findAllByAlbum_Id(id);
+        songs.forEach(songsToDelete::add);
+        songService.deleteAll(songsToDelete);
+        albumService.deleteById(id);
+        return new ResponseEntity<String>("Album removed successfully", HttpStatus.OK);
+    }
+
+}
