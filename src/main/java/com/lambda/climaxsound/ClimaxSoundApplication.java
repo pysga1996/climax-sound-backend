@@ -30,9 +30,9 @@ public class ClimaxSoundApplication extends SpringBootServletInitializer {
 
 	}
 
-//	@EventListener(ContextRefreshedEvent.class)
-//	public void dataSeeding() {
-//		dataSeedingListener.onApplicationEvent();
-//	}
+	@EventListener(ContextRefreshedEvent.class)
+	public void dataSeeding() {
+		dataSeedingListener.onApplicationEvent();
+	}
 
 }
