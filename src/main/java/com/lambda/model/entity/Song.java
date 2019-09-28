@@ -35,7 +35,7 @@ public class Song implements MediaObject {
     @OneToMany(mappedBy = "song")
     private Collection<SongRating> ratings;
 
-    @Size(max = 5)
+
     private Double displayRating;
 
     @JsonManagedReference(value = "song-artist")

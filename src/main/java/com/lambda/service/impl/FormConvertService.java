@@ -93,7 +93,7 @@ public class FormConvertService {
 
     private Mood convertStringToMood(String string) {
         Mood checkedMood = moodService.findByName(string);
-        if (checkedMood == null) {
+        if (checkedMood == null && !string.isEmpty()) {
             Mood mood = new Mood(string);
             moodService.save(mood);
             return mood;
@@ -103,9 +103,10 @@ public class FormConvertService {
 
     private Activity convertToActivity(String string) {
         Activity checkedActivity = activityService.findByName(string);
-        if (checkedActivity == null) {
+        if (checkedActivity == null && !string.isEmpty()) {
             Activity activity = new Activity(string);
             activityService.save(activity);
+            return activity;
         }
         return null;
     }
@@ -141,10 +142,13 @@ public class FormConvertService {
         Date releaseDate = audioUploadForm.getReleaseDate();
         if (checkSongExist(audioUploadForm)) return null;
         Song song = new Song(songName, releaseDate);
-        Album album = albumService.findByName(audioUploadForm.getAlbum().trim());
-        if (album != null) {
-            song.setAlbum(album);
+        if (audioUploadForm.getAlbum() != null  ) {
+            Album album = albumService.findByName(audioUploadForm.getAlbum().trim());
+            if (album != null) {
+                song.setAlbum(album);
+            }
         }
+
         setFields(song, audioUploadForm);
         return song;
     }
@@ -165,7 +169,7 @@ public class FormConvertService {
         mediaObject.setGenres(genreList);
         Collection<Tag> tagList = convertStringToTagList(mediaForm.getTags());
         mediaObject.setTags(tagList);
-        Mood mood = convertStringToMood(mediaForm.getMood().toLowerCase().trim());
+        Mood mood = convertStringToMood(mediaForm.getMood().trim());
         mediaObject.setMood(mood);
         Activity activity = convertToActivity(mediaForm.getMood().toLowerCase().trim());
         mediaObject.setActivity(activity);
