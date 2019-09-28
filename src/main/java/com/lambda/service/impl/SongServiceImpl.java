@@ -61,9 +61,10 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public Boolean deleteById(Long id) {
-        songRepository.deleteById(id);
-        if (songRepository.findById(id).isPresent()) {
-            String fileUrl = songRepository.findById(id).get().getUrl();
+        Optional<Song> song = songRepository.findById(id);
+        if (song.isPresent()) {
+            songRepository.deleteById(id);
+            String fileUrl = song.get().getUrl();
             String filename = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
             return audioStorageService.deleteFile(filename);
         }

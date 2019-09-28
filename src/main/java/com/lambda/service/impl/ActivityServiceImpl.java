@@ -16,13 +16,13 @@ public class ActivityServiceImpl implements ActivityService {
     ActivityRepository activityRepository;
 
     @Override
-    public Activity findByName(String name){
-        return activityRepository.findByName(name);
+    public Optional<Activity> findById(Integer id) {
+        return activityRepository.findById(id);
     }
 
     @Override
-    public Optional<Activity> findById(Integer id) {
-        return activityRepository.findById(id);
+    public Activity findByName(String name) {
+        return activityRepository.findByName(name);
     }
 
     @Override

@@ -49,6 +49,10 @@ public class User {
     )
     private Collection<Role> roles;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @Fetch(value = FetchMode.SUBSELECT)
+    Collection<Playlist> playlists;
+
     @JsonManagedReference("user-song")
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
@@ -155,6 +159,14 @@ public class User {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
+    }
+
+    public Collection<Playlist> getPlaylists() {
+        return playlists;
+    }
+
+    public void setPlaylists(Collection<Playlist> playlists) {
+        this.playlists = playlists;
     }
 
     public Collection<Song> getFavoriteSongs() {

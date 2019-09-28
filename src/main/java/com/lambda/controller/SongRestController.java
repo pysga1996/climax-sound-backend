@@ -14,6 +14,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,7 +23,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
-@RestController("/api/song")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+@RestController
+@RequestMapping("/api/song")
 public class SongRestController {
     @Autowired
     SongService songService;
@@ -36,13 +39,13 @@ public class SongRestController {
     @Autowired
     private DownloadService downloadService;
 
-    @PostMapping("/upload")
-    public ResponseEntity<UploadResponse> uploadAudio(@RequestPart("audioUploadForm") AudioUploadForm audioUploadForm, @RequestPart(value = "audio", required = false) MultipartFile file) {
+    @PostMapping(value = "/upload")
+    public ResponseEntity<UploadResponse> uploadAudio(@RequestPart("audioUploadForm") AudioUploadForm audioUploadForm, @RequestPart("audio") MultipartFile file) {
         Song song = formConvertService.convertToSong(audioUploadForm);
         if (song == null) return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         String fileName = audioStorageService.storeFile(file, song);
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/download-audio/")
+                .path("/api/song/download/")
                 .path(fileName)
                 .toUriString();
         song.setUrl(fileDownloadUri);

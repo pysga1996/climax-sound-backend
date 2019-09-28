@@ -16,7 +16,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "song")
-@JsonIgnoreProperties(value = {"ratings", "artists", "album", "tags", "genres", "users"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"ratings", "artists", "album", "tags", "genres", "users", "playlists"}, allowGetters = true)
 public class Song implements MediaObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -86,6 +86,11 @@ public class Song implements MediaObject {
                     name = "song_id", referencedColumnName = "id"))
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<User> users;
+
+    @JsonBackReference("playlist-song")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "songs")
+    @Fetch(value = FetchMode.SUBSELECT)
+    private Collection<Playlist> playlists;
 
     @JsonManagedReference(value = "song-mood")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -191,6 +196,14 @@ public class Song implements MediaObject {
 
     public void setUsers(Collection<User> users) {
         this.users = users;
+    }
+
+    public Collection<Playlist> getPlaylists() {
+        return playlists;
+    }
+
+    public void setPlaylists(Collection<Playlist> playlists) {
+        this.playlists = playlists;
     }
 
     public Mood getMood() {

@@ -8,9 +8,13 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface AlbumRepository extends PagingAndSortingRepository<Album, Long> {
-    @Query("SELECT a FROM Album a JOIN FETCH a.artists")
+    @Query("SELECT a FROM Album a JOIN a.artists WHERE a.id = :id")
+    Optional<Album> findById(@Param("id") Long id);
+
     Album findByName(String name);
 
     Page<Album> findAll(Pageable pageable);
