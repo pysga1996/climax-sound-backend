@@ -117,6 +117,13 @@ public class FormConvertService {
             return compareTwoArtistSet(checkedSong.getArtists(), audioUploadForm.getArtists().split(","));
         }
         return false;
+//        Iterable<Song> checkedSongs = songService.findByName(audioUploadForm.getName());
+//        boolean isExisted = false;
+//        for (Song checkedSong: checkedSongs) {
+//            isExisted = compareTwoArtistSet(checkedSong.getArtists(), audioUploadForm.getArtists().split(","));
+//            if (isExisted) break;
+//        }
+//        return isExisted;
     }
 
     private Boolean checkAlbumExist(AlbumForm albumForm) {

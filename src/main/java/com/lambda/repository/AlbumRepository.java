@@ -3,6 +3,7 @@ package com.lambda.repository;
 import com.lambda.model.entity.Album;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
@@ -11,11 +12,12 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface AlbumRepository extends PagingAndSortingRepository<Album, Long> {
+public interface AlbumRepository extends JpaRepository<Album, Long> {
     @Query("SELECT a FROM Album a JOIN a.artists WHERE a.id = :id")
     Optional<Album> findById(@Param("id") Long id);
 
-    Album findByName(String name);
+    @Query(value = "SELECT * FROM album WHERE BINARY name=:name", nativeQuery = true)
+    Album findByName(@Param("name") String name);
 
     Page<Album> findAll(Pageable pageable);
 

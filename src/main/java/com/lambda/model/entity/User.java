@@ -10,18 +10,20 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.Collection;
 import java.util.Date;
 
 @Entity
 @Table(name = "user")
-@JsonIgnoreProperties(value = {"roles", "favoriteSongs", "favoriteAlbums", "ratedSongs"}, allowGetters = true, ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"roles", "favoriteSongs", "favoriteAlbums", "ratedSongs", "playlists"}, allowGetters = true, ignoreUnknown = true)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotBlank
+    @Pattern(regexp = "^[a-zA-Z0-9]+([a-zA-Z0-9]([_\\- ])[a-zA-Z0-9])*[a-zA-Z0-9]+$")
     private String username;
 
     private String password;

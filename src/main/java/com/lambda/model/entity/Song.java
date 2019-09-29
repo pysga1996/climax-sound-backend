@@ -28,7 +28,6 @@ public class Song implements MediaObject {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date releaseDate;
 
-    @NotBlank
     private String url;
 
     @JsonManagedReference(value = "song-rating")

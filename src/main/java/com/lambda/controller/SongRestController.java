@@ -39,19 +39,25 @@ public class SongRestController {
     @Autowired
     private DownloadService downloadService;
 
-    @PostMapping(value = "/upload")
-    public ResponseEntity<UploadResponse> uploadAudio(@RequestPart("audioUploadForm") AudioUploadForm audioUploadForm, @RequestPart("audio") MultipartFile file) {
+    @PostMapping("/create")
+    public ResponseEntity<Long> createSong(@RequestBody AudioUploadForm audioUploadForm) {
         Song song = formConvertService.convertToSong(audioUploadForm);
         if (song == null) return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-        String fileName = audioStorageService.storeFile(file, song);
+        Long id = songService.save(song).getId();
+        return new ResponseEntity<>(id, HttpStatus.OK);
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<Object> uploadAudio(@RequestPart("audio") MultipartFile file, @RequestPart("songId") String id) {
+        Optional<Song> song = songService.findById(Long.parseLong(id));
+        if (!song.isPresent()) return new ResponseEntity<>("Song metadata was not found in database!", HttpStatus.NOT_FOUND);
+        String fileName = audioStorageService.storeFile(file, song.get());
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/song/download/")
                 .path(fileName)
                 .toUriString();
-        song.setUrl(fileDownloadUri);
-        songService.save(song);
-        return new ResponseEntity<>(new UploadResponse(fileName, fileDownloadUri,
-                file.getContentType(), file.getSize()), HttpStatus.OK);
+        song.get().setUrl(fileDownloadUri);
+        return new ResponseEntity<>(new UploadResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize()), HttpStatus.OK);
     }
 
     @GetMapping("/download/{fileName:.+}")
@@ -59,7 +65,7 @@ public class SongRestController {
         return downloadService.generateUrl(fileName, request, audioStorageService);
     }
 
-    @GetMapping(params = "action=list")
+    @GetMapping("/list")
     public ResponseEntity<Page<Song>> songList(Pageable pageable) {
         Page<Song> songList = songService.findAll(pageable);
         if (songList.getTotalElements() == 0) {
@@ -67,14 +73,14 @@ public class SongRestController {
         } else return new ResponseEntity<>(songList, HttpStatus.OK);
     }
 
-    @GetMapping(params = {"action=detail", "id"})
+    @GetMapping(value = "/detail", params = {"id"})
     public ResponseEntity<Song> songDetail(@RequestParam("id") Long id) {
         Optional<Song> song = songService.findById(id);
         return song.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
 
-    @GetMapping(params = "tag")
+    @GetMapping(value = "search", params = "tag")
     public ResponseEntity<Page<Song>> songListByTag(@RequestParam("tag") String tag, Pageable pageable) {
         Page<Song> songList = songService.findAllByTags_Name(tag, pageable);
         if (songList.getTotalElements()==0) {
@@ -83,7 +89,7 @@ public class SongRestController {
         return new ResponseEntity<>(songList, HttpStatus.OK);
     }
 
-    @DeleteMapping(params = "id")
+    @DeleteMapping(value = "delete", params = "id")
     public ResponseEntity<String> deleteSong(@RequestParam("id") Long id) {
         Boolean result = songService.deleteById(id);
         if (result) {
