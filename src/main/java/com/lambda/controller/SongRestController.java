@@ -88,6 +88,13 @@ public class SongRestController {
         return new ResponseEntity<>(songList, HttpStatus.OK);
     }
 
+    @PutMapping(value = "/edit", params = "id")
+    public ResponseEntity<String> editSong(@RequestBody Song song, @RequestParam("id") Long id) {
+        song.setId(id);
+        songService.save(song);
+        return new ResponseEntity<>("Song updated successfully!", HttpStatus.OK);
+    }
+
     @DeleteMapping(value = "/delete", params = "id")
     public ResponseEntity<String> deleteSong(@RequestParam("id") Long id) {
         Boolean result = songService.deleteById(id);

@@ -132,7 +132,9 @@ public class UserRestController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         // Trả về jwt cho người dùng.
         String jwt = tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
-        return new ResponseEntity<>(new LoginResponse(jwt), HttpStatus.OK);
+        User currentUser = userDetailService.getCurrentUser();
+        LoginResponse loginResponse = new LoginResponse(currentUser.getUsername() , currentUser.getRoles(), authentication.getAuthorities(), jwt);
+        return new ResponseEntity<>(loginResponse, HttpStatus.OK);
     }
 
     @GetMapping("/random")
