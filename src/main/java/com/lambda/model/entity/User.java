@@ -7,10 +7,7 @@ import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 import java.util.Collection;
 import java.util.Date;
 
@@ -23,20 +20,31 @@ public class User {
     private Long id;
 
     @NotBlank
-    @Pattern(regexp = "^[a-zA-Z0-9]+([a-zA-Z0-9]([_\\- ])[a-zA-Z0-9])*[a-zA-Z0-9]+$")
+    @Pattern(regexp = "^[a-zA-Z0-9]+([a-zA-Z0-9]([_\\- ])[a-zA-Z0-9])*[a-zA-Z0-9]+${8,}")
+    @Column(unique = true, nullable = false, columnDefinition = "VARCHAR(255) COLLATE utf8mb4_bin")
     private String username;
 
+    @NotBlank
     private String password;
 
-    private String displayName;
+    @NotBlank
+    @Size(min = 2, max = 20)
+    private String firstName;
 
+    @NotBlank
+    @Size(min = 2, max = 20)
+    private String lastName;
+
+    @NotNull
     private Boolean gender;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthDate;
 
+    @Pattern(regexp = "^(\\(?\\+?[0-9]*\\)?)?[0-9_\\- ()]*${10,13}")
     private String phoneNumber;
 
+    @Email
     private String email;
 
     private String avatarUrl;
@@ -83,6 +91,17 @@ public class User {
         this.roles = roles;
     }
 
+    public User(String username, String password, String firstName, String lastName, String phoneNumber, Boolean gender, Date birthDate, String email) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
+        this.birthDate = birthDate;
+        this.email = email;
+    }
+
     public Long getId() {
         return id;
     }
@@ -107,12 +126,20 @@ public class User {
         this.password = password;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public Boolean getGender() {

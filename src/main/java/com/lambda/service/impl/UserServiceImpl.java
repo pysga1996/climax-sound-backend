@@ -47,31 +47,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Object> save(User user) {
-        List<Object> result = new ArrayList<>();
-        User checkedUser = userRepository.findByUsername(user.getUsername());
-        if (checkedUser == null || (checkedUser.getId().equals(user.getId()))) {
-            if (user.getPassword().matches("^(?=.*[\\d])(?=.*[a-z])(?=.*[A-Z]).{8,20}$")) {
-                user.setPassword(passwordEncoder.encode(user.getPassword()));
-                user.setGender(true);
-                user.setAccountNonExpired(true);
-                user.setAccountNonLocked(true);
-                user.setCredentialsNonExpired(true);
-                user.setEnabled(true);
-                userRepository.save(user);
-                result.add("Successfully registered!");
-                result.add(HttpStatus.OK);
-                return result;
-            } else {
-                result.add("Password must have at least 8 characters, include uppercase letter, lowercase letter and number character!");
-                result.add(HttpStatus.BAD_REQUEST);
-                return result;
-            }
-        } else {
-            result.add("Username existed in database!");
-            result.add(HttpStatus.BAD_REQUEST);
-            return result;
-        }
+    public void save(User user) {
+        userRepository.save(user);
     }
 
     @Override
@@ -80,15 +57,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void setFields(User user, String fileDownloadUri, User currentUser) {
-        user.setAvatarUrl(fileDownloadUri);
-        user.setRoles(currentUser.getRoles());
-        user.setAccountNonExpired(currentUser.isAccountNonExpired());
-        user.setAccountNonLocked(currentUser.isAccountNonLocked());
-        user.setCredentialsNonExpired(currentUser.isCredentialsNonExpired());
-        user.setEnabled(currentUser.isEnabled());
-        user.setFavoriteSongs(currentUser.getFavoriteSongs());
-        user.setFavoriteAlbums(currentUser.getFavoriteAlbums());
-        user.setRatedSongs(currentUser.getRatedSongs());
+    public void setFields(User newUserInfo, User oldUserInfo) {
+        newUserInfo.setRoles(oldUserInfo.getRoles());
+        newUserInfo.setAccountNonExpired(oldUserInfo.isAccountNonExpired());
+        newUserInfo.setAccountNonLocked(oldUserInfo.isAccountNonLocked());
+        newUserInfo.setCredentialsNonExpired(oldUserInfo.isCredentialsNonExpired());
+        newUserInfo.setEnabled(oldUserInfo.isEnabled());
+        newUserInfo.setFavoriteSongs(oldUserInfo.getFavoriteSongs());
+        newUserInfo.setFavoriteAlbums(oldUserInfo.getFavoriteAlbums());
+        newUserInfo.setRatedSongs(oldUserInfo.getRatedSongs());
     }
 }

@@ -1,7 +1,7 @@
 package com.lambda.controller;
 
 import com.lambda.model.entity.Song;
-import com.lambda.model.util.AudioUploadForm;
+import com.lambda.model.form.AudioUploadForm;
 import com.lambda.model.util.UploadResponse;
 import com.lambda.service.SongService;
 import com.lambda.service.impl.AudioStorageService;
@@ -12,7 +12,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -89,7 +88,8 @@ public class SongRestController {
     }
 
     @PutMapping(value = "/edit", params = "id")
-    public ResponseEntity<String> editSong(@RequestBody Song song, @RequestParam("id") Long id) {
+    public ResponseEntity<String> editSong(@RequestBody AudioUploadForm audioUploadForm, @RequestParam("id") Long id) {
+        Song song = formConvertService.convertToSong(audioUploadForm);
         song.setId(id);
         songService.save(song);
         return new ResponseEntity<>("Song updated successfully!", HttpStatus.OK);

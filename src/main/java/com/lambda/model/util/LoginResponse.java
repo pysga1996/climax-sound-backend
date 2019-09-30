@@ -1,5 +1,6 @@
 package com.lambda.model.util;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lambda.model.entity.Role;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -7,19 +8,24 @@ import java.util.Collection;
 
 public class LoginResponse {
 
+    @JsonProperty
     private String username;
+
+    @JsonProperty
     private String accessToken;
+
+    @JsonProperty
     private String tokenType = "Bearer";
+
+    @JsonProperty
     private Collection<Role> roles;
-    private Collection<? extends GrantedAuthority> authorities;
 
     public LoginResponse() {
     }
 
-    public LoginResponse(String username, Collection<Role> roles, Collection<? extends GrantedAuthority> authorities, String accessToken) {
+    public LoginResponse(String username, Collection<Role> roles, String accessToken) {
         this.username = username;
         this.roles = roles;
-        this.authorities = authorities;
         this.accessToken = accessToken;
     }
 

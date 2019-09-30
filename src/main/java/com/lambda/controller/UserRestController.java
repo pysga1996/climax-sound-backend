@@ -2,16 +2,14 @@ package com.lambda.controller;
 
 import com.lambda.model.entity.Role;
 import com.lambda.model.entity.User;
+import com.lambda.model.form.UserForm;
 import com.lambda.model.util.CustomUserDetails;
 import com.lambda.model.util.LoginRequest;
 import com.lambda.model.util.LoginResponse;
 import com.lambda.model.util.RandomStuff;
 import com.lambda.repository.RoleRepository;
 import com.lambda.service.UserService;
-import com.lambda.service.impl.DownloadService;
-import com.lambda.service.impl.ImageStorageService;
-import com.lambda.service.impl.JwtTokenProvider;
-import com.lambda.service.impl.UserDetailServiceImpl;
+import com.lambda.service.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -27,9 +25,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 @RestController
@@ -58,7 +54,10 @@ public class UserRestController {
     @Autowired
     private DownloadService downloadService;
 
-    @GetMapping(value = "/profile")
+    @Autowired
+    FormConvertService formConvertService;
+
+    @GetMapping("/profile")
     public ResponseEntity<User> getCurrentUser() {
         User user = userDetailService.getCurrentUser();
         if (user != null) {
@@ -67,58 +66,50 @@ public class UserRestController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping(value = "/profile")
-    public ResponseEntity<User> updateProfile(@RequestPart("user") User user, @RequestPart("avatar") MultipartFile avatar) {
-        User currentUser = userDetailService.getCurrentUser();
-        if (currentUser != null) {
-            if (currentUser.getUsername().equals(user.getUsername())) {
-                String fileName = imageStorageService.storeFile(avatar, user);
-                String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                        .path("/api/avatar/")
-                        .path(fileName)
-                        .toUriString();
-                userService.setFields(user, fileDownloadUri, currentUser);
-                userService.save(user);
-                // Nếu không xảy ra exception tức là thông tin hợp lệ
-                // Set thông tin authentication vào Security Context
-                return new ResponseEntity<>(user, HttpStatus.OK);
-            }
+    @PutMapping("/profile")
+    public ResponseEntity<Long> updateProfile(@RequestBody UserForm userForm, @RequestParam("id") Long id) {
+        User newUserInfo = formConvertService.convertToUser(userForm);
+        Optional<User> oldUser = userService.findById(id);
+        if (oldUser.isPresent()) {
+            userService.setFields(newUserInfo, oldUser.get());
+            return new ResponseEntity<>(id, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping(value = "/avatar/{fileName:.+}")
+    @PostMapping("/avatar")
+    public ResponseEntity<String> uploadAvatar(@RequestPart("avatar") MultipartFile avatar, @RequestPart("id") Long id) {
+        Optional<User> user = userService.findById(id);
+        if (user.isPresent()) {
+            String fileName = imageStorageService.storeFile(avatar, user.get());
+                String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                        .path("/api/avatar/")
+                        .path(fileName)
+                        .toUriString();
+                user.get().setAvatarUrl(fileDownloadUri);
+                userService.save(user.get());
+            return new ResponseEntity<>("User's avatar uploaded successfully", HttpStatus.OK);
+        } else return new ResponseEntity<>("Not found user with the given id in database!", HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/avatar/{fileName:.+}")
     public ResponseEntity<Resource> getAvatar(@PathVariable("fileName") String fileName, HttpServletRequest request) {
         return downloadService.generateUrl(fileName, request, imageStorageService);
     }
 
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createUser(@Valid @RequestBody User user) {
-        User checkedUser = userService.findByUsername(user.getUsername());
-        if (checkedUser != null) {
-            return new ResponseEntity<>("Username existed in database!", HttpStatus.BAD_REQUEST);
-        }
-//        if (bindingResult.hasFieldErrors()) {
-//            List<FieldError> errors = bindingResult.getFieldErrors();
-//            StringBuilder body = new StringBuilder();
-//            for (FieldError error : errors ) {
-//                body.append(error.getDefaultMessage());
-//                body.append("\n");
-//            }
-//            return new ResponseEntity<String>(body.toString(), HttpStatus.BAD_REQUEST);
-//        }
-        String username = user.getUsername();
-        String password = user.getPassword();
+    public ResponseEntity<String> createUser(@Valid @RequestBody UserForm userForm) {
+        User user = formConvertService.convertToUser(userForm);
+        if (user == null) return new ResponseEntity<>("Username existed in database!", HttpStatus.BAD_REQUEST);
         Role role = roleRepository.findByName(DEFAULT_ROLE);
         Set<Role> roles = new HashSet<>();
         roles.add(role);
-        User newUser = new User(username, password, roles);
-        newUser.setGender(true);
-        List<Object> result = userService.save(newUser);
-        return new ResponseEntity<>((String) result.get(0), (HttpStatus) result.get(1));
+        user.setRoles(roles);
+        userService.save(user);
+        return new ResponseEntity<>("Registered successfully!", HttpStatus.OK);
     }
 
-    @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/login")
     public ResponseEntity<LoginResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         // Xác thực từ username và password.
         Authentication authentication = authenticationManager.authenticate(
@@ -133,7 +124,7 @@ public class UserRestController {
         // Trả về jwt cho người dùng.
         String jwt = tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
         User currentUser = userDetailService.getCurrentUser();
-        LoginResponse loginResponse = new LoginResponse(currentUser.getUsername() , currentUser.getRoles(), authentication.getAuthorities(), jwt);
+        LoginResponse loginResponse = new LoginResponse(currentUser.getUsername(), currentUser.getRoles(), jwt);
         return new ResponseEntity<>(loginResponse, HttpStatus.OK);
     }
 

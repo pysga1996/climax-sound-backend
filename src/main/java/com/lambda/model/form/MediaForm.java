@@ -1,4 +1,4 @@
-package com.lambda.model.util;
+package com.lambda.model.form;
 
 import java.util.Date;
 

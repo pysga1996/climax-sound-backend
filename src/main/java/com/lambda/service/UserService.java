@@ -13,7 +13,7 @@ public interface UserService {
     Page<User> findByUsernameContaining(String username, Pageable pageable);
     Page<User> findByRoles_Name(String username, Pageable pageable);
     Optional<User> findById(Long id);
-    List<Object> save(User user);
+    void save(User user);
     void deleteById(Long id);
-    void setFields(User user, String fileDownloadUri, User currentUser);
+    void setFields(User newUserInfo, User oldUserInfo);
 }

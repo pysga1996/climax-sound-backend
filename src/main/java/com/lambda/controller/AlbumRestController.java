@@ -2,7 +2,7 @@ package com.lambda.controller;
 
 import com.lambda.model.entity.Album;
 import com.lambda.model.entity.Song;
-import com.lambda.model.util.AlbumForm;
+import com.lambda.model.form.AlbumForm;
 import com.lambda.service.AlbumService;
 import com.lambda.service.ArtistService;
 import com.lambda.service.SongService;
@@ -36,7 +36,7 @@ public class AlbumRestController {
     @Autowired
     FormConvertService formConvertService;
 
-    @GetMapping(params = "action=list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<Album>> albumList(Pageable pageable) {
         Page<Album> albumList = albumService.findAll(pageable);
         if (albumList.getTotalElements() == 0) {
@@ -44,13 +44,13 @@ public class AlbumRestController {
         } else return new ResponseEntity<>(albumList, HttpStatus.OK);
     }
 
-    @GetMapping(params = {"action=detail","id"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/detail", params = {"id"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Album> albumDetail(@RequestParam("id") Long id) {
         Optional<Album> album = albumService.findById(id);
         return album.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping(params = "action=search", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<Album>> albumSearch(@RequestParam String name, Pageable pageable) {
         Page<Album> filteredAlbumList = albumService.findAllByNameContaining(name, pageable);
         boolean isEmpty = filteredAlbumList.getTotalElements() == 0;
@@ -59,7 +59,7 @@ public class AlbumRestController {
         } else return new ResponseEntity<>(filteredAlbumList, HttpStatus.OK);
     }
 
-    @PostMapping(params = {"action=create"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createAlbum(@Valid @RequestBody AlbumForm albumForm) {
         Album album = formConvertService.convertToAlbum(albumForm);
         if (album != null) {
@@ -69,7 +69,7 @@ public class AlbumRestController {
         return new ResponseEntity<>("Album has already already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
-    @PutMapping(params = {"action=edit", "id"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "edit", params = {"id"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> editAlbum(@Valid @RequestBody AlbumForm albumForm, @RequestParam Long id) {
         Album album = formConvertService.convertToAlbum(albumForm);
         if (album != null) {
@@ -79,7 +79,7 @@ public class AlbumRestController {
         } else return new ResponseEntity<>("Album has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
-    @DeleteMapping(params = {"action=delete", "id"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "delete", params = {"id"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteAlbum(@RequestParam Long id) {
         Collection<Song> songsToDelete = new ArrayList<>();
         Iterable<Song> songs = songService.findAllByAlbum_Id(id);

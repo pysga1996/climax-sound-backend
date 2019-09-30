@@ -1,4 +1,4 @@
-package com.lambda.model.util;
+package com.lambda.model.form;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.NotBlank;

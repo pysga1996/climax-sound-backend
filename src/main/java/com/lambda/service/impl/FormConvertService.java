@@ -1,12 +1,14 @@
 package com.lambda.service.impl;
 
 import com.lambda.model.entity.*;
-import com.lambda.model.util.AlbumForm;
-import com.lambda.model.util.AudioUploadForm;
-import com.lambda.model.util.MediaForm;
+import com.lambda.model.form.AlbumForm;
+import com.lambda.model.form.AudioUploadForm;
+import com.lambda.model.form.MediaForm;
+import com.lambda.model.form.UserForm;
 import com.lambda.model.util.MediaObject;
 import com.lambda.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -33,6 +35,12 @@ public class FormConvertService {
 
     @Autowired
     ActivityService activityService;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     private Collection<Artist> convertStringToArtistList(String string) {
         String[] artistsString = string.split(",");
@@ -180,5 +188,18 @@ public class FormConvertService {
         mediaObject.setMood(mood);
         Activity activity = convertToActivity(mediaForm.getMood().toLowerCase().trim());
         mediaObject.setActivity(activity);
+    }
+
+    public User convertToUser(UserForm userForm) {
+        String username = userForm.getUsername();
+        if (userService.findByUsername(username) != null) return null;
+        String password = passwordEncoder.encode(userForm.getPassword());
+        String firstName = userForm.getFirstName();
+        String lastName = userForm.getLastName();
+        String phoneNumber = userForm.getPhoneNumber();
+        Boolean gender = userForm.getGender();
+        Date birthDate = userForm.getBirthDate();
+        String email = userForm.getEmail();
+        return new User(username, password, firstName, lastName, phoneNumber, gender, birthDate, email);
     }
 }
