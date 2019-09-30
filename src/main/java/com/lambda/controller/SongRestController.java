@@ -7,8 +7,6 @@ import com.lambda.service.SongService;
 import com.lambda.service.impl.AudioStorageService;
 import com.lambda.service.impl.DownloadService;
 import com.lambda.service.impl.FormConvertService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -57,6 +55,7 @@ public class SongRestController {
                 .path(fileName)
                 .toUriString();
         song.get().setUrl(fileDownloadUri);
+        songService.save(song.get());
         return new ResponseEntity<>(new UploadResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize()), HttpStatus.OK);
     }
 
@@ -80,7 +79,7 @@ public class SongRestController {
     }
 
 
-    @GetMapping(value = "search", params = "tag")
+    @GetMapping(value = "/search", params = "tag")
     public ResponseEntity<Page<Song>> songListByTag(@RequestParam("tag") String tag, Pageable pageable) {
         Page<Song> songList = songService.findAllByTags_Name(tag, pageable);
         if (songList.getTotalElements()==0) {
@@ -89,7 +88,7 @@ public class SongRestController {
         return new ResponseEntity<>(songList, HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "delete", params = "id")
+    @DeleteMapping(value = "/delete", params = "id")
     public ResponseEntity<String> deleteSong(@RequestParam("id") Long id) {
         Boolean result = songService.deleteById(id);
         if (result) {
