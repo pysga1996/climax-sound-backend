@@ -190,9 +190,9 @@ public class FormConvertService {
         mediaObject.setActivity(activity);
     }
 
-    public User convertToUser(UserForm userForm) {
+    public User convertToUser(UserForm userForm, boolean createAction) {
         String username = userForm.getUsername();
-        if (userService.findByUsername(username) != null) return null;
+        if (userService.findByUsername(username) != null && createAction) return null;
         String password = passwordEncoder.encode(userForm.getPassword());
         String firstName = userForm.getFirstName();
         String lastName = userForm.getLastName();

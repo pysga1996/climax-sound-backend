@@ -68,7 +68,7 @@ public class UserRestController {
 
     @PutMapping("/profile")
     public ResponseEntity<Long> updateProfile(@RequestBody UserForm userForm, @RequestParam("id") Long id) {
-        User newUserInfo = formConvertService.convertToUser(userForm);
+        User newUserInfo = formConvertService.convertToUser(userForm, false);
         Optional<User> oldUser = userService.findById(id);
         if (oldUser.isPresent()) {
             userService.setFields(newUserInfo, oldUser.get());
@@ -78,8 +78,8 @@ public class UserRestController {
     }
 
     @PostMapping("/avatar")
-    public ResponseEntity<String> uploadAvatar(@RequestPart("avatar") MultipartFile avatar, @RequestPart("id") Long id) {
-        Optional<User> user = userService.findById(id);
+    public ResponseEntity<String> uploadAvatar(@RequestPart("avatar") MultipartFile avatar, @RequestPart("id") String id) {
+        Optional<User> user = userService.findById(Long.parseLong(id));
         if (user.isPresent()) {
             String fileName = imageStorageService.storeFile(avatar, user.get());
                 String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -99,7 +99,7 @@ public class UserRestController {
 
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createUser(@Valid @RequestBody UserForm userForm) {
-        User user = formConvertService.convertToUser(userForm);
+        User user = formConvertService.convertToUser(userForm, true);
         if (user == null) return new ResponseEntity<>("Username existed in database!", HttpStatus.BAD_REQUEST);
         Role role = roleRepository.findByName(DEFAULT_ROLE);
         Set<Role> roles = new HashSet<>();
@@ -124,7 +124,7 @@ public class UserRestController {
         // Trả về jwt cho người dùng.
         String jwt = tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
         User currentUser = userDetailService.getCurrentUser();
-        LoginResponse loginResponse = new LoginResponse(currentUser.getUsername(), currentUser.getRoles(), jwt);
+        LoginResponse loginResponse = new LoginResponse(currentUser.getId(), currentUser.getUsername(), currentUser.getRoles(), jwt);
         return new ResponseEntity<>(loginResponse, HttpStatus.OK);
     }
 
