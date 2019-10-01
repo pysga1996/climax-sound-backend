@@ -119,27 +119,28 @@ public class FormConvertService {
         return null;
     }
 
-    private Boolean checkSongExist(AudioUploadForm audioUploadForm) {
-        Song checkedSong = songService.findByName(audioUploadForm.getName());
-        if (checkedSong != null) {
-            return compareTwoArtistSet(checkedSong.getArtists(), audioUploadForm.getArtists().split(","));
+    private Boolean checkSongExistence(AudioUploadForm audioUploadForm) {
+        Iterable<Song> checkedSongs = songService.findByName(audioUploadForm.getName());
+        boolean isExisted = false;
+        for (Song checkedSong: checkedSongs) {
+            if (compareTwoArtistSet(checkedSong.getArtists(), audioUploadForm.getArtists().split(","))) {
+                isExisted = true;
+                break;
+            }
         }
-        return false;
-//        Iterable<Song> checkedSongs = songService.findByName(audioUploadForm.getName());
-//        boolean isExisted = false;
-//        for (Song checkedSong: checkedSongs) {
-//            isExisted = compareTwoArtistSet(checkedSong.getArtists(), audioUploadForm.getArtists().split(","));
-//            if (isExisted) break;
-//        }
-//        return isExisted;
+        return isExisted;
     }
 
-    private Boolean checkAlbumExist(AlbumForm albumForm) {
-        Album checkedAlbum = albumService.findByName(albumForm.getName());
-        if (checkedAlbum != null) {
-            return compareTwoArtistSet(checkedAlbum.getArtists(), albumForm.getArtists().split(","));
+    private Boolean checkAlbumExistence(AlbumForm albumForm) {
+        Iterable<Album> checkedAlbums = albumService.findByName(albumForm.getName());
+        boolean isExisted = false;
+        for (Album checkedAlbum: checkedAlbums) {
+            if (compareTwoArtistSet(checkedAlbum.getArtists(), albumForm.getArtists().split(","))) {
+                isExisted = true;
+                break;
+            }
         }
-        return false;
+        return isExisted;
     }
 
     private boolean compareTwoArtistSet(Collection<Artist> checkedArtistCollection, String[] artistStringArray) {
@@ -153,25 +154,18 @@ public class FormConvertService {
     }
 
     public Song convertToSong(AudioUploadForm audioUploadForm) {
+        if (checkSongExistence(audioUploadForm)) return null;
         String songName = audioUploadForm.getName();
         Date releaseDate = audioUploadForm.getReleaseDate();
-        if (checkSongExist(audioUploadForm)) return null;
         Song song = new Song(songName, releaseDate);
-        if (audioUploadForm.getAlbum() != null  ) {
-            Album album = albumService.findByName(audioUploadForm.getAlbum().trim());
-            if (album != null) {
-                song.setAlbum(album);
-            }
-        }
-
         setFields(song, audioUploadForm);
         return song;
     }
 
     public Album convertToAlbum(AlbumForm albumForm) {
+        if (checkAlbumExistence(albumForm)) return null;
         String songName = albumForm.getName();
         Date releaseDate = albumForm.getReleaseDate();
-        if (checkAlbumExist(albumForm)) return null;
         Album album = new Album(songName, releaseDate);
         setFields(album, albumForm);
         return album;

@@ -12,16 +12,16 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SongRepository extends JpaRepository<Song, Long> {
     @Query(value = "SELECT * FROM song WHERE BINARY name=:name", nativeQuery = true)
-    Song findByName(@Param("name") String name);
+    Iterable<Song> findByName(@Param("name") String name);
 
     Page<Song> findAllByNameContaining(String name, Pageable pageable);
 
     Page<Song> findAllByArtists_Name(String name, Pageable pageable);
 
-    @Query("SELECT s FROM Song s JOIN s.album a WHERE a.id = :id")
+    @Query("SELECT s FROM Song s JOIN s.albums a WHERE a.id = :id")
     Page<Song> findAllByAlbum_Id(@Param("id") Long id, Pageable pageable);
 
-    @Query("SELECT s FROM Song s JOIN s.album a WHERE a.id = :id")
+    @Query("SELECT s FROM Song s JOIN s.albums a WHERE a.id = :id")
     Iterable<Song> findAllByAlbum_Id(@Param("id") Long id);
 
     @Query("SELECT DISTINCT s FROM Song s JOIN s.tags t WHERE t.name = :name")

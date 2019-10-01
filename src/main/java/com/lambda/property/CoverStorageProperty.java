@@ -4,8 +4,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "image")
-public class ImageStorageProperties {
+@ConfigurationProperties(prefix = "cover")
+public class CoverStorageProperty {
     private String uploadDir;
 
     public String getUploadDir() {

@@ -3,6 +3,7 @@ package com.lambda.model.form;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.Date;
 
 public class AudioUploadForm implements MediaForm {
@@ -15,6 +16,7 @@ public class AudioUploadForm implements MediaForm {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date releaseDate;
 
+    @Pattern(regexp = "(^[a-z0-9_-]{3,16}$|^$)")
     private String album;
 
     private String genres;

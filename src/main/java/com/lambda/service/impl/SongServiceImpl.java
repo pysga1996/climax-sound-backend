@@ -25,7 +25,7 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public Song findByName(String name) {
+    public Iterable<Song> findByName(String name) {
         return songRepository.findByName(name);
     }
 

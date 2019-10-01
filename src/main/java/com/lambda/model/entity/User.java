@@ -63,13 +63,25 @@ public class User {
     @Fetch(value = FetchMode.SUBSELECT)
     Collection<Playlist> playlists;
 
-    @JsonManagedReference("user-song")
-    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    @JsonManagedReference("user-favoriteSongs")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_favoriteSongs",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "song_id", referencedColumnName = "id"))
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> favoriteSongs;
 
-    @JsonManagedReference("user-album")
-    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    @JsonManagedReference("user-favoriteAlbums")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_favoriteAlbums",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "album_id", referencedColumnName = "id"))
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> favoriteAlbums;
 

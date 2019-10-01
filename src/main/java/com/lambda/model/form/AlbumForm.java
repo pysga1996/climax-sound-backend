@@ -8,11 +8,11 @@ public class AlbumForm implements MediaForm {
     @NotBlank
     private String name;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date releaseDate;
-
     @NotBlank
     private String artists;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date releaseDate;
 
     private String genres;
 

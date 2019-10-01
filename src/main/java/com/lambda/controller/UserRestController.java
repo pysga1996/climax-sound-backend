@@ -49,7 +49,7 @@ public class UserRestController {
     private UserService userService;
 
     @Autowired
-    private ImageStorageService imageStorageService;
+    private AvatarStorageService avatarStorageService;
 
     @Autowired
     private DownloadService downloadService;
@@ -81,7 +81,7 @@ public class UserRestController {
     public ResponseEntity<String> uploadAvatar(@RequestPart("avatar") MultipartFile avatar, @RequestPart("id") Long id) {
         Optional<User> user = userService.findById(id);
         if (user.isPresent()) {
-            String fileName = imageStorageService.storeFile(avatar, user.get());
+            String fileName = avatarStorageService.storeFile(avatar, user.get());
                 String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                         .path("/api/avatar/")
                         .path(fileName)
@@ -94,7 +94,7 @@ public class UserRestController {
 
     @GetMapping("/avatar/{fileName:.+}")
     public ResponseEntity<Resource> getAvatar(@PathVariable("fileName") String fileName, HttpServletRequest request) {
-        return downloadService.generateUrl(fileName, request, imageStorageService);
+        return downloadService.generateUrl(fileName, request, avatarStorageService);
     }
 
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)

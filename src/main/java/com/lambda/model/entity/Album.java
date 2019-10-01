@@ -25,6 +25,8 @@ public class Album implements MediaObject {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date releaseDate;
 
+    private String coverUrl;
+
     @JsonManagedReference("album-genre")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -37,7 +39,13 @@ public class Album implements MediaObject {
     private Collection<Genre> genres;
 
     @JsonManagedReference("album-song")
-    @OneToMany(mappedBy = "album", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "album_song",
+            joinColumns = @JoinColumn(
+                    name = "album_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "song_id", referencedColumnName = "id"))
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
 
@@ -73,14 +81,8 @@ public class Album implements MediaObject {
     @JoinColumn(name = "activity_id")
     private Activity activity;
 
-    @JsonBackReference("user-album")
-    @ManyToMany
-    @JoinTable(
-            name = "user_album",
-            joinColumns = @JoinColumn(
-                    name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "album_id", referencedColumnName = "id"))
+    @JsonBackReference("user-favoriteAlbums")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "favoriteAlbums")
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<User> users;
 
@@ -114,6 +116,14 @@ public class Album implements MediaObject {
 
     public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
     }
 
     public Collection<Genre> getGenres() {

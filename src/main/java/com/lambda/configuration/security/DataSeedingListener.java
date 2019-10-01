@@ -72,21 +72,34 @@ public class DataSeedingListener {
     private void createAccounts() {
         // Admin account
         String username = "admin";
-        String password = "Lambda123456";
-        HashSet<Role> roles1 = new HashSet<>();
-        roles1.add(roleService.findByName("ROLE_USER"));
-        roles1.add(roleService.findByName("ROLE_ADMIN"));
-        User admin = new User(username, password, roles1);
-        admin.setGender(true);
-        userService.save(admin);
+        String password;
+        String firstName;
+        String lastName = "Lambda";
+        if (userService.findByUsername(username) == null) {
+            password = passwordEncoder.encode("Lambda123456");
+            firstName = "Admin";
+            HashSet<Role> roles1 = new HashSet<>();
+            roles1.add(roleService.findByName("ROLE_USER"));
+            roles1.add(roleService.findByName("ROLE_ADMIN"));
+            User admin = new User(username, password, roles1);
+            admin.setGender(true);
+            admin.setFirstName(firstName);
+            admin.setLastName(lastName);
+            userService.save(admin);
+        }
 
         // Member account
         username = "member";
-        password = "Lambda123456";
-        HashSet<Role> roles2 = new HashSet<>();
-        roles2.add(roleService.findByName("ROLE_USER"));
-        User member = new User(username, password, roles2);
-        member.setGender(true);
-        userService.save(member);
+        if (userService.findByUsername(username) == null) {
+            password = passwordEncoder.encode("Lambda123456");
+            firstName = "Member";
+            HashSet<Role> roles2 = new HashSet<>();
+            roles2.add(roleService.findByName("ROLE_USER"));
+            User member = new User(username, password, roles2);
+            member.setGender(true);
+            member.setFirstName(firstName);
+            member.setLastName(lastName);
+            userService.save(member);
+        }
     }
 }

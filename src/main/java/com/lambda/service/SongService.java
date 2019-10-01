@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface SongService {
     Optional<Song> findById(Long id);
-    Song findByName(String name);
+    Iterable<Song> findByName(String name);
     Page<Song> findAll(Pageable pageable);
     Page<Song> findAllByNameContaining(String name, Pageable pageable);
     Page<Song> findAllByAlbum_Id(Long id, Pageable pageable);

@@ -17,7 +17,7 @@ public interface AlbumRepository extends JpaRepository<Album, Long> {
     Optional<Album> findById(@Param("id") Long id);
 
     @Query(value = "SELECT * FROM album WHERE BINARY name=:name", nativeQuery = true)
-    Album findByName(@Param("name") String name);
+    Iterable<Album> findByName(@Param("name") String name);
 
     Page<Album> findAll(Pageable pageable);
 

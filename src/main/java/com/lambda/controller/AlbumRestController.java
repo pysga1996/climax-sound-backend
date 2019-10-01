@@ -3,10 +3,13 @@ package com.lambda.controller;
 import com.lambda.model.entity.Album;
 import com.lambda.model.entity.Song;
 import com.lambda.model.form.AlbumForm;
+import com.lambda.model.util.UploadResponse;
 import com.lambda.service.AlbumService;
 import com.lambda.service.ArtistService;
 import com.lambda.service.SongService;
+import com.lambda.service.impl.CoverStorageService;
 import com.lambda.service.impl.FormConvertService;
+import com.lambda.service.impl.AvatarStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -32,6 +37,9 @@ public class AlbumRestController {
 
     @Autowired
     ArtistService artistService;
+
+    @Autowired
+    CoverStorageService coverStorageService;
 
     @Autowired
     FormConvertService formConvertService;
@@ -60,16 +68,30 @@ public class AlbumRestController {
     }
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createAlbum(@Valid @RequestBody AlbumForm albumForm) {
+    public ResponseEntity<Long> createAlbum(@Valid @RequestBody AlbumForm albumForm) {
         Album album = formConvertService.convertToAlbum(albumForm);
         if (album != null) {
             albumService.save(album);
-            return new ResponseEntity<>("Album created successfully!", HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>(album.getId(), HttpStatus.OK);
         }
-        return new ResponseEntity<>("Album has already already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
-    @PutMapping(value = "edit", params = {"id"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/upload", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> uploadAlbumCover(@RequestPart(value = "cover", required = false) MultipartFile file, @RequestPart("albumId") String id) {
+        Optional<Album> album = albumService.findById(Long.parseLong(id));
+        if (!album.isPresent()) return new ResponseEntity<>("Album metadata was not found in database!", HttpStatus.NOT_FOUND);
+        String fileName = coverStorageService.storeFile(file, album.get());
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/api/song/download/")
+                .path(fileName)
+                .toUriString();
+        album.get().setCoverUrl(fileDownloadUri);
+        albumService.save(album.get());
+        return new ResponseEntity<>(new UploadResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize()), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/edit", params = {"id"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> editAlbum(@Valid @RequestBody AlbumForm albumForm, @RequestParam Long id) {
         Album album = formConvertService.convertToAlbum(albumForm);
         if (album != null) {
@@ -79,7 +101,7 @@ public class AlbumRestController {
         } else return new ResponseEntity<>("Album has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
-    @DeleteMapping(value = "delete", params = {"id"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/delete", params = {"id"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteAlbum(@RequestParam Long id) {
         Collection<Song> songsToDelete = new ArrayList<>();
         Iterable<Song> songs = songService.findAllByAlbum_Id(id);

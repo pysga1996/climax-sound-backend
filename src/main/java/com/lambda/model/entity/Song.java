@@ -10,13 +10,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Date;
 
 @Entity
 @Table(name = "song")
-@JsonIgnoreProperties(value = {"ratings", "artists", "album", "tags", "genres", "users", "playlists"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"ratings", "artists", "albums", "tags", "genres", "users", "playlists"}, allowGetters = true)
 public class Song implements MediaObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -49,9 +48,9 @@ public class Song implements MediaObject {
     private Collection<Artist> artists;
 
     @JsonBackReference(value = "album-song")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "album_id")
-    private Album album;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "songs")
+    @Fetch(value = FetchMode.SUBSELECT)
+    private Collection<Album> albums;
 
     @JsonManagedReference(value = "song-tag")
     @ManyToMany(fetch = FetchType.LAZY)
@@ -75,15 +74,8 @@ public class Song implements MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Genre> genres;
 
-    @JsonBackReference("user-song")
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "user_song",
-            joinColumns = @JoinColumn(
-                    name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "song_id", referencedColumnName = "id"))
-    @Fetch(value = FetchMode.SUBSELECT)
+    @JsonBackReference("user-favoriteSongs")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "favoriteSongs")
     private Collection<User> users;
 
     @JsonBackReference("playlist-song")
@@ -133,12 +125,12 @@ public class Song implements MediaObject {
         this.releaseDate = releaseDate;
     }
 
-    public Album getAlbum() {
-        return album;
+    public Collection<Album> getAlbums() {
+        return albums;
     }
 
-    public void setAlbum(Album album) {
-        this.album = album;
+    public void setAlbums(Collection<Album> albums) {
+        this.albums = albums;
     }
 
     public String getUrl() {

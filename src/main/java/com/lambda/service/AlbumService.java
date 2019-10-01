@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface AlbumService {
     Optional<Album> findById(Long id);
 
-    Album findByName(String name);
+    Iterable<Album> findByName(String name);
 
     Page<Album> findAll(Pageable pageable);
 

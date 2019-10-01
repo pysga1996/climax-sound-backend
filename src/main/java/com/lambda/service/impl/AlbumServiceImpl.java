@@ -21,7 +21,7 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public Album findByName(String name) {
+    public Iterable<Album> findByName(String name) {
         return albumRepository.findByName(name);
     }
 
@@ -42,7 +42,7 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     public void save(Album album) {
-        albumRepository.save(album);
+        albumRepository.saveAndFlush(album);
     }
 
     @Override
