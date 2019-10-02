@@ -1,6 +1,7 @@
 package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -11,12 +12,14 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "playlist")
+@JsonIgnoreProperties(value = {"user", "songs"}, allowGetters = true)
 public class Playlist {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotBlank
+    @Column(columnDefinition = "VARCHAR(255) UNIQUE COLLATE utf8mb4_bin")
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
