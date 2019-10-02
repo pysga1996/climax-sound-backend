@@ -5,6 +5,7 @@ import com.lambda.model.entity.Song;
 import com.lambda.model.form.AudioUploadForm;
 import com.lambda.model.util.UploadResponse;
 import com.lambda.service.AlbumService;
+import com.lambda.service.PlaylistService;
 import com.lambda.service.SongService;
 import com.lambda.service.impl.AudioStorageService;
 import com.lambda.service.impl.DownloadService;
@@ -43,6 +44,8 @@ public class SongRestController {
 
     @Autowired
     private DownloadService downloadService;
+    @Autowired
+    private PlaylistService playlistService;
 
     @PostMapping("/create")
     public ResponseEntity<Long> createSong(@RequestBody AudioUploadForm audioUploadForm, @RequestParam(value = "albumId", required = false) String albumId) {
@@ -63,7 +66,8 @@ public class SongRestController {
     @PostMapping("/upload")
     public ResponseEntity<Object> uploadAudio(@RequestPart("audio") MultipartFile file, @RequestPart("songId") String id, @RequestPart(value = "albumId", required = false) String albumId) {
         Optional<Song> song = songService.findById(Long.parseLong(id));
-        if (!song.isPresent()) return new ResponseEntity<>("Song metadata was not found in database!", HttpStatus.NOT_FOUND);
+        if (!song.isPresent())
+            return new ResponseEntity<>("Song metadata was not found in database!", HttpStatus.NOT_FOUND);
         String fileName = audioStorageService.storeFile(file, song.get());
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/song/download/")
@@ -110,7 +114,7 @@ public class SongRestController {
     @GetMapping(value = "/search", params = "tag")
     public ResponseEntity<Page<Song>> songListByTag(@RequestParam("tag") String tag, Pageable pageable) {
         Page<Song> songList = songService.findAllByTags_Name(tag, pageable);
-        if (songList.getTotalElements()==0) {
+        if (songList.getTotalElements() == 0) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(songList, HttpStatus.OK);
@@ -132,5 +136,13 @@ public class SongRestController {
         } else return new ResponseEntity<>("Song removed but media file was not found on server", HttpStatus.NOT_FOUND);
     }
 
+    @PostMapping(value = "/add-to-playlist")
+    public ResponseEntity<String> addSongToPlaylist(@RequestParam("songId") Long songId, @RequestParam("playlistId") Long playlistId) {
+        boolean result = playlistService.addSongToPlaylist(songId, playlistId);
+        if (result) {
+            return new ResponseEntity<>("Add song to playlist succesfully", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Failed to add song to playlist", HttpStatus.BAD_REQUEST);
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.lambda.controller;
 
 import com.lambda.model.entity.Playlist;
+import com.lambda.model.entity.User;
 import com.lambda.service.PlaylistService;
 import com.lambda.service.impl.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +28,20 @@ public class PlaylistRestController {
 
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<Playlist>> playlistList(Pageable pageable) {
-        Page<Playlist> playlistList = playlistService.findAll(pageable);
+        User currentUser = userDetailService.getCurrentUser();
+        Page<Playlist> playlistList = playlistService.findAllByUser_Id(currentUser.getId(), pageable);
         boolean isEmpty = playlistList.getTotalElements() == 0;
         if (isEmpty) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else return new ResponseEntity<>(playlistList, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/detail", params = "id", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Playlist> playlistDetail(@RequestParam("id") Long id) {
+        Optional<Playlist> playlist = playlistService.findById(id);
+        if (playlist.isPresent()) {
+            return new ResponseEntity<>(playlist.get(), HttpStatus.OK);
+        } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
