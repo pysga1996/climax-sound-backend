@@ -44,13 +44,13 @@ public class PlaylistRestController {
     }
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createPlaylist(@Valid @RequestBody Playlist playlist) {
+    public ResponseEntity<Void> createPlaylist(@Valid @RequestBody Playlist playlist) {
         if (playlist == null) {
-            return new ResponseEntity<>("Playlist name has already existed in database!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
             playlist.setUser(userDetailService.getCurrentUser());
             playlistService.save(playlist);
-            return new ResponseEntity<>("Playlist created successfully!", HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         }
     }
 
@@ -67,8 +67,8 @@ public class PlaylistRestController {
     }
 
     @DeleteMapping(value = "/delete", params = {"id"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> deletePlaylist(@RequestParam Long id) {
+    public ResponseEntity<Void> deletePlaylist(@RequestParam Long id) {
         playlistService.deleteById(id);
-        return new ResponseEntity<>("Playlist removed successfully!", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
