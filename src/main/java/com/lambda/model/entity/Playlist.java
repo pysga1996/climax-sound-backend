@@ -14,6 +14,7 @@ import java.util.Collection;
 @Table(name = "playlist")
 @JsonIgnoreProperties(value = {"user", "songs"}, allowGetters = true)
 public class Playlist {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
