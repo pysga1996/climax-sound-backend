@@ -1,19 +1,25 @@
 package com.lambda.service.impl;
 
-import com.lambda.model.User;
+import com.lambda.model.entity.Role;
+import com.lambda.model.entity.User;
 import com.lambda.repository.UserRepository;
 import com.lambda.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     public Page<User> findAll(Pageable pageable) {
@@ -48,5 +54,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteById(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public void setFields(User newUserInfo, User oldUserInfo) {
+        newUserInfo.setRoles(oldUserInfo.getRoles());
+        newUserInfo.setAccountNonExpired(oldUserInfo.isAccountNonExpired());
+        newUserInfo.setAccountNonLocked(oldUserInfo.isAccountNonLocked());
+        newUserInfo.setCredentialsNonExpired(oldUserInfo.isCredentialsNonExpired());
+        newUserInfo.setEnabled(oldUserInfo.isEnabled());
+        newUserInfo.setFavoriteSongs(oldUserInfo.getFavoriteSongs());
+        newUserInfo.setFavoriteAlbums(oldUserInfo.getFavoriteAlbums());
+        newUserInfo.setRatedSongs(oldUserInfo.getRatedSongs());
     }
 }

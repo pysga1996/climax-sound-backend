@@ -1,6 +1,6 @@
 package com.lambda.service.impl;
 
-import com.lambda.model.Genre;
+import com.lambda.model.entity.Genre;
 import com.lambda.repository.GenreRepository;
 import com.lambda.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +19,10 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public Iterable<Genre> findAllByNameContaining(String name) {
         return genreRepository.findAllByNameContaining(name);
+    }
+
+    @Override
+    public void save(Genre genre) {
+        genreRepository.save(genre);
     }
 }

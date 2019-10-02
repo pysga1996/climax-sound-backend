@@ -1,47 +1,47 @@
-package com.lambda.model;
+package com.lambda.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
 @Entity
-@Table(name = "activity")
+@Table(name = "tag")
 @JsonIgnoreProperties(value = {"songs", "albums"}, allowGetters = true)
-public class Activity {
+public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
     @NotBlank
     private String name;
 
-    @JsonBackReference("song-activity")
-    @OneToMany(mappedBy = "activity", fetch = FetchType.LAZY)
+    @JsonBackReference(value = "song-tag")
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
 
-    @JsonBackReference("album-activity")
-    @OneToMany(mappedBy = "activity", fetch = FetchType.LAZY)
+    @JsonBackReference(value = "album-tag")
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> albums;
 
-    public Activity() {
+    public Tag() {
     }
 
-    public Activity(String name) {
+    public Tag(@NotNull String name) {
         this.name = name;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -67,5 +67,13 @@ public class Activity {
 
     public void setAlbums(Collection<Album> albums) {
         this.albums = albums;
+    }
+
+    @Override
+    public String toString() {
+        return "TagRepository{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

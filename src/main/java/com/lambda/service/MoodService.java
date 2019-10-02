@@ -1,6 +1,6 @@
 package com.lambda.service;
 
-import com.lambda.model.Mood;
+import com.lambda.model.entity.Mood;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

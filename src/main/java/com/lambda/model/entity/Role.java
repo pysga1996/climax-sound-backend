@@ -1,6 +1,7 @@
-package com.lambda.model;
+package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -20,12 +21,12 @@ public class Role {
     @NotBlank
     private String name;
 
-    @JsonBackReference
+    @JsonBackReference("user-role")
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<User> users;
 
-    @JsonBackReference
+    @JsonManagedReference("role_privilege")
     @ManyToMany(fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(

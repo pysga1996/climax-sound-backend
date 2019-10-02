@@ -1,14 +1,12 @@
 package com.lambda.configuration.security;
 
-import com.lambda.model.Privilege;
-import com.lambda.model.Role;
-import com.lambda.model.User;
-import com.lambda.repository.PrivilegeRepository;
-import com.lambda.repository.RoleRepository;
-import com.lambda.repository.UserRepository;
+import com.lambda.model.entity.Privilege;
+import com.lambda.model.entity.Role;
+import com.lambda.model.entity.User;
+import com.lambda.service.PrivilegeService;
+import com.lambda.service.RoleService;
+import com.lambda.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -22,13 +20,13 @@ public class DataSeedingListener {
     private boolean alreadySetup = false;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
-    private RoleRepository roleRepository;
+    private RoleService roleService;
 
     @Autowired
-    private PrivilegeRepository privilegeRepository;
+    private PrivilegeService privilegeService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -38,9 +36,9 @@ public class DataSeedingListener {
         if (alreadySetup)
             return;
         Privilege readNote
-                = createPrivilegeIfNotFound("NOTE_READ");
+                = createPrivilegeIfNotFound("SONG_READ");
         Privilege writeNote
-                = createPrivilegeIfNotFound("NOTE_WRITE");
+                = createPrivilegeIfNotFound("SONG_WRITE");
 
         List<Privilege> adminPrivileges = Arrays.asList(
                 readNote, writeNote);
@@ -52,10 +50,10 @@ public class DataSeedingListener {
 
     //    @Transactional
     private Privilege createPrivilegeIfNotFound(String name) {
-        Privilege privilege = privilegeRepository.findByName(name);
+        Privilege privilege = privilegeService.findByName(name);
         if (privilege == null) {
             privilege = new Privilege(name);
-            privilegeRepository.save(privilege);
+            privilegeService.save(privilege);
         }
         return privilege;
     }
@@ -63,35 +61,45 @@ public class DataSeedingListener {
     private void createRoleIfNotFound(
             String name, Collection<Privilege> privileges) {
 
-        Role role = roleRepository.findByName(name);
+        Role role = roleService.findByName(name);
         if (role == null) {
             role = new Role(name);
             role.setPrivileges(privileges);
-            roleRepository.save(role);
+            roleService.save(role);
         }
     }
 
     private void createAccounts() {
         // Admin account
-        if (userRepository.findByUsername("admin") == null) {
-            User admin = new User();
-            admin.setUsername("admin");
-            admin.setPassword(passwordEncoder.encode("123456"));
-            HashSet<Role> roles = new HashSet<>();
-            roles.add(roleRepository.findByName("ROLE_ADMIN"));
-            roles.add(roleRepository.findByName("ROLE_USER"));
-            admin.setRoles(roles);
-            userRepository.save(admin);
+        String username = "admin";
+        String password;
+        String firstName;
+        String lastName = "Lambda";
+        if (userService.findByUsername(username) == null) {
+            password = passwordEncoder.encode("Lambda123456");
+            firstName = "Admin";
+            HashSet<Role> roles1 = new HashSet<>();
+            roles1.add(roleService.findByName("ROLE_USER"));
+            roles1.add(roleService.findByName("ROLE_ADMIN"));
+            User admin = new User(username, password, roles1);
+            admin.setGender(true);
+            admin.setFirstName(firstName);
+            admin.setLastName(lastName);
+            userService.save(admin);
         }
+
         // Member account
-        if (userRepository.findByUsername("member") == null) {
-            User user = new User();
-            user.setUsername("member");
-            user.setPassword(passwordEncoder.encode("123456"));
-            HashSet<Role> roles = new HashSet<>();
-            roles.add(roleRepository.findByName("ROLE_USER"));
-            user.setRoles(roles);
-            userRepository.save(user);
+        username = "member";
+        if (userService.findByUsername(username) == null) {
+            password = passwordEncoder.encode("Lambda123456");
+            firstName = "Member";
+            HashSet<Role> roles2 = new HashSet<>();
+            roles2.add(roleService.findByName("ROLE_USER"));
+            User member = new User(username, password, roles2);
+            member.setGender(true);
+            member.setFirstName(firstName);
+            member.setLastName(lastName);
+            userService.save(member);
         }
     }
 }

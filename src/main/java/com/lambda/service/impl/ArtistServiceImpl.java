@@ -1,6 +1,6 @@
 package com.lambda.service.impl;
 
-import com.lambda.model.Artist;
+import com.lambda.model.entity.Artist;
 import com.lambda.repository.ArtistRepository;
 import com.lambda.service.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +26,10 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public Page<Artist> findAllByAlbums_Name(String name, Pageable pageable) {
         return artistRepository.findAllByAlbums_Name(name, pageable);
+    }
+
+    @Override
+    public void save(Artist artist) {
+        artistRepository.save(artist);
     }
 }

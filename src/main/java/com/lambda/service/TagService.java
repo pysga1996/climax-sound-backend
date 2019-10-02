@@ -1,6 +1,6 @@
 package com.lambda.service;
 
-import com.lambda.model.Tag;
+import com.lambda.model.entity.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

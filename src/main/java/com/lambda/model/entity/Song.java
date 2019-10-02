@@ -1,10 +1,12 @@
-package com.lambda.model;
+package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.lambda.model.util.MediaObject;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -13,7 +15,8 @@ import java.util.Date;
 
 @Entity
 @Table(name = "song")
-public class Song {
+@JsonIgnoreProperties(value = {"ratings", "artists", "albums", "tags", "genres", "users", "playlists"}, allowGetters = true)
+public class Song implements MediaObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -21,9 +24,17 @@ public class Song {
     @NotBlank
     private String name;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date releaseDate;
 
     private String url;
+
+    @JsonManagedReference(value = "song-rating")
+    @OneToMany(mappedBy = "song")
+    private Collection<SongRating> ratings;
+
+
+    private Double displayRating;
 
     @JsonManagedReference(value = "song-artist")
     @ManyToMany(fetch = FetchType.LAZY)
@@ -36,10 +47,10 @@ public class Song {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Artist> artists;
 
-    @JsonManagedReference(value = "album-song")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "album_id")
-    private Album album;
+    @JsonBackReference(value = "album-song")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "songs")
+    @Fetch(value = FetchMode.SUBSELECT)
+    private Collection<Album> albums;
 
     @JsonManagedReference(value = "song-tag")
     @ManyToMany(fetch = FetchType.LAZY)
@@ -52,7 +63,7 @@ public class Song {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Tag> tags;
 
-    @JsonManagedReference(value = "song-genre")
+    @JsonManagedReference("song-genre")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "song_genre",
@@ -63,16 +74,14 @@ public class Song {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Genre> genres;
 
-    @JsonBackReference(value = "song-user")
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "song_user",
-            joinColumns = @JoinColumn(
-                    name = "song_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "user_id", referencedColumnName = "id"))
-    @Fetch(value = FetchMode.SUBSELECT)
+    @JsonBackReference("user-favoriteSongs")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "favoriteSongs")
     private Collection<User> users;
+
+    @JsonBackReference("playlist-song")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "songs")
+    @Fetch(value = FetchMode.SUBSELECT)
+    private Collection<Playlist> playlists;
 
     @JsonManagedReference(value = "song-mood")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -87,10 +96,9 @@ public class Song {
     public Song() {
     }
 
-    public Song(String name, Date releaseDate, String url) {
+    public Song(String name, Date releaseDate) {
         this.name = name;
         this.releaseDate = releaseDate;
-        this.url = url;
     }
 
     public Long getId() {
@@ -117,16 +125,32 @@ public class Song {
         this.releaseDate = releaseDate;
     }
 
-    public Album getAlbum() {
-        return album;
+    public Collection<Album> getAlbums() {
+        return albums;
     }
 
-    public void setAlbum(Album album) {
-        this.album = album;
+    public void setAlbums(Collection<Album> albums) {
+        this.albums = albums;
     }
 
     public String getUrl() {
         return url;
+    }
+
+    public Collection<SongRating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(Collection<SongRating> ratings) {
+        this.ratings = ratings;
+    }
+
+    public Double getDisplayRating() {
+        return displayRating;
+    }
+
+    public void setDisplayRating(Double displayRating) {
+        this.displayRating = displayRating;
     }
 
     public void setUrl(String url) {
@@ -163,6 +187,14 @@ public class Song {
 
     public void setUsers(Collection<User> users) {
         this.users = users;
+    }
+
+    public Collection<Playlist> getPlaylists() {
+        return playlists;
+    }
+
+    public void setPlaylists(Collection<Playlist> playlists) {
+        this.playlists = playlists;
     }
 
     public Mood getMood() {

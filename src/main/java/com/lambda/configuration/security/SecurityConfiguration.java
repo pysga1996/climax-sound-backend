@@ -2,18 +2,23 @@ package com.lambda.configuration.security;
 
 import com.lambda.configuration.security_customization.*;
 import com.lambda.configuration.security_filter.CustomCsrfFilter;
+import com.lambda.configuration.security_filter.JwtAuthenticationFilter;
 import com.lambda.service.impl.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -42,8 +47,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     UserDetailServiceImpl userDetailServiceImpl;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter();
+    }
+//    @Lazy
+//    @Autowired
+//    PasswordEncoder passwordEncoder;
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        // Password encoder, để Spring Security sử dụng mã hóa mật khẩu người dùng
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean(BeanIds.AUTHENTICATION_MANAGER)
     @Override
@@ -56,11 +72,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new SecurityEvaluationContextExtension();
     }
 
-    private CsrfTokenRepository csrfTokenRepository() {
-        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
-        repository.setHeaderName(CustomCsrfFilter.CSRF_COOKIE_NAME);
-        return repository;
-    }
+//    private CsrfTokenRepository csrfTokenRepository() {
+//        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+//        repository.setHeaderName(CustomCsrfFilter.CSRF_COOKIE_NAME);
+//        return repository;
+//    }
 
 //    @Autowired
 //    public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
@@ -73,20 +89,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder)
             throws Exception {
         authenticationManagerBuilder.userDetailsService(userDetailServiceImpl) // Cung cáp userservice cho spring security
-                .passwordEncoder(passwordEncoder); // cung cấp password encoder
+                .passwordEncoder(passwordEncoder()); // cung cấp password encoder
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers("/api/login", "/api/register").permitAll()
-//                .anyRequest().authenticated()
+        http.authorizeRequests()
+                .antMatchers("/api/login", "/api/register", "/api/song/download/**", "/api/song/upload", "/api/song/test").permitAll()
                 .antMatchers("/api/user").access("hasRole('ADMIN')")
                 .antMatchers("/api/**").access("hasRole('USER') or hasRole('ADMIN')")
                 .and().formLogin()
 //                .loginPage("/login")
-                .loginProcessingUrl("/appLogin")
+//                .loginProcessingUrl("/appLogin")
                 .successHandler(customRestAuthenticationSuccessHandler)
                 .failureHandler(customRestAuthenticationFailureHandler)
                 .usernameParameter("ssoId").passwordParameter("password")
@@ -101,6 +115,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                .accessDeniedPage("/accessDenied")
                 .and()
                 .logout().logoutSuccessHandler(customRestLogoutSuccessHandler)
-                .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"));
+                .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
+        ;
+        // Thêm một lớp Filter kiểm tra jwt
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.cors();
     }
 }

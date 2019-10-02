@@ -1,4 +1,4 @@
-package com.lambda.model;
+package com.lambda.model.util;
 
 import javax.validation.constraints.NotBlank;
 

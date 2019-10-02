@@ -1,7 +1,8 @@
-package com.lambda.model;
+package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.lambda.model.util.MediaObject;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,7 +14,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "album")
-public class Album {
+public class Album implements MediaObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -21,9 +22,12 @@ public class Album {
     @NotBlank
     private String name;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date releaseDate;
 
-    @JsonManagedReference
+    private String coverUrl;
+
+    @JsonManagedReference("album-genre")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "album_genre",
@@ -34,8 +38,14 @@ public class Album {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Genre> genres;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "album", fetch = FetchType.LAZY)
+    @JsonManagedReference("album-song")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "album_song",
+            joinColumns = @JoinColumn(
+                    name = "album_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "song_id", referencedColumnName = "id"))
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
 
@@ -71,25 +81,17 @@ public class Album {
     @JoinColumn(name = "activity_id")
     private Activity activity;
 
-    @JsonBackReference
-    @ManyToMany
-    @JoinTable(
-            name = "song_user",
-            joinColumns = @JoinColumn(
-                    name = "song_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "user_id", referencedColumnName = "id"))
+    @JsonBackReference("user-favoriteAlbums")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "favoriteAlbums")
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<User> users;
 
     public Album() {
     }
 
-    public Album(String name, Date releaseDate, Collection<Genre> genres, Collection<Song> songs) {
+    public Album(String name, Date releaseDate) {
         this.name = name;
         this.releaseDate = releaseDate;
-        this.genres = genres;
-        this.songs = songs;
     }
 
     public Long getId() {
@@ -114,6 +116,14 @@ public class Album {
 
     public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
     }
 
     public Collection<Genre> getGenres() {

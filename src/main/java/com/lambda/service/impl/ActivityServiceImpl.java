@@ -1,6 +1,6 @@
 package com.lambda.service.impl;
 
-import com.lambda.model.Activity;
+import com.lambda.model.entity.Activity;
 import com.lambda.repository.ActivityRepository;
 import com.lambda.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +16,13 @@ public class ActivityServiceImpl implements ActivityService {
     ActivityRepository activityRepository;
 
     @Override
-    public Activity findByName(String name){
-        return activityRepository.findByName(name);
+    public Optional<Activity> findById(Integer id) {
+        return activityRepository.findById(id);
     }
 
     @Override
-    public Optional<Activity> findById(Integer id) {
-        return activityRepository.findById(id);
+    public Activity findByName(String name) {
+        return activityRepository.findByName(name);
     }
 
     @Override

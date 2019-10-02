@@ -1,40 +1,34 @@
-package com.lambda.model;
+package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 
 @Entity
-@Table(name = "mood")
-@JsonIgnoreProperties(value = {"songs", "albums"}, allowGetters = true)
-public class Mood {
+@Table(name = "genre")
+public class Genre {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Integer id;
 
     @NotBlank
     private String name;
 
-    @JsonBackReference("song-mood")
-    @OneToMany(mappedBy = "mood", fetch = FetchType.LAZY)
-    @Fetch(value = FetchMode.SUBSELECT)
+    @JsonBackReference("song-genre")
+    @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
     private Collection<Song> songs;
 
-    @JsonBackReference("album-mood")
-    @OneToMany(mappedBy = "mood", fetch = FetchType.LAZY)
-    @Fetch(value = FetchMode.SUBSELECT)
+    @JsonBackReference("album-genre")
+    @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
     private Collection<Album> albums;
 
-    public Mood() {
+    public Genre() {
     }
 
-    public Mood(String name) {
+    public Genre(@NotBlank String name) {
         this.name = name;
     }
 
@@ -69,4 +63,16 @@ public class Mood {
     public void setAlbums(Collection<Album> albums) {
         this.albums = albums;
     }
+
+    @Override
+    public String toString() {
+        return "Genre{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", songs=" + songs +
+                ", albums=" + albums +
+                '}';
+    }
 }
+
+
