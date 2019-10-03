@@ -1,6 +1,7 @@
 package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,6 +12,7 @@ import java.util.Collection;
 import java.util.Date;
 
 @Entity
+@JsonIgnoreProperties(value = {"songs", "albums"}, allowGetters = true)
 public class Artist {
     @Id
     @GeneratedValue

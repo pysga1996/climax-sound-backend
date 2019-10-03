@@ -3,11 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="bc94efd9-f0bc-40eb-ad2a-87d2fc0f8ca5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Song.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Song.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/form/UserForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/form/UserForm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Artist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Artist.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/repository/AlbumRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/repository/AlbumRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/repository/SongRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/repository/SongRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/AudioStorageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/AudioStorageService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/classes/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -77,37 +75,39 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Country.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="735">
-              <caret line="35" column="9" selection-start-line="35" selection-start-column="9" selection-end-line="35" selection-end-column="9" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Theme.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Song.java">
           <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="79" column="4" selection-start-line="79" selection-start-column="4" selection-end-line="79" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/User.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="231" column="47" selection-start-line="231" selection-start-column="47" selection-end-line="231" selection-end-column="47" />
+              <folding>
+                <element signature="e#6214#6215#0" expanded="true" />
+                <element signature="e#6280#6281#0" expanded="true" />
+                <element signature="e#6328#6329#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Artist.java">
+          <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="105">
-              <caret line="17" column="42" selection-start-line="17" selection-start-column="42" selection-end-line="17" selection-end-column="42" />
+              <caret line="14" column="71" selection-start-line="14" selection-start-column="71" selection-end-line="14" selection-end-column="71" />
+              <folding>
+                <element signature="e#1651#1652#0" expanded="true" />
+                <element signature="e#1683#1684#0" expanded="true" />
+                <element signature="e#1733#1734#0" expanded="true" />
+                <element signature="e#1775#1776#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -115,22 +115,58 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/controller/SongRestController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1596">
+            <state relative-caret-position="337">
               <caret line="99" selection-start-line="99" selection-end-line="99" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/SongRepository.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="13" column="43" selection-start-line="13" selection-start-column="43" selection-end-line="13" selection-end-column="43" />
+            <state relative-caret-position="63">
+              <caret line="15" column="25" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="25" />
               <folding>
+                <element signature="e#0#73#1" expanded="true" />
                 <element signature="e#0#53#1" expanded="true" />
                 <element signature="e#0#53#1" expanded="true" />
                 <element signature="e#0#64#1" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/controller/AlbumRestController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="487">
+              <caret line="102" column="5" selection-start-line="102" selection-start-column="5" selection-end-line="102" selection-end-column="5" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/AlbumRepository.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="273">
+              <caret line="22" column="59" selection-start-line="22" selection-start-column="59" selection-end-line="22" selection-end-column="59" />
+              <folding>
+                <element signature="e#0#53#1" expanded="true" />
+                <element signature="e#0#98#1" expanded="true" />
+                <element signature="e#0#59#1" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Album.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="361">
+              <caret line="82" column="12" selection-start-line="82" selection-start-column="12" selection-end-line="82" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -203,7 +239,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/SongService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/SongServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/AlbumService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/AlbumRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/FormConvertService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/AlbumServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/property/AvatarStorageProperties.java" />
@@ -214,14 +249,12 @@
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/controller/PlaylistRestController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Country.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Album.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Artist.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Comment.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Genre.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Privilege.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Role.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Tag.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Theme.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/User.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/form/AlbumForm.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/form/AudioUploadForm.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/CoverStorageService.java" />
@@ -235,6 +268,9 @@
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/AudioStorageService.java" />
         <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Song.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/User.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Artist.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/AlbumRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/SongRepository.java" />
       </list>
     </option>
@@ -680,7 +716,7 @@
       <workItem from="1570069472774" duration="1411000" />
       <workItem from="1570071486252" duration="5690000" />
       <workItem from="1570084694383" duration="26000" />
-      <workItem from="1570084859167" duration="953000" />
+      <workItem from="1570084859167" duration="6839000" />
     </task>
     <task id="LOCAL-00001" summary="change to spring boot (spring mvc files are still retained)">
       <created>1569049918795</created>
@@ -843,7 +879,21 @@
       <option name="project" value="LOCAL" />
       <updated>1570067709838</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="song query bug fix">
+      <created>1570086105509</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1570086105509</updated>
+    </task>
+    <task id="LOCAL-00025" summary="add user: uploaded song&#10;add artist: avatarUrl">
+      <created>1570086900112</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1570086900112</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -879,7 +929,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="314985000" />
+    <option name="totallyTimeSpent" value="320871000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -996,7 +1046,9 @@
     <MESSAGE value="add upload album feature" />
     <MESSAGE value="playlist minor bug fixes" />
     <MESSAGE value="update ui" />
-    <option name="LAST_COMMIT_MESSAGE" value="update ui" />
+    <MESSAGE value="song query bug fix" />
+    <MESSAGE value="add user: uploaded song&#10;add artist: avatarUrl" />
+    <option name="LAST_COMMIT_MESSAGE" value="add user: uploaded song&#10;add artist: avatarUrl" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1017,17 +1069,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/AlbumRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="19" column="18" selection-start-line="19" selection-start-column="18" selection-end-line="19" selection-end-column="18" />
-          <folding>
-            <element signature="e#0#53#1" expanded="true" />
-            <element signature="e#0#59#1" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/exception/CustomGlobalExceptionHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="654">
@@ -1125,16 +1166,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="129">
           <caret line="48" column="12" selection-start-line="48" selection-start-column="12" selection-end-line="48" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/controller/AlbumRestController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1428">
-          <caret line="102" column="5" selection-start-line="102" selection-start-column="5" selection-end-line="102" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1249,20 +1280,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Album.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1512">
-          <caret line="82" column="12" selection-start-line="82" selection-start-column="12" selection-end-line="82" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Artist.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="12" column="7" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Genre.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="84">
@@ -1298,13 +1315,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="30" column="29" selection-start-line="30" selection-start-column="29" selection-end-line="30" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Comment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-84">
@@ -1333,13 +1343,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/controller/SongRestController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1596">
-          <caret line="99" selection-start-line="99" selection-end-line="99" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/service/impl/SongServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
@@ -1354,22 +1357,84 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/SongRepository.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Song.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="13" column="43" selection-start-line="13" selection-start-column="43" selection-end-line="13" selection-end-column="43" />
+        <state relative-caret-position="210">
+          <caret line="79" column="4" selection-start-line="79" selection-start-column="4" selection-end-line="79" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="231" column="47" selection-start-line="231" selection-start-column="47" selection-end-line="231" selection-end-column="47" />
           <folding>
-            <element signature="e#0#53#1" expanded="true" />
-            <element signature="e#0#53#1" expanded="true" />
-            <element signature="e#0#64#1" expanded="true" />
+            <element signature="e#6214#6215#0" expanded="true" />
+            <element signature="e#6280#6281#0" expanded="true" />
+            <element signature="e#6328#6329#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Song.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Artist.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
-          <caret line="17" column="42" selection-start-line="17" selection-start-column="42" selection-end-line="17" selection-end-column="42" />
+          <caret line="14" column="71" selection-start-line="14" selection-start-column="71" selection-end-line="14" selection-end-column="71" />
+          <folding>
+            <element signature="e#1651#1652#0" expanded="true" />
+            <element signature="e#1683#1684#0" expanded="true" />
+            <element signature="e#1733#1734#0" expanded="true" />
+            <element signature="e#1775#1776#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Album.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="82" column="12" selection-start-line="82" selection-start-column="12" selection-end-line="82" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/controller/SongRestController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="337">
+          <caret line="99" selection-start-line="99" selection-end-line="99" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/controller/AlbumRestController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="487">
+          <caret line="102" column="5" selection-start-line="102" selection-start-column="5" selection-end-line="102" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/AlbumRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="22" column="59" selection-start-line="22" selection-start-column="59" selection-end-line="22" selection-end-column="59" />
+          <folding>
+            <element signature="e#0#53#1" expanded="true" />
+            <element signature="e#0#98#1" expanded="true" />
+            <element signature="e#0#59#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/SongRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="63">
+          <caret line="15" column="25" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#73#1" expanded="true" />
+            <element signature="e#0#53#1" expanded="true" />
+            <element signature="e#0#53#1" expanded="true" />
+            <element signature="e#0#64#1" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
