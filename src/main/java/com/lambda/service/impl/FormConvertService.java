@@ -31,10 +31,10 @@ public class FormConvertService {
     TagService tagService;
 
     @Autowired
-    MoodService moodService;
+    CountryService countryService;
 
     @Autowired
-    ActivityService activityService;
+    ThemeService themeService;
 
     @Autowired
     UserService userService;
@@ -99,22 +99,22 @@ public class FormConvertService {
         return tagList;
     }
 
-    private Mood convertStringToMood(String string) {
-        Mood checkedMood = moodService.findByName(string);
-        if (checkedMood == null && !string.isEmpty()) {
-            Mood mood = new Mood(string);
-            moodService.save(mood);
-            return mood;
+    private Country convertStringToMood(String string) {
+        Country checkedCountry = countryService.findByName(string);
+        if (checkedCountry == null && !string.isEmpty()) {
+            Country country = new Country(string);
+            countryService.save(country);
+            return country;
         }
         return null;
     }
 
-    private Activity convertToActivity(String string) {
-        Activity checkedActivity = activityService.findByName(string);
-        if (checkedActivity == null && !string.isEmpty()) {
-            Activity activity = new Activity(string);
-            activityService.save(activity);
-            return activity;
+    private Theme convertToActivity(String string) {
+        Theme checkedTheme = themeService.findByName(string);
+        if (checkedTheme == null && !string.isEmpty()) {
+            Theme theme = new Theme(string);
+            themeService.save(theme);
+            return theme;
         }
         return null;
     }
@@ -178,10 +178,10 @@ public class FormConvertService {
         mediaObject.setGenres(genreList);
         Collection<Tag> tagList = convertStringToTagList(mediaForm.getTags());
         mediaObject.setTags(tagList);
-        Mood mood = convertStringToMood(mediaForm.getMood().trim());
-        mediaObject.setMood(mood);
-        Activity activity = convertToActivity(mediaForm.getMood().toLowerCase().trim());
-        mediaObject.setActivity(activity);
+        Country country = convertStringToMood(mediaForm.getCountry().trim());
+        mediaObject.setCountry(country);
+        Theme theme = convertToActivity(mediaForm.getCountry().toLowerCase().trim());
+        mediaObject.setTheme(theme);
     }
 
     public User convertToUser(UserForm userForm, boolean createAction) {

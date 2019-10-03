@@ -24,14 +24,14 @@ import java.util.Collection;
 
 @Service
 public class CoverStorageService implements StorageService<Album> {
-    private final Path audioStorageLocation;
+    private final Path coverStorageLocation;
 
     @Autowired
     public CoverStorageService(CoverStorageProperty coverStorageProperty) {
-        this.audioStorageLocation = Paths.get(coverStorageProperty.getUploadDir())
+        this.coverStorageLocation = Paths.get(coverStorageProperty.getUploadDir())
                 .toAbsolutePath().normalize();
         try {
-            Files.createDirectories(this.audioStorageLocation);
+            Files.createDirectories(this.coverStorageLocation);
         } catch (Exception ex) {
             throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
         }
@@ -71,7 +71,7 @@ public class CoverStorageService implements StorageService<Album> {
                 throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
             }
             // Copy file to the target location (Replacing existing file with the same name)
-            Path targetLocation = this.audioStorageLocation.resolve(fileName);
+            Path targetLocation = this.coverStorageLocation.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             return fileName;
@@ -83,7 +83,7 @@ public class CoverStorageService implements StorageService<Album> {
     @Override
     public Resource loadFileAsResource(String fileName) {
         try {
-            Path filePath = this.audioStorageLocation.resolve(fileName).normalize();
+            Path filePath = this.coverStorageLocation.resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());
             if (resource.exists()) {
                 return resource;
@@ -97,7 +97,7 @@ public class CoverStorageService implements StorageService<Album> {
 
     @Override
     public Boolean deleteFile(String fileName) {
-        Path filePath = this.audioStorageLocation.resolve(fileName).normalize();
+        Path filePath = this.coverStorageLocation.resolve(fileName).normalize();
         File file = filePath.toFile();
         return file.delete();
     }

@@ -8,9 +8,11 @@ import com.lambda.service.AlbumService;
 import com.lambda.service.ArtistService;
 import com.lambda.service.SongService;
 import com.lambda.service.impl.CoverStorageService;
+import com.lambda.service.impl.DownloadService;
 import com.lambda.service.impl.FormConvertService;
 import com.lambda.service.impl.AvatarStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,6 +46,9 @@ public class AlbumRestController {
 
     @Autowired
     FormConvertService formConvertService;
+
+    @Autowired
+    private DownloadService downloadService;
 
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<Album>> albumList(Pageable pageable) {
@@ -83,12 +89,17 @@ public class AlbumRestController {
         if (!album.isPresent()) return new ResponseEntity<>("Album metadata was not found in database!", HttpStatus.NOT_FOUND);
         String fileName = coverStorageService.storeFile(file, album.get());
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/song/download/")
+                .path("/api/album/download/")
                 .path(fileName)
                 .toUriString();
         album.get().setCoverUrl(fileDownloadUri);
         albumService.save(album.get());
         return new ResponseEntity<>(new UploadResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize()), HttpStatus.OK);
+    }
+
+    @GetMapping("/download/{fileName:.+}")
+    public ResponseEntity<Resource> downloadCover(@PathVariable String fileName, HttpServletRequest request) {
+        return downloadService.generateUrl(fileName, request, coverStorageService);
     }
 
     @PutMapping(value = "/edit", params = {"id"}, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -6,31 +6,30 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "song_rating")
-public class SongRating {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
+    private Long id;
 
     @Size(max = 5)
-    Integer rating;
+    private Integer rating;
 
-    @JsonManagedReference(value = "song-rating")
+    @JsonManagedReference(value = "song-comment")
     @ManyToOne(fetch = FetchType.LAZY)
-    Song song;
+    private Song song;
 
-    @JsonManagedReference(value = "user-song_rating")
+    @JsonManagedReference(value = "user-comment")
     @ManyToOne(fetch = FetchType.LAZY)
-    User user;
+    private User user;
 
-    public SongRating() {
+    public Comment() {
     }
 
-    public SongRating(@Size(max = 5) Integer rating) {
+    public Comment(@Size(max = 5) Integer rating) {
         this.rating = rating;
     }
 
-    public SongRating(@Size(max = 5) Integer rating, Song song, User user) {
+    public Comment(@Size(max = 5) Integer rating, Song song, User user) {
         this.rating = rating;
         this.song = song;
         this.user = user;
@@ -70,7 +69,7 @@ public class SongRating {
 
     @Override
     public String toString() {
-        return "SongRating{" +
+        return "Comment{" +
                 "id=" + id +
                 ", rating=" + rating +
                 ", song=" + song +

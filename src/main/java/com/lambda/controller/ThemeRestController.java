@@ -1,7 +1,7 @@
 package com.lambda.controller;
 
-import com.lambda.model.entity.Activity;
-import com.lambda.service.ActivityService;
+import com.lambda.model.entity.Theme;
+import com.lambda.service.ThemeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,18 +11,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/activity")
-public class ActivityRestController {
+public class ThemeRestController {
     @Autowired
-    ActivityService activityService;
+    ThemeService themeService;
 
     @GetMapping(params = "action=list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<Activity>> activityList(Pageable pageable) {
-        Page<Activity> activityList = activityService.findAll(pageable);
+    public ResponseEntity<Page<Theme>> activityList(Pageable pageable) {
+        Page<Theme> activityList = themeService.findAll(pageable);
         boolean isEmpty = activityList.getTotalElements() == 0;
         if (isEmpty) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -30,8 +29,8 @@ public class ActivityRestController {
     }
 
     @GetMapping(params = "action=search", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<Activity>> activitySearch(@RequestParam String name, Pageable pageable) {
-        Page<Activity> filteredActivityList = activityService.findAllByNameContaining(name, pageable);
+    public ResponseEntity<Page<Theme>> activitySearch(@RequestParam String name, Pageable pageable) {
+        Page<Theme> filteredActivityList = themeService.findAllByNameContaining(name, pageable);
         boolean isEmpty = filteredActivityList.getTotalElements() == 0;
         if (isEmpty) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -39,30 +38,30 @@ public class ActivityRestController {
     }
 
     @PostMapping(params = "action=create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createActivity(@Valid @RequestBody Activity mood) {
+    public ResponseEntity<String> createActivity(@Valid @RequestBody Theme mood) {
         if (mood == null) {
-            return new ResponseEntity<>("Activity name has already existed in database!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Theme name has already existed in database!", HttpStatus.BAD_REQUEST);
         } else {
-            activityService.save(mood);
-            return new ResponseEntity<>("Activity created successfully!", HttpStatus.CREATED);
+            themeService.save(mood);
+            return new ResponseEntity<>("Theme created successfully!", HttpStatus.CREATED);
         }
     }
 
     @PutMapping(params = {"action=edit", "id"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> editActivity(@Valid @RequestBody Activity activity, @RequestParam Integer id) {
-        Activity checkedActivity = activityService.findByName(activity.getName());
-        if (checkedActivity != null) {
-            return new ResponseEntity<>("Activity name has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
+    public ResponseEntity<String> editActivity(@Valid @RequestBody Theme theme, @RequestParam Integer id) {
+        Theme checkedTheme = themeService.findByName(theme.getName());
+        if (checkedTheme != null) {
+            return new ResponseEntity<>("Theme name has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
         } else {
-            activity.setId(id);
-            activityService.save(activity);
-            return new ResponseEntity<>("Activity updated successfully!", HttpStatus.OK);
+            theme.setId(id);
+            themeService.save(theme);
+            return new ResponseEntity<>("Theme updated successfully!", HttpStatus.OK);
         }
     }
 
     @DeleteMapping(params = {"action=delete", "id"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteActivity(@RequestParam Integer id) {
-        activityService.deleteById(id);
-        return new ResponseEntity<>("Activity removed successfully!", HttpStatus.OK);
+        themeService.deleteById(id);
+        return new ResponseEntity<>("Theme removed successfully!", HttpStatus.OK);
     }
 }

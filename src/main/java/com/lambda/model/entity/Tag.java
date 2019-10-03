@@ -10,7 +10,6 @@ import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
 @Entity
-@Table(name = "tag")
 @JsonIgnoreProperties(value = {"songs", "albums"}, allowGetters = true)
 public class Tag {
     @Id

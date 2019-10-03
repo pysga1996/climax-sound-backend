@@ -7,7 +7,6 @@ import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 
 @Entity
-@Table(name = "genre")
 public class Genre {
 
     @Id

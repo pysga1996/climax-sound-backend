@@ -1,7 +1,7 @@
 package com.lambda.controller;
 
-import com.lambda.model.entity.Mood;
-import com.lambda.service.MoodService;
+import com.lambda.model.entity.Country;
+import com.lambda.service.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,13 +15,13 @@ import javax.validation.Valid;
 @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/mood")
-public class MoodRestController {
+public class CountryRestController {
     @Autowired
-    MoodService moodService;
+    CountryService countryService;
 
     @GetMapping(params = "action=list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<Mood>> moodList(Pageable pageable) {
-        Page<Mood> moodList = moodService.findAll(pageable);
+    public ResponseEntity<Page<Country>> moodList(Pageable pageable) {
+        Page<Country> moodList = countryService.findAll(pageable);
         boolean isEmpty = moodList.getTotalElements() == 0;
         if (isEmpty) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -29,8 +29,8 @@ public class MoodRestController {
     }
 
     @GetMapping(params = "action=search", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<Mood>> moodSearch(@RequestParam String name, Pageable pageable) {
-        Page<Mood> filteredMoodList = moodService.findAllByNameContaining(name, pageable);
+    public ResponseEntity<Page<Country>> moodSearch(@RequestParam String name, Pageable pageable) {
+        Page<Country> filteredMoodList = countryService.findAllByNameContaining(name, pageable);
         boolean isEmpty = filteredMoodList.getTotalElements() == 0;
         if (isEmpty) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -38,32 +38,32 @@ public class MoodRestController {
     }
 
     @PostMapping(params = "action=create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createMood(@Valid @RequestBody Mood mood) {
-        Mood checkedMood = moodService.findByName(mood.getName());
-        if (checkedMood != null) {
-            return new ResponseEntity<>("Mood name has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
+    public ResponseEntity<String> createMood(@Valid @RequestBody Country country) {
+        Country checkedCountry = countryService.findByName(country.getName());
+        if (checkedCountry != null) {
+            return new ResponseEntity<>("Country name has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
         } else {
-            moodService.save(mood);
-            return new ResponseEntity<>("Mood name created successfully!", HttpStatus.CREATED);
+            countryService.save(country);
+            return new ResponseEntity<>("Country name created successfully!", HttpStatus.CREATED);
         }
     }
 
     @PutMapping(params = {"action=edit", "id"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> editMood(@Valid @RequestBody Mood mood, @RequestParam Integer id) {
-        Mood checkedMood = moodService.findByName(mood.getName());
-        if (checkedMood != null) {
-            return new ResponseEntity<>("Mood name has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
+    public ResponseEntity<String> editMood(@Valid @RequestBody Country country, @RequestParam Integer id) {
+        Country checkedCountry = countryService.findByName(country.getName());
+        if (checkedCountry != null) {
+            return new ResponseEntity<>("Country name has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
         }
         else {
-            mood.setId(id);
-            moodService.save(mood);
-            return new ResponseEntity<>("Mood name updated successfully!", HttpStatus.OK);
+            country.setId(id);
+            countryService.save(country);
+            return new ResponseEntity<>("Country name updated successfully!", HttpStatus.OK);
         }
     }
 
     @DeleteMapping(params = {"action=delete", "id"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteMood(@RequestParam Integer id) {
-        moodService.deleteById(id);
-        return new ResponseEntity<>("Mood removed successfully", HttpStatus.OK);
+        countryService.deleteById(id);
+        return new ResponseEntity<>("Country removed successfully", HttpStatus.OK);
     }
 }

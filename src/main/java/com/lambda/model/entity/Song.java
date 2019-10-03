@@ -14,8 +14,7 @@ import java.util.Collection;
 import java.util.Date;
 
 @Entity
-@Table(name = "song")
-@JsonIgnoreProperties(value = {"ratings", "artists", "albums", "tags", "genres", "users", "playlists"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"comments", "artists", "albums", "tags", "genres", "users", "playlists"}, allowGetters = true)
 public class Song implements MediaObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,10 +28,9 @@ public class Song implements MediaObject {
 
     private String url;
 
-    @JsonManagedReference(value = "song-rating")
+    @JsonManagedReference(value = "song-comment")
     @OneToMany(mappedBy = "song")
-    private Collection<SongRating> ratings;
-
+    private Collection<Comment> comments;
 
     private Double displayRating;
 
@@ -83,15 +81,15 @@ public class Song implements MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Playlist> playlists;
 
-    @JsonManagedReference(value = "song-mood")
+    @JsonManagedReference(value = "song-country")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mood_id")
-    private Mood mood;
+    @JoinColumn(name = "country_id")
+    private Country country;
 
-    @JsonManagedReference(value = "song-activity")
+    @JsonManagedReference(value = "song-theme")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "activity_id")
-    private Activity activity;
+    @JoinColumn(name = "theme_id")
+    private Theme theme;
 
     public Song() {
     }
@@ -137,12 +135,12 @@ public class Song implements MediaObject {
         return url;
     }
 
-    public Collection<SongRating> getRatings() {
-        return ratings;
+    public Collection<Comment> getComments() {
+        return comments;
     }
 
-    public void setRatings(Collection<SongRating> ratings) {
-        this.ratings = ratings;
+    public void setComments(Collection<Comment> comments) {
+        this.comments = comments;
     }
 
     public Double getDisplayRating() {
@@ -197,20 +195,20 @@ public class Song implements MediaObject {
         this.playlists = playlists;
     }
 
-    public Mood getMood() {
-        return mood;
+    public Country getCountry() {
+        return country;
     }
 
-    public void setMood(Mood mood) {
-        this.mood = mood;
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
-    public Activity getActivity() {
-        return activity;
+    public Theme getTheme() {
+        return theme;
     }
 
-    public void setActivity(Activity activity) {
-        this.activity = activity;
+    public void setTheme(Theme theme) {
+        this.theme = theme;
     }
 
     @Override

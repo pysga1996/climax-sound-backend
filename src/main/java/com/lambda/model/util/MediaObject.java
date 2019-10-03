@@ -26,11 +26,11 @@ public interface MediaObject {
 
     void setTags(Collection<Tag> tags);
 
-    Mood getMood();
+    Country getCountry();
 
-    void setMood(Mood mood);
+    void setCountry(Country country);
 
-    Activity getActivity();
+    Theme getTheme();
 
-    void setActivity(Activity activity);
+    void setTheme(Theme theme);
 }
