@@ -2,6 +2,7 @@ package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lambda.model.util.MediaObject;
 import org.hibernate.annotations.Fetch;
@@ -14,7 +15,7 @@ import java.util.Collection;
 import java.util.Date;
 
 @Entity
-@JsonIgnoreProperties(value = {"comments", "artists", "albums", "tags", "genres", "users", "playlists"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"comments", "artists", "albums", "tags", "genres", "users", "playlists"}, allowGetters = true, ignoreUnknown=true)
 public class Song implements MediaObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
