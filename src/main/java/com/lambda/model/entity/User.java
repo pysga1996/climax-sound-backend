@@ -84,6 +84,10 @@ public class User {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> favoriteAlbums;
 
+    @JsonManagedReference("user-uploadedSong")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    Collection<Song> uploadedSong;
+
     @JsonManagedReference(value = "user-comment")
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Collection<Comment> comments;
@@ -223,6 +227,14 @@ public class User {
 
     public void setFavoriteAlbums(Collection<Album> favoriteAlbums) {
         this.favoriteAlbums = favoriteAlbums;
+    }
+
+    public Collection<Song> getUploadedSong() {
+        return uploadedSong;
+    }
+
+    public void setUploadedSong(Collection<Song> uploadedSong) {
+        this.uploadedSong = uploadedSong;
     }
 
     public Collection<Comment> getComments() {

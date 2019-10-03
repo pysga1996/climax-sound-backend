@@ -77,6 +77,11 @@ public class Song implements MediaObject {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "favoriteSongs")
     private Collection<User> users;
 
+    @JsonBackReference("user-uploadedSong")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @JsonBackReference("playlist-song")
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "songs")
     @Fetch(value = FetchMode.SUBSELECT)
