@@ -10,7 +10,6 @@ import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 
 @Entity
-@Table(name = "role")
 public class Role {
     private static final long serialVersionUID = 1L;
 

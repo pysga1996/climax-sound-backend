@@ -1,13 +1,11 @@
 package com.lambda.service.impl;
 
-import com.lambda.model.entity.Role;
 import com.lambda.model.entity.User;
 import com.lambda.repository.UserRepository;
 import com.lambda.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -65,6 +63,6 @@ public class UserServiceImpl implements UserService {
         newUserInfo.setEnabled(oldUserInfo.isEnabled());
         newUserInfo.setFavoriteSongs(oldUserInfo.getFavoriteSongs());
         newUserInfo.setFavoriteAlbums(oldUserInfo.getFavoriteAlbums());
-        newUserInfo.setRatedSongs(oldUserInfo.getRatedSongs());
+        newUserInfo.setComments(oldUserInfo.getComments());
     }
 }

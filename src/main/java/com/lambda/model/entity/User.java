@@ -12,8 +12,7 @@ import java.util.Collection;
 import java.util.Date;
 
 @Entity
-@Table(name = "user")
-@JsonIgnoreProperties(value = {"roles", "favoriteSongs", "favoriteAlbums", "ratedSongs", "playlists"}, allowGetters = true, ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"roles", "favoriteSongs", "favoriteAlbums", "comments", "playlists"}, allowGetters = true, ignoreUnknown = true)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -85,9 +84,9 @@ public class User {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> favoriteAlbums;
 
-    @JsonManagedReference(value = "user-song_rating")
+    @JsonManagedReference(value = "user-comment")
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Collection<SongRating> ratedSongs;
+    private Collection<Comment> comments;
 
     private boolean enabled = true;
     private boolean accountNonExpired = true;
@@ -226,12 +225,12 @@ public class User {
         this.favoriteAlbums = favoriteAlbums;
     }
 
-    public Collection<SongRating> getRatedSongs() {
-        return ratedSongs;
+    public Collection<Comment> getComments() {
+        return comments;
     }
 
-    public void setRatedSongs(Collection<SongRating> ratedSongs) {
-        this.ratedSongs = ratedSongs;
+    public void setComments(Collection<Comment> comments) {
+        this.comments = comments;
     }
 
     public boolean isEnabled() {

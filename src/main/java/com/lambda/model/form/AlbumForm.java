@@ -18,21 +18,21 @@ public class AlbumForm implements MediaForm {
 
     private String tags;
 
-    private String mood;
+    private String country;
 
-    private String activity;
+    private String theme;
 
     public AlbumForm() {
     }
 
-    public AlbumForm(String name, Date releaseDate, String artists, String genres, String tags, String mood, String activity) {
+    public AlbumForm(String name, Date releaseDate, String artists, String genres, String tags, String country, String theme) {
         this.name = name;
         this.releaseDate = releaseDate;
         this.artists = artists;
         this.genres = genres;
         this.tags = tags;
-        this.mood = mood;
-        this.activity = activity;
+        this.country = country;
+        this.theme = theme;
     }
 
     public String getName() {
@@ -75,20 +75,20 @@ public class AlbumForm implements MediaForm {
         this.tags = tags;
     }
 
-    public String getMood() {
-        return mood;
+    public String getCountry() {
+        return country;
     }
 
-    public void setMood(String mood) {
-        this.mood = mood;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
-    public String getActivity() {
-        return activity;
+    public String getTheme() {
+        return theme;
     }
 
-    public void setActivity(String activity) {
-        this.activity = activity;
+    public void setTheme(String theme) {
+        this.theme = theme;
     }
 
     @Override

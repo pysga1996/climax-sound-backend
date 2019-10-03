@@ -10,10 +10,8 @@ import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 
 @Entity
-@Table(name = "mood")
 @JsonIgnoreProperties(value = {"songs", "albums"}, allowGetters = true)
-public class Mood {
-
+public class Theme {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -21,20 +19,20 @@ public class Mood {
     @NotBlank
     private String name;
 
-    @JsonBackReference("song-mood")
-    @OneToMany(mappedBy = "mood", fetch = FetchType.LAZY)
+    @JsonBackReference("song-theme")
+    @OneToMany(mappedBy = "theme", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
 
-    @JsonBackReference("album-mood")
-    @OneToMany(mappedBy = "mood", fetch = FetchType.LAZY)
+    @JsonBackReference("album-theme")
+    @OneToMany(mappedBy = "theme", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> albums;
 
-    public Mood() {
+    public Theme() {
     }
 
-    public Mood(String name) {
+    public Theme(String name) {
         this.name = name;
     }
 

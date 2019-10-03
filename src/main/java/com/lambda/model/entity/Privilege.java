@@ -10,7 +10,6 @@ import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 
 @Entity
-@Table(name = "privilege")
 @JsonIgnoreProperties(value = "roles", allowGetters = true)
 public class Privilege {
 

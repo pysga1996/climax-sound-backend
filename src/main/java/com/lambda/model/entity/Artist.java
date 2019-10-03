@@ -11,7 +11,6 @@ import java.util.Collection;
 import java.util.Date;
 
 @Entity
-@Table(name = "artist")
 public class Artist {
     @Id
     @GeneratedValue

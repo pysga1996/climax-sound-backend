@@ -11,7 +11,6 @@ import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 
 @Entity
-@Table(name = "playlist")
 @JsonIgnoreProperties(value = {"user", "songs"}, allowGetters = true)
 public class Playlist {
 
@@ -20,7 +19,7 @@ public class Playlist {
     private Long id;
 
     @NotBlank
-    @Column(columnDefinition = "VARCHAR(255) UNIQUE COLLATE utf8mb4_bin")
+    @Column(columnDefinition = "VARCHAR(255) COLLATE utf8mb4_bin")
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)

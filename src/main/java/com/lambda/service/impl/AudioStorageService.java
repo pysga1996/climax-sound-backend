@@ -59,13 +59,13 @@ public class AudioStorageService implements StorageService<Song> {
         if (url != null && !url.equals("")) {
             String oldExtension = url.substring(url.lastIndexOf(".") + 1);
             if (!oldExtension.equals(extension)) {
-                String oldFileName = song.getId().toString().concat(" - ").concat(song.getName()).concat(artistsString).concat(oldExtension);
+                String oldFileName = song.getId().toString().concat(" - ").concat(song.getName()).concat(artistsString).concat(".").concat(oldExtension);
                 deleteFile(oldFileName);
             }
         }
 
         // Normalize file name
-        String fileName = StringUtils.cleanPath(song.getId().toString().concat(" - ").concat(song.getName()).concat(artistsString).concat(extension));
+        String fileName = StringUtils.cleanPath(song.getId().toString().concat(" - ").concat(song.getName()).concat(artistsString).concat(".").concat(extension));
         try {
             // Check if the file's name contains invalid characters
             if (fileName.contains("..")) {

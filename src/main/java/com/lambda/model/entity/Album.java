@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.Date;
 
 @Entity
-@Table(name = "album")
 public class Album implements MediaObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -71,15 +70,15 @@ public class Album implements MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Tag> tags;
 
-    @JsonManagedReference("album-mood")
+    @JsonManagedReference("album-country")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mood_id")
-    private Mood mood;
+    @JoinColumn(name = "country_id")
+    private Country country;
 
-    @JsonManagedReference("album-activity")
+    @JsonManagedReference("album-theme")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "activity_id")
-    private Activity activity;
+    @JoinColumn(name = "theme_id")
+    private Theme theme;
 
     @JsonBackReference("user-favoriteAlbums")
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "favoriteAlbums")
@@ -158,20 +157,20 @@ public class Album implements MediaObject {
         this.tags = tags;
     }
 
-    public Mood getMood() {
-        return mood;
+    public Country getCountry() {
+        return country;
     }
 
-    public void setMood(Mood mood) {
-        this.mood = mood;
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
-    public Activity getActivity() {
-        return activity;
+    public Theme getTheme() {
+        return theme;
     }
 
-    public void setActivity(Activity activity) {
-        this.activity = activity;
+    public void setTheme(Theme theme) {
+        this.theme = theme;
     }
 
     public Collection<User> getUsers() {

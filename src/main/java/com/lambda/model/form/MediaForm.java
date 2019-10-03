@@ -23,11 +23,11 @@ public interface MediaForm {
 
     void setTags(String tags);
 
-    String getMood();
+    String getCountry();
 
-    void setMood(String mood);
+    void setCountry(String country);
 
-    String getActivity();
+    String getTheme();
 
-    void setActivity(String activity);
+    void setTheme(String theme);
 }

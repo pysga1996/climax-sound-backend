@@ -11,6 +11,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SongRepository extends JpaRepository<Song, Long> {
+    @Query("SELECT s, c, t from Song s JOIN s.country c JOIN s.theme t")
+    Page<Song> findAll(Pageable pageable);
+
     @Query(value = "SELECT * FROM song WHERE BINARY name=:name", nativeQuery = true)
     Iterable<Song> findByName(@Param("name") String name);
 
