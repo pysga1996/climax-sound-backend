@@ -3,6 +3,7 @@ package com.lambda.model.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -13,7 +14,7 @@ import java.util.Collection;
 
 @Entity
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class Role {
     private static final long serialVersionUID = 1L;
 
@@ -22,7 +23,7 @@ public class Role {
     private Integer id;
 
     @NotBlank
-    private final String name;
+    private String name;
 
     @JsonBackReference("user-role")
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
@@ -39,4 +40,8 @@ public class Role {
             inverseJoinColumns = @JoinColumn(
                     name = "privilege_id", referencedColumnName = "id"))
     private Collection<Privilege> privileges;
+
+    public Role(String name) {
+        this.name = name;
+    }
 }

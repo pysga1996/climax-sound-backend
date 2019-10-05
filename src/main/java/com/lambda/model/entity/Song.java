@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lambda.model.util.MediaObject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -20,7 +21,7 @@ import java.util.Date;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
-@RequiredArgsConstructor
+@NoArgsConstructor
 @JsonIgnoreProperties(value = {"comments", "artists", "albums", "tags", "genres", "users", "playlists"}, allowGetters = true, ignoreUnknown=true)
 public class Song extends MediaObject {
     @Id
@@ -28,10 +29,10 @@ public class Song extends MediaObject {
     private Long id;
 
     @NotBlank
-    private final String name;
+    private String name;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private final Date releaseDate;
+    private Date releaseDate;
 
     private String url;
 
@@ -102,4 +103,9 @@ public class Song extends MediaObject {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "theme_id")
     private Theme theme;
+
+    public Song(String name, Date releaseDate) {
+        this.name = name;
+        this.releaseDate = releaseDate;
+    }
 }

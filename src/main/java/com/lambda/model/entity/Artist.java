@@ -3,6 +3,7 @@ package com.lambda.model.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -15,6 +16,7 @@ import java.util.Date;
 
 @Entity
 @Data
+@NoArgsConstructor
 @JsonIgnoreProperties(value = {"songs", "albums"}, allowGetters = true)
 public class Artist {
     @Id
@@ -22,7 +24,7 @@ public class Artist {
     private Long id;
 
     @NotBlank
-    private final String name;
+    private String name;
 
     @DateTimeFormat(pattern = "MM-dd-yyyy")
     private Date birthDate;

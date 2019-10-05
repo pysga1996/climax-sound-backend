@@ -18,7 +18,6 @@ import java.util.Date;
 @Entity
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
 @JsonIgnoreProperties(value = {"roles", "favoriteSongs", "favoriteAlbums", "comments", "playlists"}, allowGetters = true, ignoreUnknown = true)
 public class User {
     @Id
@@ -26,7 +25,6 @@ public class User {
     private Long id;
 
     @NotBlank
-    @NonNull
     @Pattern(regexp = "^[a-zA-Z0-9]+([a-zA-Z0-9]([_\\- ])[a-zA-Z0-9])*[a-zA-Z0-9]+${8,}")
     @Column(unique = true, nullable = false, columnDefinition = "VARCHAR(255) COLLATE utf8mb4_bin")
     private String username;

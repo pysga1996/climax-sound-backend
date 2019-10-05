@@ -2,27 +2,31 @@ package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 @Entity
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
 class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Size(max = 5)
-    private final Integer rating;
+    private String content;
 
     @JsonManagedReference(value = "song-comment")
     @ManyToOne(fetch = FetchType.LAZY)
-    private final Song song;
+    private Song song;
 
     @JsonManagedReference(value = "user-comment")
     @ManyToOne(fetch = FetchType.LAZY)
-    private final User user;
+    private User user;
+
+    public Comment(String content) {
+        this.content = content;
+    }
 }

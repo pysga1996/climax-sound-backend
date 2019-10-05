@@ -2,7 +2,7 @@ package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -10,7 +10,7 @@ import java.util.Collection;
 
 @Entity
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class Genre {
 
     @Id
@@ -18,7 +18,7 @@ public class Genre {
     private Integer id;
 
     @NotBlank
-    private final String name;
+    private String name;
 
     @JsonBackReference("song-genre")
     @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
@@ -27,6 +27,10 @@ public class Genre {
     @JsonBackReference("album-genre")
     @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
     private Collection<Album> albums;
+
+    public Genre(String name) {
+        this.name = name;
+    }
 }
 
 

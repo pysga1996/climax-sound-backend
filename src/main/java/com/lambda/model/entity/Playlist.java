@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -14,7 +14,7 @@ import java.util.Collection;
 
 @Entity
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
 @JsonIgnoreProperties(value = {"user", "songs"}, allowGetters = true)
 public class Playlist {
 
@@ -24,7 +24,7 @@ public class Playlist {
 
     @NotBlank
     @Column(columnDefinition = "VARCHAR(255) COLLATE utf8mb4_bin")
-    private final String name;
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference("user-playlist")

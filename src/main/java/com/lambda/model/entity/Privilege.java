@@ -14,8 +14,6 @@ import java.util.Collection;
 
 @Entity
 @Data
-@NoArgsConstructor
-@RequiredArgsConstructor
 @JsonIgnoreProperties(value = "roles", allowGetters = true)
 public class Privilege {
 
@@ -30,6 +28,8 @@ public class Privilege {
     @ManyToMany(mappedBy = "privileges", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Role> roles;
+
+    public Privilege() { }
 
     public Privilege(String name) {
         this.name = name;

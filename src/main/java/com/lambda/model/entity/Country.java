@@ -3,7 +3,7 @@ package com.lambda.model.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -13,7 +13,7 @@ import java.util.Collection;
 
 @Entity
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
 @JsonIgnoreProperties(value = {"songs", "albums"}, allowGetters = true)
 public class Country {
 
@@ -22,7 +22,7 @@ public class Country {
     private Integer id;
 
     @NotBlank
-    private final String name;
+    private String name;
 
     @JsonBackReference("song-country")
     @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
@@ -33,4 +33,8 @@ public class Country {
     @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> albums;
+
+    public Country(String name) {
+        this.name = name;
+    }
 }

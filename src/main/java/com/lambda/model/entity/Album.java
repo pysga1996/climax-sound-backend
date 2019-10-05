@@ -3,10 +3,7 @@ package com.lambda.model.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lambda.model.util.MediaObject;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,17 +16,17 @@ import java.util.Date;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper=true)
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class Album extends MediaObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotBlank
-    private final String name;
+    private String name;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private final Date releaseDate;
+    private Date releaseDate;
 
     private String coverUrl;
 
@@ -91,5 +88,10 @@ public class Album extends MediaObject {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "favoriteAlbums")
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<User> users;
+
+    public Album(String name, Date releaseDate) {
+        this.name = name;
+        this.releaseDate = releaseDate;
+    }
 
 }

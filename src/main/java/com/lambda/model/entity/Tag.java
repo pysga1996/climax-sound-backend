@@ -2,6 +2,7 @@ package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -13,7 +14,7 @@ import java.util.Collection;
 
 @Entity
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
 @JsonIgnoreProperties(value = {"songs", "albums"}, allowGetters = true)
 public class Tag {
     @Id
@@ -21,7 +22,7 @@ public class Tag {
     private Long id;
 
     @NotBlank
-    private final String name;
+    private String name;
 
     @JsonBackReference(value = "song-tag")
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
@@ -32,4 +33,8 @@ public class Tag {
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> albums;
+
+    public Tag(String name) {
+        this.name = name;
+    }
 }
