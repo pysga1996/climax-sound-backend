@@ -120,7 +120,7 @@ public class FormConvertService {
     }
 
     private Boolean checkSongExistence(AudioUploadForm audioUploadForm) {
-        Iterable<Song> checkedSongs = songService.findByName(audioUploadForm.getName());
+        Iterable<Song> checkedSongs = songService.findAllByName(audioUploadForm.getName());
         boolean isExisted = false;
         for (Song checkedSong: checkedSongs) {
             if (compareTwoArtistSet(checkedSong.getArtists(), audioUploadForm.getArtists().split(","))) {

@@ -20,7 +20,11 @@ public interface SongRepository extends JpaRepository<Song, Long> {
     Optional<Song> findById(@Param("id") Long id);
 
     @Query(value = "SELECT * FROM song WHERE BINARY name=:name", nativeQuery = true)
-    Iterable<Song> findByName(@Param("name") String name);
+    Optional<Song> findByName(@Param("name") String name);
+
+    Iterable<Song> findAllByName(String name);
+
+    Iterable<Song> findAllByNameContaining(String name);
 
     Page<Song> findAllByNameContaining(String name, Pageable pageable);
 

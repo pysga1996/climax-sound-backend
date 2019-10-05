@@ -2,6 +2,8 @@ package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -10,6 +12,8 @@ import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 
 @Entity
+@Data
+@RequiredArgsConstructor
 @JsonIgnoreProperties(value = {"songs", "albums"}, allowGetters = true)
 public class Theme {
     @Id
@@ -17,7 +21,7 @@ public class Theme {
     private Integer id;
 
     @NotBlank
-    private String name;
+    private final String name;
 
     @JsonBackReference("song-theme")
     @OneToMany(mappedBy = "theme", fetch = FetchType.LAZY)
@@ -28,43 +32,4 @@ public class Theme {
     @OneToMany(mappedBy = "theme", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> albums;
-
-    public Theme() {
-    }
-
-    public Theme(String name) {
-        this.name = name;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Collection<Song> getSongs() {
-        return songs;
-    }
-
-    public void setSongs(Collection<Song> songs) {
-        this.songs = songs;
-    }
-
-    public Collection<Album> getAlbums() {
-        return albums;
-    }
-
-    public void setAlbums(Collection<Album> albums) {
-        this.albums = albums;
-    }
 }

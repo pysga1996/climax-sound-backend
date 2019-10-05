@@ -64,11 +64,12 @@ public class SongRestController {
     public ResponseEntity<Object> uploadAudio(@RequestPart("audio") MultipartFile file, @RequestPart("songId") String id, @RequestPart(value = "albumId", required = false) String albumId) {
         Optional<Song> song = songService.findById(Long.parseLong(id));
         if (!song.isPresent()) return new ResponseEntity<>("Song metadata was not found in database!", HttpStatus.NOT_FOUND);
-        String fileName = audioStorageService.storeFile(file, song.get());
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/song/download/")
-                .path(fileName)
-                .toUriString();
+//        String fileName = audioStorageService.storeFile(file, song.get());
+//        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+//                .path("/api/song/download/")
+//                .path(fileName)
+//                .toUriString();
+        String fileDownloadUri = audioStorageService.storeFile(file, song.get());
         song.get().setUrl(fileDownloadUri);
         if (albumId != null) {
             Optional<Album> album = albumService.findById(Long.parseLong(albumId));
@@ -84,7 +85,7 @@ public class SongRestController {
             }
         }
         songService.save(song.get());
-        return new ResponseEntity<>(new UploadResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize()), HttpStatus.OK);
+        return new ResponseEntity<>(new UploadResponse(file.getOriginalFilename(), fileDownloadUri, file.getContentType(), file.getSize()), HttpStatus.OK);
     }
 
     @GetMapping("/download/{fileName:.+}")
@@ -104,6 +105,19 @@ public class SongRestController {
     public ResponseEntity<Song> songDetail(@RequestParam("id") Long id) {
         Optional<Song> song = songService.findById(id);
         return song.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping(value = "/search", params = "name")
+    public ResponseEntity<Iterable<Song>> songListByName(@RequestParam("name") String name) {
+        Iterable<Song> songList = songService.findAllByNameContaining(name);
+        int listSize = 0;
+        if (songList instanceof Collection) {
+            listSize = ((Collection<?>) songList).size();
+        }
+        if (listSize==0) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(songList, HttpStatus.OK);
     }
 
 

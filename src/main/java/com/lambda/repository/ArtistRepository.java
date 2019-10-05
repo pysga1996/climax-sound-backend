@@ -13,6 +13,8 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
     @Query(value = "SELECT * FROM album WHERE BINARY name=:name", nativeQuery = true)
     Artist findByName(@Param("name") String name);
 
+    Iterable<Artist> findFirst10ByNameContaining(String name);
+
     Page<Artist> findAllByNameContaining(String name, Pageable pageable);
 
     Page<Artist> findAllByAlbums_Name(String name, Pageable pageable);
