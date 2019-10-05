@@ -194,6 +194,6 @@ public class FormConvertService {
         Boolean gender = userForm.getGender();
         Date birthDate = userForm.getBirthDate();
         String email = userForm.getEmail();
-        return new User(username, password, firstName, lastName, phoneNumber, gender, birthDate, email);
+        return new User(username, password, firstName, lastName, gender, birthDate, phoneNumber,  email);
     }
 }

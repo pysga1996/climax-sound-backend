@@ -3,6 +3,8 @@ package com.lambda.model.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -15,6 +17,7 @@ import java.util.Date;
 
 @Entity
 @Data
+@NoArgsConstructor
 @RequiredArgsConstructor
 @JsonIgnoreProperties(value = {"roles", "favoriteSongs", "favoriteAlbums", "comments", "playlists"}, allowGetters = true, ignoreUnknown = true)
 public class User {
@@ -23,34 +26,35 @@ public class User {
     private Long id;
 
     @NotBlank
+    @NonNull
     @Pattern(regexp = "^[a-zA-Z0-9]+([a-zA-Z0-9]([_\\- ])[a-zA-Z0-9])*[a-zA-Z0-9]+${8,}")
     @Column(unique = true, nullable = false, columnDefinition = "VARCHAR(255) COLLATE utf8mb4_bin")
-    private final String username;
+    private String username;
 
     @NotBlank
-    private final String password;
-
-    @NotBlank
-    @Size(min = 2, max = 20)
-    private final String firstName;
+    private String password;
 
     @NotBlank
     @Size(min = 2, max = 20)
-    private final String lastName;
+    private String firstName;
+
+    @NotBlank
+    @Size(min = 2, max = 20)
+    private String lastName;
 
     @NotNull
-    private final Boolean gender;
+    private Boolean gender;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private final Date birthDate;
+    private Date birthDate;
 
     @Pattern(regexp = "^(\\(?\\+?[0-9]*\\)?)?[0-9_\\- ()]*${10,13}")
-    private final String phoneNumber;
+    private String phoneNumber;
 
     @Email
-    private final String email;
+    private String email;
 
-    private final String avatarUrl;
+    private String avatarUrl;
 
     @JsonManagedReference("user-role")
     @ManyToMany(fetch = FetchType.LAZY)
@@ -100,4 +104,21 @@ public class User {
     private boolean accountNonExpired = true;
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;
+
+    public User(String username, String password, Collection<Role> roles) {
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public User(String username, String password, String firstName, String lastName, Boolean gender, Date birthDate, String phoneNumber, String email) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.birthDate = birthDate;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
 }

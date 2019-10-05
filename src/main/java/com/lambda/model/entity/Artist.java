@@ -15,7 +15,6 @@ import java.util.Date;
 
 @Entity
 @Data
-@RequiredArgsConstructor
 @JsonIgnoreProperties(value = {"songs", "albums"}, allowGetters = true)
 public class Artist {
     @Id
@@ -26,11 +25,11 @@ public class Artist {
     private final String name;
 
     @DateTimeFormat(pattern = "MM-dd-yyyy")
-    private final Date birthDate;
+    private Date birthDate;
 
-    private final String avatarUrl;
+    private String avatarUrl;
 
-    private final String biography;
+    private String biography;
 
     @JsonBackReference
     @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
@@ -41,4 +40,15 @@ public class Artist {
     @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> albums;
+
+    public Artist(String name) {
+        this.name = name;
+    }
+
+    public Artist(String name, Date birthDate, String avatarUrl, String biography) {
+        this.name = name;
+        this.birthDate = birthDate;
+        this.avatarUrl = avatarUrl;
+        this.biography = biography;
+    }
 }
