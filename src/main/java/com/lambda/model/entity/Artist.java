@@ -22,6 +22,8 @@ public class Artist {
     @DateTimeFormat(pattern = "MM-dd-yyyy")
     private Date birthDate;
 
+    private String avatarUrl;
+
     private String biography;
 
     @JsonBackReference
@@ -41,9 +43,10 @@ public class Artist {
         this.name = name;
     }
 
-    public Artist(String name, Date birthDate, String biography) {
+    public Artist(String name, Date birthDate, String avatarUrl, String biography) {
         this.name = name;
         this.birthDate = birthDate;
+        this.avatarUrl = avatarUrl;
         this.biography = biography;
     }
 
@@ -69,6 +72,14 @@ public class Artist {
 
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
     public String getBiography() {
