@@ -1,9 +1,11 @@
 package com.lambda.model.form;
 
+import com.lambda.model.entity.Artist;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Collection;
 import java.util.Date;
 
 @Data
@@ -12,7 +14,7 @@ public abstract class MediaForm {
 
     private Date releaseDate;
 
-    private String artists;
+    private Collection<Artist> artists;
 
     private String genres;
 

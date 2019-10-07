@@ -1,9 +1,6 @@
 package com.lambda.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import com.lambda.model.util.MediaObject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,7 +19,10 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"comments", "artists", "albums", "tags", "genres", "users", "playlists"}, allowGetters = true, ignoreUnknown=true)
+@JsonIgnoreProperties(value = {"comments", "albums", "tags", "genres", "users", "playlists"}, allowGetters = true, ignoreUnknown=true)
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Song extends MediaObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,7 +42,9 @@ public class Song extends MediaObject {
 
     private Double displayRating;
 
-    @JsonManagedReference(value = "song-artist")
+    private String lyric;
+
+//    @JsonManagedReference(value = "song-artist")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "song_artist",
@@ -69,7 +71,7 @@ public class Song extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Tag> tags;
 
-    @JsonManagedReference("song-genre")
+    @JsonManagedReference(value = "song-genre")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "song_genre",
@@ -80,26 +82,26 @@ public class Song extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Genre> genres;
 
-    @JsonBackReference("user-favoriteSongs")
+    @JsonBackReference(value = "user-favoriteSongs")
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "favoriteSongs")
     private Collection<User> users;
 
-    @JsonBackReference("user-uploadedSong")
+    @JsonBackReference(value = "user-uploadedSong")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @JsonBackReference("playlist-song")
+    @JsonBackReference(value = "playlist-song")
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "songs")
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Playlist> playlists;
 
-    @JsonManagedReference(value = "song-country")
+    @JsonBackReference(value = "song-country")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id")
     private Country country;
 
-    @JsonManagedReference(value = "song-theme")
+    @JsonBackReference(value = "song-theme")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "theme_id")
     private Theme theme;

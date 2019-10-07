@@ -52,7 +52,7 @@ public class Album extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
 
-    @JsonManagedReference
+    @JsonManagedReference(value = "album-artist")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "album_artist",
@@ -63,7 +63,7 @@ public class Album extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Artist> artists;
 
-    @JsonManagedReference
+    @JsonManagedReference(value = "album-tag")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "album_tag",

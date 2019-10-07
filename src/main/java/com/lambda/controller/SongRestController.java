@@ -1,10 +1,12 @@
 package com.lambda.controller;
 
 import com.lambda.model.entity.Album;
+import com.lambda.model.entity.Artist;
 import com.lambda.model.entity.Song;
 import com.lambda.model.form.AudioUploadForm;
 import com.lambda.model.util.UploadResponse;
 import com.lambda.service.AlbumService;
+import com.lambda.service.ArtistService;
 import com.lambda.service.SongService;
 import com.lambda.service.impl.AudioStorageService;
 import com.lambda.service.impl.DownloadService;
@@ -36,6 +38,9 @@ public class SongRestController {
     AlbumService albumService;
 
     @Autowired
+    ArtistService artistService;
+
+    @Autowired
     private AudioStorageService audioStorageService;
 
     @Autowired
@@ -45,8 +50,8 @@ public class SongRestController {
     private DownloadService downloadService;
 
     @PostMapping("/create")
-    public ResponseEntity<Long> createSong(@RequestBody AudioUploadForm audioUploadForm, @RequestParam(value = "albumId", required = false) String albumId) {
-        Song song = formConvertService.convertToSong(audioUploadForm);
+    public ResponseEntity<Long> createSong(@RequestBody Song song, @RequestParam(value = "albumId", required = false) String albumId) {
+//        Song song = formConvertService.convertToSong(audioUploadForm);
         if (song == null) return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         if (albumId != null) {
             Optional<Album> album = albumService.findById(Long.parseLong(albumId));
@@ -56,6 +61,11 @@ public class SongRestController {
                 song.setAlbums(albums);
             }
         }
+        Collection<Artist> artists = song.getArtists();
+        for (Artist artist: artists) {
+            artistService.save(artist);
+        }
+
         Long id = songService.save(song).getId();
         return new ResponseEntity<>(id, HttpStatus.OK);
     }

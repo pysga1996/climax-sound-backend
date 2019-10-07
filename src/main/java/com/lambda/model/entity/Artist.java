@@ -1,7 +1,9 @@
 package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,9 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"songs", "albums"}, allowGetters = true)
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Artist {
     @Id
     @GeneratedValue
@@ -33,12 +38,12 @@ public class Artist {
 
     private String biography;
 
-    @JsonBackReference
+//    @JsonBackReference(value = "song-artist")
     @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
 
-    @JsonBackReference
+    @JsonBackReference(value = "album-artist")
     @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> albums;
