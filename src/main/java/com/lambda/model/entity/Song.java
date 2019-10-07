@@ -96,12 +96,12 @@ public class Song extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Playlist> playlists;
 
-    @JsonBackReference(value = "song-country")
+//    @JsonBackReference(value = "song-country")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id")
     private Country country;
 
-    @JsonBackReference(value = "song-theme")
+//    @JsonBackReference(value = "song-theme")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "theme_id")
     private Theme theme;

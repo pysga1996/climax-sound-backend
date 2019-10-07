@@ -37,4 +37,11 @@ public class ArtistServiceImpl implements ArtistService {
     public void save(Artist artist) {
         artistRepository.saveAndFlush(artist);
     }
+
+    @Override
+    public Page<Artist> findAll(Pageable pageable) {
+        return artistRepository.findAll(pageable);
+    }
+
+
 }

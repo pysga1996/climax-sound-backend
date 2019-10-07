@@ -7,6 +7,7 @@ import com.lambda.model.form.AudioUploadForm;
 import com.lambda.model.util.UploadResponse;
 import com.lambda.service.AlbumService;
 import com.lambda.service.ArtistService;
+import com.lambda.service.PlaylistService;
 import com.lambda.service.SongService;
 import com.lambda.service.impl.AudioStorageService;
 import com.lambda.service.impl.DownloadService;
@@ -48,6 +49,8 @@ public class SongRestController {
 
     @Autowired
     private DownloadService downloadService;
+    @Autowired
+    private PlaylistService playlistService;
 
     @PostMapping("/upload")
     public ResponseEntity<Void> createSong(@RequestPart("song") Song song, @RequestPart("audio") MultipartFile multipartFile) {
@@ -118,6 +121,14 @@ public class SongRestController {
         if (result) {
             return new ResponseEntity<>("Song removed successfully", HttpStatus.OK);
         } else return new ResponseEntity<>("Song removed but media file was not found on server", HttpStatus.NOT_FOUND);
+    }
+    @PostMapping(value = "/add-to-playlist")
+    public ResponseEntity<String> addSongToPlaylist(@RequestParam("songId") Long songId, @RequestParam("playlistId") Long playlistId) {
+        boolean result = playlistService.addSongToPlaylist(songId, playlistId);
+        if (result) {
+            return new ResponseEntity<>("Add song to playlist succesfully", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Failed to add song to playlist", HttpStatus.BAD_REQUEST);
     }
 
 
