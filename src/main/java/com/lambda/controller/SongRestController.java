@@ -49,53 +49,16 @@ public class SongRestController {
     @Autowired
     private DownloadService downloadService;
 
-    @PostMapping("/create")
-    public ResponseEntity<Long> createSong(@RequestBody Song song, @RequestParam(value = "albumId", required = false) String albumId) {
-//        Song song = formConvertService.convertToSong(audioUploadForm);
-        if (song == null) return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-        if (albumId != null) {
-            Optional<Album> album = albumService.findById(Long.parseLong(albumId));
-            if (album.isPresent()) {
-                Collection<Album> albums = new HashSet<>();
-                albums.add(album.get());
-                song.setAlbums(albums);
-            }
-        }
+    @PostMapping("/upload")
+    public ResponseEntity<Void> createSong(@RequestPart("song") Song song, @RequestPart("audio") MultipartFile multipartFile) {
         Collection<Artist> artists = song.getArtists();
         for (Artist artist: artists) {
             artistService.save(artist);
         }
-
-        Long id = songService.save(song).getId();
-        return new ResponseEntity<>(id, HttpStatus.OK);
-    }
-
-    @PostMapping("/upload")
-    public ResponseEntity<Object> uploadAudio(@RequestPart("audio") MultipartFile file, @RequestPart("songId") String id, @RequestPart(value = "albumId", required = false) String albumId) {
-        Optional<Song> song = songService.findById(Long.parseLong(id));
-        if (!song.isPresent()) return new ResponseEntity<>("Song metadata was not found in database!", HttpStatus.NOT_FOUND);
-//        String fileName = audioStorageService.storeFile(file, song.get());
-//        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-//                .path("/api/song/download/")
-//                .path(fileName)
-//                .toUriString();
-        String fileDownloadUri = audioStorageService.storeFile(file, song.get());
-        song.get().setUrl(fileDownloadUri);
-        if (albumId != null) {
-            Optional<Album> album = albumService.findById(Long.parseLong(albumId));
-            if (album.isPresent()) {
-                Collection<Album> albums;
-                if (song.get().getAlbums() == null) {
-                    albums = new HashSet<>();
-                    albums.add(album.get());
-                } else {
-                    albums = song.get().getAlbums();
-                }
-                song.get().setAlbums(albums);
-            }
-        }
-        songService.save(song.get());
-        return new ResponseEntity<>(new UploadResponse(file.getOriginalFilename(), fileDownloadUri, file.getContentType(), file.getSize()), HttpStatus.OK);
+        String fileDownloadUri = audioStorageService.storeFile(multipartFile, song);
+        song.setUrl(fileDownloadUri);
+        songService.save(song);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/download/{fileName:.+}")

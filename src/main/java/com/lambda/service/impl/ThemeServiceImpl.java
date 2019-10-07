@@ -37,7 +37,7 @@ public class ThemeServiceImpl implements ThemeService {
 
     @Override
     public void save(Theme theme) {
-        themeRepository.save(theme);
+        themeRepository.saveAndFlush(theme);
     }
 
     @Override

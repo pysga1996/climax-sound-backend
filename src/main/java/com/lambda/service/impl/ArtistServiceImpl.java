@@ -35,6 +35,6 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public void save(Artist artist) {
-        artistRepository.save(artist);
+        artistRepository.saveAndFlush(artist);
     }
 }
