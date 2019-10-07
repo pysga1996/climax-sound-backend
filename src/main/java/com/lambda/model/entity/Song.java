@@ -19,7 +19,7 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"comments", "albums", "tags", "genres", "users", "playlists"}, allowGetters = true, ignoreUnknown=true)
+@JsonIgnoreProperties(value = {"comments", "albums", "tags", "genres", "users", "playlists", "blobId"}, allowGetters = true, ignoreUnknown=true)
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
@@ -43,6 +43,8 @@ public class Song extends MediaObject {
     private Double displayRating;
 
     private String lyric;
+
+    private String blobId;
 
 //    @JsonManagedReference(value = "song-artist")
     @ManyToMany(fetch = FetchType.LAZY)

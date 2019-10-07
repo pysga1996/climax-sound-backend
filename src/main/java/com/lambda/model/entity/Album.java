@@ -1,6 +1,7 @@
 package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lambda.model.util.MediaObject;
 import lombok.*;
@@ -17,6 +18,7 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper=true)
 @NoArgsConstructor
+@JsonIgnoreProperties(value = {"users", "coverBlobId"}, allowGetters = true)
 public class Album extends MediaObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,6 +31,8 @@ public class Album extends MediaObject {
     private Date releaseDate;
 
     private String coverUrl;
+
+    private String coverBlobId;
 
     @JsonManagedReference("album-genre")
     @ManyToMany(fetch = FetchType.LAZY)

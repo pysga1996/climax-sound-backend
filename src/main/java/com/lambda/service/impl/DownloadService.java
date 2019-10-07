@@ -1,5 +1,8 @@
 package com.lambda.service.impl;
 
+import com.lambda.model.entity.Album;
+import com.lambda.model.entity.Song;
+import com.lambda.model.entity.User;
 import com.lambda.service.StorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,14 +14,25 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Service
 public class DownloadService {
     private static final Logger logger = LoggerFactory.getLogger(DownloadService.class);
 
     public ResponseEntity<Resource> generateUrl(String fileName, HttpServletRequest request, StorageService storageService) {
+
+        Path path = Paths.get("");
+        if (storageService instanceof AudioStorageService) {
+            path = ((AudioStorageService) storageService).audioStorageLocation;
+        } else if (storageService instanceof CoverStorageService) {
+            path = ((CoverStorageService) storageService).coverStorageLocation;
+        } else if (storageService instanceof AvatarStorageService) {
+            path = ((AvatarStorageService) storageService).avatarStorageLocation;
+        }
         // Load file as Resource
-        Resource resource = storageService.loadFileAsResource(fileName);
+        Resource resource = storageService.loadFileAsResource(path, fileName);
         // Try to determine file's content type
         String contentType = null;
         try {

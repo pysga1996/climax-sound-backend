@@ -81,7 +81,7 @@ public class UserRestController {
     public ResponseEntity<String> uploadAvatar(@RequestPart("avatar") MultipartFile avatar, @RequestPart("id") String id) {
         Optional<User> user = userService.findById(Long.parseLong(id));
         if (user.isPresent()) {
-            String fileName = avatarStorageService.storeFile(avatar, user.get());
+            String fileName = avatarStorageService.saveToFirebaseStorage(user.get(), avatar);
                 String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                         .path("/api/avatar/")
                         .path(fileName)

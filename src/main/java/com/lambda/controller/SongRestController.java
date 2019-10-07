@@ -50,21 +50,21 @@ public class SongRestController {
     private DownloadService downloadService;
 
     @PostMapping("/upload")
-    public ResponseEntity<Void> createSong(@RequestPart("song") Song song, @RequestPart("audio") MultipartFile multipartFile) {
+    public ResponseEntity<Void> createSong(@RequestPart("song") Song song, @RequestPart("audio") MultipartFile file) {
         Collection<Artist> artists = song.getArtists();
         for (Artist artist: artists) {
             artistService.save(artist);
         }
-        String fileDownloadUri = audioStorageService.storeFile(multipartFile, song);
+        String fileDownloadUri = audioStorageService.saveToFirebaseStorage(song, file);
         song.setUrl(fileDownloadUri);
         songService.save(song);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/download/{fileName:.+}")
-    public ResponseEntity<Resource> downloadAudio(@PathVariable String fileName, HttpServletRequest request) {
-        return downloadService.generateUrl(fileName, request, audioStorageService);
-    }
+//    @GetMapping("/download/{fileName:.+}")
+//    public ResponseEntity<Resource> downloadAudio(@PathVariable String fileName, HttpServletRequest request) {
+//        return downloadService.generateUrl(fileName, request, audioStorageService);
+//    }
 
     @GetMapping("/list")
     public ResponseEntity<Page<Song>> songList(Pageable pageable) {

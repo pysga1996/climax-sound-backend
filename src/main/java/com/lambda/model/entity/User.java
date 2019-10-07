@@ -18,7 +18,7 @@ import java.util.Date;
 @Entity
 @Data
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"roles", "favoriteSongs", "favoriteAlbums", "comments", "playlists"}, allowGetters = true, ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"roles", "favoriteSongs", "favoriteAlbums", "comments", "playlists", "avatarBlobId"}, allowGetters = true, ignoreUnknown = true)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -53,6 +53,8 @@ public class User {
     private String email;
 
     private String avatarUrl;
+
+    private String avatarBlobId;
 
     @JsonManagedReference("user-role")
     @ManyToMany(fetch = FetchType.LAZY)

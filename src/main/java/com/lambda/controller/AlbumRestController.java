@@ -74,32 +74,10 @@ public class AlbumRestController {
     }
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Long> createAlbum(@Valid @RequestBody AlbumForm albumForm) {
-        Album album = formConvertService.convertToAlbum(albumForm);
-        if (album != null) {
-            albumService.save(album);
-            return new ResponseEntity<>(album.getId(), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-    }
-
-    @PostMapping(value = "/upload", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> uploadAlbumCover(@RequestPart(value = "cover", required = false) MultipartFile file, @RequestPart("albumId") String id) {
-        Optional<Album> album = albumService.findById(Long.parseLong(id));
-        if (!album.isPresent()) return new ResponseEntity<>("Album metadata was not found in database!", HttpStatus.NOT_FOUND);
-        String fileName = coverStorageService.storeFile(file, album.get());
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/album/download/")
-                .path(fileName)
-                .toUriString();
-        album.get().setCoverUrl(fileDownloadUri);
-        albumService.save(album.get());
-        return new ResponseEntity<>(new UploadResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize()), HttpStatus.OK);
-    }
-
-    @GetMapping("/download/{fileName:.+}")
-    public ResponseEntity<Resource> downloadCover(@PathVariable String fileName, HttpServletRequest request) {
-        return downloadService.generateUrl(fileName, request, coverStorageService);
+    public ResponseEntity<Long> createAlbum(@Valid @RequestPart("album") Album album, @RequestPart("image") MultipartFile file) {
+        String fileName = coverStorageService.saveToFirebaseStorage(album, file);
+        album.setCoverUrl(fileName);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping(value = "/edit", params = {"id"}, produces = MediaType.APPLICATION_JSON_VALUE)
