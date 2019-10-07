@@ -2,6 +2,9 @@ package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -10,6 +13,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 
 @Entity
+@Data
 @JsonIgnoreProperties(value = "roles", allowGetters = true)
 public class Privilege {
 
@@ -25,34 +29,9 @@ public class Privilege {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Role> roles;
 
-    public Privilege() {
-    }
+    public Privilege() { }
 
     public Privilege(String name) {
         this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Collection<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Collection<Role> roles) {
-        this.roles = roles;
     }
 }

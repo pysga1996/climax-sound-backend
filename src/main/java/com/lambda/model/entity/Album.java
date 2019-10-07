@@ -3,6 +3,7 @@ package com.lambda.model.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lambda.model.util.MediaObject;
+import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,7 +14,10 @@ import java.util.Collection;
 import java.util.Date;
 
 @Entity
-public class Album implements MediaObject {
+@Data
+@EqualsAndHashCode(callSuper=true)
+@NoArgsConstructor
+public class Album extends MediaObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -48,7 +52,7 @@ public class Album implements MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
 
-    @JsonManagedReference
+    @JsonManagedReference(value = "album-artist")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "album_artist",
@@ -59,7 +63,7 @@ public class Album implements MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Artist> artists;
 
-    @JsonManagedReference
+    @JsonManagedReference(value = "album-tag")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "album_tag",
@@ -85,109 +89,9 @@ public class Album implements MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<User> users;
 
-    public Album() {
-    }
-
     public Album(String name, Date releaseDate) {
         this.name = name;
         this.releaseDate = releaseDate;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Date getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(Date releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
-    public String getCoverUrl() {
-        return coverUrl;
-    }
-
-    public void setCoverUrl(String coverUrl) {
-        this.coverUrl = coverUrl;
-    }
-
-    public Collection<Genre> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(Collection<Genre> genres) {
-        this.genres = genres;
-    }
-
-    public Collection<Song> getSongs() {
-        return songs;
-    }
-
-    public void setSongs(Collection<Song> songList) {
-        this.songs = songList;
-    }
-
-    public Collection<Artist> getArtists() {
-        return artists;
-    }
-
-    public void setArtists(Collection<Artist> artists) {
-        this.artists = artists;
-    }
-
-    public Collection<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(Collection<Tag> tags) {
-        this.tags = tags;
-    }
-
-    public Country getCountry() {
-        return country;
-    }
-
-    public void setCountry(Country country) {
-        this.country = country;
-    }
-
-    public Theme getTheme() {
-        return theme;
-    }
-
-    public void setTheme(Theme theme) {
-        this.theme = theme;
-    }
-
-    public Collection<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Collection<User> users) {
-        this.users = users;
-    }
-
-    @Override
-    public String toString() {
-        return "Album{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", releaseDate=" + releaseDate +
-                ", songList=" + songs +
-                '}';
-    }
 }

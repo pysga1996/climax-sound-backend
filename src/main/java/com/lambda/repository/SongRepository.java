@@ -9,13 +9,22 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface SongRepository extends JpaRepository<Song, Long> {
-    @Query("SELECT s, c, t from Song s JOIN s.country c JOIN s.theme t")
+    @Query("SELECT s, ar, c, t from Song s JOIN s.artists ar JOIN s.country c JOIN s.theme t")
     Page<Song> findAll(Pageable pageable);
 
+    @Query("SELECT s, ar, c, t from Song s JOIN FETCH s.artists ar JOIN FETCH s.country c JOIN FETCH s.theme t WHERE s.id=:id")
+    Optional<Song> findById(@Param("id") Long id);
+
     @Query(value = "SELECT * FROM song WHERE BINARY name=:name", nativeQuery = true)
-    Iterable<Song> findByName(@Param("name") String name);
+    Optional<Song> findByName(@Param("name") String name);
+
+    Iterable<Song> findAllByName(String name);
+
+    Iterable<Song> findAllByNameContaining(String name);
 
     Page<Song> findAllByNameContaining(String name, Pageable pageable);
 

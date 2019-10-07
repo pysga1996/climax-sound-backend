@@ -120,26 +120,26 @@ public class FormConvertService {
     }
 
     private Boolean checkSongExistence(AudioUploadForm audioUploadForm) {
-        Iterable<Song> checkedSongs = songService.findByName(audioUploadForm.getName());
+        Iterable<Song> checkedSongs = songService.findAllByName(audioUploadForm.getName());
         boolean isExisted = false;
-        for (Song checkedSong: checkedSongs) {
-            if (compareTwoArtistSet(checkedSong.getArtists(), audioUploadForm.getArtists().split(","))) {
-                isExisted = true;
-                break;
-            }
-        }
+//        for (Song checkedSong: checkedSongs) {
+//            if (compareTwoArtistSet(checkedSong.getArtists(), audioUploadForm.getArtists().split(","))) {
+//                isExisted = true;
+//                break;
+//            }
+//        }
         return isExisted;
     }
 
     private Boolean checkAlbumExistence(AlbumForm albumForm) {
         Iterable<Album> checkedAlbums = albumService.findByName(albumForm.getName());
         boolean isExisted = false;
-        for (Album checkedAlbum: checkedAlbums) {
-            if (compareTwoArtistSet(checkedAlbum.getArtists(), albumForm.getArtists().split(","))) {
-                isExisted = true;
-                break;
-            }
-        }
+//        for (Album checkedAlbum: checkedAlbums) {
+//            if (compareTwoArtistSet(checkedAlbum.getArtists(), albumForm.getArtists().split(","))) {
+//                isExisted = true;
+//                break;
+//            }
+//        }
         return isExisted;
     }
 
@@ -172,7 +172,8 @@ public class FormConvertService {
     }
 
     private void setFields(MediaObject mediaObject, MediaForm mediaForm) {
-        Collection<Artist> artistsList = convertStringToArtistList(mediaForm.getArtists());
+//        Collection<Artist> artistsList = convertStringToArtistList(mediaForm.getArtists());
+        Collection<Artist> artistsList = mediaForm.getArtists();
         mediaObject.setArtists(artistsList);
         Collection<Genre> genreList = convertStringToGenreList(mediaForm.getGenres());
         mediaObject.setGenres(genreList);
@@ -194,6 +195,6 @@ public class FormConvertService {
         Boolean gender = userForm.getGender();
         Date birthDate = userForm.getBirthDate();
         String email = userForm.getEmail();
-        return new User(username, password, firstName, lastName, phoneNumber, gender, birthDate, email);
+        return new User(username, password, firstName, lastName, gender, birthDate, phoneNumber,  email);
     }
 }

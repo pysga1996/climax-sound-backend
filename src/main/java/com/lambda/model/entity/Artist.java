@@ -1,6 +1,12 @@
 package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,6 +17,12 @@ import java.util.Collection;
 import java.util.Date;
 
 @Entity
+@Data
+@NoArgsConstructor
+@JsonIgnoreProperties(value = {"songs", "albums"}, allowGetters = true)
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Artist {
     @Id
     @GeneratedValue
@@ -26,18 +38,15 @@ public class Artist {
 
     private String biography;
 
-    @JsonBackReference
+//    @JsonBackReference(value = "song-artist")
     @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
 
-    @JsonBackReference
+    @JsonBackReference(value = "album-artist")
     @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> albums;
-
-    public Artist() {
-    }
 
     public Artist(String name) {
         this.name = name;
@@ -48,70 +57,5 @@ public class Artist {
         this.birthDate = birthDate;
         this.avatarUrl = avatarUrl;
         this.biography = biography;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getAvatarUrl() {
-        return avatarUrl;
-    }
-
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
-    }
-
-    public String getBiography() {
-        return biography;
-    }
-
-    public void setBiography(String biography) {
-        this.biography = biography;
-    }
-
-    public Collection<Song> getSongs() {
-        return songs;
-    }
-
-    public void setSongs(Collection<Song> songs) {
-        this.songs = songs;
-    }
-
-    public Collection<Album> getAlbums() {
-        return albums;
-    }
-
-    public void setAlbums(Collection<Album> albums) {
-        this.albums = albums;
-    }
-
-    @Override
-    public String toString() {
-        return "Artist{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", birthDate=" + birthDate +
-                '}';
     }
 }

@@ -1,36 +1,26 @@
 package com.lambda.model.util;
 
 import com.lambda.model.entity.*;
+import lombok.Data;
 
 import java.util.Collection;
 import java.util.Date;
 
-public interface MediaObject {
-    String getName();
+@Data
+public abstract class MediaObject {
 
-    void setName(String name);
+    private String name;
 
-    Date getReleaseDate();
+    private Date releaseDate;
 
-    void setReleaseDate(Date releaseDate);
+    private Collection<Genre> genres;
 
-    Collection<Genre> getGenres();
+    private Collection<Artist> artists;
 
-    void setGenres(Collection<Genre> genres);
+    private Collection<Tag> tags;
 
-    Collection<Artist> getArtists();
+    private Country country;
 
-    void setArtists(Collection<Artist> artists);
+    private Theme theme;
 
-    Collection<Tag> getTags();
-
-    void setTags(Collection<Tag> tags);
-
-    Country getCountry();
-
-    void setCountry(Country country);
-
-    Theme getTheme();
-
-    void setTheme(Theme theme);
 }

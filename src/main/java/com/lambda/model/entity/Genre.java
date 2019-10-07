@@ -1,12 +1,16 @@
 package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 
 @Entity
+@Data
+@NoArgsConstructor
 public class Genre {
 
     @Id
@@ -24,53 +28,8 @@ public class Genre {
     @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
     private Collection<Album> albums;
 
-    public Genre() {
-    }
-
-    public Genre(@NotBlank String name) {
+    public Genre(String name) {
         this.name = name;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Collection<Song> getSongs() {
-        return songs;
-    }
-
-    public void setSongs(Collection<Song> songs) {
-        this.songs = songs;
-    }
-
-    public Collection<Album> getAlbums() {
-        return albums;
-    }
-
-    public void setAlbums(Collection<Album> albums) {
-        this.albums = albums;
-    }
-
-    @Override
-    public String toString() {
-        return "Genre{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", songs=" + songs +
-                ", albums=" + albums +
-                '}';
     }
 }
 

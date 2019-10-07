@@ -1,33 +1,26 @@
 package com.lambda.model.form;
 
+import com.lambda.model.entity.Artist;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Collection;
 import java.util.Date;
 
-public interface MediaForm {
-    String getName();
+@Data
+public abstract class MediaForm {
+    private String name;
 
-    void setName(String name);
+    private Date releaseDate;
 
-    Date getReleaseDate();
+    private Collection<Artist> artists;
 
-    void setReleaseDate(Date releaseDate);
+    private String genres;
 
-    String getArtists();
+    private String tags;
 
-    void setArtists(String artists);
+    private String country;
 
-    String getGenres();
-
-    void setGenres(String genres);
-
-    String getTags();
-
-    void setTags(String tags);
-
-    String getCountry();
-
-    void setCountry(String country);
-
-    String getTheme();
-
-    void setTheme(String theme);
+    private String theme;
 }

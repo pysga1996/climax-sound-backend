@@ -1,10 +1,11 @@
 package com.lambda.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import com.lambda.model.util.MediaObject;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,8 +16,14 @@ import java.util.Collection;
 import java.util.Date;
 
 @Entity
-@JsonIgnoreProperties(value = {"comments", "artists", "albums", "tags", "genres", "users", "playlists"}, allowGetters = true, ignoreUnknown=true)
-public class Song implements MediaObject {
+@Data
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@JsonIgnoreProperties(value = {"comments", "albums", "tags", "genres", "users", "playlists"}, allowGetters = true, ignoreUnknown=true)
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
+public class Song extends MediaObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -35,7 +42,9 @@ public class Song implements MediaObject {
 
     private Double displayRating;
 
-    @JsonManagedReference(value = "song-artist")
+    private String lyric;
+
+//    @JsonManagedReference(value = "song-artist")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "song_artist",
@@ -62,7 +71,7 @@ public class Song implements MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Tag> tags;
 
-    @JsonManagedReference("song-genre")
+    @JsonManagedReference(value = "song-genre")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "song_genre",
@@ -73,156 +82,32 @@ public class Song implements MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Genre> genres;
 
-    @JsonBackReference("user-favoriteSongs")
+    @JsonBackReference(value = "user-favoriteSongs")
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "favoriteSongs")
     private Collection<User> users;
 
-    @JsonBackReference("user-uploadedSong")
+    @JsonBackReference(value = "user-uploadedSong")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @JsonBackReference("playlist-song")
+    @JsonBackReference(value = "playlist-song")
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "songs")
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Playlist> playlists;
 
-    @JsonManagedReference(value = "song-country")
+    @JsonBackReference(value = "song-country")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id")
     private Country country;
 
-    @JsonManagedReference(value = "song-theme")
+    @JsonBackReference(value = "song-theme")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "theme_id")
     private Theme theme;
 
-    public Song() {
-    }
-
     public Song(String name, Date releaseDate) {
         this.name = name;
         this.releaseDate = releaseDate;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Date getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(Date releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
-    public Collection<Album> getAlbums() {
-        return albums;
-    }
-
-    public void setAlbums(Collection<Album> albums) {
-        this.albums = albums;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public Collection<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(Collection<Comment> comments) {
-        this.comments = comments;
-    }
-
-    public Double getDisplayRating() {
-        return displayRating;
-    }
-
-    public void setDisplayRating(Double displayRating) {
-        this.displayRating = displayRating;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Collection<Artist> getArtists() {
-        return artists;
-    }
-
-    public void setArtists(Collection<Artist> artists) {
-        this.artists = artists;
-    }
-
-    public Collection<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(Collection<Tag> tags) {
-        this.tags = tags;
-    }
-
-    public Collection<Genre> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(Collection<Genre> genres) {
-        this.genres = genres;
-    }
-
-    public Collection<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Collection<User> users) {
-        this.users = users;
-    }
-
-    public Collection<Playlist> getPlaylists() {
-        return playlists;
-    }
-
-    public void setPlaylists(Collection<Playlist> playlists) {
-        this.playlists = playlists;
-    }
-
-    public Country getCountry() {
-        return country;
-    }
-
-    public void setCountry(Country country) {
-        this.country = country;
-    }
-
-    public Theme getTheme() {
-        return theme;
-    }
-
-    public void setTheme(Theme theme) {
-        this.theme = theme;
-    }
-
-    @Override
-    public String toString() {
-        return "Song{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", releaseDate=" + releaseDate +
-                '}';
     }
 }

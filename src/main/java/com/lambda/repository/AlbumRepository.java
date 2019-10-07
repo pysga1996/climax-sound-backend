@@ -13,13 +13,14 @@ import java.util.Optional;
 
 @Repository
 public interface AlbumRepository extends JpaRepository<Album, Long> {
-    @Query("SELECT a FROM Album a JOIN a.artists WHERE a.id = :id")
+    @Query("SELECT a, ar, c, t FROM Album a JOIN a.artists ar JOIN a.country c JOIN a.theme t WHERE a.id = :id")
     Optional<Album> findById(@Param("id") Long id);
+
+    @Query("SELECT a, ar, c, t FROM Album a JOIN a.artists ar JOIN a.country c JOIN a.theme t WHERE a.id = :id")
+    Page<Album> findAll(Pageable pageable);
 
     @Query(value = "SELECT * FROM album WHERE BINARY name=:name", nativeQuery = true)
     Iterable<Album> findByName(@Param("name") String name);
-
-    Page<Album> findAll(Pageable pageable);
 
     Page<Album> findAllByNameContaining(String name, Pageable pageable);
 

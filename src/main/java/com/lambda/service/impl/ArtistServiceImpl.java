@@ -19,6 +19,11 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
+    public Iterable<Artist> findTop10ByNameContaining(String name) {
+        return artistRepository.findFirst10ByNameContaining(name);
+    }
+
+    @Override
     public Page<Artist> findAllByNameContaining(String name, Pageable pageable){
         return artistRepository.findAllByNameContaining(name, pageable);
     }
