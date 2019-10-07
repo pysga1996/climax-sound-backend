@@ -75,7 +75,7 @@ public abstract class StorageService<T> {
 
     }
 
-    public String getNewFileName(Object object, MultipartFile file) {
+    private String getNewFileName(Object object, MultipartFile file) {
         String extension = getNewExtension(file);
         if (object instanceof MediaObject) {
             Collection<Artist> artists;
@@ -110,9 +110,10 @@ public abstract class StorageService<T> {
             url = ((User) object).getAvatarUrl();
         }
         if (url != null && !url.equals("")) {
+            String oldFileName = getOldFileName(object);
             String oldExtension = getOldExtension(url);
             if (!oldExtension.equals(newExtension)) {
-                deleteLocalStorageFile(storageLocation, oldExtension);
+                deleteLocalStorageFile(storageLocation, oldFileName.concat(".").concat(oldExtension));
             }
         }
     }
