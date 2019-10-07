@@ -40,6 +40,13 @@ public class ArtistServiceImpl implements ArtistService {
         artistRepository.saveAndFlush(artist);
     }
 
+    @Override
+    public Page<Artist> findAll(Pageable pageable) {
+        return artistRepository.findAll(pageable);
+    }
+
+
+
     public String convertToString(Collection<Artist> artists) {
         String artistsString = "";
         if (!artists.isEmpty()) {

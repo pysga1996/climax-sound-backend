@@ -18,4 +18,5 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
     Page<Artist> findAllByNameContaining(String name, Pageable pageable);
 
     Page<Artist> findAllByAlbums_Name(String name, Pageable pageable);
+
 }

@@ -13,4 +13,5 @@ public interface ArtistService {
     Page<Artist> findAllByAlbums_Name(String name, Pageable pageable);
     void save(Artist artist);
     String convertToString(Collection<Artist> artists);
+    Page<Artist> findAll(Pageable pageable);
 }
