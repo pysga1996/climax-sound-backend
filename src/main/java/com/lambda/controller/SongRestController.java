@@ -59,8 +59,12 @@ public class SongRestController {
         for (Artist artist : artists) {
             artistService.save(artist);
         }
-        Optional<Album> album = albumService.findById(Long.parseLong(id));
-        album.ifPresent(value -> song.getAlbums().add(value));
+        if(id != null){
+            Optional<Album> album = albumService.findById(Long.parseLong(id));
+
+            album.ifPresent(value -> song.getAlbums().add(value));
+        }
+
         songService.save(song);
         String fileDownloadUri = audioStorageService.saveToFirebaseStorage(song, file);
         song.setUrl(fileDownloadUri);
