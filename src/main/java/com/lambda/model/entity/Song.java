@@ -19,7 +19,7 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"comments", "albums", "tags", "genres", "users", "playlists", "blobId"}, allowGetters = true, ignoreUnknown=true)
+@JsonIgnoreProperties(value = {"comments", "albums", "tags", "genres", "users", "playlists", "country", "theme", "blobId"}, allowGetters = true, ignoreUnknown=true)
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
@@ -57,7 +57,7 @@ public class Song extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Artist> artists;
 
-    @JsonBackReference(value = "album-song")
+//    @JsonBackReference(value = "album-song")
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "songs")
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> albums;
@@ -98,12 +98,12 @@ public class Song extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Playlist> playlists;
 
-//    @JsonBackReference(value = "song-country")
+    @JsonBackReference(value = "song-country")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id")
     private Country country;
 
-//    @JsonBackReference(value = "song-theme")
+    @JsonBackReference(value = "song-theme")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "theme_id")
     private Theme theme;

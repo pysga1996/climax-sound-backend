@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -54,18 +56,18 @@ public class SongRestController {
     private PlaylistService playlistService;
 
     @PostMapping("/upload")
-    public ResponseEntity<Void> createSong(@RequestPart("song") Song song, @RequestPart("audio") MultipartFile file, @RequestPart(value = "albumId", required = false) String id) {
+    public ResponseEntity<Void> uploadSong(@RequestPart("song") Song song, @RequestPart("audio") MultipartFile file, @RequestPart(value = "albumId", required = false) String id) {
         Collection<Artist> artists = song.getArtists();
         for (Artist artist : artists) {
             artistService.save(artist);
         }
-        Optional<Album> album = albumService.findById(Long.parseLong(id));
-        album.ifPresent(value -> song.getAlbums().add(value));
+        if (id != null) { Optional<Album> album = albumService.findById(Long.parseLong(id));
+            album.ifPresent(value -> song.getAlbums().add(value));
+        }
         songService.save(song);
         String fileDownloadUri = audioStorageService.saveToFirebaseStorage(song, file);
         song.setUrl(fileDownloadUri);
         songService.save(song);
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -144,4 +146,11 @@ public class SongRestController {
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+    @GetMapping("/sortByDate")
+    public ResponseEntity<Page<Song>> listSong( @PageableDefault(sort = "releaseDate",
+            direction = Sort.Direction.DESC) Pageable pageable){
+        Page<Song> songPage = songService.findAll(pageable);
+        return new ResponseEntity<>(songPage, HttpStatus.OK);
+    }
+
 }

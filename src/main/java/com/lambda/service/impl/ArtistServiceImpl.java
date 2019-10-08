@@ -17,6 +17,11 @@ public class ArtistServiceImpl implements ArtistService {
     ArtistRepository artistRepository;
 
     @Override
+    public Optional<Artist> findById(Long id) {
+        return artistRepository.findById(id);
+    }
+
+    @Override
     public Artist findByName(String name) {
         return artistRepository.findByName(name);
     }
@@ -45,12 +50,6 @@ public class ArtistServiceImpl implements ArtistService {
     public Page<Artist> findAll(Pageable pageable) {
         return artistRepository.findAll(pageable);
     }
-
-    @Override
-    public Optional<Artist> findById(Long id) {
-        return artistRepository.findById(id);
-    }
-
 
     public String convertToString(Collection<Artist> artists) {
         String artistsString = "";

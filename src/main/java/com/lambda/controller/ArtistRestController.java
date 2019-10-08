@@ -45,6 +45,12 @@ public class ArtistRestController {
         return new ResponseEntity<>(artistList, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/detail", params = "id")
+    public ResponseEntity<Artist> artistDetail(@RequestParam("id") Long id) {
+        Optional<Artist> artist = artistService.findById(id);
+        return artist.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+    }
+
     @PostMapping(value = "/create")
     public ResponseEntity<Void> createArtist(@RequestPart("artist") Artist artist, @RequestPart("avatar") MultipartFile multipartFile) {
         artistService.save(artist);

@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface ArtistService {
+    Optional<Artist> findById(Long id);
     Artist findByName(String name);
     Iterable<Artist> findTop10ByNameContaining(String name);
     Page<Artist> findAllByNameContaining(String name, Pageable pageable);
@@ -15,6 +16,5 @@ public interface ArtistService {
     void save(Artist artist);
     String convertToString(Collection<Artist> artists);
     Page<Artist> findAll(Pageable pageable);
-    Optional<Artist> findById(Long id);
     void setFields(Artist oldArtistInfo, Artist newArtistInfo);
 }

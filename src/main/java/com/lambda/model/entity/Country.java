@@ -1,8 +1,6 @@
 package com.lambda.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
@@ -15,7 +13,10 @@ import java.util.Collection;
 @Entity
 @Data
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"songs", "albums"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"songs", "albums"}, allowGetters = true, ignoreUnknown = true)
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Country {
 
     @Id
@@ -25,7 +26,7 @@ public class Country {
     @NotBlank
     private String name;
 
-//    @JsonManagedReference("song-country")
+    @JsonManagedReference("song-country")
     @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;

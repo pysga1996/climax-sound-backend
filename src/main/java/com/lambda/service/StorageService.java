@@ -145,7 +145,9 @@ public abstract class StorageService<T> {
 
     private StorageClient getFirebaseStorage() {
         try {
-            GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("/Users/nguyenxuanhoang/Documents/ThucHanhCodeGym/project.spring-climax-sound/climax-sound-firebase-adminsdk-c29fo-27166cf850.json"))
+//            GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("/Users/nguyenxuanhoang/Documents/ThucHanhCodeGym/project.spring-climax-sound/climax-sound-firebase-adminsdk-c29fo-27166cf850.json"))
+//                    .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
+            GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("/mnt/D43C7B5B3C7B3816/CodeGym/Module 4/Project Climax Sound/climax-sound-firebase-adminsdk-c29fo-27166cf850.json"))
                     .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(credentials)

@@ -172,7 +172,6 @@ public class FormConvertService {
     }
 
     private void setFields(MediaObject mediaObject, MediaForm mediaForm) {
-//        Collection<Artist> artistsList = convertStringToArtistList(mediaForm.getArtists());
         Collection<Artist> artistsList = mediaForm.getArtists();
         mediaObject.setArtists(artistsList);
         Collection<Genre> genreList = convertStringToGenreList(mediaForm.getGenres());
