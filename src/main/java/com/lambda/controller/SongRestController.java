@@ -17,6 +17,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,7 +56,7 @@ public class SongRestController {
     @PostMapping("/upload")
     public ResponseEntity<Void> createSong(@RequestPart("song") Song song, @RequestPart("audio") MultipartFile file, @RequestPart(value = "albumId", required = false) String id) {
         Collection<Artist> artists = song.getArtists();
-        for (Artist artist: artists) {
+        for (Artist artist : artists) {
             artistService.save(artist);
         }
         Optional<Album> album = albumService.findById(Long.parseLong(id));
@@ -94,7 +95,7 @@ public class SongRestController {
         if (songList instanceof Collection) {
             listSize = ((Collection<?>) songList).size();
         }
-        if (listSize==0) {
+        if (listSize == 0) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(songList, HttpStatus.OK);
@@ -104,7 +105,7 @@ public class SongRestController {
     @GetMapping(value = "/search", params = "tag")
     public ResponseEntity<Page<Song>> songListByTag(@RequestParam("tag") String tag, Pageable pageable) {
         Page<Song> songList = songService.findAllByTags_Name(tag, pageable);
-        if (songList.getTotalElements()==0) {
+        if (songList.getTotalElements() == 0) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(songList, HttpStatus.OK);
@@ -125,14 +126,22 @@ public class SongRestController {
             return new ResponseEntity<>("Song removed successfully", HttpStatus.OK);
         } else return new ResponseEntity<>("Song removed but media file was not found on server", HttpStatus.NOT_FOUND);
     }
+
     @PostMapping(value = "/add-to-playlist")
     public ResponseEntity<String> addSongToPlaylist(@RequestParam("songId") Long songId, @RequestParam("playlistId") Long playlistId) {
         boolean result = playlistService.addSongToPlaylist(songId, playlistId);
         if (result) {
-            return new ResponseEntity<>("Add song to playlist succesfully", HttpStatus.OK);
+            return new ResponseEntity<>("Add song to playlist successfully", HttpStatus.OK);
         }
         return new ResponseEntity<>("Failed to add song to playlist", HttpStatus.BAD_REQUEST);
     }
 
-
+    @PutMapping(value = "/delete-playlist-song")
+    public ResponseEntity<String> deletePlaylistSong(@RequestParam("songId") Long songId, @RequestParam("playlistId")Long playlistId) {
+        boolean result = playlistService.deletePlaylistSong(songId,playlistId);
+        if(result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 }
