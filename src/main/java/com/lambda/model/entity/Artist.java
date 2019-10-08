@@ -19,7 +19,7 @@ import java.util.Date;
 @Entity
 @Data
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"songs", "albums"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"songs", "albums", "blobId"}, allowGetters = true)
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
@@ -35,6 +35,8 @@ public class Artist {
     private Date birthDate;
 
     private String avatarUrl;
+
+    private String avatarBlobId;
 
     private String biography;
 

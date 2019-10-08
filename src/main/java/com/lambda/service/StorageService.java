@@ -69,8 +69,13 @@ public abstract class StorageService<T> {
         } else if (object instanceof User) {
             User user = (User) object;
             String avatarUrl = user.getAvatarUrl();
-            String oldExtension = avatarUrl.substring(avatarUrl.lastIndexOf(".") + 1);
+            String oldExtension = getOldExtension(avatarUrl);
             return user.getId().toString().concat(" - ").concat(user.getUsername()).concat(".").concat(oldExtension);
+        } else if (object instanceof Artist) {
+            Artist user = (Artist) object;
+            String avatarUrl = user.getAvatarUrl();
+            String oldExtension = getOldExtension(avatarUrl);
+            return user.getId().toString().concat(" - ").concat(user.getName()).concat(".").concat(oldExtension);
         } else return null;
 
     }
@@ -94,7 +99,11 @@ public abstract class StorageService<T> {
         } else if (object instanceof User) {
             User user = (User) object;
             return user.getId().toString().concat(" - ").concat(user.getUsername()).concat(".").concat(extension);
-        } else return null;
+        } else if (object instanceof Artist) {
+            Artist artist = (Artist) object;
+            return artist.getId().toString().concat(" - ").concat(artist.getName()).concat(".").concat(extension);
+        }
+        else return null;
     }
 
     public void deleteOldFile(Path storageLocation, Object object, MultipartFile file) {
@@ -103,11 +112,12 @@ public abstract class StorageService<T> {
         String url = "";
         if (object instanceof Song) {
             url = ((Song) object).getUrl();
-        }
-        else if (object instanceof Album) {
+        } else if (object instanceof Album) {
             url = ((Album) object).getCoverUrl();
         } else if (object instanceof User) {
             url = ((User) object).getAvatarUrl();
+        } else if (object instanceof Artist) {
+            url = ((Artist) object).getAvatarUrl();
         }
         if (url != null && !url.equals("")) {
             String oldFileName = getOldFileName(object);
@@ -134,7 +144,7 @@ public abstract class StorageService<T> {
 
     private StorageClient getFirebaseStorage() {
         try {
-            GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("/mnt/D43C7B5B3C7B3816/CodeGym/Module 4/Project Climax Sound/climax-sound-firebase-adminsdk-c29fo-27166cf850.json"))
+            GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("/Users/nguyenxuanhoang/Documents/ThucHanhCodeGym/project.spring-climax-sound/climax-sound-firebase-adminsdk-c29fo-27166cf850.json"))
                     .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(credentials)
@@ -157,13 +167,13 @@ public abstract class StorageService<T> {
         Bucket bucket = storageClient.bucket();
         try {
             InputStream testFile = file.getInputStream();
-            String blobString = "cover/" + fileName;
+            String blobString = "";
             if (object instanceof Song) {
-                blobString = "audio/";
+                blobString = "audio/" + fileName;
             } else if (object instanceof Album) {
-                blobString = "cover/";
-            } else if (object instanceof User) {
-                blobString = "avatar/";
+                blobString = "cover/" + fileName;
+            } else if (object instanceof User | object instanceof Artist) {
+                blobString = "avatar/" + fileName;
             }
             Blob blob = bucket.create(blobString, testFile, Bucket.BlobWriteOption.userProject("climax-sound"));
             bucket.getStorage().updateAcl(blob.getBlobId(), Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER));
@@ -181,8 +191,8 @@ public abstract class StorageService<T> {
             rootUri = "/api/song/download/";
         } else if (object instanceof Album) {
             rootUri = "/api/album/download/";
-        } else if (object instanceof User) {
-            rootUri = "/api/avatar/";
+        } else if (object instanceof User | object instanceof Artist) {
+            rootUri = "/api/avatar/download/";
         }
         normalizeFileName(fileName);
         try {
@@ -208,6 +218,8 @@ public abstract class StorageService<T> {
             blobId = ((Album) object).getCoverBlobId();
         } else if (object instanceof User) {
             blobId = ((User) object).getAvatarBlobId();
+        } else if (object instanceof Artist) {
+            blobId = ((Artist) object).getAvatarBlobId();
         }
         storageClient.bucket().getStorage().delete(blobId);
     }
