@@ -53,15 +53,18 @@ public class SongRestController {
     private PlaylistService playlistService;
 
     @PostMapping("/upload")
-    public ResponseEntity<Void> createSong(@RequestPart("song") Song song, @RequestPart("audio") MultipartFile file) {
+    public ResponseEntity<Void> createSong(@RequestPart("song") Song song, @RequestPart("audio") MultipartFile file, @RequestPart(value = "albumId", required = false) String id) {
         Collection<Artist> artists = song.getArtists();
         for (Artist artist: artists) {
             artistService.save(artist);
         }
+        Optional<Album> album = albumService.findById(Long.parseLong(id));
+        album.ifPresent(value -> song.getAlbums().add(value));
         songService.save(song);
         String fileDownloadUri = audioStorageService.saveToFirebaseStorage(song, file);
         song.setUrl(fileDownloadUri);
         songService.save(song);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
