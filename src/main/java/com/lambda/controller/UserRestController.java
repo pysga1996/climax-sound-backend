@@ -12,6 +12,8 @@ import com.lambda.service.UserService;
 import com.lambda.service.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -160,5 +162,12 @@ public class UserRestController {
         boolean value = arrset1.equals(arrset2);
         return new RandomStuff(Boolean.toString(value));
 //        return new RandomStuff("JWT Hợp lệ mới có thể thấy được message này");
+    }
+    @GetMapping("/list")
+    public ResponseEntity<Page<User>> userList(Pageable pageable) {
+        Page<User> userList = userService.findAll(pageable);
+        if (userList.getTotalElements() == 0) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/artist")
@@ -38,6 +39,12 @@ public class ArtistRestController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(artistList, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/detail", params = "id")
+    public ResponseEntity<Artist> artistDetail(@RequestParam("id") Long id) {
+        Optional<Artist> artist = artistService.findById(id);
+        return artist.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     @PostMapping(value = "/create")

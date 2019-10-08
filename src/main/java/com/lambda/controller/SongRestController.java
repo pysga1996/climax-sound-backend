@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -61,7 +63,7 @@ public class SongRestController {
         songService.save(song);
         String fileDownloadUri = audioStorageService.saveToFirebaseStorage(song, file);
         song.setUrl(fileDownloadUri);
-        songService.save(song);
+            songService.save(song);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -123,13 +125,19 @@ public class SongRestController {
         } else return new ResponseEntity<>("Song removed but media file was not found on server", HttpStatus.NOT_FOUND);
     }
     @PostMapping(value = "/add-to-playlist")
-    public ResponseEntity<String> addSongToPlaylist(@RequestParam("songId") Long songId, @RequestParam("playlistId") Long playlistId) {
+    public ResponseEntity<String> addSongToPlaylist(@RequestParam("songId") Long songId,
+                                                    @RequestParam("playlistId") Long playlistId) {
         boolean result = playlistService.addSongToPlaylist(songId, playlistId);
         if (result) {
             return new ResponseEntity<>("Add song to playlist succesfully", HttpStatus.OK);
         }
         return new ResponseEntity<>("Failed to add song to playlist", HttpStatus.BAD_REQUEST);
     }
-
+    @GetMapping("/sortByDate")
+    public ResponseEntity<Page<Song>> listSong( @PageableDefault(sort = "releaseDate",
+            direction = Sort.Direction.DESC) Pageable pageable){
+        Page<Song> songPage = songService.findAll(pageable);
+        return new ResponseEntity<>(songPage, HttpStatus.OK);
+    }
 
 }

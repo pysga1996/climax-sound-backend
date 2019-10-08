@@ -25,7 +25,7 @@ public class Country {
     @NotBlank
     private String name;
 
-//    @JsonManagedReference("song-country")
+    @JsonManagedReference("song-country")
     @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;

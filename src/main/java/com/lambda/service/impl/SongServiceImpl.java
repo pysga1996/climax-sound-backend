@@ -86,4 +86,9 @@ public class SongServiceImpl implements SongService {
     public void deleteAll(Collection<Song> songs) {
         songRepository.deleteAll(songs);
     }
+
+    @Override
+    public Page<Song> sortByDate(Pageable pageable) {
+        return null;
+    }
 }

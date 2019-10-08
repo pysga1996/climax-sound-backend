@@ -9,11 +9,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Service
 public class ArtistServiceImpl implements ArtistService {
     @Autowired
     ArtistRepository artistRepository;
+
+    @Override
+    public Optional<Artist> findById(Long id) {
+        return artistRepository.findById(id);
+    }
 
     @Override
     public Artist findByName(String name){

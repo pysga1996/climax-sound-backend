@@ -23,7 +23,7 @@ public class Theme {
     @NotBlank
     private String name;
 
-//    @JsonBackReference("song-theme")
+    @JsonBackReference("song-theme")
     @OneToMany(mappedBy = "theme", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
