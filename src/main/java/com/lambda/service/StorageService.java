@@ -31,6 +31,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Collection;
+import java.util.List;
 
 public abstract class StorageService<T> {
     @Autowired
@@ -152,8 +153,16 @@ public abstract class StorageService<T> {
                     .setStorageBucket("climax-sound.appspot.com")
                     .build();
 
-            FirebaseApp fireApp = FirebaseApp.initializeApp(options);
-//            StorageClient storageClient = StorageClient.getInstance(fireApp);
+            FirebaseApp fireApp = null;
+            List<FirebaseApp> firebaseApps = FirebaseApp.getApps();
+            if(firebaseApps!=null && !firebaseApps.isEmpty()){
+                for(FirebaseApp app : firebaseApps){
+                    if(app.getName().equals(FirebaseApp.DEFAULT_APP_NAME))
+                        fireApp = app;
+                }
+            }
+            else
+                fireApp = FirebaseApp.initializeApp(options);
             return StorageClient.getInstance(fireApp);
         } catch (IOException ex) {
             throw new FileStorageException("Could not get admin-sdk json file. Please try again!", ex);

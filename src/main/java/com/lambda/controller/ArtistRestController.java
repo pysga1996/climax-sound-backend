@@ -67,7 +67,7 @@ public class ArtistRestController {
         Optional<Artist> oldArtist = artistService.findById(id);
         if (oldArtist.isPresent()) {
             if (multipartFile != null) {
-                String fileDownloadUri = avatarStorageService.saveToFirebaseStorage(oldArtist, multipartFile);
+                String fileDownloadUri = avatarStorageService.saveToFirebaseStorage(oldArtist.get(), multipartFile);
                 artist.setAvatarUrl(fileDownloadUri);
             }
             artistService.setFields(oldArtist.get(), artist);
