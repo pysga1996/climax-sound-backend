@@ -2,6 +2,7 @@ package com.lambda.controller;
 
 import com.lambda.model.entity.Artist;
 import com.lambda.service.ArtistService;
+import com.lambda.service.impl.AvatarStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,11 +15,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/artist")
 public class ArtistRestController {
     @Autowired
     ArtistService artistService;
+    @Autowired
+    AvatarStorageService avatarStorageService;
 
     @GetMapping(value = "/search", params = "name")
     public ResponseEntity<Iterable<Artist>> searchArtistByName(@RequestParam("name") String name) {
@@ -50,7 +54,32 @@ public class ArtistRestController {
     @PostMapping(value = "/create")
     public ResponseEntity<Void> createArtist(@RequestPart("artist") Artist artist, @RequestPart("avatar") MultipartFile multipartFile) {
         artistService.save(artist);
+        String fileDownloadUri = avatarStorageService.saveToFirebaseStorage(artist, multipartFile);
+        artist.setAvatarUrl(fileDownloadUri);
+        artistService.save(artist);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping(value = "/detail")
+    public ResponseEntity<Artist> getArtistDetail(@RequestParam("id") Long id) {
+        Optional<Artist> artist = artistService.findById(id);
+        if (artist.isPresent()) {
+            return new ResponseEntity<>(artist.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping(value = "/update")
+    public ResponseEntity<String> updateArtist(@RequestParam("id") Long id, @RequestPart("artist") Artist artist, @RequestPart(value = "avatar", required = false) MultipartFile multipartFile) {
+        Optional<Artist> oldArtist = artistService.findById(id);
+        if (oldArtist.isPresent()) {
+            if (multipartFile != null) {
+                String fileDownloadUri = avatarStorageService.saveToFirebaseStorage(oldArtist.get(), multipartFile);
+                artist.setAvatarUrl(fileDownloadUri);
+            }
+            artistService.setFields(oldArtist.get(), artist);
+            return new ResponseEntity<>("Update artist successfully", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Failed update artist", HttpStatus.BAD_REQUEST);
+    }
 }

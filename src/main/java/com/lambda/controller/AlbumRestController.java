@@ -10,9 +10,7 @@ import com.lambda.service.SongService;
 import com.lambda.service.impl.CoverStorageService;
 import com.lambda.service.impl.DownloadService;
 import com.lambda.service.impl.FormConvertService;
-import com.lambda.service.impl.AvatarStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -20,9 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -73,11 +68,12 @@ public class AlbumRestController {
         } else return new ResponseEntity<>(filteredAlbumList, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/upload", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> createAlbum(@Valid @RequestPart("album") Album album, @RequestPart("image") MultipartFile file) {
         String fileName = coverStorageService.saveToFirebaseStorage(album, file);
         album.setCoverUrl(fileName);
-        return new ResponseEntity<>(HttpStatus.OK);
+        albumService.save(album);
+        return new ResponseEntity<>(album.getId(), HttpStatus.OK);
     }
 
     @PutMapping(value = "/edit", params = {"id"}, produces = MediaType.APPLICATION_JSON_VALUE)
