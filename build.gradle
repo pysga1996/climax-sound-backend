@@ -1,18 +1,90 @@
-plugins {
-    id 'java'
-    id 'war'
+
+buildscript {
+	ext {
+		springBootVersion = '2.1.8.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
 }
 
-group 'com.lambda'
-version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'war'
+
+group = 'com.lambda'
+version = '0.0.1-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
+configurations {
+	developmentOnly
+	runtimeClasspath {
+		extendsFrom developmentOnly
+	}
+}
+
 repositories {
-    mavenCentral()
+	mavenCentral()
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.security:spring-security-data'
+implementation 'org.springframework.boot:spring-boot-starter-web'
+implementation 'org.springframework.session:spring-session-core'
+implementation 'org.springframework.boot:spring-boot-configuration-processor'
+implementation 'com.fasterxml.jackson.core:jackson-core'
+implementation 'com.fasterxml.jackson.core:jackson-databind'
+//	implementation 'org.springframework.security:spring-security-jwt:1.0.10'
+runtimeOnly 'org.postgresql:postgresql'
+implementation 'org.projectlombok:lombok'
+implementation 'io.jsonwebtoken:jjwt:0.9.1'
+implementation 'com.google.firebase:firebase-admin:6.10.0'
+runtimeOnly 'org.springframework.boot:spring-boot-starter-tomcat'
+developmentOnly 'org.springframework.boot:spring-boot-devtools'
+runtimeOnly 'mysql:mysql-connector-java'
+annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+annotationProcessor 'org.projectlombok:lombok'
+testImplementation 'org.springframework.boot:spring-boot-starter-test'
+testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+testImplementation 'org.springframework.security:spring-security-test'
+testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+compile 'com.github.jsimone:webapp-runner:8.5.11.3'
+}
+
+//test {
+//	useJUnitPlatform()
+//
+
+task stage() {
+	dependsOn clean, war
+}
+war.mustRunAfter clean
+
+task copyToLib(type: Copy) {
+	into "$buildDir/server"
+	from(configurations.compile) {
+		include "webapp-runner*"
+	}
+}
+
+stage.dependsOn(copyToLib)
+
+gradle.taskGraph.whenReady {
+	taskGraph ->
+		if (taskGraph.hasTask(stage)) {
+			test.enabled = false
+		}
 }

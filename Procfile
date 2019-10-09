@@ -1,0 +1,1 @@
+web: java -jar build/server/webapp-runner-climax-sound.jar build/libs/climax-sound-0.0.1-SNAPSHOT.jar
