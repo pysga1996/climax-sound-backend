@@ -22,4 +22,5 @@ public interface SongService {
     Song save(Song song);
     Boolean deleteById(Long id);
     void deleteAll(Collection<Song> songs);
+    void setFields(Song oldSongInfo, Song newSongInfo);
 }

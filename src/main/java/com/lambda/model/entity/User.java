@@ -19,7 +19,8 @@ import java.util.HashSet;
 @Entity
 @Data
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"roles", "favoriteSongs", "favoriteAlbums", "comments", "playlists", "avatarBlobId"}, allowGetters = true, ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"roles", "favoriteSongs", "favoriteAlbums", "comments", "playlists", "avatarBlobId"
+,"enabled","accountNonExpired","accountNonLocked","credentialsNonExpired"}, allowGetters = true, ignoreUnknown = true)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -64,7 +64,7 @@ public class ArtistRestController {
     }
 
     @PutMapping(value = "/update")
-    public ResponseEntity<String> updateArtist(@RequestParam("id") Long id, @RequestPart("artist") Artist artist, @RequestPart(value = "avatar", required = false) MultipartFile multipartFile) {
+    public ResponseEntity<Void> updateArtist(@RequestParam("id") Long id, @RequestPart("artist") Artist artist, @RequestPart(value = "avatar", required = false) MultipartFile multipartFile) {
         Optional<Artist> oldArtist = artistService.findById(id);
         if (oldArtist.isPresent()) {
             if (multipartFile != null) {
@@ -72,8 +72,9 @@ public class ArtistRestController {
                 artist.setAvatarUrl(fileDownloadUri);
             }
             artistService.setFields(oldArtist.get(), artist);
-            return new ResponseEntity<>("Update artist successfully", HttpStatus.OK);
+            artistService.save(oldArtist.get());
+            return new ResponseEntity<>( HttpStatus.OK);
         }
-        return new ResponseEntity<>("Failed update artist", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
     }
 }

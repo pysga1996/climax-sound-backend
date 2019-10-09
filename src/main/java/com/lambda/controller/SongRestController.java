@@ -56,7 +56,7 @@ public class SongRestController {
     @PostMapping("/upload")
     public ResponseEntity<Void> createSong(@RequestPart("song") Song song, @RequestPart("audio") MultipartFile file, @RequestPart(value = "albumId", required = false) String id) {
         Collection<Artist> artists = song.getArtists();
-        for (Artist artist : artists) {
+            for (Artist artist : artists) {
             artistService.save(artist);
         }
         if(id != null){
@@ -116,11 +116,14 @@ public class SongRestController {
     }
 
     @PutMapping(value = "/edit", params = "id")
-    public ResponseEntity<String> editSong(@RequestBody AudioUploadForm audioUploadForm, @RequestParam("id") Long id) {
-        Song song = formConvertService.convertToSong(audioUploadForm);
-        song.setId(id);
-        songService.save(song);
-        return new ResponseEntity<>("Song updated successfully!", HttpStatus.OK);
+    public ResponseEntity<Void> editSong(@RequestPart("song") Song song, @RequestParam("id") Long id) {
+        Optional<Song> oldSong = songService.findById(id);
+        if(oldSong.isPresent()){
+            songService.setFields(oldSong.get(),song);
+            songService.save(oldSong.get());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping(value = "/delete", params = "id")
@@ -132,12 +135,12 @@ public class SongRestController {
     }
 
     @PostMapping(value = "/add-to-playlist")
-    public ResponseEntity<String> addSongToPlaylist(@RequestParam("songId") Long songId, @RequestParam("playlistId") Long playlistId) {
+    public ResponseEntity<Void> addSongToPlaylist(@RequestParam("songId") Long songId, @RequestParam("playlistId") Long playlistId) {
         boolean result = playlistService.addSongToPlaylist(songId, playlistId);
         if (result) {
-            return new ResponseEntity<>("Add song to playlist successfully", HttpStatus.OK);
+            return new ResponseEntity<>( HttpStatus.OK);
         }
-        return new ResponseEntity<>("Failed to add song to playlist", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping(value = "/delete-playlist-song")

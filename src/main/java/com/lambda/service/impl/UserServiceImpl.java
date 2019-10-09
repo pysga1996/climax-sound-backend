@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(User user) {
-        userRepository.save(user);
+        userRepository.saveAndFlush(user);
     }
 
     @Override
@@ -64,5 +64,17 @@ public class UserServiceImpl implements UserService {
         newUserInfo.setFavoriteSongs(oldUserInfo.getFavoriteSongs());
         newUserInfo.setFavoriteAlbums(oldUserInfo.getFavoriteAlbums());
         newUserInfo.setComments(oldUserInfo.getComments());
+    }
+    @Override
+    public void setFieldsEdit(User oldUserInfo, User newUserInfo) {
+        oldUserInfo.setFirstName(newUserInfo.getFirstName());
+        oldUserInfo.setLastName(newUserInfo.getLastName());
+        oldUserInfo.setBirthDate(newUserInfo.getBirthDate());
+        oldUserInfo.setGender(newUserInfo.getGender());
+        oldUserInfo.setPhoneNumber(newUserInfo.getPhoneNumber());
+        oldUserInfo.setPassword(passwordEncoder.encode(newUserInfo.getPassword()));
+        if (newUserInfo.getAvatarUrl() != null) {
+            oldUserInfo.setAvatarUrl(newUserInfo.getAvatarUrl());
+        }
     }
 }
