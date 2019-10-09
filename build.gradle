@@ -14,25 +14,16 @@ apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
-
-//plugins {
-//	id 'org.springframework.boot' version '2.1.8.RELEASE'
-//	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
-//	id 'java'
-//	id 'war'
-//}
-
 group = 'com.lambda'
 version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
 
-sourceCompatibility = 1.8
-
-//configurations {
-//	developmentOnly
-//	runtimeClasspath {
-//		extendsFrom developmentOnly
-//	}
-//}
+configurations {
+	developmentOnly
+	runtimeClasspath {
+		extendsFrom developmentOnly
+	}
+}
 
 repositories {
 	mavenCentral()
@@ -40,6 +31,7 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -51,8 +43,7 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-core'
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 //	implementation 'org.springframework.security:spring-security-jwt:1.0.10'
-	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-	runtimeOnly 'org.postgresql:postgresql'
+	implementation 'org.postgresql: postgresql'
 	implementation 'org.projectlombok:lombok'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	implementation 'com.google.firebase:firebase-admin:6.10.0'
