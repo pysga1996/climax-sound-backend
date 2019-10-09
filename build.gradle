@@ -10,13 +10,16 @@ buildscript {
 	}
 }
 
+apply plugins: 'java'
+apply plugins: 'org.springframework.boot'
+apply plugins: 'io.spring.dependency-management'
 
-plugins {
-	id 'org.springframework.boot' version '2.1.8.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
-	id 'java'
-	id 'war'
-}
+//plugins {
+//	id 'org.springframework.boot' version '2.1.8.RELEASE'
+//	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+//	id 'java'
+//	id 'war'
+//}
 
 group = 'com.lambda'
 version = '0.0.1-SNAPSHOT'
