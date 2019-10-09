@@ -16,4 +16,5 @@ public interface UserService {
     void save(User user);
     void deleteById(Long id);
     void setFields(User newUserInfo, User oldUserInfo);
+    void setFieldsEdit(User oldUserInfo, User newUserInfo);
 }

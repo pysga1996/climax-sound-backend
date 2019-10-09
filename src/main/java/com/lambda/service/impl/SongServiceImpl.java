@@ -86,6 +86,16 @@ public class SongServiceImpl implements SongService {
     public void deleteAll(Collection<Song> songs) {
         songRepository.deleteAll(songs);
     }
+    @Override
+    public void setFields(Song oldSongInfo,Song newSongInfo){
+        oldSongInfo.setName(newSongInfo.getName());
+        oldSongInfo.setArtists(newSongInfo.getArtists());
+        oldSongInfo.setGenres(newSongInfo.getGenres());
+        oldSongInfo.setCountry(newSongInfo.getCountry());
+        oldSongInfo.setReleaseDate(newSongInfo.getReleaseDate());
+        oldSongInfo.setTags(newSongInfo.getTags());
+        oldSongInfo.setTheme(newSongInfo.getTheme());
+    }
 
     @Override
     public Page<Song> sortByDate(Pageable pageable) {
