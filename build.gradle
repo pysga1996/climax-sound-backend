@@ -67,16 +67,12 @@ dependencies {
 //	useJUnitPlatform()
 //
 
-task stage() {
-	dependsOn clean, war
-}
-war.mustRunAfter clean
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean
 
 task copyToLib(type: Copy) {
-	into "$buildDir/server"
-	from(configurations.compile) {
-		include "webapp-runner*"
-	}
+	into "$buildDir/libs"
+	from(configurations.compile)
 }
 
 stage.dependsOn(copyToLib)
