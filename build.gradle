@@ -60,27 +60,26 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
-	implementation 'com.github.jsimone:webapp-runner:8.5.11.3'
+//	implementation 'com.github.jsimone:webapp-runner:8.5.11.3'
 }
 
 //test {
 //	useJUnitPlatform()
-//}
-
-//task stage() {
-//	dependsOn clean, war
-//}
-//war.mustRunAfter clean
 //
-//task copyToLib(type: Copy) {
-//	into "$buildDir/server"
-//	from(configurations.compile) {
-//		include "webapp-runner*"
-//	}
-//}
-//
-//stage.dependsOn(copyToLib)
 
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean
 
+task copyToLib(type: Copy) {
+	into "$buildDir/libs"
+	from(configurations.compile)
+}
 
+stage.dependsOn(copyToLib)
 
+gradle.taskGraph.whenReady {
+	taskGraph ->
+		if (taskGraph.hasTask(stage)) {
+			test.enabled = false
+		}
+}
