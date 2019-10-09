@@ -1,130 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bc94efd9-f0bc-40eb-ad2a-87d2fc0f8ca5" name="Default Changelist" comment="Merge branch 'dev'&#10;&#10;# Conflicts:&#10;#&#9;.idea/vcs.xml&#10;#&#9;build.gradle&#10;#&#9;gradle/wrapper/gradle-wrapper.jar&#10;#&#9;gradle/wrapper/gradle-wrapper.properties&#10;#&#9;gradlew&#10;#&#9;gradlew.bat&#10;#&#9;settings.gradle">
-      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/vcs-1/gc.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/F:/audio/19 - Revolution - Revolution_.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/F:/audio/25 - The rise of shiva and kali - artist 2_.mp3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Procfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/hibernate.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/jackson-annotations-2.9.0.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/jackson-core-2.9.6.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/jackson-databind-2.9.6.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/jjwt-0.9.1.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mysql.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/climaxsound/ClimaxSoundApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configuration/general/ApplicationConfiguration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configuration/security/DataSeedingListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configuration/security/MethodSecurityConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configuration/security/SecurityConfiguration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configuration/security_customization/CustomPermissionEvaluator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configuration/security_customization/CustomRestAccessDeniedHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configuration/security_customization/CustomRestAuthenticationEntryPoint.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configuration/security_customization/CustomRestAuthenticationFailureHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configuration/security_customization/CustomRestAuthenticationSuccessHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configuration/security_customization/CustomRestLogoutSuccessHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configuration/security_filter/CustomCsrfFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configuration/security_filter/JwtAuthenticationFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/controller/AdminRestController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/controller/AlbumRestController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/controller/ArtistRestController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/controller/CountryRestController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/controller/PlaylistRestController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/controller/SongRestController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/controller/TagRestController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/controller/ThemeRestController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/controller/UserRestController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/converter/StringToUploadFormConverter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/exception/CustomGlobalExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/exception/FileNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/exception/FileStorageException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/formatter/LocalDateFormatter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Album.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Artist.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Comment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Country.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Genre.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Playlist.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Privilege.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Role.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Song.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Tag.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Theme.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/form/AlbumForm.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/form/AudioUploadForm.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/form/MediaForm.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/form/UserForm.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/util/CustomUserDetails.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/util/LoginRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/util/LoginResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/util/MediaObject.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/util/RandomStuff.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/util/UploadResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/property/AudioStorageProperties.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/property/AvatarStorageProperties.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/property/CoverStorageProperty.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/repository/AlbumRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/repository/ArtistRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/repository/CountryRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/repository/GenreRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/repository/PlaylistRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/repository/PrivilegeRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/repository/RoleRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/repository/SongRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/repository/TagRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/repository/ThemeRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/repository/UserRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/AlbumService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/ArtistService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/CollectionFilterService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/CountryService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/GenreService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/PlaylistService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/PrivilegeService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/RoleService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/SongService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/StorageService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/TagService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/ThemeService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/UserService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/AlbumServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/ArtistServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/AudioStorageService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/AvatarStorageService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/CountryServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/CoverStorageService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/DownloadService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/FormConvertService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/GenreServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/JwtTokenProvider.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/PlaylistServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/PrivilegeServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/RoleServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/SongServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/TagServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/ThemeServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/UserDetailServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/UserServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/ClimaxSoundApplicationTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/system.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+    <list default="true" id="bc94efd9-f0bc-40eb-ad2a-87d2fc0f8ca5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/ClimaxSoundApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/ClimaxSoundApplicationTests.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/classes/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -210,11 +89,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="42" column="16" selection-start-line="42" selection-start-column="16" selection-end-line="42" selection-end-column="16" />
+            <state relative-caret-position="1617">
+              <caret line="77" column="34" lean-forward="true" selection-start-line="77" selection-start-column="34" selection-end-line="77" selection-end-column="34" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/ClimaxSoundApplicationTests.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="252">
+              <caret line="12" selection-end-line="17" />
             </state>
           </provider>
         </entry>
@@ -253,7 +141,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/configuration/security/DataSeedingListener.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/controller/PlaylistRestController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/configuration/security/SecurityConfiguration.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/climaxsound/ClimaxSoundApplication.java" />
@@ -304,6 +191,7 @@
         <option value="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" />
         <option value="$PROJECT_DIR$/gradlew.bat" />
         <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/ClimaxSoundApplicationTests.java" />
       </list>
     </option>
   </component>
@@ -325,6 +213,32 @@
             <path>
               <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
               <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
+              <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
+              <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
+              <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
+              <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="climaxsound" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -642,7 +556,7 @@
       <workItem from="1570602835258" duration="1480000" />
       <workItem from="1570604341583" duration="152000" />
       <workItem from="1570604521444" duration="7681000" />
-      <workItem from="1570614693454" duration="1926000" />
+      <workItem from="1570614693454" duration="2296000" />
     </task>
     <task id="LOCAL-00001" summary="change to spring boot (spring mvc files are still retained)">
       <created>1569049918795</created>
@@ -917,7 +831,14 @@
       <option name="project" value="LOCAL" />
       <updated>1570615274796</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="Merge branch 'dev'&#10;&#10;# Conflicts:&#10;#&#9;.idea/vcs.xml&#10;#&#9;build.gradle&#10;#&#9;gradle/wrapper/gradle-wrapper.jar&#10;#&#9;gradle/wrapper/gradle-wrapper.properties&#10;#&#9;gradlew&#10;#&#9;gradlew.bat&#10;#&#9;settings.gradle">
+      <created>1570616669337</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1570616669337</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -953,7 +874,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="425916000" />
+    <option name="totallyTimeSpent" value="426286000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -991,7 +912,7 @@
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.7009967" />
       <window_info anchor="bottom" id="Java Enterprise" order="12" weight="0.32890365" />
       <window_info anchor="bottom" id="Spring" order="13" weight="0.32941177" />
-      <window_info anchor="bottom" id="Version Control" order="14" visible="true" weight="0.22148395" />
+      <window_info anchor="bottom" id="Version Control" order="14" weight="0.56478405" />
       <window_info anchor="bottom" id="Messages" order="15" weight="0.34551495" />
       <window_info anchor="bottom" id="Database Changes" order="16" weight="0.32890365" />
       <window_info anchor="bottom" id="Database Console" order="17" weight="0.32890365" />
@@ -1118,7 +1039,8 @@
     <MESSAGE value="upload storage" />
     <MESSAGE value="Merge branch 'hoang' of https://github.com/pysga1996/project.spring-climax-sound into dev&#10;&#10;# Conflicts:&#10;#&#9;src/main/java/com/lambda/controller/SongRestController.java&#10;#&#9;src/main/java/com/lambda/service/ArtistService.java&#10;#&#9;src/main/java/com/lambda/service/impl/ArtistServiceImpl.java&#10;#&#9;src/main/java/com/lambda/service/impl/AudioStorageService.java" />
     <MESSAGE value="fix minor bugs" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix minor bugs" />
+    <MESSAGE value="Merge branch 'dev'&#10;&#10;# Conflicts:&#10;#&#9;.idea/vcs.xml&#10;#&#9;build.gradle&#10;#&#9;gradle/wrapper/gradle-wrapper.jar&#10;#&#9;gradle/wrapper/gradle-wrapper.properties&#10;#&#9;gradlew&#10;#&#9;gradlew.bat&#10;#&#9;settings.gradle" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'dev'&#10;&#10;# Conflicts:&#10;#&#9;.idea/vcs.xml&#10;#&#9;build.gradle&#10;#&#9;gradle/wrapper/gradle-wrapper.jar&#10;#&#9;gradle/wrapper/gradle-wrapper.properties&#10;#&#9;gradlew&#10;#&#9;gradlew.bat&#10;#&#9;settings.gradle" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1157,13 +1079,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/controller/AdminRestController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="14" selection-start-line="14" selection-end-line="14" selection-end-column="69" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/service/impl/AvatarStorageService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
@@ -1552,8 +1467,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="42" column="16" selection-start-line="42" selection-start-column="16" selection-end-line="42" selection-end-column="16" />
+        <state relative-caret-position="1617">
+          <caret line="77" column="34" lean-forward="true" selection-start-line="77" selection-start-column="34" selection-end-line="77" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/ClimaxSoundApplicationTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="12" selection-end-line="17" />
         </state>
       </provider>
     </entry>
