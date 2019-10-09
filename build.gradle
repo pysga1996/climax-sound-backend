@@ -43,7 +43,7 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-core'
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 //	implementation 'org.springframework.security:spring-security-jwt:1.0.10'
-	implementation 'org.postgresql: postgresql'
+	runtimeOnly 'org.postgresql:postgresql'
 	implementation 'org.projectlombok:lombok'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	implementation 'com.google.firebase:firebase-admin:6.10.0'
@@ -58,9 +58,9 @@ dependencies {
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
 }
 
-test {
-	useJUnitPlatform()
-}
+//test {
+//	useJUnitPlatform()
+//}
 
 
 
