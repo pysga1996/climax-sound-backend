@@ -41,6 +41,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         Collection<Role> roles = user.getRoles();
         for (Role role : roles) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+            System.out.println(role.getName());
         }
 
         return new CustomUserDetails(user.getUsername(), user.getPassword(), grantedAuthorities);
