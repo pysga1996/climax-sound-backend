@@ -94,19 +94,19 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Song.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Country.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
-              <caret line="47" selection-start-line="47" selection-end-line="47" />
+            <state relative-caret-position="375">
+              <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Tag.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Song.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="32" column="43" selection-start-line="32" selection-start-column="43" selection-end-line="32" selection-end-column="43" />
+            <state relative-caret-position="576">
+              <caret line="47" selection-start-line="47" selection-end-line="47" />
             </state>
           </provider>
         </entry>
@@ -114,8 +114,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Theme.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-87">
+            <state relative-caret-position="84">
               <caret line="16" selection-start-line="16" selection-start-column="2" selection-end-line="18" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="189">
+              <caret line="27" column="103" lean-forward="true" selection-start-line="27" selection-start-column="103" selection-end-line="27" selection-end-column="103" />
             </state>
           </provider>
         </entry>
@@ -125,24 +134,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="281">
               <caret line="28" column="13" lean-forward="true" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-core/5.3.11.Final/d22baed04b7f5e6ebde552ca24025c487ad89101/hibernate-core-5.3.11.Final-sources.jar!/org/hibernate/tool/schema/extract/internal/DatabaseInformationImpl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="182">
-              <caret line="58" selection-start-line="58" selection-end-line="58" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Country.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="21">
-              <caret line="16" selection-start-line="16" selection-start-column="2" selection-end-line="18" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -179,6 +170,18 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="21">
               <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Comment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="56">
+              <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -237,7 +240,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/UserDetailServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/controller/PlaylistRestController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/PlaylistServiceImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
         <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/AlbumServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Album.java" />
@@ -269,6 +271,7 @@
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/AlbumRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/User.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Playlist.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
       </list>
     </option>
   </component>
@@ -807,7 +810,7 @@
       <workItem from="1570670356127" duration="8040000" />
       <workItem from="1570683502274" duration="1103000" />
       <workItem from="1570692202201" duration="8872000" />
-      <workItem from="1570718183315" duration="1643000" />
+      <workItem from="1570718183315" duration="1887000" />
     </task>
     <task id="LOCAL-00001" summary="change to spring boot (spring mvc files are still retained)">
       <created>1569049918795</created>
@@ -1139,7 +1142,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="461259000" />
+    <option name="totallyTimeSpent" value="461503000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1152,7 +1155,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-1" width="1920" height="1040" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4988938" visible="true" weight="0.16115262" />
       <window_info id="Structure" order="1" sideWeight="0.5011062" side_tool="true" weight="0.24332978" />
@@ -1174,7 +1176,7 @@
       <window_info anchor="bottom" id="sbt-shell-toolwindow" order="8" />
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5010672" side_tool="true" weight="0.35215947" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.49893278" visible="true" weight="0.35215947" />
+      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49893278" visible="true" weight="0.35215947" />
       <window_info anchor="bottom" id="Java Enterprise" order="12" weight="0.32890365" />
       <window_info anchor="bottom" id="Spring" order="13" weight="0.32941177" />
       <window_info anchor="bottom" id="Version Control" order="14" weight="0.56478405" />
@@ -1189,7 +1191,7 @@
       <window_info anchor="right" id="sbt" order="5" />
       <window_info anchor="right" id="Capture Analysis" order="6" />
       <window_info anchor="right" id="Gradle" order="7" weight="0.15901814" />
-      <window_info anchor="right" id="Database" order="8" visible="true" weight="0.18089648" />
+      <window_info active="true" anchor="right" id="Database" order="8" visible="true" weight="0.18089648" />
       <window_info anchor="right" id="Palette&#9;" order="9" />
       <window_info anchor="right" id="Theme Preview" order="10" />
       <window_info anchor="right" id="Bean Validation" order="11" weight="0.3295302" />
@@ -1338,13 +1340,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configuration/security_filter/JwtAuthenticationFilter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="25" column="25" lean-forward="true" selection-start-line="25" selection-start-column="25" selection-end-line="25" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/service/impl/UserDetailServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="231">
@@ -1450,16 +1445,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
           <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Comment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="1" selection-start-line="1" selection-end-line="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1651,9 +1636,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Tag.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="32" column="43" selection-start-line="32" selection-start-column="43" selection-end-line="32" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-core/5.3.11.Final/d22baed04b7f5e6ebde552ca24025c487ad89101/hibernate-core-5.3.11.Final-sources.jar!/org/hibernate/tool/schema/extract/internal/DatabaseInformationImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="58" selection-start-line="58" selection-end-line="58" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Album.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1218">
+        <state relative-caret-position="1008">
           <caret line="71" column="39" lean-forward="true" selection-start-line="71" selection-start-column="39" selection-end-line="71" selection-end-column="39" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1668,10 +1667,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Comment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="56">
+          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Country.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="16" selection-start-line="16" selection-start-column="2" selection-end-line="18" selection-end-column="26" />
+        <state relative-caret-position="375">
+          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
         </state>
       </provider>
     </entry>
@@ -1705,22 +1714,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Song.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
+        <state relative-caret-position="576">
           <caret line="47" selection-start-line="47" selection-end-line="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Tag.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="32" column="43" selection-start-line="32" selection-start-column="43" selection-end-line="32" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Theme.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-87">
-          <caret line="16" selection-start-line="16" selection-start-column="2" selection-end-line="18" selection-end-column="26" />
         </state>
       </provider>
     </entry>
@@ -1731,10 +1726,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-core/5.3.11.Final/d22baed04b7f5e6ebde552ca24025c487ad89101/hibernate-core-5.3.11.Final-sources.jar!/org/hibernate/tool/schema/extract/internal/DatabaseInformationImpl.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Theme.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="58" selection-start-line="58" selection-end-line="58" />
+        <state relative-caret-position="84">
+          <caret line="16" selection-start-line="16" selection-start-column="2" selection-end-line="18" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="27" column="103" lean-forward="true" selection-start-line="27" selection-start-column="103" selection-end-line="27" selection-end-column="103" />
         </state>
       </provider>
     </entry>
