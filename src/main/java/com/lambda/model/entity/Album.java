@@ -1,8 +1,6 @@
 package com.lambda.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import com.lambda.model.util.MediaObject;
 import lombok.*;
 import org.hibernate.annotations.Fetch;
@@ -18,7 +16,10 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper=true)
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"users", "coverBlobId"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"users", "coverBlobId", "coverUrl"}, allowGetters = true)
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Album extends MediaObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,7 +35,7 @@ public class Album extends MediaObject {
 
     private String coverBlobId;
 
-    @JsonManagedReference("album-genre")
+//    @JsonManagedReference("album-genre")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "album_genre",
@@ -45,7 +46,7 @@ public class Album extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Genre> genres;
 
-    @JsonManagedReference("album-song")
+//    @JsonManagedReference("album-song")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "album_song",
@@ -56,7 +57,7 @@ public class Album extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
 
-    @JsonManagedReference(value = "album-artist")
+//    @JsonManagedReference(value = "album-artist")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "album_artist",
@@ -67,7 +68,7 @@ public class Album extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Artist> artists;
 
-    @JsonManagedReference(value = "album-tag")
+//    @JsonManagedReference(value = "album-tag")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "album_tag",
@@ -78,12 +79,12 @@ public class Album extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Tag> tags;
 
-    @JsonManagedReference("album-country")
+    @JsonBackReference("album-country")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id")
     private Country country;
 
-    @JsonManagedReference("album-theme")
+    @JsonBackReference("album-theme")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "theme_id")
     private Theme theme;

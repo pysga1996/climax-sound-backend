@@ -82,4 +82,22 @@ public class PlaylistRestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PostMapping(value = "/add-song")
+    public ResponseEntity<Void> addSongToPlaylist(@RequestParam("songId") Long songId, @RequestParam("playlistId") Long playlistId) {
+        boolean result = playlistService.addSongToPlaylist(songId, playlistId);
+        if (result) {
+            return new ResponseEntity<>( HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PutMapping(value = "/remove-song")
+    public ResponseEntity<String> deletePlaylistSong(@RequestParam("songId") Long songId, @RequestParam("playlistId")Long playlistId) {
+        boolean result = playlistService.deleteSongFromPlaylist(songId,playlistId);
+        if(result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
 }

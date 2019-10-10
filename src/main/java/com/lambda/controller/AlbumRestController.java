@@ -69,7 +69,8 @@ public class AlbumRestController {
     }
 
     @PostMapping(value = "/upload", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Long> createAlbum(@Valid @RequestPart("album") Album album, @RequestPart("image") MultipartFile file) {
+    public ResponseEntity<Long> createAlbum(@Valid @RequestPart("album") Album album, @RequestPart("cover") MultipartFile file) {
+        albumService.save(album);
         String fileName = coverStorageService.saveToFirebaseStorage(album, file);
         album.setCoverUrl(fileName);
         albumService.save(album);

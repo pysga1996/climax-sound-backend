@@ -57,7 +57,7 @@ public class Song extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Artist> artists;
 
-    @JsonBackReference(value = "album-song")
+//    @JsonBackReference(value = "album-song")
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "songs")
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> albums;

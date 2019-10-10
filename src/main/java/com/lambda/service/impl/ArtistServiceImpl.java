@@ -32,11 +32,6 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public Iterable<Artist> findAllByNameContaining(String name) {
-        return artistRepository.findAllByNameContaining(name);
-    }
-
-    @Override
     public Page<Artist> findAllByNameContaining(String name, Pageable pageable) {
         return artistRepository.findAllByNameContaining(name, pageable);
     }
@@ -55,8 +50,6 @@ public class ArtistServiceImpl implements ArtistService {
     public Page<Artist> findAll(Pageable pageable) {
         return artistRepository.findAll(pageable);
     }
-
-
 
     public String convertToString(Collection<Artist> artists) {
         String artistsString = "";

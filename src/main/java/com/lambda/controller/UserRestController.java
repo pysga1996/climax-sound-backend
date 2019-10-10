@@ -76,30 +76,34 @@ public class UserRestController {
     }
 
     @PutMapping("/profile")
-    public ResponseEntity<Long> updateProfile(@RequestBody UserForm userForm, @RequestParam("id") Long id) {
-        User newUserInfo = formConvertService.convertToUser(userForm, false);
+    public ResponseEntity<Void> updateProfile(@RequestPart("user") User user , @RequestPart(value = "avatar",required = false) MultipartFile multipartFile, @RequestParam("id") Long id) {
         Optional<User> oldUser = userService.findById(id);
-        if (oldUser.isPresent()) {
-            userService.setFields(newUserInfo, oldUser.get());
-            return new ResponseEntity<>(id, HttpStatus.OK);
+        if(oldUser.isPresent()) {
+            if (multipartFile != null) {
+                String fileDownloadUri = avatarStorageService.saveToFirebaseStorage(oldUser.get(),multipartFile);
+                user.setAvatarUrl(fileDownloadUri);
+            }
+            userService.setFieldsEdit(oldUser.get(),user);
+            userService.save(oldUser.get());
+            return new ResponseEntity<>(HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping("/avatar")
-    public ResponseEntity<String> uploadAvatar(@RequestPart("avatar") MultipartFile avatar, @RequestPart("id") String id) {
-        Optional<User> user = userService.findById(Long.parseLong(id));
-        if (user.isPresent()) {
-            String fileName = avatarStorageService.saveToFirebaseStorage(user.get(), avatar);
-                String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                        .path("/api/avatar/")
-                        .path(fileName)
-                        .toUriString();
-                user.get().setAvatarUrl(fileDownloadUri);
-                userService.save(user.get());
-            return new ResponseEntity<>("User's avatar uploaded successfully", HttpStatus.OK);
-        } else return new ResponseEntity<>("Not found user with the given id in database!", HttpStatus.NOT_FOUND);
-    }
+//    @PostMapping("/avatar")
+//    public ResponseEntity<String> uploadAvatar(@RequestPart("avatar") MultipartFile avatar, @RequestPart("id") String id) {
+//        Optional<User> user = userService.findById(Long.parseLong(id));
+//        if (user.isPresent()) {
+//            String fileName = avatarStorageService.saveToFirebaseStorage(user.get(), avatar);
+//                String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+//                        .path("/api/avatar/")
+//                        .path(fileName)
+//                        .toUriString();
+//                user.get().setAvatarUrl(fileDownloadUri);
+//                userService.save(user.get());
+//            return new ResponseEntity<>("User's avatar uploaded successfully", HttpStatus.OK);
+//        } else return new ResponseEntity<>("Not found user with the given id in database!", HttpStatus.NOT_FOUND);
+//    }
 
     @GetMapping("/avatar/{fileName:.+}")
     public ResponseEntity<Resource> getAvatar(@PathVariable("fileName") String fileName, HttpServletRequest request) {
@@ -107,15 +111,15 @@ public class UserRestController {
     }
 
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createUser(@Valid @RequestBody UserForm userForm) {
+    public ResponseEntity<Void> createUser(@Valid @RequestBody UserForm userForm) {
         User user = formConvertService.convertToUser(userForm, true);
-        if (user == null) return new ResponseEntity<>("Username existed in database!", HttpStatus.BAD_REQUEST);
+        if (user == null) return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
         Role role = roleRepository.findByName(DEFAULT_ROLE);
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         user.setRoles(roles);
         userService.save(user);
-        return new ResponseEntity<>("Registered successfully!", HttpStatus.OK);
+        return new ResponseEntity<>( HttpStatus.OK);
     }
 
     @PostMapping(value = "/login")
