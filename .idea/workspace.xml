@@ -2,17 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bc94efd9-f0bc-40eb-ad2a-87d2fc0f8ca5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Album.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Album.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Artist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Artist.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Country.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Country.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Genre.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Genre.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Playlist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Playlist.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Privilege.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Privilege.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Role.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Song.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Song.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Tag.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Tag.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Theme.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Theme.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/classes/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -71,6 +61,25 @@
         <item name="postgres-heroku" type="feb32156:DbDataSourceImpl" />
         <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
         <item name="d9lfgg6p1rlj1: database" type="162271b6:PgImplModel$Database" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
+        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="postgres-heroku" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="d9lfgg6p1rlj1: database" type="162271b6:PgImplModel$Database" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
+        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="lambda_user: table" type="69fad909:PgImplModel$LocalTable" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="postgres-heroku" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="d9lfgg6p1rlj1: database" type="162271b6:PgImplModel$Database" />
         <item name="access methods" type="d4e8921:DatabaseStructure$FamilyGroup" />
       </path>
     </expand>
@@ -121,97 +130,103 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Song.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/ArtistRepository.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="31" column="29" selection-start-line="31" selection-start-column="29" selection-end-line="31" selection-end-column="29" />
+            <state relative-caret-position="147">
+              <caret line="15" column="22" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="22" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Tag.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/CountryRepository.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="24" column="28" selection-start-line="24" selection-start-column="28" selection-end-line="24" selection-end-column="28" />
+            <state relative-caret-position="147">
+              <caret line="13" column="23" selection-start-line="13" selection-start-column="23" selection-end-line="13" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/GenreRepository.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="147">
+              <caret line="11" column="21" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/PlaylistRepository.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="147">
+              <caret line="15" column="32" selection-start-line="15" selection-start-column="32" selection-end-line="15" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/PrivilegeRepository.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="147">
+              <caret line="11" column="25" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/RoleRepository.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="16" column="20" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
+              <folding>
+                <element signature="e#0#67#1" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/SongRepository.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="42">
+              <caret line="20" column="30" selection-start-line="20" selection-start-column="30" selection-end-line="20" selection-end-column="30" />
+              <folding>
+                <element signature="e#0#53#1" expanded="true" />
+                <element signature="e#0#53#1" expanded="true" />
+                <element signature="e#0#64#1" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/TagRepository.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="147">
+              <caret line="13" column="19" selection-start-line="13" selection-start-column="19" selection-end-line="13" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/ThemeRepository.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="147">
+              <caret line="13" column="21" selection-start-line="13" selection-start-column="21" selection-end-line="13" selection-end-column="21" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Theme.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="25" column="30" selection-start-line="25" selection-start-column="30" selection-end-line="25" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/User.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="21">
-              <caret line="16" column="11" selection-start-line="16" selection-start-column="11" selection-end-line="16" selection-end-column="11" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Comment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="56">
-              <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Country.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="354">
-              <caret line="26" column="32" selection-start-line="26" selection-start-column="32" selection-end-line="26" selection-end-column="32" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Genre.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="27" column="30" selection-start-line="27" selection-start-column="30" selection-end-line="27" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Playlist.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="27" column="33" selection-start-line="27" selection-start-column="33" selection-end-line="27" selection-end-column="33" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Privilege.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/UserRepository.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="189">
-              <caret line="24" column="34" selection-start-line="24" selection-start-column="34" selection-end-line="24" selection-end-column="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Role.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="25" column="29" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
+              <caret line="16" column="108" lean-forward="true" selection-start-line="16" selection-start-column="108" selection-end-line="16" selection-end-column="108" />
+              <folding>
+                <element signature="e#0#82#1" expanded="true" />
+                <element signature="e#0#94#1" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -252,8 +267,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/ArtistServiceImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/ArtistService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/FormConvertService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/controller/AlbumRestController.java" />
         <option value="$PROJECT_DIR$/mysql.env" />
@@ -273,7 +286,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Comment.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/configuration/security/SecurityConfiguration.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/controller/AdminRestController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/SongRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/SongServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/SongService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/controller/UserRestController.java" />
@@ -283,14 +295,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/StorageService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/controller/SongRestController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/UserRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/ThemeRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/TagRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/PrivilegeRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/GenreRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/CountryRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/ArtistRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/AlbumRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
         <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/User.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Album.java" />
@@ -303,6 +307,17 @@
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Song.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Tag.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Theme.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/AlbumRepository.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/ArtistRepository.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/CountryRepository.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/GenreRepository.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/PlaylistRepository.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/PrivilegeRepository.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/RoleRepository.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/SongRepository.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/TagRepository.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/ThemeRepository.java" />
       </list>
     </option>
   </component>
@@ -325,11 +340,6 @@
             <path>
               <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
               <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
-              <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="build" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
@@ -846,7 +856,7 @@
       <workItem from="1570670356127" duration="8040000" />
       <workItem from="1570683502274" duration="1103000" />
       <workItem from="1570692202201" duration="8872000" />
-      <workItem from="1570718183315" duration="3982000" />
+      <workItem from="1570718183315" duration="5074000" />
     </task>
     <task id="LOCAL-00001" summary="change to spring boot (spring mvc files are still retained)">
       <created>1569049918795</created>
@@ -1178,7 +1188,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="463598000" />
+    <option name="totallyTimeSpent" value="464690000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1191,6 +1201,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-1" width="1920" height="1040" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4988938" visible="true" weight="0.16115262" />
       <window_info id="Structure" order="1" sideWeight="0.5011062" side_tool="true" weight="0.24332978" />
@@ -1376,20 +1387,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/PlaylistRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="13" column="17" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/util/LoginRequest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="10" column="28" lean-forward="true" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/util/MediaObject.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="399">
@@ -1553,104 +1550,10 @@
     <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/3c5cd30b-bff9-4fb2-b1cb-e5ac2a75f8fc/console.sql">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/UserRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="12" column="67" selection-start-line="12" selection-start-column="67" selection-end-line="12" selection-end-column="67" />
-          <folding>
-            <element signature="e#0#82#1" expanded="true" />
-            <element signature="e#0#94#1" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/ThemeRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="12" column="87" lean-forward="true" selection-start-line="12" selection-start-column="86" selection-end-line="12" selection-end-column="87" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/TagRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="12" column="85" selection-start-line="12" selection-start-column="80" selection-end-line="12" selection-end-column="85" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/SongRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="24" column="64" lean-forward="true" selection-start-line="24" selection-start-column="64" selection-end-line="24" selection-end-column="64" />
-          <folding>
-            <element signature="e#0#53#1" expanded="true" />
-            <element signature="e#0#53#1" expanded="true" />
-            <element signature="e#0#64#1" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/RoleRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="16" column="48" lean-forward="true" selection-start-line="16" selection-start-column="48" selection-end-line="16" selection-end-column="48" />
-          <folding>
-            <element signature="e#0#67#1" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/PrivilegeRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="11" column="52" lean-forward="true" selection-start-line="11" selection-start-column="52" selection-end-line="11" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/GenreRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="11" column="49" lean-forward="true" selection-start-line="11" selection-start-column="49" selection-end-line="11" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/CountryRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="13" column="50" lean-forward="true" selection-start-line="13" selection-start-column="50" selection-end-line="13" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/ArtistRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="15" column="50" lean-forward="true" selection-start-line="15" selection-start-column="50" selection-end-line="15" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/AlbumRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="22" column="59" lean-forward="true" selection-start-line="22" selection-start-column="59" selection-end-line="22" selection-end-column="59" />
-          <folding>
-            <element signature="e#0#98#1" expanded="true" />
-            <element signature="e#0#81#1" expanded="true" />
-            <element signature="e#0#59#1" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-core/5.3.11.Final/d22baed04b7f5e6ebde552ca24025c487ad89101/hibernate-core-5.3.11.Final-sources.jar!/org/hibernate/tool/schema/extract/internal/DatabaseInformationImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="182">
           <caret line="58" selection-start-line="58" selection-end-line="58" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="27" column="103" selection-start-line="27" selection-start-column="103" selection-end-line="27" selection-end-column="103" />
         </state>
       </provider>
     </entry>
@@ -1762,10 +1665,120 @@
         </state>
       </provider>
     </entry>
+    <entry file="das://3c5cd30b-bff9-4fb2-b1cb-e5ac2a75f8fc/database/d9lfgg6p1rlj1/schema/public/table/lambda_user">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state projectRestartId="f723f91a-3655-4db7-a448-a6f5451ecacc">
+          <filtering>
+            <filter text="" />
+          </filtering>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Theme.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
           <caret line="25" column="30" selection-start-line="25" selection-start-column="30" selection-end-line="25" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="28" column="69" selection-start-line="28" selection-start-column="69" selection-end-line="28" selection-end-column="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/AlbumRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="22" column="31" selection-start-line="22" selection-start-column="31" selection-end-line="22" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#98#1" expanded="true" />
+            <element signature="e#0#81#1" expanded="true" />
+            <element signature="e#0#59#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/ArtistRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="15" column="22" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/CountryRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="13" column="23" selection-start-line="13" selection-start-column="23" selection-end-line="13" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/GenreRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="11" column="21" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/PlaylistRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="15" column="32" selection-start-line="15" selection-start-column="32" selection-end-line="15" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/PrivilegeRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="11" column="25" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/RoleRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="16" column="20" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#67#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/SongRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="20" column="30" selection-start-line="20" selection-start-column="30" selection-end-line="20" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#53#1" expanded="true" />
+            <element signature="e#0#53#1" expanded="true" />
+            <element signature="e#0#64#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/TagRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="13" column="19" selection-start-line="13" selection-start-column="19" selection-end-line="13" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/ThemeRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="13" column="21" selection-start-line="13" selection-start-column="21" selection-end-line="13" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/UserRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="16" column="108" lean-forward="true" selection-start-line="16" selection-start-column="108" selection-end-line="16" selection-end-column="108" />
+          <folding>
+            <element signature="e#0#82#1" expanded="true" />
+            <element signature="e#0#94#1" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
