@@ -3,8 +3,6 @@ package com.lambda.controller;
 import com.lambda.model.entity.Album;
 import com.lambda.model.entity.Artist;
 import com.lambda.model.entity.Song;
-import com.lambda.model.form.AudioUploadForm;
-import com.lambda.model.util.UploadResponse;
 import com.lambda.service.AlbumService;
 import com.lambda.service.ArtistService;
 import com.lambda.service.PlaylistService;
@@ -13,23 +11,17 @@ import com.lambda.service.impl.AudioStorageService;
 import com.lambda.service.impl.DownloadService;
 import com.lambda.service.impl.FormConvertService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -132,23 +124,6 @@ public class SongRestController {
         } else return new ResponseEntity<>("Song removed but media file was not found on server", HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping(value = "/add-to-playlist")
-    public ResponseEntity<Void> addSongToPlaylist(@RequestParam("songId") Long songId, @RequestParam("playlistId") Long playlistId) {
-        boolean result = playlistService.addSongToPlaylist(songId, playlistId);
-        if (result) {
-            return new ResponseEntity<>( HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
-
-    @PutMapping(value = "/delete-playlist-song")
-    public ResponseEntity<String> deletePlaylistSong(@RequestParam("songId") Long songId, @RequestParam("playlistId")Long playlistId) {
-        boolean result = playlistService.deletePlaylistSong(songId,playlistId);
-        if(result) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
     @GetMapping("/sortByDate")
     public ResponseEntity<Page<Song>> listSong( @PageableDefault(sort = "releaseDate",
             direction = Sort.Direction.DESC) Pageable pageable){
