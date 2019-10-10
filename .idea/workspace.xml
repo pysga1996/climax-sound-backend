@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bc94efd9-f0bc-40eb-ad2a-87d2fc0f8ca5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Procfile" beforeDir="false" afterPath="$PROJECT_DIR$/Procfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql.env" beforeDir="false" afterPath="$PROJECT_DIR$/mysql.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/classes/" />
@@ -131,11 +130,29 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="84">
-              <caret line="7" column="62" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="62" />
+            <state relative-caret-position="147">
+              <caret line="10" column="55" selection-start-line="10" selection-start-column="29" selection-end-line="10" selection-end-column="55" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/hibernate.env">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="41" selection-end-column="41" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/mysql.env">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="63">
+              <caret line="3" column="33" lean-forward="true" selection-start-line="3" selection-start-column="33" selection-end-line="3" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -214,7 +231,6 @@
       <list>
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/FormConvertService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/controller/AlbumRestController.java" />
-        <option value="$PROJECT_DIR$/mysql.env" />
         <option value="$PROJECT_DIR$/hibernate.env" />
         <option value="$PROJECT_DIR$/system.properties" />
         <option value="$PROJECT_DIR$/settings.gradle" />
@@ -263,6 +279,7 @@
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/Procfile" />
         <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
+        <option value="$PROJECT_DIR$/mysql.env" />
       </list>
     </option>
   </component>
@@ -811,7 +828,7 @@
       <workItem from="1570670356127" duration="8040000" />
       <workItem from="1570683502274" duration="1103000" />
       <workItem from="1570692202201" duration="8872000" />
-      <workItem from="1570718183315" duration="8860000" />
+      <workItem from="1570718183315" duration="9145000" />
     </task>
     <task id="LOCAL-00001" summary="change to spring boot (spring mvc files are still retained)">
       <created>1569049918795</created>
@@ -1143,7 +1160,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="468476000" />
+    <option name="totallyTimeSpent" value="468761000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1478,12 +1495,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mysql.env">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hibernate.env">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="das://3c5cd30b-bff9-4fb2-b1cb-e5ac2a75f8fc/database/d9lfgg6p1rlj1/schema/public/table/playlist">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state projectRestartId="f723f91a-3655-4db7-a448-a6f5451ecacc">
@@ -1724,10 +1735,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/hibernate.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="41" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="7" column="62" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="62" />
+        <state relative-caret-position="147">
+          <caret line="10" column="55" selection-start-line="10" selection-start-column="29" selection-end-line="10" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mysql.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="63">
+          <caret line="3" column="33" lean-forward="true" selection-start-line="3" selection-start-column="33" selection-end-line="3" selection-end-column="33" />
         </state>
       </provider>
     </entry>
