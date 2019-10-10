@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bc94efd9-f0bc-40eb-ad2a-87d2fc0f8ca5" name="Default Changelist" comment="upload storage">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/form/UserForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/form/UserForm.java" afterDir="false" />
-    </list>
+    <list default="true" id="bc94efd9-f0bc-40eb-ad2a-87d2fc0f8ca5" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/classes/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -678,7 +675,7 @@
       <workItem from="1570593584748" duration="1243000" />
       <workItem from="1570603282556" duration="4420000" />
       <workItem from="1570638036692" duration="592000" />
-      <workItem from="1570672662723" duration="1685000" />
+      <workItem from="1570672662723" duration="1938000" />
     </task>
     <task id="LOCAL-00001" summary="change to spring boot (spring mvc files are still retained)">
       <created>1569049918795</created>
@@ -925,7 +922,14 @@
       <option name="project" value="LOCAL" />
       <updated>1570433950061</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="upload storage">
+      <created>1570678718174</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1570678718174</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -961,7 +965,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="403934000" />
+    <option name="totallyTimeSpent" value="404187000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -994,7 +998,7 @@
       <window_info anchor="bottom" id="Build" order="7" weight="0.32941177" />
       <window_info anchor="bottom" id="sbt-shell-toolwindow" order="8" />
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5010672" side_tool="true" weight="0.3709856" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5010672" side_tool="true" weight="0.36970684" />
       <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.32736155" />
       <window_info anchor="bottom" id="Java Enterprise" order="12" weight="0.32941177" />
       <window_info anchor="bottom" id="Spring" order="13" weight="0.32941177" />
