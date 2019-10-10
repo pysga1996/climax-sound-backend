@@ -23,8 +23,8 @@ public class Playlist {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    //    @Column(columnDefinition = "VARCHAR(255) COLLATE utf8mb4_bin")
     @NotBlank
-//    @Column(columnDefinition = "VARCHAR(255) COLLATE utf8mb4_bin")
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)

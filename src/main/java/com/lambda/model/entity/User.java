@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.HashSet;
 
 @Entity
+@Table(name = "lambda_user")
 @Data
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"roles", "favoriteSongs", "favoriteAlbums", "comments", "playlists", "avatarBlobId"
@@ -26,9 +27,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    //    @Column(unique = true, nullable = false, columnDefinition = "VARCHAR(255) COLLATE utf8mb4_bin")
     @NotBlank
     @Pattern(regexp = "^[a-zA-Z0-9]+([a-zA-Z0-9]([_\\- ])[a-zA-Z0-9])*[a-zA-Z0-9]+${8,}")
-//    @Column(unique = true, nullable = false, columnDefinition = "VARCHAR(255) COLLATE utf8mb4_bin")
     private String username;
 
     @NotBlank
