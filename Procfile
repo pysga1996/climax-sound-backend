@@ -1,1 +1,1 @@
-web: java -jar build/libs/climax-sound-0.0.1-SNAPSHOT.jar -Dspring.datasource.url=jdbc:postgresql://ec2-54-163-230-199.compute-1.amazonaws.com:5432/d9lfgg6p1rlj1?user=jlvdxhiigamhtu&password=963203417a3822e7724810fcd8d9ab50b2973b4478d002737157ac73ad41a3d2
+web: java -jar build/libs/climax-sound-0.0.1-SNAPSHOT.jar -Dspring.datasource.url=jdbc:postgresql://ec2-54-163-230-199.compute-1.amazonaws.com:5432/d9lfgg6p1rlj1
