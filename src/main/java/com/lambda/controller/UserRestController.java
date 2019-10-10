@@ -1,13 +1,14 @@
 package com.lambda.controller;
 
+import com.lambda.model.entity.Artist;
 import com.lambda.model.entity.Role;
+import com.lambda.model.entity.Song;
 import com.lambda.model.entity.User;
 import com.lambda.model.form.UserForm;
-import com.lambda.model.util.CustomUserDetails;
-import com.lambda.model.util.LoginRequest;
-import com.lambda.model.util.LoginResponse;
-import com.lambda.model.util.RandomStuff;
+import com.lambda.model.util.*;
 import com.lambda.repository.RoleRepository;
+import com.lambda.service.ArtistService;
+import com.lambda.service.SongService;
 import com.lambda.service.UserService;
 import com.lambda.service.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,10 @@ public class UserRestController {
 
     @Autowired
     FormConvertService formConvertService;
+    @Autowired
+    private SongService songService;
+    @Autowired
+    private ArtistService artistService;
 
     @GetMapping("/profile")
     public ResponseEntity<User> getCurrentUser() {
@@ -173,5 +178,12 @@ public class UserRestController {
         if (userList.getTotalElements() == 0) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else return new ResponseEntity<>(userList, HttpStatus.OK);
+    }
+    @GetMapping(value = "/search", params = "name")
+    public ResponseEntity<SearchResponse> search(@RequestParam("name") String name){
+        Iterable<Song> songs = songService.findAllByNameContaining(name);
+        Iterable<Artist> artists = artistService.findAllByNameContaining(name);
+        SearchResponse  searchResponse = new SearchResponse(songs,artists);
+        return new ResponseEntity<>(searchResponse, HttpStatus.OK);
     }
 }

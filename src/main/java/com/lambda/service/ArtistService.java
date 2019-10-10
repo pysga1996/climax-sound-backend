@@ -17,4 +17,5 @@ public interface ArtistService {
     String convertToString(Collection<Artist> artists);
     Page<Artist> findAll(Pageable pageable);
     void setFields(Artist oldArtistInfo, Artist newArtistInfo);
+    Iterable<Artist> findAllByNameContaining(String name);
 }
