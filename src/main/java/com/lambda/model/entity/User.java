@@ -95,7 +95,7 @@ public class User {
     private Collection<Album> favoriteAlbums;
 
     @JsonManagedReference("user-uploadedSong")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "uploader")
     Collection<Song> uploadedSong;
 
     @JsonManagedReference(value = "user-comment")

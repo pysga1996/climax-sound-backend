@@ -6,6 +6,7 @@ import com.lambda.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -18,6 +19,11 @@ public class SongServiceImpl implements SongService {
 
     @Autowired
     AudioStorageService audioStorageService;
+
+    @Override
+    public Page<Song> findAllByUploader_Id(Long id, Pageable pageable) {
+        return songRepository.findAllByUploader_Id(id, pageable);
+    }
 
     @Override
     public Optional<Song> findById(Long id) {

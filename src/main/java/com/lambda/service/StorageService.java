@@ -190,6 +190,15 @@ public abstract class StorageService<T> {
             Blob blob = bucket.create(blobString, testFile, Bucket.BlobWriteOption.userProject("climax-sound"));
             bucket.getStorage().updateAcl(blob.getBlobId(), Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER));
             String id = blob.getGeneratedId();
+            if (object instanceof Song) {
+                ((Song) object).setBlobId(id);
+            } else if (object instanceof Album) {
+                ((Album) object).setCoverBlobId(id);
+            } else if (object instanceof User) {
+                ((User) object).setAvatarBlobId(id);
+            } else if (object instanceof Artist) {
+                ((Artist) object).setAvatarUrl(id);
+            }
             return blob.getMediaLink();
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);

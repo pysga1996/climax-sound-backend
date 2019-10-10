@@ -13,7 +13,6 @@ import java.util.Optional;
 
 @Repository
 public interface SongRepository extends JpaRepository<Song, Long> {
-    Page<Song> findAll(Pageable pageable);
 
 //    @Query("SELECT s, c, t from Song s JOIN FETCH s.country c JOIN FETCH s.theme t WHERE s.id=:id")
     Optional<Song> findById(Long id);
@@ -22,6 +21,8 @@ public interface SongRepository extends JpaRepository<Song, Long> {
     Optional<Song> findByName(@Param("name") String name);
 
     Iterable<Song> findAllByName(String name);
+
+    Page<Song> findAllByUploader_Id(Long id, Pageable pageable);
 
     Iterable<Song> findAllByNameContaining(String name);
 

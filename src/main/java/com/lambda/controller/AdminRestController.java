@@ -36,4 +36,12 @@ public class AdminRestController {
         userService.deleteById(id);
         return new ResponseEntity<>("Deleted!", HttpStatus.OK);
     }
+
+    @GetMapping("/user-list")
+    public ResponseEntity<Page<User>> userList(Pageable pageable) {
+        Page<User> userList = userService.findAll(pageable);
+        if (userList.getTotalElements() == 0) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else return new ResponseEntity<>(userList, HttpStatus.OK);
+    }
 }

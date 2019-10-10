@@ -13,6 +13,7 @@ public interface SongService {
     Iterable<Song> findAllByName(String name);
     Iterable<Song> findAllByNameContaining(String name);
     Page<Song> findAll(Pageable pageable);
+    Page<Song> findAllByUploader_Id(Long id, Pageable pageable);
     Page<Song> findAllByNameContaining(String name, Pageable pageable);
     Page<Song> findAllByAlbum_Id(Long id, Pageable pageable);
     Iterable<Song> findAllByAlbum_Id(Long id);

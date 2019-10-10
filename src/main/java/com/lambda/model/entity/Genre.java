@@ -15,9 +15,9 @@ import java.util.Collection;
 @Data
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"songs", "albums"}, allowGetters = true, ignoreUnknown = true)
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
 public class Genre {
 
     @Id
@@ -31,7 +31,7 @@ public class Genre {
     @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
     private Collection<Song> songs;
 
-//    @JsonBackReference("album-genre")
+    @JsonBackReference("album-genre")
     @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
     private Collection<Album> albums;
 

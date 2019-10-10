@@ -1,6 +1,7 @@
 package com.lambda.controller;
 
 import com.lambda.model.entity.Role;
+import com.lambda.model.entity.Song;
 import com.lambda.model.entity.User;
 import com.lambda.model.form.UserForm;
 import com.lambda.model.util.CustomUserDetails;
@@ -8,6 +9,7 @@ import com.lambda.model.util.LoginRequest;
 import com.lambda.model.util.LoginResponse;
 import com.lambda.model.util.RandomStuff;
 import com.lambda.repository.RoleRepository;
+import com.lambda.service.SongService;
 import com.lambda.service.UserService;
 import com.lambda.service.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -58,6 +61,9 @@ public class UserRestController {
 
     @Autowired
     FormConvertService formConvertService;
+
+    @Autowired
+    SongService songService;
 
     @GetMapping("/profile")
     public ResponseEntity<User> getCurrentUser() {
@@ -167,11 +173,15 @@ public class UserRestController {
         return new RandomStuff(Boolean.toString(value));
 //        return new RandomStuff("JWT Hợp lệ mới có thể thấy được message này");
     }
-    @GetMapping("/list")
-    public ResponseEntity<Page<User>> userList(Pageable pageable) {
-        Page<User> userList = userService.findAll(pageable);
-        if (userList.getTotalElements() == 0) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else return new ResponseEntity<>(userList, HttpStatus.OK);
+
+    @GetMapping("/mysong")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Page<Song>> mySongList(Pageable pageable) {
+        Page<Song> mySongList = songService.findAllByUploader_Id(userDetailService.getCurrentUser().getId(), pageable);
+        if (mySongList.getTotalElements() > 0) {
+            return new ResponseEntity<>(mySongList, HttpStatus.OK);
+        } else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+
 }

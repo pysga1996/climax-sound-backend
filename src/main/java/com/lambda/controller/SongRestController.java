@@ -10,6 +10,7 @@ import com.lambda.service.SongService;
 import com.lambda.service.impl.AudioStorageService;
 import com.lambda.service.impl.DownloadService;
 import com.lambda.service.impl.FormConvertService;
+import com.lambda.service.impl.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,6 +38,9 @@ public class SongRestController {
 
     @Autowired
     ArtistService artistService;
+
+    @Autowired
+    UserDetailServiceImpl userDetailServiceImpl;
 
     @Autowired
     private AudioStorageService audioStorageService;
@@ -59,6 +65,7 @@ public class SongRestController {
         songService.save(song);
         String fileDownloadUri = audioStorageService.saveToFirebaseStorage(song, file);
         song.setUrl(fileDownloadUri);
+        song.setUploader(userDetailServiceImpl.getCurrentUser());
         songService.save(song);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -69,6 +76,7 @@ public class SongRestController {
 //    }
 
     @GetMapping("/list")
+    @PreAuthorize("isAnonymous()")
     public ResponseEntity<Page<Song>> songList(Pageable pageable) {
         Page<Song> songList = songService.findAll(pageable);
         if (songList.getTotalElements() == 0) {
