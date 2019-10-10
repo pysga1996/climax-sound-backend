@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CountryRepository extends JpaRepository<Country, Integer> {
 //    @Query(value = "SELECT * FROM country WHERE BINARY name=:name", nativeQuery = true)
-    Country findByName(@Param("name")String name);
+    Country findByName(String name);
 
     Page<Country> findAll(Pageable pageable);
 

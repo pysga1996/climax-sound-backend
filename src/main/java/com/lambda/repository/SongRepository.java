@@ -17,8 +17,8 @@ public interface SongRepository extends JpaRepository<Song, Long> {
 //    @Query("SELECT s, c, t from Song s JOIN FETCH s.country c JOIN FETCH s.theme t WHERE s.id=:id")
     Optional<Song> findById(Long id);
 
-    @Query(value = "SELECT * FROM song WHERE BINARY name=:name", nativeQuery = true)
-    Optional<Song> findByName(@Param("name") String name);
+//    @Query(value = "SELECT * FROM song WHERE BINARY name=:name", nativeQuery = true)
+    Optional<Song> findByName(String name);
 
     Iterable<Song> findAllByName(String name);
 

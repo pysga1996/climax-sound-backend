@@ -26,6 +26,7 @@ public class Artist {
     private Long id;
 
     @NotBlank
+    @Column(name = "artist_name")
     private String name;
 
     @DateTimeFormat(pattern = "MM-dd-yyyy")

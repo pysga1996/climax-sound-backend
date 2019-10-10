@@ -25,6 +25,7 @@ public class Playlist {
 
     //    @Column(columnDefinition = "VARCHAR(255) COLLATE utf8mb4_bin")
     @NotBlank
+    @Column(name = "playlist_name")
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)

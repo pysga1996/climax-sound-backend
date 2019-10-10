@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface ArtistRepository extends JpaRepository<Artist, Long> {
 //    @Query(value = "SELECT * FROM album WHERE BINARY name=:name", nativeQuery = true)
-    Artist findByName(@Param("name") String name);
+    Artist findByName(String name);
 
     Iterable<Artist> findFirst10ByNameContaining(String name);
 

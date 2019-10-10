@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface GenreRepository extends JpaRepository<Genre, Integer> {
 //    @Query(value = "SELECT * FROM genre WHERE BINARY name=:name", nativeQuery = true)
-    Genre findByName(@Param("name") String name);
+    Genre findByName(String name);
 
     Iterable<Genre> findAllByNameContaining(String name);
 }

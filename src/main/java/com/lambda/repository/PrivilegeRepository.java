@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PrivilegeRepository extends JpaRepository<Privilege, Integer> {
 //    @Query(value = "SELECT * FROM privilege WHERE BINARY name=:name", nativeQuery = true)
-    Privilege findByName(@Param("name")String name);
+    Privilege findByName(String name);
 }

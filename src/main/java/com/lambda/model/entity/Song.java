@@ -29,6 +29,7 @@ public class Song extends MediaObject {
     private Long id;
 
     @NotBlank
+    @Column(name = "song_name")
     private String name;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
