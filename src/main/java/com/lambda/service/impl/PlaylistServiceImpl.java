@@ -22,6 +22,11 @@ public class PlaylistServiceImpl implements PlaylistService {
     SongService songService;
 
     @Override
+    public Iterable<Playlist> findAllByUser_Id(Long userId) {
+        return playlistRepository.findAllByUser_Id(userId);
+    }
+
+    @Override
     public Optional<Playlist> findById(Long id) {
         return playlistRepository.findById(id);
     }

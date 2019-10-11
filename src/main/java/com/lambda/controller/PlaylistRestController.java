@@ -1,6 +1,8 @@
 package com.lambda.controller;
 
+import com.google.common.collect.Iterables;
 import com.lambda.model.entity.Playlist;
+import com.lambda.model.entity.Song;
 import com.lambda.model.entity.User;
 import com.lambda.service.PlaylistService;
 import com.lambda.service.impl.UserDetailServiceImpl;
@@ -14,7 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
+import java.util.*;
 
 @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 @RestController
@@ -92,12 +94,34 @@ public class PlaylistRestController {
     }
 
     @PutMapping(value = "/remove-song")
-    public ResponseEntity<String> deletePlaylistSong(@RequestParam("songId") Long songId, @RequestParam("playlistId")Long playlistId) {
+    public ResponseEntity<Void> deletePlaylistSong(@RequestParam("songId") Long songId, @RequestParam("playlistId")Long playlistId) {
         boolean result = playlistService.deleteSongFromPlaylist(songId,playlistId);
         if(result) {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/listToAdd")
+    public ResponseEntity<Collection<Playlist>> showPlaylistListToAdd(@RequestParam("songId") Long songId) {
+        User currentUser = userDetailService.getCurrentUser();
+        Iterable<Playlist> playlistList = playlistService.findAllByUser_Id(currentUser.getId());
+        Collection<Playlist> playlistCollection = new ArrayList<>();
+        for (Playlist playlist: playlistList) {
+            playlistCollection.add(playlist);
+        }
+        for (Playlist playlist: playlistCollection) {
+            for (Song song: playlist.getSongs()) {
+                if (song.getId().equals(songId)) {
+                    playlistCollection.remove(playlist);
+                }
+            }
+        }
+
+        boolean isEmpty = playlistCollection.size() == 0;
+        if (isEmpty) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else return new ResponseEntity<>(playlistCollection, HttpStatus.OK);
     }
 
 }
