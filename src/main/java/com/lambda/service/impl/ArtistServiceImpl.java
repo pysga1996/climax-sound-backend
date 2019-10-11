@@ -70,4 +70,8 @@ public class ArtistServiceImpl implements ArtistService {
             oldArtistInfo.setAvatarUrl(newArtistInfo.getAvatarUrl());
         }
     }
+    @Override
+    public Iterable<Artist> findAllByNameContaining(String name) {
+        return artistRepository.findAllByNameContaining(name);
+    }
 }

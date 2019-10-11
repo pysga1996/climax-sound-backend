@@ -76,7 +76,7 @@ public class SongRestController {
 //    }
 
     @GetMapping("/list")
-    @PreAuthorize("isAnonymous()")
+    @PreAuthorize("isAnonymous() or hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<Page<Song>> songList(Pageable pageable) {
         Page<Song> songList = songService.findAll(pageable);
         if (songList.getTotalElements() == 0) {
