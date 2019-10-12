@@ -11,13 +11,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Optional;
 
 @Service
 public class PlaylistServiceImpl implements PlaylistService {
     @Autowired
     PlaylistRepository playlistRepository;
+
     @Autowired
     SongService songService;
 
