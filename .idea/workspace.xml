@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="bc94efd9-f0bc-40eb-ad2a-87d2fc0f8ca5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/F:/audio/19 - Revolution - Revolution_.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/F:/audio/25 - The rise of shiva and kali - artist 2_.mp3" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/configuration/general/ApplicationConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configuration/general/ApplicationConfiguration.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/configuration/security/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configuration/security/SecurityConfiguration.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/PlaylistServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/PlaylistServiceImpl.java" afterDir="false" />
@@ -79,7 +81,17 @@
     <favorites_list name="climax-sound" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/service/StorageService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="338">
+              <caret line="245" column="66" selection-start-line="245" selection-start-column="66" selection-end-line="245" selection-end-column="66" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -130,7 +142,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/util/ApiError.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/exception/exception_handler/CustomExceptionHandler.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/lambda/exception/exception_handler/CustomExceptionHandlerTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/StorageService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/UserRepository.java" />
         <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/User.java" />
@@ -166,6 +177,7 @@
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/configuration/general/ApplicationConfiguration.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/PlaylistServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/configuration/security/SecurityConfiguration.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/StorageService.java" />
       </list>
     </option>
   </component>
@@ -181,7 +193,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -223,45 +234,7 @@
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="lambda" type="462c0819:PsiDirectoryNode" />
-              <item name="configuration" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
-              <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="lambda" type="462c0819:PsiDirectoryNode" />
-              <item name="configuration" type="462c0819:PsiDirectoryNode" />
-              <item name="security" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
-              <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="lambda" type="462c0819:PsiDirectoryNode" />
-              <item name="controller" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
-              <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="lambda" type="462c0819:PsiDirectoryNode" />
               <item name="service" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
-              <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="lambda" type="462c0819:PsiDirectoryNode" />
-              <item name="service" type="462c0819:PsiDirectoryNode" />
-              <item name="impl" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
@@ -270,17 +243,11 @@
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
-              <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="webapp" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -571,6 +538,7 @@
       <workItem from="1570794909428" duration="4268000" />
       <workItem from="1570862507742" duration="38000" />
       <workItem from="1570862583204" duration="1888000" />
+      <workItem from="1570872535162" duration="1717000" />
     </task>
     <task id="LOCAL-00001" summary="change to spring boot (spring mvc files are still retained)">
       <created>1569049918795</created>
@@ -894,7 +862,14 @@
       <option name="project" value="LOCAL" />
       <updated>1570801085479</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="Merge branch 'hoang' of https://github.com/pysga1996/project.spring-climax-sound&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;mysql.env&#10;#&#9;src/main/java/com/lambda/controller/UserRestController.java">
+      <created>1570872732448</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1570872732448</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -930,7 +905,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="485513000" />
+    <option name="totallyTimeSpent" value="487230000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -942,9 +917,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="-1" width="1920" height="1040" extended-state="6" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4988938" visible="true" weight="0.17129135" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4988938" visible="true" weight="0.1738255" />
       <window_info id="Structure" order="1" sideWeight="0.5011062" side_tool="true" weight="0.24332978" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -979,7 +955,7 @@
       <window_info anchor="right" id="sbt" order="5" />
       <window_info anchor="right" id="Capture Analysis" order="6" />
       <window_info anchor="right" id="Gradle" order="7" weight="0.15901814" />
-      <window_info active="true" anchor="right" id="Database" order="8" visible="true" weight="0.18036287" />
+      <window_info anchor="right" id="Database" order="8" visible="true" weight="0.17986578" />
       <window_info anchor="right" id="Palette&#9;" order="9" />
       <window_info anchor="right" id="Theme Preview" order="10" />
       <window_info anchor="right" id="Bean Validation" order="11" weight="0.3295302" />
@@ -1206,13 +1182,6 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/service/StorageService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="338">
-          <caret line="199" column="51" lean-forward="true" selection-start-line="199" selection-start-column="51" selection-end-line="199" selection-end-column="51" />
         </state>
       </provider>
     </entry>
@@ -1524,12 +1493,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://3c5cd30b-bff9-4fb2-b1cb-e5ac2a75f8fc/database/d9lfgg6p1rlj1/schema/public/table/lambda_user">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="ec11ae75-63a6-4c88-8079-2271e2a0f252">
-          <filtering>
-            <filter text="" />
-          </filtering>
+    <entry file="das://3c5cd30b-bff9-4fb2-b1cb-e5ac2a75f8fc/database/d9lfgg6p1rlj1/schema/public/table/lambda_user" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/service/StorageService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="338">
+          <caret line="245" column="66" selection-start-line="245" selection-start-column="66" selection-end-line="245" selection-end-column="66" />
         </state>
       </provider>
     </entry>
