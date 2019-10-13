@@ -1,21 +1,29 @@
 package com.lambda.service.impl;
 
+import com.lambda.model.entity.PeopleWhoLiked;
 import com.lambda.model.entity.Song;
+import com.lambda.repository.PeopleWhoLikedRepository;
 import com.lambda.repository.SongRepository;
 import com.lambda.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 @Service
 public class SongServiceImpl implements SongService {
     @Autowired
     SongRepository songRepository;
+
+    @Autowired
+    PeopleWhoLikedRepository peopleWhoLikedRepository;
+
+    @Autowired
+    UserDetailServiceImpl userDetailService;
 
     @Autowired
     AudioStorageService audioStorageService;
@@ -106,5 +114,25 @@ public class SongServiceImpl implements SongService {
     @Override
     public Page<Song> sortByDate(Pageable pageable) {
         return null;
+    }
+
+    @Override
+    public boolean hasUserLiked(Long songId) {
+        Long userId = userDetailService.getCurrentUser().getId();
+        PeopleWhoLiked peopleWhoLikeds = peopleWhoLikedRepository.findBySongIdAndUserId(songId, userId);
+//        Long size = StreamSupport.stream(peopleWhoLikeds.spliterator(), false).count();
+        return (peopleWhoLikeds != null);
+    }
+
+    @Override
+    public Page<Song> setLike(Page<Song> songList) {
+        for (Song song: songList) {
+            if (hasUserLiked(song.getId())) {
+                song.setLiked(true);
+            } else {
+                song.setLiked(false);
+            }
+        }
+        return songList;
     }
 }

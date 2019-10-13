@@ -3,9 +3,11 @@ package com.lambda.model.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Proxy;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -15,7 +17,9 @@ import java.util.Date;
 
 @Entity
 @Table(name = "lambda_user")
+//@Proxy(lazy=false)
 @Data
+@EqualsAndHashCode()
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"roles", "favoriteSongs", "favoriteAlbums", "comments", "playlists", "avatarBlobId"
 ,"enabled","accountNonExpired","accountNonLocked","credentialsNonExpired"}, allowGetters = true, ignoreUnknown = true)
@@ -73,7 +77,7 @@ public class User {
     @JsonManagedReference("user-favoriteSongs")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "user_favoriteSongs",
+            name = "user_favorite_songs",
             joinColumns = @JoinColumn(
                     name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
@@ -81,10 +85,14 @@ public class User {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> favoriteSongs;
 
+//    @JsonManagedReference(value = "user-peopleWhoLiked")
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+//    private Collection<PeopleWhoLikedService> peopleWhoLikedList;
+
     @JsonManagedReference("user-favoriteAlbums")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "user_favoriteAlbums",
+            name = "user_favorite_albums",
             joinColumns = @JoinColumn(
                     name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
@@ -120,5 +128,19 @@ public class User {
         this.birthDate = birthDate;
         this.phoneNumber = phoneNumber;
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", gender=" + gender +
+                ", birthDate=" + birthDate +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

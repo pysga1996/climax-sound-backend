@@ -23,4 +23,6 @@ public interface SongService {
     void deleteAll(Collection<Song> songs);
     void setFields(Song oldSongInfo, Song newSongInfo);
     Page<Song> sortByDate(Pageable pageable);
+    boolean hasUserLiked(Long songId);
+    Page<Song> setLike(Page<Song> songList);
 }

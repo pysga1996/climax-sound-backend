@@ -3,6 +3,7 @@ package com.lambda.service;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.Acl;
 import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.Bucket;
 import com.google.common.collect.Lists;
 import com.google.firebase.FirebaseApp;
@@ -145,11 +146,11 @@ public abstract class StorageService<T> {
 
     private StorageClient getFirebaseStorage() {
         try {
-            GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("/Users/nguyenxuanhoang/Documents/ThucHanhCodeGym/adminsdk/climax-sound-firebase-adminsdk-c29fo-27166cf850.json"))
-                    .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
+//            GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("/Users/nguyenxuanhoang/Documents/ThucHanhCodeGym/adminsdk/climax-sound-firebase-adminsdk-c29fo-27166cf850.json"))
+//                    .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
 //            GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("/mnt/D43C7B5B3C7B3816/CodeGym/Module 4/Project Climax Sound/climax-sound-firebase-adminsdk-c29fo-27166cf850.json"))
 //                    .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
-//            GoogleCredentials credentials = GoogleCredentials.getApplicationDefault();
+            GoogleCredentials credentials = GoogleCredentials.getApplicationDefault();
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(credentials)
                     .setDatabaseUrl("https://climax-sound.firebaseio.com")
@@ -189,15 +190,15 @@ public abstract class StorageService<T> {
             }
             Blob blob = bucket.create(blobString, testFile, Bucket.BlobWriteOption.userProject("climax-sound"));
             bucket.getStorage().updateAcl(blob.getBlobId(), Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER));
-            String id = blob.getGeneratedId();
+            String blobName = blob.getName();
             if (object instanceof Song) {
-                ((Song) object).setBlobId(id);
+                ((Song) object).setBlobId(blobName);
             } else if (object instanceof Album) {
-                ((Album) object).setCoverBlobId(id);
+                ((Album) object).setCoverBlobId(blobName);
             } else if (object instanceof User) {
-                ((User) object).setAvatarBlobId(id);
+                ((User) object).setAvatarBlobId(blobName);
             } else if (object instanceof Artist) {
-                ((Artist) object).setAvatarUrl(id);
+                ((Artist) object).setAvatarUrl(blobName);
             }
             return blob.getMediaLink();
         } catch (IOException ex) {
@@ -232,16 +233,17 @@ public abstract class StorageService<T> {
 
     public void deleteFirebaseStorageFile(Object object) {
         StorageClient storageClient = getFirebaseStorage();
-        String blobId = "";
+        String blobString = "";
         if (object instanceof Song) {
-            blobId = ((Song) object).getBlobId();
+            blobString = ((Song) object).getBlobId();
         } else if (object instanceof Album) {
-            blobId = ((Album) object).getCoverBlobId();
+            blobString = ((Album) object).getCoverBlobId();
         } else if (object instanceof User) {
-            blobId = ((User) object).getAvatarBlobId();
+            blobString = ((User) object).getAvatarBlobId();
         } else if (object instanceof Artist) {
-            blobId = ((Artist) object).getAvatarBlobId();
+            blobString = ((Artist) object).getAvatarBlobId();
         }
+        BlobId blobId = BlobId.of(storageClient.bucket().getName(),blobString);
         storageClient.bucket().getStorage().delete(blobId);
     }
 

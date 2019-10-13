@@ -19,7 +19,7 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"comments", "albums", "tags", "genres", "users", "playlists", "country", "theme", "uploader", "blobId"}, allowGetters = true, ignoreUnknown=true)
+@JsonIgnoreProperties(value = {"comments", "liked", "albums", "tags", "genres", "users", "playlists", "country", "theme", "uploader", "blobId"}, allowGetters = true, ignoreUnknown=true)
 //@JsonIdentityInfo(
 //        generator = ObjectIdGenerators.PropertyGenerator.class,
 //        property = "id")
@@ -42,6 +42,8 @@ public class Song extends MediaObject {
     private Collection<Comment> comments;
 
     private Double displayRating;
+
+    private Boolean liked;
 
     private String lyric;
 
@@ -88,6 +90,10 @@ public class Song extends MediaObject {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "favoriteSongs")
     private Collection<User> users;
 
+//    @JsonManagedReference(value = "song-peopleWhoLiked")
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "song")
+//    private Collection<PeopleWhoLikedService> peopleWhoLikedList;
+
     @JsonBackReference(value = "user-uploadedSong")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -111,5 +117,15 @@ public class Song extends MediaObject {
     public Song(String name, Date releaseDate) {
         this.name = name;
         this.releaseDate = releaseDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Song{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", releaseDate=" + releaseDate +
+                ", url='" + url + '\'' +
+                '}';
     }
 }
