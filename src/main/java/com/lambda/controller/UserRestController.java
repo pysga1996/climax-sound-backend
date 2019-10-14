@@ -66,7 +66,6 @@ public class UserRestController {
     @Autowired
     private ArtistService artistService;
 
-
     @GetMapping("/profile")
     public ResponseEntity<User> getCurrentUser() {
         User user = userDetailService.getCurrentUser();
@@ -185,11 +184,17 @@ public class UserRestController {
         } else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-//    @GetMapping(value = "/search", params = "name")
-//    public ResponseEntity<SearchResponse> search(@RequestParam("name") String name){
-//        Iterable<Song> songs = songService.findAllByNameContaining(name);
-//        Iterable<Artist> artists = artistService.findAllByNameContaining(name);
-//        SearchResponse  searchResponse = new SearchResponse(songs,artists);
-//        return new ResponseEntity<>(searchResponse, HttpStatus.OK);
-//    }
+    @GetMapping(value = "/search", params = "name")
+    public ResponseEntity<SearchResponse> search(@RequestParam("name") String name){
+        Iterable<Song> songs = songService.findAllByNameContaining(name);
+        Iterable<Artist> artists = artistService.findAllByNameContaining(name);
+        SearchResponse  searchResponse = new SearchResponse(songs,artists);
+        return new ResponseEntity<>(searchResponse, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/user/delete")
+    public ResponseEntity<Void> deleteUser(@RequestParam("id")Long id) {
+        userService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

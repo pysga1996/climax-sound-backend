@@ -2,23 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bc94efd9-f0bc-40eb-ad2a-87d2fc0f8ca5" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/google_credentials.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configuration/security/WebSecurity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mysql.env" beforeDir="false" afterPath="$PROJECT_DIR$/mysql.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/controller/PlaylistRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/controller/PlaylistRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Album.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Album.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Artist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Artist.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Country.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Country.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Genre.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Genre.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Playlist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Playlist.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Privilege.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Privilege.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Role.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Song.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Song.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Tag.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Tag.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Theme.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Theme.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/google_credentials.env" beforeDir="false" afterPath="$PROJECT_DIR$/google_credentials.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/controller/UserRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/controller/UserRestController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/classes/" />
@@ -106,27 +92,72 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Album.java">
+        <entry file="file://$PROJECT_DIR$/google_credentials.env">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-12">
-              <caret line="28" selection-start-line="28" selection-start-column="2" selection-end-line="28" selection-end-column="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/controller/PlaylistRestController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="42" lean-forward="true" selection-start-line="42" selection-end-line="42" />
+            <state relative-caret-position="42">
+              <caret line="2" column="114" lean-forward="true" selection-start-line="2" selection-start-column="114" selection-end-line="2" selection-end-column="114" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1326">
+              <caret line="72" selection-start-line="72" selection-start-column="1" selection-end-line="74" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/service/StorageService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="319">
+              <caret line="151" column="106" lean-forward="true" selection-start-line="151" selection-start-column="106" selection-end-line="151" selection-end-column="106" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/mysql.env">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="84">
+              <caret line="4" column="33" selection-start-line="4" selection-start-column="33" selection-end-line="4" selection-end-column="33" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/user_favorite_songs">
+          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+            <state projectRestartId="bc0ff86d-a44e-405d-a233-e37a9c1648e8">
+              <filtering>
+                <filter text="" />
+              </filtering>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/artist">
+          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+            <state projectRestartId="bc0ff86d-a44e-405d-a233-e37a9c1648e8">
+              <filtering>
+                <filter text="" />
+              </filtering>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/build.gradle">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configuration/security/WebSecurity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
+            <state relative-caret-position="399">
               <caret line="19" column="35" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="35" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -138,11 +169,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/service/impl/UserServiceImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="177">
-              <caret line="28" column="36" lean-forward="true" selection-start-line="28" selection-start-column="36" selection-end-line="28" selection-end-column="36" />
+            <state relative-caret-position="357">
+              <caret line="28" column="36" selection-start-line="28" selection-start-column="36" selection-end-line="28" selection-end-column="36" />
               <folding>
                 <element signature="e#800#801#0" expanded="true" />
-                <element signature="e#868#869#0" expanded="true" />
+                <element signature="e#862#863#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -151,12 +182,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/UserRepository.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="281">
+            <state relative-caret-position="378">
               <caret line="18" column="8" selection-start-line="18" selection-start-column="8" selection-end-line="18" selection-end-column="8" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#0#80#1" expanded="true" />
-                <element signature="e#0#92#1" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -198,8 +227,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/CountryRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/GenreRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/PlaylistRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/PrivilegeRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/RoleRepository.java" />
@@ -208,7 +235,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/ThemeRepository.java" />
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/Procfile" />
-        <option value="$PROJECT_DIR$/.idea/workspace.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/PlaylistService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/PlaylistServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/configuration/security/SecurityConfiguration.java" />
@@ -220,7 +246,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/UserDetailServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/configuration/security/DataSeedingListener.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/configuration/security_customization/CustomRestAuthenticationSuccessHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/controller/UserRestController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/User.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/PeopleWhoLiked.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/PeopleWhoLikedRepository.java" />
@@ -231,24 +256,28 @@
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/controller/SongRestController.java" />
         <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/configuration/general/ApplicationConfiguration.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
-        <option value="$PROJECT_DIR$/google_credentials.env" />
         <option value="$PROJECT_DIR$/mysql.env" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/configuration/security/WebSecurity.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Playlist.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Album.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Artist.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Country.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Genre.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Privilege.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Role.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Song.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Tag.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Theme.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/UserServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/repository/UserRepository.java" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/.datagrid/cell" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/controller/PlaylistRestController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Artist.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Song.java" />
+        <option value="$PROJECT_DIR$/.idea/workspace.xml" />
+        <option value="$PROJECT_DIR$/google_key.env" />
+        <option value="$PROJECT_DIR$/google_credentials.env" />
+        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/controller/ArtistRestController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/controller/UserRestController.java" />
       </list>
     </option>
   </component>
@@ -680,21 +709,8 @@
       <workItem from="1570930501190" duration="3554000" />
       <workItem from="1570967999185" duration="16256000" />
       <workItem from="1571020099454" duration="5376000" />
-      <workItem from="1571034854617" duration="8240000" />
-    </task>
-    <task id="LOCAL-00003" summary="add all repositories + services&#10;add song, tag, mood, activity rest controllers">
-      <created>1569167703433</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1569167703434</updated>
-    </task>
-    <task id="LOCAL-00004" summary="fix bug registration">
-      <created>1569221472039</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1569221472039</updated>
+      <workItem from="1571034854617" duration="8974000" />
+      <workItem from="1571046599523" duration="1166000" />
     </task>
     <task id="LOCAL-00005" summary="fix deploy tomcat bug">
       <created>1569292236503</created>
@@ -1025,7 +1041,21 @@
       <option name="project" value="LOCAL" />
       <updated>1571039233690</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="add like/unlike api">
+      <created>1571045881504</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1571045881504</updated>
+    </task>
+    <task id="LOCAL-00053" summary="Merge branch 'minhduc' of https://github.com/pysga1996/project.spring-climax-sound&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;src/main/java/com/lambda/model/entity/Artist.java&#10;#&#9;src/main/java/com/lambda/model/entity/Song.java&#10;#&#9;src/main/java/com/lambda/service/ArtistService.java">
+      <created>1571046056673</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1571046056673</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1061,7 +1091,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="524008000" />
+    <option name="totallyTimeSpent" value="525908000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1087,7 +1117,7 @@
       <window_info id="Web" order="8" sideWeight="0.5011062" side_tool="true" weight="0.24332978" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32794118" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49839914" visible="true" weight="0.36655593" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49839914" weight="0.36655593" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4994664" weight="0.358804" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -1111,7 +1141,7 @@
       <window_info anchor="right" id="sbt" order="5" />
       <window_info anchor="right" id="Capture Analysis" order="6" />
       <window_info anchor="right" id="Gradle" order="7" weight="0.15901814" />
-      <window_info anchor="right" id="Database" order="8" visible="true" weight="0.1782284" />
+      <window_info active="true" anchor="right" id="Database" order="8" visible="true" weight="0.1782284" />
       <window_info anchor="right" id="Palette&#9;" order="9" />
       <window_info anchor="right" id="Theme Preview" order="10" />
       <window_info anchor="right" id="Bean Validation" order="11" weight="0.3295302" />
@@ -1202,7 +1232,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fix bug registration" />
     <MESSAGE value="fix deploy tomcat bug" />
     <MESSAGE value="add upload download" />
     <MESSAGE value="fix cors" />
@@ -1227,7 +1256,8 @@
     <MESSAGE value="Merge branch 'dev'&#10;&#10;# Conflicts:&#10;#&#9;.idea/vcs.xml&#10;#&#9;build.gradle&#10;#&#9;gradle/wrapper/gradle-wrapper.jar&#10;#&#9;gradle/wrapper/gradle-wrapper.properties&#10;#&#9;gradlew&#10;#&#9;gradlew.bat&#10;#&#9;settings.gradle" />
     <MESSAGE value="Merge branch 'hoang' of https://github.com/pysga1996/project.spring-climax-sound&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;mysql.env&#10;#&#9;src/main/java/com/lambda/controller/UserRestController.java" />
     <MESSAGE value="add like/unlike api" />
-    <option name="LAST_COMMIT_MESSAGE" value="add like/unlike api" />
+    <MESSAGE value="Merge branch 'minhduc' of https://github.com/pysga1996/project.spring-climax-sound&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;src/main/java/com/lambda/model/entity/Artist.java&#10;#&#9;src/main/java/com/lambda/model/entity/Song.java&#10;#&#9;src/main/java/com/lambda/service/ArtistService.java" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'minhduc' of https://github.com/pysga1996/project.spring-climax-sound&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;src/main/java/com/lambda/model/entity/Artist.java&#10;#&#9;src/main/java/com/lambda/model/entity/Song.java&#10;#&#9;src/main/java/com/lambda/service/ArtistService.java" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1246,25 +1276,25 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/lambda/controller/SongRestController.java</url>
-          <line>58</line>
+          <line>57</line>
           <properties />
           <option name="timeStamp" value="36" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/lambda/controller/SongRestController.java</url>
-          <line>51</line>
+          <line>50</line>
           <properties />
           <option name="timeStamp" value="38" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/lambda/controller/PlaylistRestController.java</url>
-          <line>89</line>
+          <line>88</line>
           <properties />
           <option name="timeStamp" value="47" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/lambda/controller/PlaylistRestController.java</url>
-          <line>93</line>
+          <line>92</line>
           <properties />
           <option name="timeStamp" value="48" />
         </line-breakpoint>
@@ -1284,21 +1314,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_211/jre/lib/rt.jar!/sun/reflect/NativeMethodAccessorImpl.class" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/service/UserService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="15" column="9" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/5.1.9.RELEASE/f78ddf20dc1f6cd57ce517b80c0814b51e7ab3b5/spring-aop-5.1.9.RELEASE-sources.jar!/org/springframework/aop/framework/CglibAopProxy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="748" selection-start-line="748" selection-end-line="748" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/5.1.9.RELEASE/f78ddf20dc1f6cd57ce517b80c0814b51e7ab3b5/spring-aop-5.1.9.RELEASE-sources.jar!/org/springframework/aop/framework/ReflectiveMethodInvocation.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="137">
@@ -1388,15 +1403,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/user_favorite_songs">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="939e4e8c-2aa4-4af8-ac09-88f9b9ef7deb">
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/service/impl/SongServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="399">
@@ -1431,34 +1437,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1428">
           <caret line="157" column="7" selection-start-line="157" selection-start-column="7" selection-end-line="157" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="67" selection-start-line="67" selection-end-line="69" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/service/StorageService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
-          <caret line="152" column="86" selection-start-line="152" selection-start-column="86" selection-end-line="152" selection-end-column="86" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/google_credentials.env">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="1" column="55" lean-forward="true" selection-start-line="1" selection-start-column="55" selection-end-line="1" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mysql.env">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="4" column="33" lean-forward="true" selection-start-line="4" selection-start-column="33" selection-end-line="4" selection-end-column="33" />
         </state>
       </provider>
     </entry>
@@ -1609,48 +1587,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/artist">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="939e4e8c-2aa4-4af8-ac09-88f9b9ef7deb">
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/google_key.env" />
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Album.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-12">
+        <state relative-caret-position="378">
           <caret line="28" selection-start-line="28" selection-start-column="2" selection-end-line="28" selection-end-column="34" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/service/impl/UserServiceImpl.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/controller/PlaylistRestController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="28" column="36" lean-forward="true" selection-start-line="28" selection-start-column="36" selection-end-line="28" selection-end-column="36" />
-          <folding>
-            <element signature="e#800#801#0" expanded="true" />
-            <element signature="e#868#869#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="546">
+          <caret line="42" selection-start-line="42" selection-end-line="42" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/UserRepository.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/controller/ArtistRestController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="18" column="8" selection-start-line="18" selection-start-column="8" selection-end-line="18" selection-end-column="8" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#0#80#1" expanded="true" />
-            <element signature="e#0#92#1" expanded="true" />
-          </folding>
+        <state relative-caret-position="1659">
+          <caret line="86" column="48" selection-start-line="86" selection-start-column="48" selection-end-line="86" selection-end-column="48" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configuration/security/WebSecurity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
+        <state relative-caret-position="399">
           <caret line="19" column="35" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="35" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1658,10 +1622,70 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/controller/PlaylistRestController.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/service/impl/UserServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="42" lean-forward="true" selection-start-line="42" selection-end-line="42" />
+        <state relative-caret-position="357">
+          <caret line="28" column="36" selection-start-line="28" selection-start-column="36" selection-end-line="28" selection-end-column="36" />
+          <folding>
+            <element signature="e#800#801#0" expanded="true" />
+            <element signature="e#862#863#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repository/UserRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="18" column="8" selection-start-line="18" selection-start-column="8" selection-end-line="18" selection-end-column="8" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mysql.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="4" column="33" selection-start-line="4" selection-start-column="33" selection-end-line="4" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/google_credentials.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="2" column="114" lean-forward="true" selection-start-line="2" selection-start-column="114" selection-end-line="2" selection-end-column="114" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1326">
+          <caret line="72" selection-start-line="72" selection-start-column="1" selection-end-line="74" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/service/StorageService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="319">
+          <caret line="151" column="106" lean-forward="true" selection-start-line="151" selection-start-column="106" selection-end-line="151" selection-end-column="106" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/user_favorite_songs">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state projectRestartId="bc0ff86d-a44e-405d-a233-e37a9c1648e8">
+          <filtering>
+            <filter text="" />
+          </filtering>
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/artist">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state projectRestartId="bc0ff86d-a44e-405d-a233-e37a9c1648e8">
+          <filtering>
+            <filter text="" />
+          </filtering>
         </state>
       </provider>
     </entry>
