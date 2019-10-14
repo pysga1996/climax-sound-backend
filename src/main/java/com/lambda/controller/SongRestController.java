@@ -15,6 +15,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -148,6 +149,18 @@ public class SongRestController {
     @PostMapping(params = {"unlike", "song-id"})
     public ResponseEntity<Void> dislikeSong(@RequestParam("song-id") Long id){
         peopleWhoLikedService.unlike(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PreAuthorize("permitAll()")
+    @PostMapping(params = {"listen", "song-id"})
+    public ResponseEntity<Void> listenToSong(@RequestParam("song-id") Long id) {
+        Optional<Song> song = songService.findById(id);
+        if (song.isPresent()) {
+            long currentRating = song.get().getDisplayRating();
+            song.get().setDisplayRating(++currentRating);
+            songService.save(song.get());
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
