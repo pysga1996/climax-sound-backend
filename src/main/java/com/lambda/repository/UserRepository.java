@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findById(@Param("id") Long id);
 
     @Query("SELECT u FROM User u INNER JOIN FETCH u.roles r JOIN r.privileges WHERE u.username=:username")
-    Optional<User> findByUsername(@Param("username") String username);
+    User findByUsername(@Param("username") String username);
 
     Page<User> findByUsernameContaining(String username, Pageable pageable);
 

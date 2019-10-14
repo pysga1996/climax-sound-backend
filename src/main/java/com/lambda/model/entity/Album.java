@@ -26,7 +26,7 @@ public class Album extends MediaObject {
     private Long id;
 
     @NotBlank
-    @Column(name = "album_name")
+//    @Column(name = "album_name")
     private String name;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")

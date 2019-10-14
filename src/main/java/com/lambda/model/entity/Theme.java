@@ -23,7 +23,7 @@ public class Theme {
     private Integer id;
 
     @NotBlank
-    @Column(name = "theme_name")
+//    @Column(name = "theme_name")
     private String name;
 
     @JsonManagedReference("song-theme")

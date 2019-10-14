@@ -24,7 +24,7 @@ public class Country {
     private Integer id;
 
     @NotBlank
-    @Column(name = "country_name")
+//    @Column(name = "country_name")
     private String name;
 
     @JsonManagedReference("song-country")
