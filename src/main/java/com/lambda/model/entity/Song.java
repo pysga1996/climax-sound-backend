@@ -112,4 +112,5 @@ public class Song extends MediaObject {
         this.name = name;
         this.releaseDate = releaseDate;
     }
+    private Number numberview;
 }

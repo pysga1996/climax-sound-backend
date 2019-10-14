@@ -59,12 +59,11 @@ public class UserRestController {
 
     @Autowired
     FormConvertService formConvertService;
-
     @Autowired
     private SongService songService;
-
     @Autowired
     private ArtistService artistService;
+
 
     @GetMapping("/profile")
     public ResponseEntity<User> getCurrentUser() {

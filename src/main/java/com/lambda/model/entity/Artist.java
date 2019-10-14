@@ -16,7 +16,7 @@ import java.util.Date;
 @Entity
 @Data
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"albums", "blobId"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"songs", "albums", "avatarBlobId"}, allowGetters = true)
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")

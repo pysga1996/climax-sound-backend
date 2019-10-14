@@ -69,7 +69,7 @@ public class SongRestController {
 //    }
 
     @GetMapping("/list")
-    public ResponseEntity<Page<Song>> songList(Pageable pageable) {
+    public ResponseEntity<Page<Song>> songList(@PageableDefault(size = 10) Pageable pageable) {
         Page<Song> songList = songService.findAll(pageable);
         if (songList.getTotalElements() == 0) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
