@@ -1,8 +1,6 @@
 package com.lambda.controller;
 
-import com.google.common.collect.Iterables;
 import com.lambda.model.entity.Playlist;
-import com.lambda.model.entity.Song;
 import com.lambda.model.entity.User;
 import com.lambda.service.PlaylistService;
 import com.lambda.service.impl.UserDetailServiceImpl;
@@ -12,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -94,7 +91,7 @@ public class PlaylistRestController {
     }
 
     @PutMapping(value = "/remove-song")
-    public ResponseEntity<Void> deletePlaylistSong(@RequestParam("songId") Long songId, @RequestParam("playlistId")Long playlistId) {
+    public ResponseEntity<Void> removeSongFromPlaylist(@RequestParam("songId") Long songId, @RequestParam("playlistId")Long playlistId) {
         boolean result = playlistService.deleteSongFromPlaylist(songId,playlistId);
         if(result) {
             return new ResponseEntity<>(HttpStatus.OK);
@@ -102,7 +99,7 @@ public class PlaylistRestController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/listToAdd")
+    @GetMapping("/list-to-add")
     public ResponseEntity<Collection<Playlist>> showPlaylistListToAdd(@RequestParam("songId") Long songId) {
         User currentUser = userDetailService.getCurrentUser();
         Iterable<Playlist> playlistList = playlistService.findAllByUser_Id(currentUser.getId());
@@ -116,7 +113,6 @@ public class PlaylistRestController {
                 filteredPlaylistList.add(playlist);
             }
         }
-
         boolean isEmpty = filteredPlaylistList.size() == 0;
         if (isEmpty) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
