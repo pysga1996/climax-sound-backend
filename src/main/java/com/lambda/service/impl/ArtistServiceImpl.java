@@ -74,4 +74,9 @@ public class ArtistServiceImpl implements ArtistService {
     public Iterable<Artist> findAllByNameContaining(String name) {
         return artistRepository.findAllByNameContaining(name);
     }
+
+    @Override
+    public void deleteById(Long id) {
+        artistRepository.deleteById(id);
+    }
 }
