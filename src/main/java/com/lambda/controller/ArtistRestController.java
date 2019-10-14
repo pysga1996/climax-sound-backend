@@ -1,6 +1,7 @@
 package com.lambda.controller;
 
 import com.lambda.model.entity.Artist;
+import com.lambda.model.entity.Song;
 import com.lambda.service.ArtistService;
 import com.lambda.service.impl.AvatarStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,5 +89,17 @@ public class ArtistRestController {
     public ResponseEntity<Void> deleteArtist(@RequestParam("id") Long id) {
         artistService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @GetMapping(value = "/get-songs")
+    public ResponseEntity<Iterable<Song>> getSongs(@RequestParam("id")Long id) {
+        Optional<Artist> artist = artistService.findById(id);
+        Iterable<Song> songs = null;
+        if(artist.isPresent()) {
+            songs= artist.get().getSongs();
+        }
+        if( songs != null) {
+            return new ResponseEntity<>(songs, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

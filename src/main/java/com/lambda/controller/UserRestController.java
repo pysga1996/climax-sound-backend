@@ -191,4 +191,9 @@ public class UserRestController {
         SearchResponse  searchResponse = new SearchResponse(songs,artists);
         return new ResponseEntity<>(searchResponse, HttpStatus.OK);
     }
+    @DeleteMapping(value = "/user/delete")
+    public ResponseEntity<Void> deleteUser(@RequestParam("id")Long id) {
+        userService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
