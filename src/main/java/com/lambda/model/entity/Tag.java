@@ -22,6 +22,7 @@ public class Tag {
     private Long id;
 
     @NotBlank
+    @Column(name = "tag_name")
     private String name;
 
     @JsonBackReference(value = "song-tag")
@@ -29,7 +30,7 @@ public class Tag {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
 
-//    @JsonBackReference(value = "album-tag")
+    @JsonBackReference(value = "album-tag")
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> albums;

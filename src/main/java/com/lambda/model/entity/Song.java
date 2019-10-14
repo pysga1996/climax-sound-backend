@@ -19,10 +19,10 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"comments", "albums", "tags", "genres", "users", "playlists", "country", "theme", "blobId"}, allowGetters = true, ignoreUnknown=true)
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+@JsonIgnoreProperties(value = {"comments", "liked", "albums", "tags", "genres", "users", "playlists", "country", "theme", "uploader", "blobId"}, allowGetters = true, ignoreUnknown=true)
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
 public class Song extends MediaObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,11 +42,12 @@ public class Song extends MediaObject {
 
     private Double displayRating;
 
+    private Boolean liked;
+
     private String lyric;
 
     private String blobId;
 
-//    @JsonManagedReference(value = "song-artist")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "song_artist",
@@ -57,7 +58,7 @@ public class Song extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Artist> artists;
 
-//    @JsonBackReference(value = "album-song")
+    @JsonBackReference(value = "album-song")
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "songs")
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> albums;
@@ -88,10 +89,14 @@ public class Song extends MediaObject {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "favoriteSongs")
     private Collection<User> users;
 
+//    @JsonManagedReference(value = "song-peopleWhoLiked")
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "song")
+//    private Collection<PeopleWhoLikedService> peopleWhoLikedList;
+
     @JsonBackReference(value = "user-uploadedSong")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private User uploader;
 
     @JsonBackReference(value = "playlist-song")
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "songs")
@@ -112,5 +117,14 @@ public class Song extends MediaObject {
         this.name = name;
         this.releaseDate = releaseDate;
     }
-    private Number numberview;
+
+    @Override
+    public String toString() {
+        return "Song{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", releaseDate=" + releaseDate +
+                ", url='" + url + '\'' +
+                '}';
+    }
 }

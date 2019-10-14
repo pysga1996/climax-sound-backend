@@ -23,7 +23,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableTransactionManagement
 @EnableJpaRepositories("com.lambda.repository")
 @ComponentScan("com.lambda")
-//@EnableSpringDataWebSupport
+@EnableSpringDataWebSupport
 //@PropertySource("classpath:GlobalConfigApp.properties")
 public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 

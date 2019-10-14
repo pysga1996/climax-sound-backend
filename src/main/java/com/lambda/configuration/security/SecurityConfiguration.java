@@ -95,9 +95,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/api/login", "/api/register", "/api/song/download/**", "/api/song/upload", "/api/album/upload", "/api/album/download/**").permitAll()
-                .antMatchers("/api/user").access("hasRole('ADMIN')")
-                .antMatchers("/api/**").access("hasRole('USER') or hasRole('ADMIN')")
+                .antMatchers("/api/login", "/api/register",  "/api/song/download/**", "/api/song/upload", "/api/album/upload", "/api/album/download/**").permitAll()
+                .antMatchers("/api/admin/**").access("hasRole('ADMIN')")
+                .antMatchers("/api/profile").access("hasRole('USER') or hasRole('ADMIN')")
+                .antMatchers("/api/**").permitAll()
                 .and().formLogin()
 //                .loginPage("/login")
 //                .loginProcessingUrl("/appLogin")

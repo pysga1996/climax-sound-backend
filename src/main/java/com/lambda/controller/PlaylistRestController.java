@@ -10,11 +10,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
+import java.util.*;
 
 @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 @RestController
@@ -92,12 +91,32 @@ public class PlaylistRestController {
     }
 
     @PutMapping(value = "/remove-song")
-    public ResponseEntity<String> deletePlaylistSong(@RequestParam("songId") Long songId, @RequestParam("playlistId")Long playlistId) {
+    public ResponseEntity<Void> removeSongFromPlaylist(@RequestParam("songId") Long songId, @RequestParam("playlistId")Long playlistId) {
         boolean result = playlistService.deleteSongFromPlaylist(songId,playlistId);
         if(result) {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/list-to-add")
+    public ResponseEntity<Collection<Playlist>> showPlaylistListToAdd(@RequestParam("songId") Long songId) {
+        User currentUser = userDetailService.getCurrentUser();
+        Iterable<Playlist> playlistList = playlistService.findAllByUser_Id(currentUser.getId());
+        Collection<Playlist> playlistCollection = new ArrayList<>();
+        for (Playlist playlist: playlistList) {
+            playlistCollection.add(playlist);
+        }
+        List<Playlist> filteredPlaylistList = new ArrayList<>();
+        for (Playlist playlist: playlistCollection) {
+            if (!playlistService.checkSongExistence(playlist, songId)) {
+                filteredPlaylistList.add(playlist);
+            }
+        }
+        boolean isEmpty = filteredPlaylistList.size() == 0;
+        if (isEmpty) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else return new ResponseEntity<>(filteredPlaylistList, HttpStatus.OK);
     }
 
 }

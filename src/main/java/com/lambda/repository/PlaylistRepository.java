@@ -13,9 +13,11 @@ import java.util.Optional;
 @Repository
 public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
 //    @Query("SELECT p FROM Playlist p JOIN FETCH p.songs WHERE p.id = :id")
-    Optional<Playlist> findById(@Param("id") Long id);
+    Optional<Playlist> findById(Long id);
 
-    Page<Playlist> findAllByUser_Id(@Param("userID") Long userId, Pageable pageable);
+    Iterable<Playlist> findAllByUser_Id(Long userId);
+
+    Page<Playlist> findAllByUser_Id(Long userId, Pageable pageable);
 
     Page<Playlist> findAllByNameContaining(String name, Pageable pageable);
 }

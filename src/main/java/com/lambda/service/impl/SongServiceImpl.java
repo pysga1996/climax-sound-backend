@@ -1,6 +1,9 @@
 package com.lambda.service.impl;
 
+import com.lambda.model.entity.Artist;
+import com.lambda.model.entity.PeopleWhoLiked;
 import com.lambda.model.entity.Song;
+import com.lambda.repository.PeopleWhoLikedRepository;
 import com.lambda.repository.SongRepository;
 import com.lambda.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +20,18 @@ public class SongServiceImpl implements SongService {
     SongRepository songRepository;
 
     @Autowired
+    PeopleWhoLikedRepository peopleWhoLikedRepository;
+
+    @Autowired
+    UserDetailServiceImpl userDetailService;
+
+    @Autowired
     AudioStorageService audioStorageService;
+
+    @Override
+    public Page<Song> findAllByUploader_Id(Long id, Pageable pageable) {
+        return songRepository.findAllByUploader_Id(id, pageable);
+    }
 
     @Override
     public Optional<Song> findById(Long id) {
@@ -50,8 +64,8 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public Page<Song> findAllByAlbum_Id(Long id, Pageable pageable) {
-        return songRepository.findAllByAlbum_Id(id, pageable);
+    public Page<Song> findAllByArtistsContains(Artist artist, Pageable pageable) {
+        return songRepository.findAllByArtistsContains(artist, pageable);
     }
 
     @Override
@@ -101,4 +115,27 @@ public class SongServiceImpl implements SongService {
     public Page<Song> sortByDate(Pageable pageable) {
         return null;
     }
+
+    @Override
+    public boolean hasUserLiked(Long songId) {
+        Long userId = userDetailService.getCurrentUser().getId();
+        PeopleWhoLiked peopleWhoLikeds = peopleWhoLikedRepository.findBySongIdAndUserId(songId, userId);
+//        Long size = StreamSupport.stream(peopleWhoLikeds.spliterator(), false).count();
+        return (peopleWhoLikeds != null);
+    }
+
+    @Override
+    public Page<Song> setLike(Page<Song> songList) {
+        for (Song song: songList) {
+            if (hasUserLiked(song.getId())) {
+                song.setLiked(true);
+            } else {
+                song.setLiked(false);
+            }
+        }
+        return songList;
+    }
+
+
+
 }

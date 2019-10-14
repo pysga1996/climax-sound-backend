@@ -61,10 +61,11 @@ public class UserServiceImpl implements UserService {
         newUserInfo.setAccountNonLocked(oldUserInfo.isAccountNonLocked());
         newUserInfo.setCredentialsNonExpired(oldUserInfo.isCredentialsNonExpired());
         newUserInfo.setEnabled(oldUserInfo.isEnabled());
-        newUserInfo.setFavoriteSongs(oldUserInfo.getFavoriteSongs());
+//        newUserInfo.setFavoriteSongs(oldUserInfo.getFavoriteSongs());
         newUserInfo.setFavoriteAlbums(oldUserInfo.getFavoriteAlbums());
         newUserInfo.setComments(oldUserInfo.getComments());
     }
+
     @Override
     public void setFieldsEdit(User oldUserInfo, User newUserInfo) {
         oldUserInfo.setFirstName(newUserInfo.getFirstName());

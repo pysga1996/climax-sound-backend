@@ -3,21 +3,23 @@ package com.lambda.model.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Proxy;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 
 @Entity
+@Table(name = "lambda_user")
+//@Proxy(lazy=false)
 @Data
+@EqualsAndHashCode()
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"roles", "favoriteSongs", "favoriteAlbums", "comments", "playlists", "avatarBlobId"
 ,"enabled","accountNonExpired","accountNonLocked","credentialsNonExpired"}, allowGetters = true, ignoreUnknown = true)
@@ -26,9 +28,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    //    @Column(unique = true, nullable = false, columnDefinition = "VARCHAR(255) COLLATE utf8mb4_bin")
     @NotBlank
     @Pattern(regexp = "^[a-zA-Z0-9]+([a-zA-Z0-9]([_\\- ])[a-zA-Z0-9])*[a-zA-Z0-9]+${8,}")
-    @Column(unique = true, nullable = false, columnDefinition = "VARCHAR(255) COLLATE utf8mb4_bin")
     private String username;
 
     @NotBlank
@@ -75,7 +77,7 @@ public class User {
     @JsonManagedReference("user-favoriteSongs")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "user_favoriteSongs",
+            name = "user_favorite_songs",
             joinColumns = @JoinColumn(
                     name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
@@ -83,10 +85,14 @@ public class User {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> favoriteSongs;
 
+//    @JsonManagedReference(value = "user-peopleWhoLiked")
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+//    private Collection<PeopleWhoLikedService> peopleWhoLikedList;
+
     @JsonManagedReference("user-favoriteAlbums")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "user_favoriteAlbums",
+            name = "user_favorite_albums",
             joinColumns = @JoinColumn(
                     name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
@@ -95,7 +101,7 @@ public class User {
     private Collection<Album> favoriteAlbums;
 
     @JsonManagedReference("user-uploadedSong")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "uploader")
     Collection<Song> uploadedSong;
 
     @JsonManagedReference(value = "user-comment")
@@ -122,5 +128,19 @@ public class User {
         this.birthDate = birthDate;
         this.phoneNumber = phoneNumber;
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", gender=" + gender +
+                ", birthDate=" + birthDate +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

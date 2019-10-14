@@ -16,10 +16,10 @@ import java.util.Date;
 @Entity
 @Data
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"songs", "albums", "avatarBlobId"}, allowGetters = true)
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+@JsonIgnoreProperties(value = {"albums", "blobId"}, allowGetters = true)
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
 public class Artist {
     @Id
     @GeneratedValue
@@ -37,13 +37,12 @@ public class Artist {
 
     private String biography;
 
-//    @JsonBackReference(value = "song-artist")
-    @JsonIgnore
+    @JsonBackReference(value = "song-artist")
     @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
 
-//    @JsonBackReference(value = "album-artist")
+    @JsonBackReference(value = "album-artist")
     @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> albums;

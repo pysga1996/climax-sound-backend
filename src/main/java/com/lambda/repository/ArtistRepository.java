@@ -12,15 +12,18 @@ import java.util.Optional;
 
 @Repository
 public interface ArtistRepository extends JpaRepository<Artist, Long> {
-    @Query(value = "SELECT * FROM album WHERE BINARY name=:name", nativeQuery = true)
-    Artist findByName(@Param("name") String name);
+//    @Query(value = "SELECT * FROM album WHERE BINARY name=:name", nativeQuery = true)
+    Artist findByName(String name);
 
     Iterable<Artist> findFirst10ByNameContaining(String name);
 
     Page<Artist> findAllByNameContaining(String name, Pageable pageable);
+
     Iterable<Artist> findAllByNameContaining(String name);
 
     Page<Artist> findAllByAlbums_Name(String name, Pageable pageable);
+
+//    @Query("SELECT a, s FROM Artist a JOIN FETCH a.songs s")
     Optional<Artist> findById(@Param("id") Long id);
 
 }

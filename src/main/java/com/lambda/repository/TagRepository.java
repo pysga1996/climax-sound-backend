@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
-    @Query(value = "SELECT * FROM tag WHERE BINARY name=:name", nativeQuery = true)
-    Tag findByName(@Param("name")String name);
+//    @Query(value = "SELECT * FROM tag WHERE BINARY name=:name", nativeQuery = true)
+    Tag findByName(String name);
 
     Page<Tag> findAll(Pageable pageable);
 

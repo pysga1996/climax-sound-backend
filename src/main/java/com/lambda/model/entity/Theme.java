@@ -14,15 +14,16 @@ import java.util.Collection;
 @Data
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"songs", "albums"}, allowGetters = true, ignoreUnknown = true)
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
 public class Theme {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @NotBlank
+    @Column(name = "theme_name")
     private String name;
 
     @JsonManagedReference("song-theme")

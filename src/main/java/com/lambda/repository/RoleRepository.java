@@ -13,6 +13,6 @@ public interface RoleRepository extends JpaRepository<Role, Integer> {
     @Query("SELECT r FROM Role r INNER JOIN FETCH r.privileges WHERE r.id = :id")
     Optional<Role> findById(@Param("id") Integer id);
 
-    @Query(value = "SELECT * FROM role WHERE BINARY name=:name", nativeQuery = true)
-    Role findByName(@Param("name") String name);
+//    @Query(value = "SELECT * FROM role WHERE BINARY name=:name", nativeQuery = true)
+    Role findByName(String name);
 }
