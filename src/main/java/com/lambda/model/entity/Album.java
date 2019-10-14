@@ -36,7 +36,7 @@ public class Album extends MediaObject {
 
     private String coverBlobId;
 
-    @JsonManagedReference("album-genre")
+//    @JsonManagedReference("album-genre")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "album_genre",

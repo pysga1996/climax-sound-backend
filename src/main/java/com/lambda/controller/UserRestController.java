@@ -66,6 +66,7 @@ public class UserRestController {
     @Autowired
     private ArtistService artistService;
 
+
     @GetMapping("/profile")
     public ResponseEntity<User> getCurrentUser() {
         User user = userDetailService.getCurrentUser();

@@ -1,5 +1,6 @@
 package com.lambda.service.impl;
 
+import com.lambda.model.entity.Artist;
 import com.lambda.model.entity.PeopleWhoLiked;
 import com.lambda.model.entity.Song;
 import com.lambda.repository.PeopleWhoLikedRepository;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
 
 @Service
 public class SongServiceImpl implements SongService {
@@ -64,8 +64,8 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public Page<Song> findAllByAlbum_Id(Long id, Pageable pageable) {
-        return songRepository.findAllByAlbum_Id(id, pageable);
+    public Page<Song> findAllByArtistsContains(Artist artist, Pageable pageable) {
+        return songRepository.findAllByArtistsContains(artist, pageable);
     }
 
     @Override
@@ -135,4 +135,7 @@ public class SongServiceImpl implements SongService {
         }
         return songList;
     }
+
+
+
 }

@@ -1,7 +1,9 @@
 package com.lambda.controller;
 
 import com.lambda.model.entity.Artist;
+import com.lambda.model.entity.Song;
 import com.lambda.service.ArtistService;
+import com.lambda.service.SongService;
 import com.lambda.service.impl.AvatarStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +23,10 @@ import java.util.Optional;
 public class ArtistRestController {
     @Autowired
     ArtistService artistService;
+
+    @Autowired
+    SongService songService;
+
     @Autowired
     AvatarStorageService avatarStorageService;
 
@@ -88,5 +94,14 @@ public class ArtistRestController {
     public ResponseEntity<Void> deleteArtist(@RequestParam("id") Long id) {
         artistService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/song-list")
+    public ResponseEntity<Page<Song>> getSongs(@RequestParam("artist-id") Long id, Pageable pageable) {
+        Optional<Artist> artist = artistService.findById(id);
+        if (artist.isPresent()) {
+            Page<Song> songs = songService.findAllByArtistsContains(artist.get(), pageable);
+            return new ResponseEntity<>(songs, HttpStatus.OK);
+        } else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

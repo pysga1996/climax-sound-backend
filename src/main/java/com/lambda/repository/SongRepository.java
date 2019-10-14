@@ -1,5 +1,7 @@
 package com.lambda.repository;
 
+import com.lambda.model.entity.Artist;
+import com.lambda.model.entity.Playlist;
 import com.lambda.model.entity.Song;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +30,7 @@ public interface SongRepository extends JpaRepository<Song, Long> {
 
     Page<Song> findAllByNameContaining(String name, Pageable pageable);
 
-    Page<Song> findAllByArtists_Name(String name, Pageable pageable);
+    Page<Song> findAllByArtistsContains(Artist artist, Pageable pageable);
 
     @Query("SELECT s FROM Song s JOIN s.albums a WHERE a.id = :id")
     Page<Song> findAllByAlbum_Id(@Param("id") Long id, Pageable pageable);

@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Repository;
@@ -20,9 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 @RestController
@@ -73,7 +72,7 @@ public class SongRestController {
 
     @GetMapping("/list")
     @PreAuthorize("isAnonymous() or hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<Page<Song>> songList(Pageable pageable) {
+    public ResponseEntity<Page<Song>> songList(@PageableDefault(size = 10) Pageable pageable) {
         Page<Song> songList = songService.findAll(pageable);
         if (songList.getTotalElements() == 0) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -150,6 +149,15 @@ public class SongRestController {
     public ResponseEntity<Void> dislikeSong(@RequestParam("song-id") Long id){
         peopleWhoLikedService.unlike(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @GetMapping(value = "/uploaded/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Page<Song>> userSongList(Pageable pageable) {
+        User currentUser = userDetailService.getCurrentUser();
+        Page<Song> userSongList = songService.findAllByUploader_Id(currentUser.getId(), pageable);
+        boolean isEmpty = userSongList.getTotalElements() == 0;
+        if (isEmpty) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else return new ResponseEntity<>(userSongList, HttpStatus.OK);
     }
 
     @PreAuthorize("permitAll()")
