@@ -18,4 +18,5 @@ public interface ArtistService {
     Page<Artist> findAll(Pageable pageable);
     void setFields(Artist oldArtistInfo, Artist newArtistInfo);
     Iterable<Artist> findAllByNameContaining(String name);
+    void deleteById(Long id);
 }

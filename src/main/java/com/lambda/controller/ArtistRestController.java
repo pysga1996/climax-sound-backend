@@ -79,8 +79,14 @@ public class ArtistRestController {
             }
             artistService.setFields(oldArtist.get(), artist);
             artistService.save(oldArtist.get());
-            return new ResponseEntity<>( HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
-        return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @DeleteMapping(value = "/delete")
+    public ResponseEntity<Void> deleteArtist(@RequestParam("id") Long id) {
+        artistService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
