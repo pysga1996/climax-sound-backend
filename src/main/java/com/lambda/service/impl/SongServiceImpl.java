@@ -80,15 +80,15 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public Boolean deleteById(Long id) {
+    public void deleteById(Long id) {
         Optional<Song> song = songRepository.findById(id);
         if (song.isPresent()) {
             songRepository.deleteById(id);
-            String fileUrl = song.get().getUrl();
-            String filename = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
-            return audioStorageService.deleteLocalStorageFile(audioStorageService.audioStorageLocation, filename);
+//            String fileUrl = song.get().getUrl();
+//            String filename = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
+//            return audioStorageService.deleteLocalStorageFile(audioStorageService.audioStorageLocation, filename);
+            audioStorageService.deleteFirebaseStorageFile(song.get());
         }
-        return false;
     }
 
     @Override

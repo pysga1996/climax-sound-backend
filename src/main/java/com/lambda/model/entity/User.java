@@ -1,5 +1,7 @@
 package com.lambda.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
@@ -100,7 +102,9 @@ public class User {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> favoriteAlbums;
 
-    @JsonManagedReference("user-uploadedSong")
+//    @JsonManagedReference("user-uploadedSong")
+//    @JsonIgnore
+@JsonBackReference(value = "user-uploadedSong")
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "uploader")
     Collection<Song> uploadedSong;
 

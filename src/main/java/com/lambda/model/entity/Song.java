@@ -94,8 +94,8 @@ public class Song extends MediaObject {
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "song")
 //    private Collection<PeopleWhoLikedService> peopleWhoLikedList;
 
-    @JsonBackReference(value = "user-uploadedSong")
-    @ManyToOne(fetch = FetchType.LAZY)
+//    @JsonBackReference(value = "user-uploadedSong")
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User uploader;
 

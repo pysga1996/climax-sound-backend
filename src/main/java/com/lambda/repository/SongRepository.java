@@ -15,6 +15,8 @@ import java.util.Optional;
 
 @Repository
 public interface SongRepository extends JpaRepository<Song, Long> {
+//    @Query("SELECT s FROM Song s JOIN s.uploader")
+    Page<Song> findAll(Pageable pageable);
 
 //    @Query("SELECT s, c, t from Song s JOIN FETCH s.country c JOIN FETCH s.theme t WHERE s.id=:id")
     Optional<Song> findById(Long id);
