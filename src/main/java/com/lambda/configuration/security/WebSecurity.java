@@ -5,12 +5,13 @@ import com.lambda.model.entity.User;
 import com.lambda.service.PlaylistService;
 import com.lambda.service.impl.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-//@Service
+@Component
 public class WebSecurity {
     @Autowired
     UserDetailServiceImpl userDetailService;
@@ -25,7 +26,6 @@ public class WebSecurity {
         User currentUser = userDetailService.getCurrentUser();
         if (playlist.isPresent() && currentUser.getId()!=null) {
             return playlist.get().getUser().getId().equals(currentUser.getId());
-        }
-        return false;
+        } else return false;
     }
 }

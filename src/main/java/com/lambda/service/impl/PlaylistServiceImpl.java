@@ -2,15 +2,19 @@ package com.lambda.service.impl;
 
 import com.lambda.model.entity.Playlist;
 import com.lambda.model.entity.Song;
+import com.lambda.model.entity.User;
 import com.lambda.repository.PlaylistRepository;
 import com.lambda.service.PlaylistService;
 import com.lambda.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,6 +25,9 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Autowired
     SongService songService;
 
+    @Autowired
+    UserDetailServiceImpl userDetailService;
+
     @Override
     public boolean checkSongExistence(Playlist playlist, Long songId) {
         Collection<Song> songList = playlist.getSongs();
@@ -30,12 +37,6 @@ public class PlaylistServiceImpl implements PlaylistService {
             }
         }
         return false;
-
-    }
-
-    @Override
-    public Iterable<Playlist> findAllByUser_Id(Long userId) {
-        return playlistRepository.findAllByUser_Id(userId);
     }
 
     @Override
@@ -89,5 +90,33 @@ public class PlaylistServiceImpl implements PlaylistService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean checkPlaylistOwner(Long id) {
+        System.out.println(id);
+        Optional<Playlist> playlist = findById(id);
+        User currentUser = userDetailService.getCurrentUser();
+        if (playlist.isPresent() && currentUser.getId()!=null) {
+            return playlist.get().getUser().getId().equals(currentUser.getId());
+        } else return false;
+    }
+
+    @Override
+    public Iterable<Playlist> getPlaylistListToAdd(Long songId) {
+        User currentUser = userDetailService.getCurrentUser();
+        Optional<Song> song = songService.findById(songId);
+        return song.map(value -> playlistRepository.findAllByUser_IdAndSongsNotContains(currentUser.getId(), value)).orElse(null);
+
+//        Collection<Playlist> playlistCollection = new ArrayList<>();
+//        for (Playlist playlist: playlistList) {
+//            playlistCollection.add(playlist);
+//        }
+//        List<Playlist> filteredPlaylistList = new ArrayList<>();
+//        for (Playlist playlist: playlistCollection) {
+//            if (!checkSongExistence(playlist, songId)) {
+//                filteredPlaylistList.add(playlist);
+//            }
+//        }
     }
 }

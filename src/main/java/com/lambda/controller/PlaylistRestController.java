@@ -28,7 +28,18 @@ public class PlaylistRestController {
     @Autowired
     UserDetailServiceImpl userDetailService;
 
-    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    public boolean isOwnerOfPlaylist(Long playlistId) {
+        System.out.println(playlistId);
+//        Optional<Playlist> playlist = playlistService.findById(Long.parseLong(id));
+        Optional<Playlist> playlist = playlistService.findById(playlistId);
+        User currentUser = userDetailService.getCurrentUser();
+        if (playlist.isPresent() && currentUser.getId()!=null) {
+            return playlist.get().getUser().getId().equals(currentUser.getId());
+        }
+        return false;
+    }
+
+    @GetMapping(value = "/list")
     public ResponseEntity<Page<Playlist>> playlistList(Pageable pageable) {
         User currentUser = userDetailService.getCurrentUser();
         Page<Playlist> playlistList = playlistService.findAllByUser_Id(currentUser.getId(), pageable);
@@ -38,25 +49,17 @@ public class PlaylistRestController {
         } else return new ResponseEntity<>(playlistList, HttpStatus.OK);
     }
 
-    @PreAuthorize("isOwnerOfPlaylist(#id)")
-    @GetMapping(value = "/detail", params = "id", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Playlist> playlistDetail(@P("id") @RequestParam("id") Long id) {
+    @GetMapping(value = "/detail", params = "id")
+    public ResponseEntity<Playlist> playlistDetail(@RequestParam("id") Long id) {
         Optional<Playlist> playlist = playlistService.findById(id);
         if (playlist.isPresent()) {
-            return new ResponseEntity<>(playlist.get(), HttpStatus.OK);
+            if (playlistService.checkPlaylistOwner(id)) {
+                return new ResponseEntity<>(playlist.get(), HttpStatus.OK);
+            } else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<Playlist>> playlistSearch(@RequestParam String title, Pageable pageable) {
-        Page<Playlist> filteredPlaylistList = playlistService.findAllByTitleContaining(title, pageable);
-        boolean isEmpty = filteredPlaylistList.getTotalElements() == 0;
-        if (isEmpty) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else return new ResponseEntity<>(filteredPlaylistList, HttpStatus.OK);
-    }
-
-    @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/create")
     public ResponseEntity<Void> createPlaylist(@Valid @RequestBody Playlist playlist) {
         if (playlist == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -71,18 +74,22 @@ public class PlaylistRestController {
     public ResponseEntity<String> editPlaylist(@Valid @RequestBody Playlist playlist, @RequestParam Long id) {
         Optional<Playlist> oldPlaylist = playlistService.findById(id);
         if (oldPlaylist.isPresent()) {
-            playlist.setId(id);
-            playlist.setUser(userDetailService.getCurrentUser());
-            playlist.setSongs(oldPlaylist.get().getSongs());
-            playlistService.save(playlist);
-            return new ResponseEntity<>("Playlist updated successfully!", HttpStatus.OK);
+            if (playlistService.checkPlaylistOwner(id)) {
+                playlist.setId(id);
+                playlist.setUser(userDetailService.getCurrentUser());
+                playlist.setSongs(oldPlaylist.get().getSongs());
+                playlistService.save(playlist);
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } else return new ResponseEntity<>("Playlist not found!", HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping(value = "/delete", params = {"id"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deletePlaylist(@RequestParam Long id) {
-        playlistService.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        if (playlistService.checkPlaylistOwner(id)) {
+            playlistService.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
     @PostMapping(value = "/add-song")
@@ -104,22 +111,24 @@ public class PlaylistRestController {
     }
 
     @GetMapping("/list-to-add")
-    public ResponseEntity<Collection<Playlist>> showPlaylistListToAdd(@RequestParam("songId") Long songId) {
-        User currentUser = userDetailService.getCurrentUser();
-        Iterable<Playlist> playlistList = playlistService.findAllByUser_Id(currentUser.getId());
-        Collection<Playlist> playlistCollection = new ArrayList<>();
-        for (Playlist playlist: playlistList) {
-            playlistCollection.add(playlist);
-        }
-        List<Playlist> filteredPlaylistList = new ArrayList<>();
-        for (Playlist playlist: playlistCollection) {
-            if (!playlistService.checkSongExistence(playlist, songId)) {
-                filteredPlaylistList.add(playlist);
-            }
-        }
-        boolean isEmpty = filteredPlaylistList.size() == 0;
-        if (isEmpty) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else return new ResponseEntity<>(filteredPlaylistList, HttpStatus.OK);
+    public ResponseEntity<Iterable<Playlist>> showPlaylistListToAdd(@RequestParam("songId") Long songId) {
+//        User currentUser = userDetailService.getCurrentUser();
+//        Iterable<Playlist> playlistList = playlistService.findAllByUser_Id(currentUser.getId());
+//        Collection<Playlist> playlistCollection = new ArrayList<>();
+//        for (Playlist playlist: playlistList) {
+//            playlistCollection.add(playlist);
+//        }
+//        List<Playlist> filteredPlaylistList = new ArrayList<>();
+//        for (Playlist playlist: playlistCollection) {
+//            if (!playlistService.checkSongExistence(playlist, songId)) {
+//                filteredPlaylistList.add(playlist);
+//            }
+//        }
+        Iterable<Playlist> filteredPlaylistList = playlistService.getPlaylistListToAdd(songId);
+//        boolean isEmpty = filteredPlaylistList.iterator();
+//        if (isEmpty) {
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        } else return new ResponseEntity<>(filteredPlaylistList, HttpStatus.OK);
+        return null;
     }
 }

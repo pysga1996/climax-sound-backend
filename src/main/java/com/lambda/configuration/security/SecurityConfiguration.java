@@ -3,11 +3,15 @@ package com.lambda.configuration.security;
 import com.lambda.configuration.security_customization.*;
 import com.lambda.configuration.security_filter.CustomCsrfFilter;
 import com.lambda.configuration.security_filter.JwtAuthenticationFilter;
+import com.lambda.service.PlaylistService;
+import com.lambda.service.impl.PlaylistServiceImpl;
 import com.lambda.service.impl.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -46,6 +50,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     UserDetailServiceImpl userDetailServiceImpl;
+
+    @Bean
+    PlaylistService playlistService() {
+        return new PlaylistServiceImpl();
+    }
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {

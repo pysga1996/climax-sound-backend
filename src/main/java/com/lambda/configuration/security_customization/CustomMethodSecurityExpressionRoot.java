@@ -4,8 +4,10 @@ import com.lambda.model.entity.Playlist;
 import com.lambda.model.entity.User;
 import com.lambda.model.util.CustomUserDetails;
 import com.lambda.service.PlaylistService;
+import com.lambda.service.impl.PlaylistServiceImpl;
 import com.lambda.service.impl.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.PermissionEvaluator;
@@ -16,6 +18,7 @@ import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -24,13 +27,22 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-//@Component
 public class CustomMethodSecurityExpressionRoot implements MethodSecurityExpressionOperations {
-    @Autowired
-    UserDetailServiceImpl userDetailService;
+
+
+    public void setPlaylistService(PlaylistService playlistService) {
+        this.playlistService = playlistService;
+    }
 
     @Autowired
-    PlaylistService playlistService;
+    private UserDetailServiceImpl userDetailService;
+    private PlaylistService playlistService;
+
+//    CustomMethodSecurityExpressionRoot(UserDetailServiceImpl userDetailService, PlaylistService playlistService) {
+//        this.userDetailService = userDetailService;
+//        this.playlistService = playlistService;
+//
+//    }
 
     protected final Authentication authentication;
     private AuthenticationTrustResolver trustResolver;
