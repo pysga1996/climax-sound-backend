@@ -120,7 +120,7 @@ public class FormConvertService {
     }
 
     private Boolean checkSongExistence(AudioUploadForm audioUploadForm) {
-        Iterable<Song> checkedSongs = songService.findAllByName(audioUploadForm.getName());
+        Iterable<Song> checkedSongs = songService.findAllByTitle(audioUploadForm.getName());
         boolean isExisted = false;
 //        for (Song checkedSong: checkedSongs) {
 //            if (compareTwoArtistSet(checkedSong.getArtists(), audioUploadForm.getArtists().split(","))) {
@@ -132,7 +132,7 @@ public class FormConvertService {
     }
 
     private Boolean checkAlbumExistence(AlbumForm albumForm) {
-        Iterable<Album> checkedAlbums = albumService.findByName(albumForm.getName());
+        Iterable<Album> checkedAlbums = albumService.findAllByTitle(albumForm.getName());
         boolean isExisted = false;
 //        for (Album checkedAlbum: checkedAlbums) {
 //            if (compareTwoArtistSet(checkedAlbum.getArtists(), albumForm.getArtists().split(","))) {

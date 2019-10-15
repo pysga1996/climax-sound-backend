@@ -11,8 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,9 +24,6 @@ import java.util.*;
 public class PlaylistRestController {
     @Autowired
     PlaylistService playlistService;
-
-    @Autowired
-    WebSecurity webSecurity;
 
     @Autowired
     UserDetailServiceImpl userDetailService;
@@ -41,8 +38,9 @@ public class PlaylistRestController {
         } else return new ResponseEntity<>(playlistList, HttpStatus.OK);
     }
 
+    @PreAuthorize("isOwnerOfPlaylist(#id)")
     @GetMapping(value = "/detail", params = "id", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Playlist> playlistDetail(@RequestParam("id") Long id) {
+    public ResponseEntity<Playlist> playlistDetail(@P("id") @RequestParam("id") Long id) {
         Optional<Playlist> playlist = playlistService.findById(id);
         if (playlist.isPresent()) {
             return new ResponseEntity<>(playlist.get(), HttpStatus.OK);
@@ -50,8 +48,8 @@ public class PlaylistRestController {
     }
 
     @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<Playlist>> playlistSearch(@RequestParam String name, Pageable pageable) {
-        Page<Playlist> filteredPlaylistList = playlistService.findAllByNameContaining(name, pageable);
+    public ResponseEntity<Page<Playlist>> playlistSearch(@RequestParam String title, Pageable pageable) {
+        Page<Playlist> filteredPlaylistList = playlistService.findAllByTitleContaining(title, pageable);
         boolean isEmpty = filteredPlaylistList.getTotalElements() == 0;
         if (isEmpty) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -124,5 +122,4 @@ public class PlaylistRestController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else return new ResponseEntity<>(filteredPlaylistList, HttpStatus.OK);
     }
-
 }

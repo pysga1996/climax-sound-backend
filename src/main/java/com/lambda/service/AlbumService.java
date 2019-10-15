@@ -9,13 +9,13 @@ import java.util.Optional;
 public interface AlbumService {
     Optional<Album> findById(Long id);
 
-    Iterable<Album> findByName(String name);
+    Iterable<Album> findAllByTitle(String name);
 
     Page<Album> findAll(Pageable pageable);
 
-    Page<Album> findAllByNameContaining(String name, Pageable pageable);
+    Page<Album> findAllByTitleContaining(String name, Pageable pageable);
 
-    Page<Album> findAllByArtists_Name(String name, Pageable pageable);
+    Page<Album> findAllByArtist_Name(String name, Pageable pageable);
 
     void save(Album album);
 

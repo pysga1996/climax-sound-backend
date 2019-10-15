@@ -148,7 +148,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 //        return localeResolver;
 //    }
 
-//    @Bean(name = "multipartResolver")
+//    @Bean(title = "multipartResolver")
 //    public CommonsMultipartResolver getResolver() throws IOException {
 //        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
 //        //Set the maximum allowed size (in bytes) for each individual file.

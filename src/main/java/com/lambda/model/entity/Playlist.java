@@ -25,7 +25,7 @@ public class Playlist {
 
     //    @Column(columnDefinition = "VARCHAR(255) COLLATE utf8mb4_bin")
     @NotBlank
-    private String name;
+    private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference("user-playlist")

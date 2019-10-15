@@ -19,16 +19,14 @@ public interface SongRepository extends JpaRepository<Song, Long> {
 //    @Query("SELECT s, c, t from Song s JOIN FETCH s.country c JOIN FETCH s.theme t WHERE s.id=:id")
     Optional<Song> findById(Long id);
 
-//    @Query(value = "SELECT * FROM song WHERE BINARY name=:name", nativeQuery = true)
-    Optional<Song> findByName(String name);
-
-    Iterable<Song> findAllByName(String name);
+//    @Query(value = "SELECT * FROM song WHERE BINARY title=:title", nativeQuery = true)
+    Iterable<Song> findAllByTitle(String title);
 
     Page<Song> findAllByUploader_Id(Long id, Pageable pageable);
 
-    Iterable<Song> findAllByNameContaining(String name);
+    Iterable<Song> findAllByTitleContaining(String title);
 
-    Page<Song> findAllByNameContaining(String name, Pageable pageable);
+    Page<Song> findAllByTitleContaining(String title, Pageable pageable);
 
     Page<Song> findAllByArtistsContains(Artist artist, Pageable pageable);
 
@@ -39,6 +37,6 @@ public interface SongRepository extends JpaRepository<Song, Long> {
     Iterable<Song> findAllByAlbum_Id(@Param("id") Long id);
 
     @Query("SELECT DISTINCT s FROM Song s JOIN s.tags t WHERE t.name = :name")
-    Page<Song> findAllByTags_Name(@Param("name") String name, Pageable pageable);
+    Page<Song> findAllByTag_Name(@Param("name") String name, Pageable pageable);
 
 }

@@ -5,7 +5,6 @@ import com.lambda.model.util.MediaObject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -29,7 +28,7 @@ public class Song extends MediaObject {
     private Long id;
 
     @NotBlank
-    private String name;
+    private String title;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date releaseDate;
@@ -115,8 +114,8 @@ public class Song extends MediaObject {
     @JoinColumn(name = "theme_id")
     private Theme theme;
 
-    public Song(String name, Date releaseDate) {
-        this.name = name;
+    public Song(String title, Date releaseDate) {
+        this.title = title;
         this.releaseDate = releaseDate;
     }
 
@@ -124,7 +123,7 @@ public class Song extends MediaObject {
     public String toString() {
         return "Song{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", title='" + title + '\'' +
                 ", releaseDate=" + releaseDate +
                 ", url='" + url + '\'' +
                 '}';

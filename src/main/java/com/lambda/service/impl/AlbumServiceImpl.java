@@ -23,8 +23,8 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public Iterable<Album> findByName(String name) {
-        return albumRepository.findByName(name);
+    public Iterable<Album> findAllByTitle(String title) {
+        return albumRepository.findAllByTitle(title);
     }
 
     @Override
@@ -33,13 +33,13 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public Page<Album> findAllByNameContaining(String name, Pageable pageable) {
-        return albumRepository.findAllByNameContaining(name, pageable);
+    public Page<Album> findAllByTitleContaining(String title, Pageable pageable) {
+        return albumRepository.findAllByTitleContaining(title, pageable);
     }
 
     @Override
-    public Page<Album> findAllByArtists_Name(String name, Pageable pageable) {
-        return albumRepository.findAllByNameContaining(name, pageable);
+    public Page<Album> findAllByArtist_Name(String title, Pageable pageable) {
+        return albumRepository.findAllByArtist_Name(title, pageable);
     }
 
     @Override

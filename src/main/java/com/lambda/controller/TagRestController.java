@@ -41,10 +41,10 @@ public class TagRestController {
     public ResponseEntity<String> createTag(@Valid @RequestBody Tag tag) {
         Tag checkedTag = tagService.findByName(tag.getName());
         if (checkedTag != null) {
-            return new ResponseEntity<>("Tag name has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>("Tag title has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
         } else {
             tagService.save(tag);
-            return new ResponseEntity<>("Tag name created in database!", HttpStatus.CREATED);
+            return new ResponseEntity<>("Tag title created in database!", HttpStatus.CREATED);
         }
     }
 
@@ -52,18 +52,18 @@ public class TagRestController {
     public ResponseEntity<String> editTag(@Valid @RequestBody Tag tag, @RequestParam Long id) {
         Tag checkedTag = tagService.findByName(tag.getName());
         if (checkedTag != null) {
-            return new ResponseEntity<>("Tag name has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>("Tag title has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
         } else {
             tag.setId(id);
             tagService.save(tag);
-            return new ResponseEntity<>("Tag name updated in database!", HttpStatus.OK);
+            return new ResponseEntity<>("Tag title updated in database!", HttpStatus.OK);
         }
     }
 
     @DeleteMapping(params = {"action=delete", "id"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteTag(@RequestParam Long id) {
         tagService.deleteById(id);
-        return new ResponseEntity<>("Tag name removed in database!", HttpStatus.OK);
+        return new ResponseEntity<>("Tag title removed in database!", HttpStatus.OK);
     }
 
 

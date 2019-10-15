@@ -1,5 +1,11 @@
 package com.lambda.configuration.security_customization;
 
+import com.lambda.model.entity.Playlist;
+import com.lambda.model.entity.User;
+import com.lambda.service.PlaylistService;
+import com.lambda.service.impl.UserDetailServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -7,14 +13,17 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
-@Component
+@Configuration
 public class CustomPermissionEvaluator implements PermissionEvaluator {
+    @Autowired
+    UserDetailServiceImpl userDetailService;
+
+    @Autowired
+    PlaylistService playlistService;
 
     @Override
     public boolean hasPermission(
             Authentication auth, Object targetDomainObject, Object permission) {
-        System.out.println(targetDomainObject.getClass().getSimpleName().toUpperCase());
-        System.out.println(permission);
         if ((auth == null) || (targetDomainObject == null) || !(permission instanceof String)){
             return false;
         }

@@ -41,10 +41,10 @@ public class CountryRestController {
     public ResponseEntity<String> createMood(@Valid @RequestBody Country country) {
         Country checkedCountry = countryService.findByName(country.getName());
         if (checkedCountry != null) {
-            return new ResponseEntity<>("Country name has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>("Country title has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
         } else {
             countryService.save(country);
-            return new ResponseEntity<>("Country name created successfully!", HttpStatus.CREATED);
+            return new ResponseEntity<>("Country title created successfully!", HttpStatus.CREATED);
         }
     }
 
@@ -52,12 +52,12 @@ public class CountryRestController {
     public ResponseEntity<String> editMood(@Valid @RequestBody Country country, @RequestParam Integer id) {
         Country checkedCountry = countryService.findByName(country.getName());
         if (checkedCountry != null) {
-            return new ResponseEntity<>("Country name has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>("Country title has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
         }
         else {
             country.setId(id);
             countryService.save(country);
-            return new ResponseEntity<>("Country name updated successfully!", HttpStatus.OK);
+            return new ResponseEntity<>("Country title updated successfully!", HttpStatus.OK);
         }
     }
 

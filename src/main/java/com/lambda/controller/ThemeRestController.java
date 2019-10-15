@@ -40,7 +40,7 @@ public class ThemeRestController {
     @PostMapping(params = "action=create", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createActivity(@Valid @RequestBody Theme mood) {
         if (mood == null) {
-            return new ResponseEntity<>("Theme name has already existed in database!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Theme title has already existed in database!", HttpStatus.BAD_REQUEST);
         } else {
             themeService.save(mood);
             return new ResponseEntity<>("Theme created successfully!", HttpStatus.CREATED);
@@ -51,7 +51,7 @@ public class ThemeRestController {
     public ResponseEntity<String> editActivity(@Valid @RequestBody Theme theme, @RequestParam Integer id) {
         Theme checkedTheme = themeService.findByName(theme.getName());
         if (checkedTheme != null) {
-            return new ResponseEntity<>("Theme name has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>("Theme title has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
         } else {
             theme.setId(id);
             themeService.save(theme);

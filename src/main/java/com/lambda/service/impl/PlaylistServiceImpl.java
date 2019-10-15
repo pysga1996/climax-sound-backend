@@ -49,8 +49,8 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public Page<Playlist> findAllByNameContaining(String name, Pageable pageable) {
-        return playlistRepository.findAllByNameContaining(name, pageable);
+    public Page<Playlist> findAllByTitleContaining(String title, Pageable pageable) {
+        return playlistRepository.findAllByTitleContaining(title, pageable);
     }
 
     @Override

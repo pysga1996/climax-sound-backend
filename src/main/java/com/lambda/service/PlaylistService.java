@@ -11,7 +11,7 @@ public interface PlaylistService {
     Optional<Playlist> findById(Long id);
     Iterable<Playlist> findAllByUser_Id(Long userId);
     Page<Playlist> findAllByUser_Id(Long userId, Pageable pageable);
-    Page<Playlist> findAllByNameContaining(String name, Pageable pageable);
+    Page<Playlist> findAllByTitleContaining(String title, Pageable pageable);
     void save(Playlist playlist);
     void deleteById(Long id);
     boolean addSongToPlaylist(Long songId, Long playlistId);

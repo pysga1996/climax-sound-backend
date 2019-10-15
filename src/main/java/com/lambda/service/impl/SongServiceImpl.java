@@ -1,7 +1,7 @@
 package com.lambda.service.impl;
 
 import com.lambda.model.entity.Artist;
-import com.lambda.model.entity.PeopleWhoLiked;
+import com.lambda.model.entity.Like;
 import com.lambda.model.entity.Song;
 import com.lambda.repository.PeopleWhoLikedRepository;
 import com.lambda.repository.SongRepository;
@@ -39,18 +39,13 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public Optional<Song> findByName(String name) {
-        return songRepository.findByName(name);
+    public Iterable<Song> findAllByTitle(String title) {
+        return songRepository.findAllByTitle(title);
     }
 
     @Override
-    public Iterable<Song> findAllByName(String name) {
-        return songRepository.findAllByName(name);
-    }
-
-    @Override
-    public Iterable<Song> findAllByNameContaining(String name) {
-        return songRepository.findAllByNameContaining(name);
+    public Iterable<Song> findAllByTitleContaining(String name) {
+        return songRepository.findAllByTitleContaining(name);
     }
 
     @Override
@@ -59,8 +54,8 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public Page<Song> findAllByNameContaining(String name, Pageable pageable) {
-        return songRepository.findAllByNameContaining(name, pageable);
+    public Page<Song> findAllByTitleContaining(String name, Pageable pageable) {
+        return songRepository.findAllByTitleContaining(name, pageable);
     }
 
     @Override
@@ -69,8 +64,8 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public Page<Song> findAllByTags_Name(String name, Pageable pageable) {
-        return songRepository.findAllByTags_Name(name, pageable);
+    public Page<Song> findAllByTag_Name(String name, Pageable pageable) {
+        return songRepository.findAllByTag_Name(name, pageable);
     }
 
     @Override
@@ -102,7 +97,7 @@ public class SongServiceImpl implements SongService {
     }
     @Override
     public void setFields(Song oldSongInfo,Song newSongInfo){
-        oldSongInfo.setName(newSongInfo.getName());
+        oldSongInfo.setTitle(newSongInfo.getTitle());
         oldSongInfo.setArtists(newSongInfo.getArtists());
         oldSongInfo.setGenres(newSongInfo.getGenres());
         oldSongInfo.setCountry(newSongInfo.getCountry());
@@ -119,7 +114,7 @@ public class SongServiceImpl implements SongService {
     @Override
     public boolean hasUserLiked(Long songId) {
         Long userId = userDetailService.getCurrentUser().getId();
-        PeopleWhoLiked peopleWhoLikeds = peopleWhoLikedRepository.findBySongIdAndUserId(songId, userId);
+        Like peopleWhoLikeds = peopleWhoLikedRepository.findBySongIdAndUserId(songId, userId);
 //        Long size = StreamSupport.stream(peopleWhoLikeds.spliterator(), false).count();
         return (peopleWhoLikeds != null);
     }

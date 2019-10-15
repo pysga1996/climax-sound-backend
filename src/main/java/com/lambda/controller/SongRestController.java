@@ -7,6 +7,7 @@ import com.lambda.service.impl.AudioStorageService;
 import com.lambda.service.impl.DownloadService;
 import com.lambda.service.impl.FormConvertService;
 import com.lambda.service.impl.UserDetailServiceImpl;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -41,6 +45,9 @@ public class SongRestController {
 
     @Autowired
     PeopleWhoLikedService peopleWhoLikedService;
+
+    @Autowired
+    CommentService commentService;
 
     @Autowired
     UserDetailServiceImpl userDetailService;
@@ -90,7 +97,7 @@ public class SongRestController {
 
     @GetMapping(value = "/search", params = "name")
     public ResponseEntity<Iterable<Song>> songListByName(@RequestParam("name") String name) {
-        Iterable<Song> songList = songService.findAllByNameContaining(name);
+        Iterable<Song> songList = songService.findAllByTitleContaining(name);
         int listSize = 0;
         if (songList instanceof Collection) {
             listSize = ((Collection<?>) songList).size();
@@ -104,7 +111,7 @@ public class SongRestController {
 
     @GetMapping(value = "/search", params = "tag")
     public ResponseEntity<Page<Song>> songListByTag(@RequestParam("tag") String tag, Pageable pageable) {
-        Page<Song> songList = songService.findAllByTags_Name(tag, pageable);
+        Page<Song> songList = songService.findAllByTag_Name(tag, pageable);
         if (songList.getTotalElements() == 0) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -171,5 +178,21 @@ public class SongRestController {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping(params = {"comment", "song-id"})
+    public ResponseEntity<Void> commentOnSong(@Valid @RequestBody() Comment comment, @RequestParam("song-id") Long id) {
+        Optional<Song> song = songService.findById(id);
+        if (song.isPresent()) {
+            LocalDateTime localDateTime = LocalDateTime.now();
+            User currentUser = userDetailService.getCurrentUser();
+            comment.setLocalDateTime(localDateTime);
+            comment.setSong(song.get());
+            comment.setUser(currentUser);
+            commentService.save(comment);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
 }

@@ -1,6 +1,6 @@
 package com.lambda.service.impl;
 
-import com.lambda.model.entity.PeopleWhoLiked;
+import com.lambda.model.entity.Like;
 import com.lambda.model.entity.Song;
 import com.lambda.model.entity.User;
 import com.lambda.repository.PeopleWhoLikedRepository;
@@ -27,10 +27,10 @@ public class PeopleWhoLikeServiceImpl implements PeopleWhoLikedService {
         Optional<Song> song = songService.findById(id);
         User user =  userDetailService.getCurrentUser();
         if (song.isPresent()) {
-            PeopleWhoLiked peopleWhoLiked = peopleWhoLikedRepository.findBySongIdAndUserId(song.get().getId(), user.getId());
-            if (peopleWhoLiked == null) {
-                peopleWhoLiked = new PeopleWhoLiked(song.get().getId(), user.getId());
-                peopleWhoLikedRepository.save(peopleWhoLiked);
+            Like like = peopleWhoLikedRepository.findBySongIdAndUserId(song.get().getId(), user.getId());
+            if (like == null) {
+                like = new Like(song.get().getId(), user.getId());
+                peopleWhoLikedRepository.save(like);
             }
         }
     }
@@ -40,9 +40,9 @@ public class PeopleWhoLikeServiceImpl implements PeopleWhoLikedService {
         Optional<Song> song = songService.findById(id);
         User currentUser =  userDetailService.getCurrentUser();
         if (song.isPresent()) {
-            PeopleWhoLiked peopleWhoLiked = peopleWhoLikedRepository.findBySongIdAndUserId(song.get().getId(), currentUser.getId());
-            if (peopleWhoLiked != null) {
-                peopleWhoLikedRepository.delete(peopleWhoLiked);
+            Like like = peopleWhoLikedRepository.findBySongIdAndUserId(song.get().getId(), currentUser.getId());
+            if (like != null) {
+                peopleWhoLikedRepository.delete(like);
             }
         }
     }

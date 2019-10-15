@@ -61,7 +61,7 @@ public class AlbumRestController {
 
     @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<Album>> albumSearch(@RequestParam String name, Pageable pageable) {
-        Page<Album> filteredAlbumList = albumService.findAllByNameContaining(name, pageable);
+        Page<Album> filteredAlbumList = albumService.findAllByTitleContaining(name, pageable);
         boolean isEmpty = filteredAlbumList.getTotalElements() == 0;
         if (isEmpty) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
