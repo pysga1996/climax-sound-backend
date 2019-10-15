@@ -32,7 +32,7 @@ public class Role {
     private Collection<User> users;
 
     @JsonManagedReference("role_privilege")
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(
             name = "role_privilege",

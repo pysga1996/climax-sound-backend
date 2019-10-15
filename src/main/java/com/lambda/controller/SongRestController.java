@@ -57,10 +57,10 @@ public class SongRestController {
 
     @PostMapping("/upload")
     public ResponseEntity<Void> uploadSong(@RequestPart("song") Song song, @RequestPart("audio") MultipartFile file, @RequestPart(value = "albumId", required = false) String id) {
-        Collection<Artist> artists = song.getArtists();
-            for (Artist artist : artists) {
-            artistService.save(artist);
-        }
+//        Collection<Artist> artists = song.getArtists();
+//            for (Artist artist : artists) {
+//            artistService.save(artist);
+//        }
         if (id != null) { Optional<Album> album = albumService.findById(Long.parseLong(id));
             album.ifPresent(value -> song.getAlbums().add(value));
         }
@@ -130,11 +130,9 @@ public class SongRestController {
     }
 
     @DeleteMapping(value = "/delete", params = "id")
-    public ResponseEntity<String> deleteSong(@RequestParam("id") Long id) {
-        Boolean result = songService.deleteById(id);
-        if (result) {
-            return new ResponseEntity<>("Song removed successfully", HttpStatus.OK);
-        } else return new ResponseEntity<>("Song removed but media file was not found on server", HttpStatus.NOT_FOUND);
+    public ResponseEntity<Void> deleteSong(@RequestParam("id") Long id) {
+      songService.deleteById(id);
+      return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/sortByDate")
@@ -193,6 +191,4 @@ public class SongRestController {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
 }

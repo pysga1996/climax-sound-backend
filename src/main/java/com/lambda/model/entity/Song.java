@@ -35,7 +35,8 @@ public class Song extends MediaObject {
 
     private String url;
 
-    @JsonManagedReference(value = "song-comment")
+//    @JsonManagedReference(value = "song-comment")
+    @JsonIgnore
     @OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
     private Collection<Comment> comments;
 
@@ -49,7 +50,8 @@ public class Song extends MediaObject {
 
     private String blobId;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "song_artist",
             joinColumns = @JoinColumn(
@@ -64,8 +66,8 @@ public class Song extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> albums;
 
-    @JsonManagedReference(value = "song-tag")
-    @ManyToMany(fetch = FetchType.LAZY)
+//    @JsonManagedReference(value = "song-tag")
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "song_tag",
             joinColumns = @JoinColumn(
@@ -75,8 +77,8 @@ public class Song extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Tag> tags;
 
-    @JsonManagedReference(value = "song-genre")
-    @ManyToMany(fetch = FetchType.LAZY)
+//    @JsonManagedReference(value = "song-genre")
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "song_genre",
             joinColumns = @JoinColumn(
@@ -94,8 +96,8 @@ public class Song extends MediaObject {
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "song")
 //    private Collection<PeopleWhoLikedService> peopleWhoLikedList;
 
-    @JsonBackReference(value = "user-uploadedSong")
-    @ManyToOne(fetch = FetchType.LAZY)
+//    @JsonBackReference(value = "user-uploadedSong")
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User uploader;
 

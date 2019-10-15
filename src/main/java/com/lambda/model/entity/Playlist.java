@@ -27,8 +27,9 @@ public class Playlist {
     @NotBlank
     private String title;
 
+
+//    @JsonBackReference("user-playlist")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference("user-playlist")
     @JoinColumn(name = "user_id")
     private User user;
 
