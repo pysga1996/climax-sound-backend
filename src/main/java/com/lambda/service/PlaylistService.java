@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Service
 public interface PlaylistService {
     boolean checkSongExistence(Playlist playlist, Long songId);
     Optional<Playlist> findById(Long id);

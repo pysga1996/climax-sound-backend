@@ -77,9 +77,9 @@ public class SongRestController {
 //        return downloadService.generateUrl(fileName, request, audioStorageService);
 //    }
 
-    @GetMapping(value = "/list", params = "sort")
+    @GetMapping(value = "/list")
     @PreAuthorize("isAnonymous() or hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<Page<Song>> songList(@PageableDefault(size = 20) Pageable pageable, @RequestParam String sort) {
+    public ResponseEntity<Page<Song>> songList(@PageableDefault(size = 20) Pageable pageable, @RequestParam(value = "sort", required = false) String sort) {
         Page<Song> songList = songService.findAll(pageable, sort);
         if (songList.getTotalElements() == 0) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -135,19 +135,21 @@ public class SongRestController {
       return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(params = {"like", "song-id"})
     public ResponseEntity<Void> likeSong(@RequestParam("song-id") Long id){
         peopleWhoLikedService.like(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(params = {"unlike", "song-id"})
     public ResponseEntity<Void> dislikeSong(@RequestParam("song-id") Long id){
         peopleWhoLikedService.unlike(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/uploaded/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<Song>> userSongList(Pageable pageable) {
         User currentUser = userDetailService.getCurrentUser();

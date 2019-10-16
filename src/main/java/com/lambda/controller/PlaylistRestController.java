@@ -42,7 +42,8 @@ public class PlaylistRestController {
     @GetMapping(value = "/list")
     public ResponseEntity<Page<Playlist>> playlistList(Pageable pageable) {
         User currentUser = userDetailService.getCurrentUser();
-        Page<Playlist> playlistList = playlistService.findAllByUser_Id(currentUser.getId(), pageable);
+        Long id = currentUser.getId();
+        Page<Playlist> playlistList = playlistService.findAllByUser_Id(id, pageable);
         boolean isEmpty = playlistList.getTotalElements() == 0;
         if (isEmpty) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -93,7 +94,7 @@ public class PlaylistRestController {
     }
 
     @PostMapping(value = "/add-song")
-    public ResponseEntity<Void> addSongToPlaylist(@RequestParam("songId") Long songId, @RequestParam("playlistId") Long playlistId) {
+    public ResponseEntity<Void> addSongToPlaylist(@RequestParam("song-id") Long songId, @RequestParam("playlist-id") Long playlistId) {
         boolean result = playlistService.addSongToPlaylist(songId, playlistId);
         if (result) {
             return new ResponseEntity<>( HttpStatus.OK);
@@ -111,24 +112,14 @@ public class PlaylistRestController {
     }
 
     @GetMapping("/list-to-add")
-    public ResponseEntity<Iterable<Playlist>> showPlaylistListToAdd(@RequestParam("songId") Long songId) {
-//        User currentUser = userDetailService.getCurrentUser();
-//        Iterable<Playlist> playlistList = playlistService.findAllByUser_Id(currentUser.getId());
-//        Collection<Playlist> playlistCollection = new ArrayList<>();
-//        for (Playlist playlist: playlistList) {
-//            playlistCollection.add(playlist);
-//        }
-//        List<Playlist> filteredPlaylistList = new ArrayList<>();
-//        for (Playlist playlist: playlistCollection) {
-//            if (!playlistService.checkSongExistence(playlist, songId)) {
-//                filteredPlaylistList.add(playlist);
-//            }
-//        }
+    public ResponseEntity<Iterable<Playlist>> showPlaylistListToAdd(@RequestParam("song-id") Long songId) {
         Iterable<Playlist> filteredPlaylistList = playlistService.getPlaylistListToAdd(songId);
-//        boolean isEmpty = filteredPlaylistList.iterator();
-//        if (isEmpty) {
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        } else return new ResponseEntity<>(filteredPlaylistList, HttpStatus.OK);
-        return null;
+        int size = 0;
+        if (filteredPlaylistList instanceof Collection) {
+            size = ((Collection<?>) filteredPlaylistList).size();
+        }
+        if (size == 0) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else return new ResponseEntity<>(filteredPlaylistList, HttpStatus.OK);
     }
 }

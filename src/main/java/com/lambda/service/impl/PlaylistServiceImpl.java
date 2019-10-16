@@ -63,12 +63,13 @@ public class PlaylistServiceImpl implements PlaylistService {
     public void deleteById(Long id) {
         playlistRepository.deleteById(id);
     }
+
     @Override
     public boolean addSongToPlaylist(Long songId, Long playlistId){
         Optional<Song> song = songService.findById(songId);
-        Optional<Playlist> playlist = this.findById(playlistId);
-        if(song.isPresent() && playlist.isPresent()){
-            Collection<Song> songList = playlist.get().getSongs();
+        Playlist playlist = playlistRepository.findOne(playlistId);
+        if(song.isPresent()){
+            Collection<Song> songList = playlist.getSongs();
             for (Song checkedSong: songList) {
                 if (checkedSong.getId().equals(song.get().getId())) return false;
             }

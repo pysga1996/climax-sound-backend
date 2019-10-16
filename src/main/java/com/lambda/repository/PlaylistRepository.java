@@ -15,8 +15,8 @@ import java.util.Optional;
 
 @Repository
 public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
-//    @Query("SELECT p FROM Playlist p JOIN FETCH p.songs WHERE p.id = :id")
-    Optional<Playlist> findById(Long id);
+    @Query("SELECT p FROM Playlist p LEFT JOIN FETCH p.songs WHERE p.id=:id")
+    Playlist findOne(@Param("id") Long id);
 
     Iterable<Playlist> findAllByUser_IdAndSongsNotContains(Long userId, Song song);
 

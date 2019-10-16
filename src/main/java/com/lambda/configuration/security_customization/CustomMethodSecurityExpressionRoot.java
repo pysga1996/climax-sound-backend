@@ -18,8 +18,6 @@ import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -29,20 +27,9 @@ import java.util.Set;
 
 public class CustomMethodSecurityExpressionRoot implements MethodSecurityExpressionOperations {
 
-
-    public void setPlaylistService(PlaylistService playlistService) {
-        this.playlistService = playlistService;
-    }
-
     @Autowired
     private UserDetailServiceImpl userDetailService;
     private PlaylistService playlistService;
-
-//    CustomMethodSecurityExpressionRoot(UserDetailServiceImpl userDetailService, PlaylistService playlistService) {
-//        this.userDetailService = userDetailService;
-//        this.playlistService = playlistService;
-//
-//    }
 
     protected final Authentication authentication;
     private AuthenticationTrustResolver trustResolver;
@@ -220,17 +207,6 @@ public class CustomMethodSecurityExpressionRoot implements MethodSecurityExpress
     @Override
     public void setReturnObject(Object obj) {
         this.returnObject = obj;
-    }
-
-    public boolean isOwnerOfPlaylist(Long playlistId) {
-        System.out.println(playlistId);
-//        Optional<Playlist> playlist = playlistService.findById(Long.parseLong(id));
-        Optional<Playlist> playlist = playlistService.findById(playlistId);
-        User currentUser = userDetailService.getCurrentUser();
-        if (playlist.isPresent() && currentUser.getId()!=null) {
-            return playlist.get().getUser().getId().equals(currentUser.getId());
-        }
-        return false;
     }
 
 }
