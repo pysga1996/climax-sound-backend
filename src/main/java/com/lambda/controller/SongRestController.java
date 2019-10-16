@@ -119,9 +119,13 @@ public class SongRestController {
     }
 
     @PutMapping(value = "/edit", params = "id")
-    public ResponseEntity<Void> editSong(@RequestPart("song") Song song, @RequestParam("id") Long id) {
+    public ResponseEntity<Void> editSong(@RequestPart("song") Song song, @RequestParam("id") Long id, @RequestPart(value = "audio",required = false) MultipartFile multipartFile) {
         Optional<Song> oldSong = songService.findById(id);
         if(oldSong.isPresent()){
+            if (multipartFile != null) {
+                String fileDownloadUri = audioStorageService.saveToFirebaseStorage(oldSong.get(), multipartFile);
+                song.setUrl(fileDownloadUri);
+            }
             songService.setFields(oldSong.get(),song);
             songService.save(oldSong.get());
             return new ResponseEntity<>(HttpStatus.OK);
