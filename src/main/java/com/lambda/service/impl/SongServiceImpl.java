@@ -132,6 +132,9 @@ public class SongServiceImpl implements SongService {
         oldSongInfo.setReleaseDate(newSongInfo.getReleaseDate());
         oldSongInfo.setTags(newSongInfo.getTags());
         oldSongInfo.setTheme(newSongInfo.getTheme());
+        if(newSongInfo.getUrl()!= null) {
+            oldSongInfo.setUrl(newSongInfo.getUrl());
+        }
     }
 
     @Override
