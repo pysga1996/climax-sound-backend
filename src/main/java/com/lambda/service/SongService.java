@@ -9,13 +9,17 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface SongService {
-    Optional<Song> findById(Long id);
+    Page<Song> findAll(Pageable pageable, String sort);
     Iterable<Song> findAllByTitle(String title);
     Iterable<Song> findAllByTitleContaining(String title);
-    Page<Song> findAll(Pageable pageable);
     Page<Song> findAllByUploader_Id(Long id, Pageable pageable);
     Page<Song> findAllByTitleContaining(String title, Pageable pageable);
     Page<Song> findAllByArtistsContains(Artist artist, Pageable pageable);
+    Page<Song> findAllByOrderByReleaseDateDesc(Pageable pageable);
+    Page<Song> findAllByOrderByDisplayRatingDesc(Pageable pageable);
+    Page<Song> findAllByOrderByListeningFrequencyDesc(Pageable pageable);
+    Page<Song> findAllByLikesCount(Pageable pageable);
+    Optional<Song> findById(Long id);
     Iterable<Song> findAllByAlbum_Id(Long id);
     Page<Song> findAllByTag_Name(String name, Pageable pageable);
     Song save(Song song);

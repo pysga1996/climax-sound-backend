@@ -29,6 +29,39 @@ public class SongServiceImpl implements SongService {
     AudioStorageService audioStorageService;
 
     @Override
+    public Page<Song> findAll(Pageable pageable, String sort) {
+        if (sort != null && sort.equals("release-date")) {
+            return songRepository.findAllByOrderByReleaseDateDesc(pageable);
+        } else if (sort != null && sort.equals("listening-frequency")) {
+            return songRepository.findAllByOrderByListeningFrequencyDesc(pageable);
+        } else if (sort != null && sort.equals("likes")) {
+            return songRepository.findAllByOrderByUsers_Size(pageable);
+        } else {
+            return songRepository.findAll(pageable);
+        }
+    }
+
+    @Override
+    public Page<Song> findAllByOrderByReleaseDateDesc(Pageable pageable) {
+        return songRepository.findAllByOrderByReleaseDateDesc(pageable);
+    }
+
+    @Override
+    public Page<Song> findAllByOrderByDisplayRatingDesc(Pageable pageable) {
+        return songRepository.findAllByOrderByDisplayRatingDesc(pageable);
+    }
+
+    @Override
+    public Page<Song> findAllByOrderByListeningFrequencyDesc(Pageable pageable) {
+        return songRepository.findAllByOrderByListeningFrequencyDesc(pageable);
+    }
+
+    @Override
+    public Page<Song> findAllByLikesCount(Pageable pageable) {
+        return songRepository.findAllByOrderByUsers_Size(pageable);
+    }
+
+    @Override
     public Page<Song> findAllByUploader_Id(Long id, Pageable pageable) {
         return songRepository.findAllByUploader_Id(id, pageable);
     }
@@ -46,11 +79,6 @@ public class SongServiceImpl implements SongService {
     @Override
     public Iterable<Song> findAllByTitleContaining(String name) {
         return songRepository.findAllByTitleContaining(name);
-    }
-
-    @Override
-    public Page<Song> findAll(Pageable pageable) {
-        return songRepository.findAll(pageable);
     }
 
     @Override

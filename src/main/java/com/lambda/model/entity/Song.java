@@ -35,14 +35,13 @@ public class Song extends MediaObject {
 
     private String url;
 
-//    @JsonManagedReference(value = "song-comment")
     @JsonIgnore
     @OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
     private Collection<Comment> comments;
 
     private Long displayRating = 0L;
 
-    private Double listenCount;
+    private Long listeningFrequency = 0L;
 
     private Boolean liked;
 

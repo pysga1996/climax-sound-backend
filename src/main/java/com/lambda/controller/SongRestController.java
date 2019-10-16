@@ -77,10 +77,10 @@ public class SongRestController {
 //        return downloadService.generateUrl(fileName, request, audioStorageService);
 //    }
 
-    @GetMapping("/list")
+    @GetMapping(value = "/list", params = "sort")
     @PreAuthorize("isAnonymous() or hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<Page<Song>> songList(@PageableDefault(size = 10) Pageable pageable) {
-        Page<Song> songList = songService.findAll(pageable);
+    public ResponseEntity<Page<Song>> songList(@PageableDefault(size = 20) Pageable pageable, @RequestParam String sort) {
+        Page<Song> songList = songService.findAll(pageable, sort);
         if (songList.getTotalElements() == 0) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
@@ -135,13 +135,6 @@ public class SongRestController {
       return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/sortByDate")
-    public ResponseEntity<Page<Song>> listSong( @PageableDefault(sort = "releaseDate",
-            direction = Sort.Direction.DESC) Pageable pageable){
-        Page<Song> songPage = songService.findAll(pageable);
-        return new ResponseEntity<>(songPage, HttpStatus.OK);
-    }
-
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @PostMapping(params = {"like", "song-id"})
     public ResponseEntity<Void> likeSong(@RequestParam("song-id") Long id){
@@ -191,4 +184,13 @@ public class SongRestController {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping(params = {"comment-id"})
+    public ResponseEntity<Void> deleteCommentOnSong(@RequestParam("comment-id") Long id) {
+        Optional<Comment> comment = commentService.findById(id);
+        comment.ifPresent(value -> commentService.deleteById(value.getId()));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
