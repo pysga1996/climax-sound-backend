@@ -77,11 +77,27 @@ public class SongRestController {
 //        return downloadService.generateUrl(fileName, request, audioStorageService);
 //    }
 
-    @GetMapping(value = "/list", params = "sort")
-    @PreAuthorize("isAnonymous() or hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<Page<Song>> songList(@PageableDefault(size = 20) Pageable pageable, @RequestParam String sort) {
+    @PreAuthorize("permitAll()")
+    @GetMapping(value = "/list")
+    public ResponseEntity<Page<Song>> songList(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "sort", required = false) String sort) {
         Page<Song> songList = songService.findAll(pageable, sort);
         if (songList.getTotalElements() == 0) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            songService.setLike(songList);
+            return new ResponseEntity<>(songList, HttpStatus.OK);
+        }
+    }
+
+    @PreAuthorize("permitAll()")
+    @GetMapping(value = "/list-top")
+    public ResponseEntity<Iterable<Song>> topSongList(@RequestParam(value = "sort", required = false) String sort) {
+        Iterable<Song> songList = songService.findTop10By(sort);
+        int size = 0;
+        if (songList instanceof Collection) {
+            size = ((Collection<?>) songList).size();
+        }
+        if (size == 0) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             songService.setLike(songList);
@@ -163,8 +179,8 @@ public class SongRestController {
     public ResponseEntity<Void> listenToSong(@RequestParam("song-id") Long id) {
         Optional<Song> song = songService.findById(id);
         if (song.isPresent()) {
-            long currentRating = song.get().getDisplayRating();
-            song.get().setDisplayRating(++currentRating);
+            long currentListeningFrequency = song.get().getListeningFrequency();
+            song.get().setListeningFrequency(++currentListeningFrequency);
             songService.save(song.get());
         }
         return new ResponseEntity<>(HttpStatus.OK);
@@ -193,4 +209,9 @@ public class SongRestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+//    @PreAuthorize("permitAll()")
+//    @GetMapping
+//    public ResponseEntity<> getCommentList(@RequestParam("song-id") Long id) {
+//
+//    }
 }

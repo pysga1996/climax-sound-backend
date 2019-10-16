@@ -2,9 +2,11 @@ package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import com.lambda.model.util.MediaObject;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -35,12 +37,14 @@ public class Song extends MediaObject {
 
     private String url;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
+//    @JsonIgnore
+    @OneToMany(mappedBy = "song", fetch = FetchType.EAGER)
     private Collection<Comment> comments;
 
+    @Column(columnDefinition = "default 0")
     private Long displayRating = 0L;
 
+    @Column(columnDefinition = "default 0")
     private Long listeningFrequency = 0L;
 
     private Boolean liked;

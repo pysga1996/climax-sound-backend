@@ -24,11 +24,13 @@ public interface SongRepository extends JpaRepository<Song, Long> {
 
     Page<Song> findAllByOrderByListeningFrequencyDesc(Pageable pageable);
 
+    Iterable<Song> findFirst10ByOrderByListeningFrequencyDesc();
+
     @Query("SELECT s FROM Song s ORDER BY s.users.size DESC")
     Page<Song> findAllByOrderByUsers_Size(Pageable pageable);
 
-//    @Query("SELECT s, c, t from Song s JOIN FETCH s.country c JOIN FETCH s.theme t WHERE s.id=:id")
-    Optional<Song> findById(Long id);
+    @Query("SELECT s from Song s WHERE s.id=:id")
+    Optional<Song> findById(@Param("id") Long id);
 
 //    @Query(value = "SELECT * FROM song WHERE BINARY title=:title", nativeQuery = true)
     Iterable<Song> findAllByTitle(String title);
