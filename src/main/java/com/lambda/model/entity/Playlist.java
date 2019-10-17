@@ -26,13 +26,10 @@ public class Playlist {
     @NotBlank
     private String title;
 
-
-//    @JsonBackReference("user-playlist")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
-//    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "playlist_song",
