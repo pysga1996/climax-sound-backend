@@ -25,6 +25,7 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
@@ -56,19 +57,30 @@ public class SongRestController {
     private AudioStorageService audioStorageService;
 
     @PostMapping("/upload")
-    public ResponseEntity<Void> uploadSong(@RequestPart("song") Song song, @RequestPart("audio") MultipartFile file, @RequestPart(value = "albumId", required = false) String id) {
+    public ResponseEntity<Void> uploadSong(@RequestPart("song") Song song, @RequestPart("audio") MultipartFile file, @RequestParam(value = "album-id", required = false) Long id) {
         try {
-            if (id != null) { Optional<Album> album = albumService.findById(Long.parseLong(id));
-                album.ifPresent(value -> song.getAlbums().add(value));
+            Song songToSave = songService.save(song);
+            String fileDownloadUri = audioStorageService.saveToFirebaseStorage(songToSave, file);
+            songToSave.setUrl(fileDownloadUri);
+            songToSave.setUploader(userDetailService.getCurrentUser());
+            if (id != null) {
+                Optional<Album> album = albumService.findById(id);
+                Collection<Album> albumList = songToSave.getAlbums();
+                if (album.isPresent()) {
+                    if (albumList == null) {
+                        albumList = new HashSet<>();
+                    }
+                    albumList.add(album.get());
+                    songToSave.setAlbums(albumList);
+                    songService.save(songToSave);
+                    albumService.save(album.get());
+                }
             }
-            songService.save(song);
-            String fileDownloadUri = audioStorageService.saveToFirebaseStorage(song, file);
-            song.setUrl(fileDownloadUri);
-            song.setUploader(userDetailService.getCurrentUser());
-            songService.save(song);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            songService.deleteById(song.getId());
+            if (song.getId() != null) {
+                songService.deleteById(song.getId());
+            }
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

@@ -35,6 +35,7 @@ public class Artist {
 
     private String avatarBlobId;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String biography;
 
     @JsonBackReference(value = "song-artist")

@@ -2,11 +2,10 @@ package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import com.lambda.model.util.MediaObject;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -21,9 +20,6 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"comments", "liked", "albums", "tags", "genres", "users", "playlists", "country", "theme", "uploader", "blobId"}, allowGetters = true, ignoreUnknown=true)
-//@JsonIdentityInfo(
-//        generator = ObjectIdGenerators.PropertyGenerator.class,
-//        property = "id")
 public class Song extends MediaObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,14 +37,15 @@ public class Song extends MediaObject {
     @OneToMany(mappedBy = "song", fetch = FetchType.EAGER)
     private Collection<Comment> comments;
 
-//    @Column(columnDefinition = "default 0")
+    @ColumnDefault("0")
     private Long displayRating = 0L;
 
-//    @Column(columnDefinition = "default 0")
+    @ColumnDefault("0")
     private Long listeningFrequency = 0L;
 
     private Boolean liked;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String lyric;
 
     private String blobId;
@@ -65,11 +62,10 @@ public class Song extends MediaObject {
     private Collection<Artist> artists;
 
     @JsonBackReference(value = "album-song")
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "songs")
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Album.class)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> albums;
 
-//    @JsonManagedReference(value = "song-tag")
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "song_tag",
@@ -80,7 +76,6 @@ public class Song extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Tag> tags;
 
-//    @JsonManagedReference(value = "song-genre")
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "song_genre",

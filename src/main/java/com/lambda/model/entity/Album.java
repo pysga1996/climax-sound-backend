@@ -17,9 +17,6 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper=true)
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"users", "coverBlobId", "coverUrl"}, allowGetters = true)
-//@JsonIdentityInfo(
-//        generator = ObjectIdGenerators.PropertyGenerator.class,
-//        property = "id")
 public class Album extends MediaObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,7 +32,6 @@ public class Album extends MediaObject {
 
     private String coverBlobId;
 
-//    @JsonManagedReference("album-genre")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "album_genre",
@@ -46,8 +42,7 @@ public class Album extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Genre> genres;
 
-    @JsonManagedReference("album-song")
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Song.class)
     @JoinTable(
             name = "album_song",
             joinColumns = @JoinColumn(
@@ -57,7 +52,6 @@ public class Album extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
 
-    @JsonManagedReference(value = "album-artist")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "album_artist",
@@ -68,7 +62,7 @@ public class Album extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Artist> artists;
 
-    @JsonManagedReference(value = "album-tag")
+//    @JsonManagedReference(value = "album-tag")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "album_tag",
@@ -99,4 +93,12 @@ public class Album extends MediaObject {
         this.releaseDate = releaseDate;
     }
 
+    @Override
+    public String toString() {
+        return "Album{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", releaseDate=" + releaseDate +
+                '}';
+    }
 }

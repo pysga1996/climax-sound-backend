@@ -45,7 +45,7 @@ public class AlbumRestController {
     @Autowired
     private DownloadService downloadService;
 
-    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/list")
     public ResponseEntity<Page<Album>> albumList(Pageable pageable) {
         Page<Album> albumList = albumService.findAll(pageable);
         if (albumList.getTotalElements() == 0) {
@@ -53,7 +53,7 @@ public class AlbumRestController {
         } else return new ResponseEntity<>(albumList, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/detail", params = {"id"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/detail", params = {"id"})
     public ResponseEntity<Album> albumDetail(@RequestParam("id") Long id) {
         Optional<Album> album = albumService.findById(id);
         return album.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -68,16 +68,23 @@ public class AlbumRestController {
         } else return new ResponseEntity<>(filteredAlbumList, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/upload", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/upload")
     public ResponseEntity<Long> createAlbum(@Valid @RequestPart("album") Album album, @RequestPart("cover") MultipartFile file) {
-        albumService.save(album);
-        String fileName = coverStorageService.saveToFirebaseStorage(album, file);
-        album.setCoverUrl(fileName);
-        albumService.save(album);
-        return new ResponseEntity<>(album.getId(), HttpStatus.OK);
+        try {
+            albumService.save(album);
+            String fileName = coverStorageService.saveToFirebaseStorage(album, file);
+            album.setCoverUrl(fileName);
+            albumService.save(album);
+            return new ResponseEntity<>(album.getId(), HttpStatus.OK);
+        } catch (Exception e) {
+            if (album.getId() != null) {
+                albumService.deleteById(album.getId());
+            }
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @PutMapping(value = "/edit", params = {"id"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/edit", params = {"id"})
     public ResponseEntity<String> editAlbum(@Valid @RequestBody AlbumForm albumForm, @RequestParam Long id) {
         Album album = formConvertService.convertToAlbum(albumForm);
         if (album != null) {
@@ -87,7 +94,7 @@ public class AlbumRestController {
         } else return new ResponseEntity<>("Album has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
-    @DeleteMapping(value = "/delete", params = {"id"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/delete", params = {"id"})
     public ResponseEntity<String> deleteAlbum(@RequestParam Long id) {
         Collection<Song> songsToDelete = new ArrayList<>();
         Iterable<Song> songs = songService.findAllByAlbum_Id(id);
