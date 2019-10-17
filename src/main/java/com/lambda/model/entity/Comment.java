@@ -38,8 +38,8 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     private Song song;
 
-    @JsonBackReference(value = "user-comment")
-    @ManyToOne(fetch = FetchType.LAZY)
+//    @JsonBackReference(value = "user-comment")
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
     public Comment(String content, LocalDateTime localDateTime, Song song, User user) {

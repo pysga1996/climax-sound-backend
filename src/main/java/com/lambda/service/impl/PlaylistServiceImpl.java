@@ -9,12 +9,9 @@ import com.lambda.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,7 +30,7 @@ public class PlaylistServiceImpl implements PlaylistService {
         Collection<Song> songList = playlist.getSongs();
         for (Song song: songList) {
             if (song.getId().equals(songId)) {
-              return true;
+                return true;
             }
         }
         return false;
@@ -67,9 +64,9 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Override
     public boolean addSongToPlaylist(Long songId, Long playlistId){
         Optional<Song> song = songService.findById(songId);
-        Playlist playlist = playlistRepository.findOne(playlistId);
-        if(song.isPresent()){
-            Collection<Song> songList = playlist.getSongs();
+        Optional<Playlist> playlist = playlistRepository.findById(playlistId);
+        if (song.isPresent() && playlist.isPresent()){
+            Collection<Song> songList = playlist.get().getSongs();
             for (Song checkedSong: songList) {
                 if (checkedSong.getId().equals(song.get().getId())) return false;
             }

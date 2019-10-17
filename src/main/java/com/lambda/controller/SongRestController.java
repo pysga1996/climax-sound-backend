@@ -57,19 +57,20 @@ public class SongRestController {
 
     @PostMapping("/upload")
     public ResponseEntity<Void> uploadSong(@RequestPart("song") Song song, @RequestPart("audio") MultipartFile file, @RequestPart(value = "albumId", required = false) String id) {
-//        Collection<Artist> artists = song.getArtists();
-//            for (Artist artist : artists) {
-//            artistService.save(artist);
-//        }
-        if (id != null) { Optional<Album> album = albumService.findById(Long.parseLong(id));
-            album.ifPresent(value -> song.getAlbums().add(value));
+        try {
+            if (id != null) { Optional<Album> album = albumService.findById(Long.parseLong(id));
+                album.ifPresent(value -> song.getAlbums().add(value));
+            }
+            songService.save(song);
+            String fileDownloadUri = audioStorageService.saveToFirebaseStorage(song, file);
+            song.setUrl(fileDownloadUri);
+            song.setUploader(userDetailService.getCurrentUser());
+            songService.save(song);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            songService.deleteById(song.getId());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        songService.save(song);
-        String fileDownloadUri = audioStorageService.saveToFirebaseStorage(song, file);
-        song.setUrl(fileDownloadUri);
-        song.setUploader(userDetailService.getCurrentUser());
-        songService.save(song);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 //    @GetMapping("/download/{fileName:.+}")
@@ -77,11 +78,27 @@ public class SongRestController {
 //        return downloadService.generateUrl(fileName, request, audioStorageService);
 //    }
 
+    @PreAuthorize("permitAll()")
     @GetMapping(value = "/list")
-    @PreAuthorize("isAnonymous() or hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<Page<Song>> songList(@PageableDefault(size = 20) Pageable pageable, @RequestParam(value = "sort", required = false) String sort) {
+    public ResponseEntity<Page<Song>> songList(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "sort", required = false) String sort) {
         Page<Song> songList = songService.findAll(pageable, sort);
         if (songList.getTotalElements() == 0) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            songService.setLike(songList);
+            return new ResponseEntity<>(songList, HttpStatus.OK);
+        }
+    }
+
+    @PreAuthorize("permitAll()")
+    @GetMapping(value = "/list-top")
+    public ResponseEntity<Iterable<Song>> topSongList(@RequestParam(value = "sort", required = false) String sort) {
+        Iterable<Song> songList = songService.findTop10By(sort);
+        int size = 0;
+        if (songList instanceof Collection) {
+            size = ((Collection<?>) songList).size();
+        }
+        if (size == 0) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             songService.setLike(songList);
@@ -169,8 +186,8 @@ public class SongRestController {
     public ResponseEntity<Void> listenToSong(@RequestParam("song-id") Long id) {
         Optional<Song> song = songService.findById(id);
         if (song.isPresent()) {
-            long currentRating = song.get().getDisplayRating();
-            song.get().setDisplayRating(++currentRating);
+            long currentListeningFrequency = song.get().getListeningFrequency();
+            song.get().setListeningFrequency(++currentListeningFrequency);
             songService.save(song.get());
         }
         return new ResponseEntity<>(HttpStatus.OK);
@@ -199,4 +216,9 @@ public class SongRestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+//    @PreAuthorize("permitAll()")
+//    @GetMapping
+//    public ResponseEntity<> getCommentList(@RequestParam("song-id") Long id) {
+//
+//    }
 }

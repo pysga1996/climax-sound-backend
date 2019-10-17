@@ -16,8 +16,9 @@ public interface SongService {
     Page<Song> findAllByTitleContaining(String title, Pageable pageable);
     Page<Song> findAllByArtistsContains(Artist artist, Pageable pageable);
     Page<Song> findAllByOrderByReleaseDateDesc(Pageable pageable);
-    Page<Song> findAllByOrderByDisplayRatingDesc(Pageable pageable);
     Page<Song> findAllByOrderByListeningFrequencyDesc(Pageable pageable);
+    Page<Song> findAllByOrderByDisplayRatingDesc(Pageable pageable);
+    Iterable<Song> findTop10By(String sort);
     Page<Song> findAllByLikesCount(Pageable pageable);
     Optional<Song> findById(Long id);
     Iterable<Song> findAllByAlbum_Id(Long id);
@@ -29,4 +30,5 @@ public interface SongService {
     Page<Song> sortByDate(Pageable pageable);
     boolean hasUserLiked(Long songId);
     Page<Song> setLike(Page<Song> songList);
+    Iterable<Song> setLike(Iterable<Song> songList);
 }

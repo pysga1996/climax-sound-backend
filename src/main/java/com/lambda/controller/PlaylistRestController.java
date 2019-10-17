@@ -1,6 +1,8 @@
 package com.lambda.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.lambda.configuration.security.WebSecurity;
+import com.lambda.model.Views;
 import com.lambda.model.entity.Playlist;
 import com.lambda.model.entity.User;
 import com.lambda.service.PlaylistService;
@@ -27,17 +29,6 @@ public class PlaylistRestController {
 
     @Autowired
     UserDetailServiceImpl userDetailService;
-
-    public boolean isOwnerOfPlaylist(Long playlistId) {
-        System.out.println(playlistId);
-//        Optional<Playlist> playlist = playlistService.findById(Long.parseLong(id));
-        Optional<Playlist> playlist = playlistService.findById(playlistId);
-        User currentUser = userDetailService.getCurrentUser();
-        if (playlist.isPresent() && currentUser.getId()!=null) {
-            return playlist.get().getUser().getId().equals(currentUser.getId());
-        }
-        return false;
-    }
 
     @GetMapping(value = "/list")
     public ResponseEntity<Page<Playlist>> playlistList(Pageable pageable) {
@@ -103,7 +94,7 @@ public class PlaylistRestController {
     }
 
     @PutMapping(value = "/remove-song")
-    public ResponseEntity<Void> removeSongFromPlaylist(@RequestParam("songId") Long songId, @RequestParam("playlistId")Long playlistId) {
+    public ResponseEntity<Void> removeSongFromPlaylist(@RequestParam("song-id") Long songId, @RequestParam("playlist-id")Long playlistId) {
         boolean result = playlistService.deleteSongFromPlaylist(songId,playlistId);
         if(result) {
             return new ResponseEntity<>(HttpStatus.OK);

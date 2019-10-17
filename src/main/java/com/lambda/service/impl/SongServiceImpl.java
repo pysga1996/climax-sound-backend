@@ -30,15 +30,20 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public Page<Song> findAll(Pageable pageable, String sort) {
-        if (sort != null && sort.equals("release-date")) {
+        if (sort != null && sort.equals("releaseDate")) {
             return songRepository.findAllByOrderByReleaseDateDesc(pageable);
-        } else if (sort != null && sort.equals("listening-frequency")) {
+        } else if (sort != null && sort.equals("listeningFrequency")) {
             return songRepository.findAllByOrderByListeningFrequencyDesc(pageable);
-        } else if (sort != null && sort.equals("likes")) {
+        } else if (sort != null && sort.equals("likesCount")) {
             return songRepository.findAllByOrderByUsers_Size(pageable);
         } else {
             return songRepository.findAll(pageable);
         }
+    }
+
+    @Override
+    public Iterable<Song> findTop10By(String sort) {
+        return songRepository.findFirst10ByOrderByListeningFrequencyDesc();
     }
 
     @Override
@@ -152,6 +157,18 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public Page<Song> setLike(Page<Song> songList) {
+        for (Song song: songList) {
+            if (hasUserLiked(song.getId())) {
+                song.setLiked(true);
+            } else {
+                song.setLiked(false);
+            }
+        }
+        return songList;
+    }
+
+    @Override
+    public Iterable<Song> setLike(Iterable<Song> songList) {
         for (Song song: songList) {
             if (hasUserLiked(song.getId())) {
                 song.setLiked(true);
