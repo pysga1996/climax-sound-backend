@@ -23,7 +23,6 @@ public class Role {
     private Integer id;
 
     @NotBlank
-//    @Column(title = "role_name")
     private String name;
 
     @JsonBackReference("user-role")
@@ -31,7 +30,6 @@ public class Role {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<User> users;
 
-    @JsonManagedReference("role_privilege")
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(

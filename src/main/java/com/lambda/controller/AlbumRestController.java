@@ -53,7 +53,7 @@ public class AlbumRestController {
         } else return new ResponseEntity<>(albumList, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/detail", params = {"id"})
+    @GetMapping(value = "/detail", params = "id")
     public ResponseEntity<Album> albumDetail(@RequestParam("id") Long id) {
         Optional<Album> album = albumService.findById(id);
         return album.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));

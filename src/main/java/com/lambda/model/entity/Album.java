@@ -32,7 +32,7 @@ public class Album extends MediaObject {
 
     private String coverBlobId;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "album_genre",
             joinColumns = @JoinColumn(
@@ -42,7 +42,7 @@ public class Album extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Genre> genres;
 
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Song.class)
+    @ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinTable(
             name = "album_song",
             joinColumns = @JoinColumn(
@@ -52,7 +52,7 @@ public class Album extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "album_artist",
             joinColumns = @JoinColumn(
@@ -62,7 +62,6 @@ public class Album extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Artist> artists;
 
-//    @JsonManagedReference(value = "album-tag")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "album_tag",
@@ -73,13 +72,11 @@ public class Album extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Tag> tags;
 
-    @JsonBackReference("album-country")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "country_id")
     private Country country;
 
-    @JsonBackReference("album-theme")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "theme_id")
     private Theme theme;
 

@@ -76,18 +76,17 @@ public class UserRestController {
     }
 
     @PutMapping("/profile")
-    public ResponseEntity<Void> updateProfile(@RequestPart("user") User user , @RequestPart(value = "avatar",required = false) MultipartFile multipartFile, @RequestParam("id") Long id) {
-        Optional<User> oldUser = userService.findById(id);
-        if(oldUser.isPresent()) {
+    public ResponseEntity<Void> updateProfile(@RequestPart("user") User user , @RequestPart(value = "avatar",required = false) MultipartFile multipartFile) {
+        User oldUser = userDetailService.getCurrentUser();
+        if (user != null) {
             if (multipartFile != null) {
-                String fileDownloadUri = avatarStorageService.saveToFirebaseStorage(oldUser.get(),multipartFile);
+                String fileDownloadUri = avatarStorageService.saveToFirebaseStorage(oldUser, multipartFile);
                 user.setAvatarUrl(fileDownloadUri);
             }
-            userService.setFieldsEdit(oldUser.get(),user);
-            userService.save(oldUser.get());
+            userService.setFieldsEdit(oldUser,user);
+            userService.save(oldUser);
             return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 //    @PostMapping("/avatar")
@@ -175,15 +174,6 @@ public class UserRestController {
 //        return new RandomStuff("JWT Hợp lệ mới có thể thấy được message này");
     }
 
-    @GetMapping("/mysong")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Page<Song>> mySongList(Pageable pageable) {
-        Page<Song> mySongList = songService.findAllByUploader_Id(userDetailService.getCurrentUser().getId(), pageable);
-        if (mySongList.getTotalElements() > 0) {
-            return new ResponseEntity<>(mySongList, HttpStatus.OK);
-        } else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
     @GetMapping(value = "/search", params = "name")
     public ResponseEntity<SearchResponse> search(@RequestParam("name") String name){
         Iterable<Song> songs = songService.findAllByTitleContaining(name);
@@ -192,7 +182,8 @@ public class UserRestController {
         return new ResponseEntity<>(searchResponse, HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/user/delete")
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping(value = "/delete-user", params = "id")
     public ResponseEntity<Void> deleteUser(@RequestParam("id")Long id) {
         userService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);

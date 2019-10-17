@@ -3,7 +3,7 @@ package com.lambda.service.impl;
 import com.lambda.model.entity.Artist;
 import com.lambda.model.entity.Like;
 import com.lambda.model.entity.Song;
-import com.lambda.repository.PeopleWhoLikedRepository;
+import com.lambda.repository.LikeRepository;
 import com.lambda.repository.SongRepository;
 import com.lambda.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class SongServiceImpl implements SongService {
     SongRepository songRepository;
 
     @Autowired
-    PeopleWhoLikedRepository peopleWhoLikedRepository;
+    LikeRepository likeRepository;
 
     @Autowired
     UserDetailServiceImpl userDetailService;
@@ -150,7 +150,7 @@ public class SongServiceImpl implements SongService {
     @Override
     public boolean hasUserLiked(Long songId) {
         Long userId = userDetailService.getCurrentUser().getId();
-        Like peopleWhoLikeds = peopleWhoLikedRepository.findBySongIdAndUserId(songId, userId);
+        Like peopleWhoLikeds = likeRepository.findBySongIdAndUserId(songId, userId);
 //        Long size = StreamSupport.stream(peopleWhoLikeds.spliterator(), false).count();
         return (peopleWhoLikeds != null);
     }

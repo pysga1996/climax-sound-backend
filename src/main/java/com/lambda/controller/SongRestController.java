@@ -1,29 +1,23 @@
 package com.lambda.controller;
 
 import com.lambda.model.entity.*;
-import com.lambda.repository.PeopleWhoLikedRepository;
 import com.lambda.service.*;
 import com.lambda.service.impl.AudioStorageService;
-import com.lambda.service.impl.DownloadService;
-import com.lambda.service.impl.FormConvertService;
 import com.lambda.service.impl.UserDetailServiceImpl;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
@@ -63,16 +57,28 @@ public class SongRestController {
             String fileDownloadUri = audioStorageService.saveToFirebaseStorage(songToSave, file);
             songToSave.setUrl(fileDownloadUri);
             songToSave.setUploader(userDetailService.getCurrentUser());
+//            if (id != null) {
+//                Optional<Album> album = albumService.findById(id);
+//                Collection<Album> albumList = songToSave.getAlbums();
+//                if (album.isPresent()) {
+//                    if (albumList == null) {
+//                        albumList = new ArrayList<>();
+//                    }
+//                    albumList.add(album.get());
+//                    songToSave.setAlbums(albumList);
+//                    songService.save(songToSave);
+//                    albumService.save(album.get());
+//                }
+//            }
             if (id != null) {
                 Optional<Album> album = albumService.findById(id);
-                Collection<Album> albumList = songToSave.getAlbums();
                 if (album.isPresent()) {
-                    if (albumList == null) {
-                        albumList = new HashSet<>();
+                    Collection<Song> songList = album.get().getSongs();
+                    if (songList == null) {
+                        songList = new ArrayList<>();
                     }
-                    albumList.add(album.get());
-                    songToSave.setAlbums(albumList);
-                    songService.save(songToSave);
+                    songList.add(song);
+                    album.get().setSongs(songList);
                     albumService.save(album.get());
                 }
             }
@@ -118,7 +124,7 @@ public class SongRestController {
         }
     }
 
-    @GetMapping(value = "/detail", params = {"id"})
+    @GetMapping(value = "/detail", params = "id")
     public ResponseEntity<Song> songDetail(@RequestParam("id") Long id) {
         Optional<Song> song = songService.findById(id);
         return song.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -169,6 +175,15 @@ public class SongRestController {
     }
 
     @PreAuthorize("isAuthenticated()")
+    @GetMapping("/my-song")
+    public ResponseEntity<Page<Song>> mySongList(Pageable pageable) {
+        Page<Song> mySongList = songService.findAllByUploader_Id(userDetailService.getCurrentUser().getId(), pageable);
+        if (mySongList.getTotalElements() > 0) {
+            return new ResponseEntity<>(mySongList, HttpStatus.OK);
+        } else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(params = {"like", "song-id"})
     public ResponseEntity<Void> likeSong(@RequestParam("song-id") Long id){
         peopleWhoLikedService.like(id);
@@ -207,7 +222,7 @@ public class SongRestController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping(params = {"comment", "song-id"})
-    public ResponseEntity<Void> commentOnSong(@Valid @RequestBody() Comment comment, @RequestParam("song-id") Long id) {
+    public ResponseEntity<Void> commentOnSong(@Valid @RequestBody Comment comment, @RequestParam("song-id") Long id) {
         Optional<Song> song = songService.findById(id);
         if (song.isPresent()) {
             LocalDateTime localDateTime = LocalDateTime.now();
@@ -221,7 +236,7 @@ public class SongRestController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping(params = {"comment-id"})
+    @DeleteMapping(params = {"comment-id"})
     public ResponseEntity<Void> deleteCommentOnSong(@RequestParam("comment-id") Long id) {
         Optional<Comment> comment = commentService.findById(id);
         comment.ifPresent(value -> commentService.deleteById(value.getId()));

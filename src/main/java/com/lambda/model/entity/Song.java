@@ -33,8 +33,7 @@ public class Song extends MediaObject {
 
     private String url;
 
-//    @JsonIgnore
-    @OneToMany(mappedBy = "song", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
     private Collection<Comment> comments;
 
     @ColumnDefault("0")
@@ -61,8 +60,7 @@ public class Song extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Artist> artists;
 
-    @JsonBackReference(value = "album-song")
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Album.class)
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "songs", cascade=CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> albums;
 
@@ -90,11 +88,6 @@ public class Song extends MediaObject {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "favoriteSongs")
     private Collection<User> users;
 
-//    @JsonManagedReference(value = "song-peopleWhoLiked")
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "song")
-//    private Collection<PeopleWhoLikedService> peopleWhoLikedList;
-
-//    @JsonBackReference(value = "user-uploadedSong")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User uploader;
@@ -104,12 +97,10 @@ public class Song extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Playlist> playlists;
 
-    @JsonBackReference(value = "song-country")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id")
     private Country country;
 
-    @JsonBackReference(value = "song-theme")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "theme_id")
     private Theme theme;

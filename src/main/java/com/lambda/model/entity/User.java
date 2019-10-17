@@ -63,7 +63,6 @@ public class User {
 
     private String avatarBlobString;
 
-    @JsonManagedReference("user-role")
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(

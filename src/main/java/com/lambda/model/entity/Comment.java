@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
@@ -24,21 +26,21 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+//    @Max(500)
+//    @NotBlank
     @Column(columnDefinition = "LONGTEXT")
-    @Size(min = 5, max = 500)
     private String content;
 
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+//    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+//    @JsonSerialize(using = LocalDateTimeSerializer.class)
+//    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime localDateTime;
 
     @JsonBackReference(value = "song-comment")
     @ManyToOne(fetch = FetchType.LAZY)
     private Song song;
 
-//    @JsonBackReference(value = "user-comment")
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
@@ -47,5 +49,14 @@ public class Comment {
         this.localDateTime = localDateTime;
         this.song = song;
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", content='" + content + '\'' +
+                ", localDateTime=" + localDateTime +
+                '}';
     }
 }

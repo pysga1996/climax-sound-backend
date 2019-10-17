@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
         newUserInfo.setAccountNonLocked(oldUserInfo.isAccountNonLocked());
         newUserInfo.setCredentialsNonExpired(oldUserInfo.isCredentialsNonExpired());
         newUserInfo.setEnabled(oldUserInfo.isEnabled());
-//        newUserInfo.setFavoriteSongs(oldUserInfo.getFavoriteSongs());
+        newUserInfo.setFavoriteSongs(oldUserInfo.getFavoriteSongs());
         newUserInfo.setFavoriteAlbums(oldUserInfo.getFavoriteAlbums());
         newUserInfo.setComments(oldUserInfo.getComments());
     }
@@ -73,7 +73,9 @@ public class UserServiceImpl implements UserService {
         oldUserInfo.setBirthDate(newUserInfo.getBirthDate());
         oldUserInfo.setGender(newUserInfo.getGender());
         oldUserInfo.setPhoneNumber(newUserInfo.getPhoneNumber());
-        oldUserInfo.setPassword(passwordEncoder.encode(newUserInfo.getPassword()));
+        if (!oldUserInfo.getPassword().equals(newUserInfo.getPassword())) {
+            oldUserInfo.setPassword(passwordEncoder.encode(newUserInfo.getPassword()));
+        }
         if (newUserInfo.getAvatarUrl() != null) {
             oldUserInfo.setAvatarUrl(newUserInfo.getAvatarUrl());
         }

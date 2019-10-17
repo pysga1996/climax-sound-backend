@@ -3,7 +3,7 @@ package com.lambda.service.impl;
 import com.lambda.model.entity.Like;
 import com.lambda.model.entity.Song;
 import com.lambda.model.entity.User;
-import com.lambda.repository.PeopleWhoLikedRepository;
+import com.lambda.repository.LikeRepository;
 import com.lambda.service.PeopleWhoLikedService;
 import com.lambda.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class PeopleWhoLikeServiceImpl implements PeopleWhoLikedService {
     SongService songService;
 
     @Autowired
-    PeopleWhoLikedRepository peopleWhoLikedRepository;
+    LikeRepository likeRepository;
 
     @Autowired
     UserDetailServiceImpl userDetailService;
@@ -27,10 +27,10 @@ public class PeopleWhoLikeServiceImpl implements PeopleWhoLikedService {
         Optional<Song> song = songService.findById(id);
         User user =  userDetailService.getCurrentUser();
         if (song.isPresent()) {
-            Like like = peopleWhoLikedRepository.findBySongIdAndUserId(song.get().getId(), user.getId());
+            Like like = likeRepository.findBySongIdAndUserId(song.get().getId(), user.getId());
             if (like == null) {
                 like = new Like(song.get().getId(), user.getId());
-                peopleWhoLikedRepository.save(like);
+                likeRepository.save(like);
             }
         }
     }
@@ -40,9 +40,9 @@ public class PeopleWhoLikeServiceImpl implements PeopleWhoLikedService {
         Optional<Song> song = songService.findById(id);
         User currentUser =  userDetailService.getCurrentUser();
         if (song.isPresent()) {
-            Like like = peopleWhoLikedRepository.findBySongIdAndUserId(song.get().getId(), currentUser.getId());
+            Like like = likeRepository.findBySongIdAndUserId(song.get().getId(), currentUser.getId());
             if (like != null) {
-                peopleWhoLikedRepository.delete(like);
+                likeRepository.delete(like);
             }
         }
     }

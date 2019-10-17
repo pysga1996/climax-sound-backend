@@ -13,10 +13,6 @@ import java.util.Collection;
 @Entity
 @Data
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"songs", "albums"}, allowGetters = true, ignoreUnknown = true)
-//@JsonIdentityInfo(
-//        generator = ObjectIdGenerators.PropertyGenerator.class,
-//        property = "id")
 public class Country {
 
     @Id
@@ -24,15 +20,14 @@ public class Country {
     private Integer id;
 
     @NotBlank
-//    @Column(title = "country_name")
     private String name;
 
-    @JsonManagedReference("song-country")
+    @JsonIgnore
     @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
 
-    @JsonManagedReference("album-country")
+    @JsonIgnore
     @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> albums;

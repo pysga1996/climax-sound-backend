@@ -29,7 +29,7 @@ public interface SongRepository extends JpaRepository<Song, Long> {
     @Query("SELECT s FROM Song s ORDER BY SIZE(s.users) DESC")
     Page<Song> findAllByOrderByUsers_Size(Pageable pageable);
 
-    @Query("SELECT s from Song s WHERE s.id=:id")
+    @Query("SELECT s from Song s LEFT JOIN FETCH s.comments WHERE s.id=:id")
     Optional<Song> findById(@Param("id") Long id);
 
 //    @Query(value = "SELECT * FROM song WHERE BINARY title=:title", nativeQuery = true)
