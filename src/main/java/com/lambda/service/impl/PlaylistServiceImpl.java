@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Optional;
 
 @Service
@@ -71,7 +72,8 @@ public class PlaylistServiceImpl implements PlaylistService {
                 if (checkedSong.getId().equals(song.get().getId())) return false;
             }
             songList.add(song.get());
-            songService.save(song.get());
+            playlist.get().setSongs(songList);
+            playlistRepository.save(playlist.get());
             return true;
         }
         return false;
@@ -79,12 +81,17 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
     @Override
     public boolean deleteSongFromPlaylist(Long songId, Long playlistId) {
-        Optional<Song> song = songService.findById(songId);
         Optional<Playlist> playlist = this.findById(playlistId);
-        if(song.isPresent() && playlist.isPresent()) {
+        if(playlist.isPresent()) {
             Collection<Song> songList = playlist.get().getSongs();
-            songList.remove(song.get());
-            songService.save(song.get());
+            Collection<Song> newSongList = new HashSet<>();
+            for (Song song: songList) {
+                if (!song.getId().equals(songId)) {
+                    newSongList.add(song);
+                }
+            }
+            playlist.get().setSongs(newSongList);
+            playlistRepository.save(playlist.get());
             return true;
         }
         return false;

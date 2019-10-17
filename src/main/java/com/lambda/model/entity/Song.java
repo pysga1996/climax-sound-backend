@@ -41,10 +41,10 @@ public class Song extends MediaObject {
     @OneToMany(mappedBy = "song", fetch = FetchType.EAGER)
     private Collection<Comment> comments;
 
-    @Column(columnDefinition = "default 0")
+//    @Column(columnDefinition = "default 0")
     private Long displayRating = 0L;
 
-    @Column(columnDefinition = "default 0")
+//    @Column(columnDefinition = "default 0")
     private Long listeningFrequency = 0L;
 
     private Boolean liked;
