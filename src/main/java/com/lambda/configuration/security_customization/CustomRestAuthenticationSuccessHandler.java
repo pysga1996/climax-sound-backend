@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Optional;
 
 @Component
 public class CustomRestAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
@@ -31,9 +32,9 @@ public class CustomRestAuthenticationSuccessHandler extends SavedRequestAwareAut
         MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
         ObjectMapper mapper = messageConverter.getObjectMapper();
         String username = authentication.getPrincipal().toString();
-        User user = userService.findByUsername(username);
+        Optional<User> user = userService.findByUsername(username);
 
-        LOGGER.info(user.getUsername() + " got is connected ");
+        user.ifPresent(value -> LOGGER.info(value.getUsername() + " got is connected "));
 
         PrintWriter writer = response.getWriter();
         mapper.writeValue(writer, user);

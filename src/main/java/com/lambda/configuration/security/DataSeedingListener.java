@@ -75,7 +75,7 @@ public class DataSeedingListener {
         String password;
         String firstName;
         String lastName = "Lambda";
-        if (userService.findByUsername(username) == null) {
+        if (!userService.findByUsername(username).isPresent()) {
             password = passwordEncoder.encode("Lambda123456");
             firstName = "Admin";
             HashSet<Role> roles1 = new HashSet<>();
@@ -90,7 +90,7 @@ public class DataSeedingListener {
 
         // Member account
         username = "member";
-        if (userService.findByUsername(username) == null) {
+        if (!userService.findByUsername(username).isPresent()) {
             password = passwordEncoder.encode("Lambda123456");
             firstName = "Member";
             HashSet<Role> roles2 = new HashSet<>();

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    User findByUsername(String username);
+    Optional<User> findByUsername(String username);
     Page<User> findAll(Pageable pageable);
     Page<User> findByUsernameContaining(String username, Pageable pageable);
     Page<User> findByRoles_Name(String username, Pageable pageable);

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -33,17 +34,19 @@ public class UserDetailServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // Kiểm tra xem user có tồn tại trong database không?
-        User user = userService.findByUsername(username);
+        Optional<User> user = userService.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        Collection<Role> roles = user.getRoles();
-        for (Role role : roles) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+        if (user.isPresent()) {
+            Collection<Role> roles = user.get().getRoles();
+            for (Role role : roles) {
+                grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+            }
+            return new CustomUserDetails(user.get().getUsername(), user.get().getPassword(), grantedAuthorities);
         }
-
-        return new CustomUserDetails(user.getUsername(), user.getPassword(), grantedAuthorities);
+        return null;
     }
 
     public User getCurrentUser() {
@@ -55,8 +58,9 @@ public class UserDetailServiceImpl implements UserDetailsService {
         } else {
             username = principal.toString();
         }
-        user = userService.findByUsername(username);
-        if (user == null) {
+        if (userService.findByUsername(username).isPresent()) {
+            user = userService.findByUsername(username).get();
+        } else {
             user = new User();
             user.setUsername("Anonymous");
         }
