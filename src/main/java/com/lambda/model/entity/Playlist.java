@@ -1,8 +1,7 @@
 package com.lambda.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
+import com.lambda.model.Views;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
@@ -27,13 +26,14 @@ public class Playlist {
     @NotBlank
     private String title;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference("user-playlist")
+
+//    @JsonBackReference("user-playlist")
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
+//    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
-    @JsonManagedReference("playlist-song")
     @JoinTable(
             name = "playlist_song",
             joinColumns = @JoinColumn(

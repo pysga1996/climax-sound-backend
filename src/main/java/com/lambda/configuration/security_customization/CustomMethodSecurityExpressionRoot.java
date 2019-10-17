@@ -4,8 +4,10 @@ import com.lambda.model.entity.Playlist;
 import com.lambda.model.entity.User;
 import com.lambda.model.util.CustomUserDetails;
 import com.lambda.service.PlaylistService;
+import com.lambda.service.impl.PlaylistServiceImpl;
 import com.lambda.service.impl.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.PermissionEvaluator;
@@ -16,7 +18,6 @@ import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -24,13 +25,11 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-//@Component
 public class CustomMethodSecurityExpressionRoot implements MethodSecurityExpressionOperations {
-    @Autowired
-    UserDetailServiceImpl userDetailService;
 
     @Autowired
-    PlaylistService playlistService;
+    private UserDetailServiceImpl userDetailService;
+    private PlaylistService playlistService;
 
     protected final Authentication authentication;
     private AuthenticationTrustResolver trustResolver;
@@ -208,17 +207,6 @@ public class CustomMethodSecurityExpressionRoot implements MethodSecurityExpress
     @Override
     public void setReturnObject(Object obj) {
         this.returnObject = obj;
-    }
-
-    public boolean isOwnerOfPlaylist(Long playlistId) {
-        System.out.println(playlistId);
-//        Optional<Playlist> playlist = playlistService.findById(Long.parseLong(id));
-        Optional<Playlist> playlist = playlistService.findById(playlistId);
-        User currentUser = userDetailService.getCurrentUser();
-        if (playlist.isPresent() && currentUser.getId()!=null) {
-            return playlist.get().getUser().getId().equals(currentUser.getId());
-        }
-        return false;
     }
 
 }

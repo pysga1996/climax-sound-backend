@@ -23,7 +23,7 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode()
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"roles", "favoriteSongs", "favoriteAlbums", "comments", "playlists", "avatarBlobId"
+@JsonIgnoreProperties(value = {"avatarBlobString"
 ,"enabled","accountNonExpired","accountNonLocked","credentialsNonExpired"}, allowGetters = true, ignoreUnknown = true)
 public class User {
     @Id
@@ -60,10 +60,10 @@ public class User {
 
     private String avatarUrl;
 
-    private String avatarBlobId;
+    private String avatarBlobString;
 
     @JsonManagedReference("user-role")
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(
             name = "user_role",
@@ -72,11 +72,12 @@ public class User {
     )
     private Collection<Role> roles;
 
+    @JsonBackReference("user-playlist")
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @Fetch(value = FetchMode.SUBSELECT)
     Collection<Playlist> playlists;
 
-    @JsonManagedReference("user-favoriteSongs")
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_favorite_songs",
@@ -87,11 +88,7 @@ public class User {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> favoriteSongs;
 
-//    @JsonManagedReference(value = "user-peopleWhoLiked")
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-//    private Collection<PeopleWhoLikedService> peopleWhoLikedList;
-
-    @JsonManagedReference("user-favoriteAlbums")
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_favorite_albums",
@@ -102,13 +99,11 @@ public class User {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> favoriteAlbums;
 
-//    @JsonManagedReference("user-uploadedSong")
-//    @JsonIgnore
-@JsonBackReference(value = "user-uploadedSong")
+    @JsonBackReference(value = "user-uploadedSong")
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "uploader")
     Collection<Song> uploadedSong;
 
-    @JsonManagedReference(value = "user-comment")
+    @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Collection<Comment> comments;
 

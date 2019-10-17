@@ -2,9 +2,11 @@ package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import com.lambda.model.util.MediaObject;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -35,13 +37,15 @@ public class Song extends MediaObject {
 
     private String url;
 
-    @JsonManagedReference(value = "song-comment")
-    @OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
+//    @JsonIgnore
+    @OneToMany(mappedBy = "song", fetch = FetchType.EAGER)
     private Collection<Comment> comments;
 
+//    @Column(columnDefinition = "default 0")
     private Long displayRating = 0L;
 
-    private Double listenCount;
+//    @Column(columnDefinition = "default 0")
+    private Long listeningFrequency = 0L;
 
     private Boolean liked;
 
@@ -49,7 +53,8 @@ public class Song extends MediaObject {
 
     private String blobId;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "song_artist",
             joinColumns = @JoinColumn(
@@ -64,8 +69,8 @@ public class Song extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> albums;
 
-    @JsonManagedReference(value = "song-tag")
-    @ManyToMany(fetch = FetchType.LAZY)
+//    @JsonManagedReference(value = "song-tag")
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "song_tag",
             joinColumns = @JoinColumn(
@@ -75,8 +80,8 @@ public class Song extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Tag> tags;
 
-    @JsonManagedReference(value = "song-genre")
-    @ManyToMany(fetch = FetchType.LAZY)
+//    @JsonManagedReference(value = "song-genre")
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "song_genre",
             joinColumns = @JoinColumn(

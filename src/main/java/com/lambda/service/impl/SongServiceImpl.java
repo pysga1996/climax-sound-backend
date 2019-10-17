@@ -29,6 +29,44 @@ public class SongServiceImpl implements SongService {
     AudioStorageService audioStorageService;
 
     @Override
+    public Page<Song> findAll(Pageable pageable, String sort) {
+        if (sort != null && sort.equals("releaseDate")) {
+            return songRepository.findAllByOrderByReleaseDateDesc(pageable);
+        } else if (sort != null && sort.equals("listeningFrequency")) {
+            return songRepository.findAllByOrderByListeningFrequencyDesc(pageable);
+        } else if (sort != null && sort.equals("likesCount")) {
+            return songRepository.findAllByOrderByUsers_Size(pageable);
+        } else {
+            return songRepository.findAll(pageable);
+        }
+    }
+
+    @Override
+    public Iterable<Song> findTop10By(String sort) {
+        return songRepository.findFirst10ByOrderByListeningFrequencyDesc();
+    }
+
+    @Override
+    public Page<Song> findAllByOrderByReleaseDateDesc(Pageable pageable) {
+        return songRepository.findAllByOrderByReleaseDateDesc(pageable);
+    }
+
+    @Override
+    public Page<Song> findAllByOrderByDisplayRatingDesc(Pageable pageable) {
+        return songRepository.findAllByOrderByDisplayRatingDesc(pageable);
+    }
+
+    @Override
+    public Page<Song> findAllByOrderByListeningFrequencyDesc(Pageable pageable) {
+        return songRepository.findAllByOrderByListeningFrequencyDesc(pageable);
+    }
+
+    @Override
+    public Page<Song> findAllByLikesCount(Pageable pageable) {
+        return songRepository.findAllByOrderByUsers_Size(pageable);
+    }
+
+    @Override
     public Page<Song> findAllByUploader_Id(Long id, Pageable pageable) {
         return songRepository.findAllByUploader_Id(id, pageable);
     }
@@ -46,11 +84,6 @@ public class SongServiceImpl implements SongService {
     @Override
     public Iterable<Song> findAllByTitleContaining(String name) {
         return songRepository.findAllByTitleContaining(name);
-    }
-
-    @Override
-    public Page<Song> findAll(Pageable pageable) {
-        return songRepository.findAll(pageable);
     }
 
     @Override
@@ -124,6 +157,18 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public Page<Song> setLike(Page<Song> songList) {
+        for (Song song: songList) {
+            if (hasUserLiked(song.getId())) {
+                song.setLiked(true);
+            } else {
+                song.setLiked(false);
+            }
+        }
+        return songList;
+    }
+
+    @Override
+    public Iterable<Song> setLike(Iterable<Song> songList) {
         for (Song song: songList) {
             if (hasUserLiked(song.getId())) {
                 song.setLiked(true);

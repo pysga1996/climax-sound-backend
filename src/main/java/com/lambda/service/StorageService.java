@@ -194,7 +194,7 @@ public abstract class StorageService<T> {
             } else if (object instanceof Album) {
                 ((Album) object).setCoverBlobId(blobName);
             } else if (object instanceof User) {
-                ((User) object).setAvatarBlobId(blobName);
+                ((User) object).setAvatarBlobString(blobName);
             } else if (object instanceof Artist) {
                 ((Artist) object).setAvatarUrl(blobName);
             }
@@ -237,7 +237,7 @@ public abstract class StorageService<T> {
         } else if (object instanceof Album) {
             blobString = ((Album) object).getCoverBlobId();
         } else if (object instanceof User) {
-            blobString = ((User) object).getAvatarBlobId();
+            blobString = ((User) object).getAvatarBlobString();
         } else if (object instanceof Artist) {
             blobString = ((Artist) object).getAvatarBlobId();
         }

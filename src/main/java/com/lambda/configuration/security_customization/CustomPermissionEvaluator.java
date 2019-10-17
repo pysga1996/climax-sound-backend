@@ -12,8 +12,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.Optional;
 
-@Configuration
+@Component
 public class CustomPermissionEvaluator implements PermissionEvaluator {
     @Autowired
     UserDetailServiceImpl userDetailService;
@@ -50,5 +51,15 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
             }
         }
         return false;
+    }
+
+    public boolean checkUserId(Long id) {
+        System.out.println(id);
+//        Optional<Playlist> playlist = playlistService.findById(Long.parseLong(id));
+        Optional<Playlist> playlist = playlistService.findById(id);
+        User currentUser = userDetailService.getCurrentUser();
+        if (playlist.isPresent() && currentUser.getId()!=null) {
+            return playlist.get().getUser().getId().equals(currentUser.getId());
+        } else return false;
     }
 }

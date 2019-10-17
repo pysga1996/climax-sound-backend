@@ -3,6 +3,7 @@ package com.lambda.repository;
 import com.lambda.model.entity.Artist;
 import com.lambda.model.entity.Playlist;
 import com.lambda.model.entity.Song;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,11 +16,21 @@ import java.util.Optional;
 
 @Repository
 public interface SongRepository extends JpaRepository<Song, Long> {
-//    @Query("SELECT s FROM Song s JOIN s.uploader")
     Page<Song> findAll(Pageable pageable);
 
-//    @Query("SELECT s, c, t from Song s JOIN FETCH s.country c JOIN FETCH s.theme t WHERE s.id=:id")
-    Optional<Song> findById(Long id);
+    Page<Song> findAllByOrderByReleaseDateDesc(Pageable pageable);
+
+    Page<Song> findAllByOrderByDisplayRatingDesc(Pageable pageable);
+
+    Page<Song> findAllByOrderByListeningFrequencyDesc(Pageable pageable);
+
+    Iterable<Song> findFirst10ByOrderByListeningFrequencyDesc();
+
+    @Query("SELECT s FROM Song s ORDER BY SIZE(s.users) DESC")
+    Page<Song> findAllByOrderByUsers_Size(Pageable pageable);
+
+    @Query("SELECT s from Song s WHERE s.id=:id")
+    Optional<Song> findById(@Param("id") Long id);
 
 //    @Query(value = "SELECT * FROM song WHERE BINARY title=:title", nativeQuery = true)
     Iterable<Song> findAllByTitle(String title);
