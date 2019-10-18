@@ -42,8 +42,15 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
+    public Iterable<Song> findAll() {
+        return songRepository.findAll();
+    }
+
+    @Override
     public Iterable<Song> findTop10By(String sort) {
-        return songRepository.findFirst10ByOrderByListeningFrequencyDesc();
+        if (sort.equals("listeningFrequency")) {
+            return songRepository.findFirst10ByOrderByListeningFrequencyDesc();
+        } else return songRepository.findFirst10ByOrderByListeningFrequencyDesc();
     }
 
     @Override

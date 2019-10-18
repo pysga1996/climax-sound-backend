@@ -113,7 +113,12 @@ public class SongRestController {
     @PreAuthorize("permitAll()")
     @GetMapping(value = "/list-top")
     public ResponseEntity<Iterable<Song>> topSongList(@RequestParam(value = "sort", required = false) String sort) {
-        Iterable<Song> songList = songService.findTop10By(sort);
+        Iterable<Song> songList;
+        if (sort != null) {
+            songList = songService.findTop10By(sort);
+        } else {
+            songList = songService.findAll();
+        }
         int size = 0;
         if (songList instanceof Collection) {
             size = ((Collection<?>) songList).size();

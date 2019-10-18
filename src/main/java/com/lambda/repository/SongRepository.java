@@ -16,6 +16,7 @@ import java.util.Optional;
 
 @Repository
 public interface SongRepository extends JpaRepository<Song, Long> {
+
     Page<Song> findAll(Pageable pageable);
 
     Page<Song> findAllByOrderByReleaseDateDesc(Pageable pageable);
@@ -24,6 +25,7 @@ public interface SongRepository extends JpaRepository<Song, Long> {
 
     Page<Song> findAllByOrderByListeningFrequencyDesc(Pageable pageable);
 
+    @Query("SELECT s from Song s LEFT JOIN FETCH s.artists a")
     Iterable<Song> findFirst10ByOrderByListeningFrequencyDesc();
 
     @Query("SELECT s FROM Song s ORDER BY SIZE(s.users) DESC")

@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface SongService {
+    Iterable<Song> findAll();
     Page<Song> findAll(Pageable pageable, String sort);
     Iterable<Song> findAllByTitle(String title);
     Iterable<Song> findAllByTitleContaining(String title);
