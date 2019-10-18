@@ -36,15 +36,15 @@ public class Song extends MediaObject {
     @OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
     private Collection<Comment> comments;
 
-    @ColumnDefault("0")
+//    @ColumnDefault("0")
     private Long displayRating = 0L;
 
-    @ColumnDefault("0")
+//    @ColumnDefault("0")
     private Long listeningFrequency = 0L;
 
     private Boolean liked;
 
-    @Column(columnDefinition = "LONGTEXT")
+//    @Column(columnDefinition = "LONGTEXT")
     private String lyric;
 
     private String blobId;
@@ -97,10 +97,12 @@ public class Song extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Playlist> playlists;
 
+    @JsonBackReference("song-country")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id")
     private Country country;
 
+    @JsonBackReference("song-theme")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "theme_id")
     private Theme theme;

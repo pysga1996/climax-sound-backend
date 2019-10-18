@@ -13,6 +13,7 @@ import java.util.Collection;
 @Entity
 @Data
 @NoArgsConstructor
+@JsonIgnoreProperties(value = {"songs", "albums"})
 public class Country {
 
     @Id
@@ -22,12 +23,11 @@ public class Country {
     @NotBlank
     private String name;
 
-    @JsonIgnore
+
     @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> albums;
