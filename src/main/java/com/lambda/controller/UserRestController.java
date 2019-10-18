@@ -32,7 +32,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.*;
 
-@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
+//@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api")
 public class UserRestController {

@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.Optional;
 
 //@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/song")
 public class SongRestController {
