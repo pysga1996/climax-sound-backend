@@ -106,27 +106,27 @@ public abstract class StorageService<T> {
         else return null;
     }
 
-    public void deleteOldFile(Path storageLocation, Object object, MultipartFile file) {
-        String newExtension = getNewExtension(file);
-        // check if new image ext is different from old file ext
-        String url = "";
-        if (object instanceof Song) {
-            url = ((Song) object).getUrl();
-        } else if (object instanceof Album) {
-            url = ((Album) object).getCoverUrl();
-        } else if (object instanceof User) {
-            url = ((User) object).getAvatarUrl();
-        } else if (object instanceof Artist) {
-            url = ((Artist) object).getAvatarUrl();
-        }
-        if (url != null && !url.equals("")) {
-            String oldFileName = getOldFileName(object);
-            String oldExtension = getOldExtension(url);
-            if (!oldExtension.equals(newExtension)) {
-                deleteLocalStorageFile(storageLocation, oldFileName.concat(".").concat(oldExtension));
-            }
-        }
-    }
+//    public void deleteOldFile(Path storageLocation, Object object, MultipartFile file) {
+//        String newExtension = getNewExtension(file);
+//        // check if new image ext is different from old file ext
+//        String url = "";
+//        if (object instanceof Song) {
+//            url = ((Song) object).getUrl();
+//        } else if (object instanceof Album) {
+//            url = ((Album) object).getCoverUrl();
+//        } else if (object instanceof User) {
+//            url = ((User) object).getAvatarUrl();
+//        } else if (object instanceof Artist) {
+//            url = ((Artist) object).getAvatarUrl();
+//        }
+//        if (url != null && !url.equals("")) {
+//            String oldFileName = getOldFileName(object);
+//            String oldExtension = getOldExtension(url);
+//            if (!oldExtension.equals(newExtension)) {
+//                deleteLocalStorageFile(storageLocation, oldFileName.concat(".").concat(oldExtension));
+//            }
+//        }
+//    }
 
     public Resource loadFileAsResource(Path storageLocation, String fileName) {
         try {
@@ -204,30 +204,30 @@ public abstract class StorageService<T> {
         }
     }
 
-    public String saveToLocalStorage(Path storageLocation, Object object, MultipartFile file) {
-        String fileName = getNewFileName(object, file);
-        String rootUri = "";
-        if (object instanceof Song) {
-            rootUri = "/api/song/download/";
-        } else if (object instanceof Album) {
-            rootUri = "/api/album/download/";
-        } else if (object instanceof User | object instanceof Artist) {
-            rootUri = "/api/avatar/download/";
-        }
-        normalizeFileName(fileName);
-        try {
-            // Check if the file's title contains invalid characters
-            if (fileName.contains("..")) {
-                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
-            }
-            // Copy file to the target location (Replacing existing file with the same title)
-            Path targetLocation = storageLocation.resolve(fileName);
-            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-            return ServletUriComponentsBuilder.fromCurrentContextPath().path(rootUri).path(fileName).toUriString();
-        } catch (IOException ex) {
-            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
-        }
-    }
+//    public String saveToLocalStorage(Path storageLocation, Object object, MultipartFile file) {
+//        String fileName = getNewFileName(object, file);
+//        String rootUri = "";
+//        if (object instanceof Song) {
+//            rootUri = "/api/song/download/";
+//        } else if (object instanceof Album) {
+//            rootUri = "/api/album/download/";
+//        } else if (object instanceof User | object instanceof Artist) {
+//            rootUri = "/api/avatar/download/";
+//        }
+//        normalizeFileName(fileName);
+//        try {
+//            // Check if the file's title contains invalid characters
+//            if (fileName.contains("..")) {
+//                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
+//            }
+//            // Copy file to the target location (Replacing existing file with the same title)
+//            Path targetLocation = storageLocation.resolve(fileName);
+//            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+//            return ServletUriComponentsBuilder.fromCurrentContextPath().path(rootUri).path(fileName).toUriString();
+//        } catch (IOException ex) {
+//            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
+//        }
+//    }
 
     public void deleteFirebaseStorageFile(Object object) {
         StorageClient storageClient = getFirebaseStorage();
