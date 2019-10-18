@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Data
@@ -34,7 +35,7 @@ public class Song extends MediaObject {
     private String url;
 
     @OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
-    private Collection<Comment> comments;
+    private Set<Comment> comments;
 
     @ColumnDefault("0")
     private Long displayRating = 0L;
@@ -50,8 +51,7 @@ public class Song extends MediaObject {
 
     private String blobString;
 
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "song_artist",
             joinColumns = @JoinColumn(
