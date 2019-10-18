@@ -5,12 +5,12 @@ import com.lambda.model.util.MediaObject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Date;
@@ -50,6 +50,7 @@ public class Song extends MediaObject {
 
     private String blobString;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "song_artist",
