@@ -16,7 +16,7 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper=true)
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"users", "coverBlobId", "coverUrl"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"users", "coverBlobString", "coverUrl"}, allowGetters = true)
 public class Album extends MediaObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,7 +30,7 @@ public class Album extends MediaObject {
 
     private String coverUrl;
 
-    private String coverBlobId;
+    private String coverBlobString;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

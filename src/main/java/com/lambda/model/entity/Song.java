@@ -19,7 +19,7 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"comments", "liked", "albums", "tags", "genres", "users", "playlists", "country", "theme", "uploader", "blobId"}, allowGetters = true, ignoreUnknown=true)
+@JsonIgnoreProperties(value = {"comments", "liked", "albums", "tags", "genres", "users", "playlists", "country", "theme", "uploader", "blobString"}, allowGetters = true, ignoreUnknown=true)
 public class Song extends MediaObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,18 +36,19 @@ public class Song extends MediaObject {
     @OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
     private Collection<Comment> comments;
 
-//    @ColumnDefault("0")
+    @ColumnDefault("0")
     private Long displayRating = 0L;
 
-//    @ColumnDefault("0")
+    @ColumnDefault("0")
     private Long listeningFrequency = 0L;
 
     private Boolean liked;
 
-//    @Column(columnDefinition = "LONGTEXT")
+    //    @Column(columnDefinition = "LONGTEXT")
+    @Column(columnDefinition = "TEXT")
     private String lyric;
 
-    private String blobId;
+    private String blobString;
 
 
     @ManyToMany(fetch = FetchType.EAGER)

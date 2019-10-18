@@ -17,9 +17,6 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"albums", "songs", "avatarBlobString", "avatarUrl"}, allowGetters = true, ignoreUnknown = true)
-//@JsonIdentityInfo(
-//        generator = ObjectIdGenerators.PropertyGenerator.class,
-//        property = "id")
 public class Artist {
     @Id
     @GeneratedValue
@@ -33,9 +30,10 @@ public class Artist {
 
     private String avatarUrl;
 
-    private String avatarBlobId;
+    private String avatarBlobString;
 
-//    @Column(columnDefinition = "LONGTEXT")
+    //    @Column(columnDefinition = "LONGTEXT")
+    @Column(columnDefinition = "TEXT")
     private String biography;
 
     @JsonBackReference(value = "song-artist")

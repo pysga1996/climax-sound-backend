@@ -20,15 +20,12 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.Collection;
 import java.util.List;
 
@@ -190,9 +187,9 @@ public abstract class StorageService<T> {
             bucket.getStorage().updateAcl(blob.getBlobId(), Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER));
             String blobName = blob.getName();
             if (object instanceof Song) {
-                ((Song) object).setBlobId(blobName);
+                ((Song) object).setBlobString(blobName);
             } else if (object instanceof Album) {
-                ((Album) object).setCoverBlobId(blobName);
+                ((Album) object).setCoverBlobString(blobName);
             } else if (object instanceof User) {
                 ((User) object).setAvatarBlobString(blobName);
             } else if (object instanceof Artist) {
@@ -233,13 +230,13 @@ public abstract class StorageService<T> {
         StorageClient storageClient = getFirebaseStorage();
         String blobString = "";
         if (object instanceof Song) {
-            blobString = ((Song) object).getBlobId();
+            blobString = ((Song) object).getBlobString();
         } else if (object instanceof Album) {
-            blobString = ((Album) object).getCoverBlobId();
+            blobString = ((Album) object).getCoverBlobString();
         } else if (object instanceof User) {
             blobString = ((User) object).getAvatarBlobString();
         } else if (object instanceof Artist) {
-            blobString = ((Artist) object).getAvatarBlobId();
+            blobString = ((Artist) object).getAvatarBlobString();
         }
         BlobId blobId = BlobId.of(storageClient.bucket().getName(),blobString);
         storageClient.bucket().getStorage().delete(blobId);

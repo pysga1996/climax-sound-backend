@@ -26,9 +26,10 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-//    @Max(500)
-//    @NotBlank
-//    @Column(columnDefinition = "LONGTEXT")
+    //    @Column(columnDefinition = "LONGTEXT")
+    @Max(500)
+    @NotBlank
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
