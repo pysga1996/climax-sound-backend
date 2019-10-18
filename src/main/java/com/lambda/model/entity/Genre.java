@@ -15,9 +15,6 @@ import java.util.Collection;
 @Data
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"songs", "albums"}, allowGetters = true, ignoreUnknown = true)
-//@JsonIdentityInfo(
-//        generator = ObjectIdGenerators.PropertyGenerator.class,
-//        property = "id")
 public class Genre {
 
     @Id
