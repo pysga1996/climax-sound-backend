@@ -83,6 +83,7 @@ public class SongRestController {
                     albumService.save(album.get());
                 }
             }
+            songService.save(songToSave);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             if (song.getId() != null) {
