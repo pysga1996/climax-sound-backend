@@ -56,4 +56,13 @@ public class Artist {
         this.avatarUrl = avatarUrl;
         this.biography = biography;
     }
+
+    @Override
+    public String toString() {
+        return "Artist{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", birthDate=" + birthDate +
+                '}';
+    }
 }
