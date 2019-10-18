@@ -36,7 +36,7 @@ public class Artist {
     @Column(columnDefinition = "TEXT")
     private String biography;
 
-    @JsonBackReference(value = "song-artist")
+//    @JsonBackReference(value = "song-artist")
     @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
