@@ -24,13 +24,13 @@ public class DownloadService {
     public ResponseEntity<Resource> generateUrl(String fileName, HttpServletRequest request, StorageService storageService) {
 
         Path path = Paths.get("");
-        if (storageService instanceof AudioStorageService) {
-            path = ((AudioStorageService) storageService).audioStorageLocation;
-        } else if (storageService instanceof CoverStorageService) {
-            path = ((CoverStorageService) storageService).coverStorageLocation;
-        } else if (storageService instanceof AvatarStorageService) {
-            path = ((AvatarStorageService) storageService).avatarStorageLocation;
-        }
+//        if (storageService instanceof AudioStorageService) {
+//            path = ((AudioStorageService) storageService).audioStorageLocation;
+//        } else if (storageService instanceof CoverStorageService) {
+//            path = ((CoverStorageService) storageService).coverStorageLocation;
+//        } else if (storageService instanceof AvatarStorageService) {
+//            path = ((AvatarStorageService) storageService).avatarStorageLocation;
+//        }
         // Load file as Resource
         Resource resource = storageService.loadFileAsResource(path, fileName);
         // Try to determine file's content type
