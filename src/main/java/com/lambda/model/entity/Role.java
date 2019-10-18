@@ -23,6 +23,7 @@ public class Role {
     private Integer id;
 
     @NotBlank
+    @Column(unique = true, nullable = false)
     private String name;
 
     @JsonBackReference("user-role")

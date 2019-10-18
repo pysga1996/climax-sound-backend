@@ -22,7 +22,7 @@ public class Privilege {
     private Long id;
 
     @NotBlank
-//    @Column(title = "privilege_name")
+    @Column(unique = true, nullable = false)
     private String name;
 
     @JsonBackReference("role-privilege")
