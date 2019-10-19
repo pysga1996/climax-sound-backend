@@ -32,8 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.*;
 
-//@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "https://climax-sound.netlify.com, http://localhost:4200*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api")
 public class UserRestController {

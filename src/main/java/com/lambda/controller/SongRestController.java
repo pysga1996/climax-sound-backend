@@ -19,11 +19,9 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Optional;
 
-//@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "https://climax-sound.netlify.com, http://localhost:4200*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/song")
 public class SongRestController {
@@ -40,7 +38,7 @@ public class SongRestController {
     UserService userService;
 
     @Autowired
-    PeopleWhoLikedService peopleWhoLikedService;
+    LikeService likeService;
 
     @Autowired
     CommentService commentService;
@@ -193,14 +191,14 @@ public class SongRestController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping(params = {"like", "song-id"})
     public ResponseEntity<Void> likeSong(@RequestParam("song-id") Long id){
-        peopleWhoLikedService.like(id);
+        likeService.like(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping(params = {"unlike", "song-id"})
     public ResponseEntity<Void> dislikeSong(@RequestParam("song-id") Long id){
-        peopleWhoLikedService.unlike(id);
+        likeService.unlike(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

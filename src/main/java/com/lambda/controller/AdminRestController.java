@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-//@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "https://climax-sound.netlify.com, http://localhost:4200*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/admin")
 public class AdminRestController {

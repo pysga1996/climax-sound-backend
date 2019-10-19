@@ -4,7 +4,7 @@ import com.lambda.model.entity.Like;
 import com.lambda.model.entity.Song;
 import com.lambda.model.entity.User;
 import com.lambda.repository.LikeRepository;
-import com.lambda.service.PeopleWhoLikedService;
+import com.lambda.service.LikeService;
 import com.lambda.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class PeopleWhoLikeServiceImpl implements PeopleWhoLikedService {
+public class LikeServiceImpl implements LikeService {
     @Autowired
     SongService songService;
 

@@ -23,8 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
-//@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "https://climax-sound.netlify.com, http://localhost:4200*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/album")
 public class AlbumRestController {

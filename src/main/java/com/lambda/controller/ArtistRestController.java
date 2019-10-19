@@ -18,8 +18,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-//@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "https://climax-sound.netlify.com, http://localhost:4200*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/artist")
 public class ArtistRestController {
@@ -61,11 +60,16 @@ public class ArtistRestController {
 
     @PostMapping(value = "/create")
     public ResponseEntity<Void> createArtist(@RequestPart("artist") Artist artist, @RequestPart("avatar") MultipartFile multipartFile) {
-        artistService.save(artist);
-        String fileDownloadUri = avatarStorageService.saveToFirebaseStorage(artist, multipartFile);
-        artist.setAvatarUrl(fileDownloadUri);
-        artistService.save(artist);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            artistService.save(artist);
+            String fileDownloadUri = avatarStorageService.saveToFirebaseStorage(artist, multipartFile);
+            artist.setAvatarUrl(fileDownloadUri);
+            artistService.save(artist);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            artistService.deleteById(artist.getId());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping(value = "/detail")

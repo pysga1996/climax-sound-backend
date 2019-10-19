@@ -1,7 +1,6 @@
 package com.lambda.model.entity;
 
 import com.fasterxml.jackson.annotation.*;
-import com.lambda.model.Views;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
