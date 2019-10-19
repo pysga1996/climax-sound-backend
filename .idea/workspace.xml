@@ -202,8 +202,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/controller/SongRestController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="236" column="65" selection-start-line="236" selection-start-column="65" selection-end-line="236" selection-end-column="65" />
+            <state relative-caret-position="117">
+              <caret line="51" column="38" lean-forward="true" selection-start-line="51" selection-start-column="38" selection-end-line="51" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -855,14 +855,7 @@
       <workItem from="1571451097891" duration="895000" />
       <workItem from="1571453427861" duration="2881000" />
       <workItem from="1571466989919" duration="3108000" />
-      <workItem from="1571481328263" duration="1252000" />
-    </task>
-    <task id="LOCAL-00020" summary="playlist minor bug fixes">
-      <created>1569992603688</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1569992603688</updated>
+      <workItem from="1571481328263" duration="1766000" />
     </task>
     <task id="LOCAL-00021" summary="playlist minor bug fixes">
       <created>1569998105132</created>
@@ -1200,7 +1193,14 @@
       <option name="project" value="LOCAL" />
       <updated>1571451259245</updated>
     </task>
-    <option name="localTasksCounter" value="69" />
+    <task id="LOCAL-00069" summary="a">
+      <created>1571482598892</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1571482598894</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1236,7 +1236,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="657820000" />
+    <option name="totallyTimeSpent" value="658334000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1249,9 +1249,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4974093" visible="true" weight="0.21648793" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4974093" visible="true" weight="0.21648793" />
       <window_info id="Structure" order="1" sideWeight="0.50259066" side_tool="true" weight="0.17342582" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -1270,8 +1269,8 @@
       <window_info anchor="bottom" id="Build" order="7" weight="0.32890365" />
       <window_info anchor="bottom" id="sbt-shell-toolwindow" order="8" />
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50213444" side_tool="true" weight="0.3654485" />
-      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49893278" weight="0.30543318" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50213444" side_tool="true" weight="0.36417034" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.49893278" visible="true" weight="0.30543318" />
       <window_info anchor="bottom" id="Java Enterprise" order="12" weight="0.32794118" />
       <window_info anchor="bottom" id="Spring" order="13" weight="0.32941177" />
       <window_info anchor="bottom" id="Version Control" order="14" weight="0.2934662" />
@@ -1378,7 +1377,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="make code cleaner" />
     <MESSAGE value="add playlist model" />
     <MESSAGE value="change method to upload" />
     <MESSAGE value="add edit song" />
@@ -1402,6 +1400,7 @@
     <MESSAGE value="Merge branch 'hoang' of https://github.com/pysga1996/project.spring-climax-sound&#10;&#10;# Conflicts:&#10;#&#9;mysql.env" />
     <MESSAGE value="Merge branch 'minhduc' of https://github.com/pysga1996/project.spring-climax-sound&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;src/main/java/com/lambda/controller/SongRestController.java" />
     <MESSAGE value="version 0.99" />
+    <MESSAGE value="a" />
     <MESSAGE value="version 0.999" />
     <option name="LAST_COMMIT_MESSAGE" value="version 0.999" />
   </component>
@@ -1431,12 +1430,6 @@
           <line>74</line>
           <properties />
           <option name="timeStamp" value="72" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/lambda/controller/SongRestController.java</url>
-          <line>147</line>
-          <properties />
-          <option name="timeStamp" value="78" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -1776,8 +1769,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/controller/SongRestController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="236" column="65" selection-start-line="236" selection-start-column="65" selection-end-line="236" selection-end-column="65" />
+        <state relative-caret-position="117">
+          <caret line="51" column="38" lean-forward="true" selection-start-line="51" selection-start-column="38" selection-end-line="51" selection-end-column="38" />
         </state>
       </provider>
     </entry>

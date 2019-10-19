@@ -7,6 +7,7 @@ import com.lambda.service.SongService;
 import com.lambda.service.impl.AvatarStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = {"https://climax-sound.netlify.com", "http://localhost:4200"}, allowedHeaders = "*")
@@ -58,6 +58,7 @@ public class ArtistRestController {
         return artist.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/create")
     public ResponseEntity<Void> createArtist(@RequestPart("artist") Artist artist, @RequestPart("avatar") MultipartFile multipartFile) {
         try {
@@ -72,16 +73,7 @@ public class ArtistRestController {
         }
     }
 
-    @GetMapping(value = "/detail")
-    public ResponseEntity<Artist> getArtistDetail(@RequestParam("id") Long id) {
-        Optional<Artist> artist = artistService.findById(id);
-        if (artist.isPresent()) {
-            return new ResponseEntity<>(artist.get(), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @PutMapping(value = "/update")
+    @PutMapping(value = "/edit", params = "id")
     public ResponseEntity<Void> updateArtist(@RequestParam("id") Long id, @RequestPart("artist") Artist artist, @RequestPart(value = "avatar", required = false) MultipartFile multipartFile) {
         Optional<Artist> oldArtist = artistService.findById(id);
         if (oldArtist.isPresent()) {
@@ -96,18 +88,20 @@ public class ArtistRestController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @DeleteMapping(value = "/delete")
+    @DeleteMapping(value = "/delete", params = "id")
     public ResponseEntity<Void> deleteArtist(@RequestParam("id") Long id) {
         artistService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping(value = "/song-list")
-    public ResponseEntity<Page<Song>> getSongs(@RequestParam("artist-id") Long id, Pageable pageable) {
+    @GetMapping(value = "/song-list", params = "artist-id")
+    public ResponseEntity<Page<Song>> getSongListOfArtist(@RequestParam("artist-id") Long id, Pageable pageable) {
         Optional<Artist> artist = artistService.findById(id);
         if (artist.isPresent()) {
             Page<Song> songs = songService.findAllByArtistsContains(artist.get(), pageable);
-            return new ResponseEntity<>(songs, HttpStatus.OK);
-        } else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            if (songs.getTotalElements() == 0) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            } return new ResponseEntity<>(songs, HttpStatus.OK);
+        } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

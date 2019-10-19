@@ -49,6 +49,7 @@ public class SongRestController {
     @Autowired
     private AudioStorageService audioStorageService;
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/upload")
     public ResponseEntity<Void> uploadSong(@RequestPart("song") Song song, @RequestPart("audio") MultipartFile file, @RequestParam(value = "album-id", required = false) Long id) {
         try {
@@ -56,19 +57,6 @@ public class SongRestController {
             String fileDownloadUri = audioStorageService.saveToFirebaseStorage(songToSave, file);
             songToSave.setUrl(fileDownloadUri);
             songToSave.setUploader(userDetailService.getCurrentUser());
-//            if (id != null) {
-//                Optional<Album> album = albumService.findById(id);
-//                Collection<Album> albumList = songToSave.getAlbums();
-//                if (album.isPresent()) {
-//                    if (albumList == null) {
-//                        albumList = new ArrayList<>();
-//                    }
-//                    albumList.add(album.get());
-//                    songToSave.setAlbums(albumList);
-//                    songService.save(songToSave);
-//                    albumService.save(album.get());
-//                }
-//            }
             if (id != null) {
                 Optional<Album> album = albumService.findById(id);
                 if (album.isPresent()) {
@@ -96,9 +84,8 @@ public class SongRestController {
 //        return downloadService.generateUrl(fileName, request, audioStorageService);
 //    }
 
-    @PreAuthorize("permitAll()")
     @GetMapping(value = "/list")
-    public ResponseEntity<Page<Song>> songList(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "sort", required = false) String sort) {
+    public ResponseEntity<Page<Song>> songList(Pageable pageable, @RequestParam(value = "sort", required = false) String sort) {
         Page<Song> songList = songService.findAll(pageable, sort);
         if (songList.getTotalElements() == 0) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -108,7 +95,6 @@ public class SongRestController {
         }
     }
 
-    @PreAuthorize("permitAll()")
     @GetMapping(value = "/list-top")
     public ResponseEntity<Iterable<Song>> topSongList(@RequestParam(value = "sort", required = false) String sort) {
         Iterable<Song> songList;
@@ -148,7 +134,6 @@ public class SongRestController {
         return new ResponseEntity<>(songList, HttpStatus.OK);
     }
 
-
     @GetMapping(value = "/search", params = "tag")
     public ResponseEntity<Page<Song>> songListByTag(@RequestParam("tag") String tag, Pageable pageable) {
         Page<Song> songList = songService.findAllByTag_Name(tag, pageable);
@@ -158,6 +143,7 @@ public class SongRestController {
         return new ResponseEntity<>(songList, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value = "/edit", params = "id")
     public ResponseEntity<Void> editSong(@RequestPart("song") Song song, @RequestParam("id") Long id, @RequestPart(value = "audio",required = false) MultipartFile multipartFile) {
         Optional<Song> oldSong = songService.findById(id);
@@ -173,6 +159,7 @@ public class SongRestController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(value = "/delete", params = "id")
     public ResponseEntity<Void> deleteSong(@RequestParam("id") Long id) {
       songService.deleteById(id);
@@ -213,7 +200,6 @@ public class SongRestController {
         } else return new ResponseEntity<>(userSongList, HttpStatus.OK);
     }
 
-    @PreAuthorize("permitAll()")
     @PostMapping(params = {"listen", "song-id"})
     public ResponseEntity<Void> listenToSong(@RequestParam("song-id") Long id) {
         Optional<Song> song = songService.findById(id);
@@ -236,21 +222,17 @@ public class SongRestController {
             comment.setSong(song.get());
             comment.setUser(currentUser);
             commentService.save(comment);
-        }
-        return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PreAuthorize("isAuthenticated()")
-    @DeleteMapping(params = {"comment-id"})
+    @DeleteMapping(params = {"comment", "comment-id"})
     public ResponseEntity<Void> deleteCommentOnSong(@RequestParam("comment-id") Long id) {
         Optional<Comment> comment = commentService.findById(id);
-        comment.ifPresent(value -> commentService.deleteById(value.getId()));
-        return new ResponseEntity<>(HttpStatus.OK);
+        if (comment.isPresent()) {
+            commentService.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
-//    @PreAuthorize("permitAll()")
-//    @GetMapping
-//    public ResponseEntity<> getCommentList(@RequestParam("song-id") Long id) {
-//
-//    }
 }
