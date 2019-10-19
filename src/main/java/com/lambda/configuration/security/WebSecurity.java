@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Component
 public class WebSecurity {
     @Autowired
     UserDetailServiceImpl userDetailService;
@@ -20,8 +19,6 @@ public class WebSecurity {
     PlaylistService playlistService;
 
     public boolean checkUserId(Long id) {
-        System.out.println(id);
-//        Optional<Playlist> playlist = playlistService.findById(Long.parseLong(id));
         Optional<Playlist> playlist = playlistService.findById(id);
         User currentUser = userDetailService.getCurrentUser();
         if (playlist.isPresent() && currentUser.getId()!=null) {

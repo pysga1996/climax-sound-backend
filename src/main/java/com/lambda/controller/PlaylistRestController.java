@@ -1,5 +1,6 @@
 package com.lambda.controller;
 
+import com.lambda.configuration.security.WebSecurity;
 import com.lambda.model.entity.Playlist;
 import com.lambda.model.entity.User;
 import com.lambda.service.PlaylistService;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,6 +27,7 @@ public class PlaylistRestController {
     @Autowired
     UserDetailServiceImpl userDetailService;
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/list")
     public ResponseEntity<Page<Playlist>> playlistList(Pageable pageable) {
         User currentUser = userDetailService.getCurrentUser();
@@ -36,6 +39,7 @@ public class PlaylistRestController {
         } else return new ResponseEntity<>(playlistList, HttpStatus.OK);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/detail", params = "id")
     public ResponseEntity<Playlist> playlistDetail(@RequestParam("id") Long id) {
         Optional<Playlist> playlist = playlistService.findById(id);
@@ -46,6 +50,7 @@ public class PlaylistRestController {
         } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/create")
     public ResponseEntity<Void> createPlaylist(@Valid @RequestBody Playlist playlist) {
         if (playlist == null) {
@@ -57,7 +62,8 @@ public class PlaylistRestController {
         }
     }
 
-    @PutMapping(value = "/edit", params = {"id"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping(value = "/edit", params = "id")
     public ResponseEntity<String> editPlaylist(@Valid @RequestBody Playlist playlist, @RequestParam Long id) {
         Optional<Playlist> oldPlaylist = playlistService.findById(id);
         if (oldPlaylist.isPresent()) {
@@ -71,7 +77,8 @@ public class PlaylistRestController {
         } else return new ResponseEntity<>("Playlist not found!", HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping(value = "/delete", params = {"id"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping(value = "/delete", params = "id")
     public ResponseEntity<Void> deletePlaylist(@RequestParam Long id) {
         if (playlistService.checkPlaylistOwner(id)) {
             playlistService.deleteById(id);
@@ -79,24 +86,29 @@ public class PlaylistRestController {
         } else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/add-song")
     public ResponseEntity<Void> addSongToPlaylist(@RequestParam("song-id") Long songId, @RequestParam("playlist-id") Long playlistId) {
-        boolean result = playlistService.addSongToPlaylist(songId, playlistId);
-        if (result) {
-            return new ResponseEntity<>( HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        if (playlistService.checkPlaylistOwner(playlistId)) {
+            boolean result = playlistService.addSongToPlaylist(songId, playlistId);
+            if (result) {
+                return new ResponseEntity<>( HttpStatus.OK);
+            } else return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+        } else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PutMapping(value = "/remove-song")
     public ResponseEntity<Void> removeSongFromPlaylist(@RequestParam("song-id") Long songId, @RequestParam("playlist-id")Long playlistId) {
-        boolean result = playlistService.deleteSongFromPlaylist(songId,playlistId);
-        if(result) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        if (playlistService.checkPlaylistOwner(playlistId)) {
+            boolean result = playlistService.deleteSongFromPlaylist(songId,playlistId);
+            if(result) {
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/list-to-add")
     public ResponseEntity<Iterable<Playlist>> showPlaylistListToAdd(@RequestParam("song-id") Long songId) {
         Iterable<Playlist> filteredPlaylistList = playlistService.getPlaylistListToAdd(songId);

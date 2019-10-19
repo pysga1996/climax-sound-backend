@@ -3,6 +3,7 @@ package com.lambda.climaxsound;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.lambda.configuration.security.DataSeedingListener;
+import com.lambda.configuration.security.WebSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
