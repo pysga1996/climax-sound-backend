@@ -3,7 +3,6 @@ package com.lambda.configuration.general;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.lambda.formatter.LocalDateFormatter;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -39,6 +38,16 @@ import java.util.List;
 @EnableSpringDataWebSupport
 //@PropertySource("classpath:GlobalConfigApp.properties")
 public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
+
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        for (HttpMessageConverter converter : converters) {
+            if (converter instanceof org.springframework.http.converter.json.MappingJackson2HttpMessageConverter) {
+                ObjectMapper mapper = ((MappingJackson2HttpMessageConverter) converter).getObjectMapper();
+                mapper.registerModule(new Hibernate5Module());
+                // replace Hibernate4Module() with the proper class for your hibernate version.
+            }
+        }
+    }
 
 //    @Bean
 //    public PasswordEncoder passwordEncoder() {

@@ -25,9 +25,7 @@ public class ClimaxSoundApplication extends SpringBootServletInitializer {
 	}
 
 	public static void main(String[] args) {
-
 		SpringApplication.run(ClimaxSoundApplication.class, args);
-
 	}
 
 	@EventListener(ContextRefreshedEvent.class)

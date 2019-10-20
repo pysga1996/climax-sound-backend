@@ -1,17 +1,6 @@
 package com.lambda.configuration.security_customization;
 
-import com.lambda.model.entity.Playlist;
-import com.lambda.model.entity.User;
-import com.lambda.model.util.CustomUserDetails;
-import com.lambda.service.PlaylistService;
-import com.lambda.service.impl.PlaylistServiceImpl;
-import com.lambda.service.impl.UserDetailServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.PermissionEvaluator;
-import org.springframework.security.access.expression.SecurityExpressionRoot;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
@@ -22,15 +11,9 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 public class CustomMethodSecurityExpressionRoot implements MethodSecurityExpressionOperations {
-
-    @Autowired
-    private UserDetailServiceImpl userDetailService;
-    private PlaylistService playlistService;
-
     protected final Authentication authentication;
     private AuthenticationTrustResolver trustResolver;
     private RoleHierarchy roleHierarchy;
@@ -45,8 +28,6 @@ public class CustomMethodSecurityExpressionRoot implements MethodSecurityExpress
     public final String create = "create";
     public final String delete = "delete";
     public final String admin = "administration";
-
-    //
 
     private Object filterObject;
     private Object returnObject;
