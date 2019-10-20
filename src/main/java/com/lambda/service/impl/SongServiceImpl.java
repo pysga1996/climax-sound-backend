@@ -163,19 +163,16 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public Page<Song> setLike(Page<Song> songList) {
-        for (Song song: songList) {
-            if (hasUserLiked(song.getId())) {
-                song.setLiked(true);
-            } else {
-                song.setLiked(false);
-            }
+    public void setLike(Song song) {
+        if (hasUserLiked(song.getId())) {
+            song.setLiked(true);
+        } else {
+            song.setLiked(false);
         }
-        return songList;
     }
 
     @Override
-    public Iterable<Song> setLike(Iterable<Song> songList) {
+    public void setLike(Page<Song> songList) {
         for (Song song: songList) {
             if (hasUserLiked(song.getId())) {
                 song.setLiked(true);
@@ -183,7 +180,17 @@ public class SongServiceImpl implements SongService {
                 song.setLiked(false);
             }
         }
-        return songList;
+    }
+
+    @Override
+    public void setLike(Iterable<Song> songList) {
+        for (Song song: songList) {
+            if (hasUserLiked(song.getId())) {
+                song.setLiked(true);
+            } else {
+                song.setLiked(false);
+            }
+        }
     }
 
 

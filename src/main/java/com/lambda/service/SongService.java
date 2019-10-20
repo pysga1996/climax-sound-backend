@@ -30,6 +30,7 @@ public interface SongService {
     void setFields(Song oldSongInfo, Song newSongInfo);
     Page<Song> sortByDate(Pageable pageable);
     boolean hasUserLiked(Long songId);
-    Page<Song> setLike(Page<Song> songList);
-    Iterable<Song> setLike(Iterable<Song> songList);
+    void setLike(Page<Song> songList);
+    void setLike(Iterable<Song> songList);
+    void setLike(Song song);
 }

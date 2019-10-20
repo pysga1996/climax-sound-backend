@@ -19,7 +19,7 @@ public class TagRestController {
     @Autowired
     TagService tagService;
 
-    @GetMapping(params = "action=list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(params = "action=list")
     public ResponseEntity<Page<Tag>> tagList(Pageable pageable) {
         Page<Tag> tagList = tagService.findAll(pageable);
         boolean isEmpty = tagList.getTotalElements() == 0;
@@ -28,7 +28,7 @@ public class TagRestController {
         } else return new ResponseEntity<>(tagList, HttpStatus.OK);
     }
 
-    @GetMapping(params = "action=search", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(params = "action=search")
     public ResponseEntity<Page<Tag>> tagSearch(@RequestParam String name, Pageable pageable) {
         Page<Tag> filteredTagList = tagService.findAllByNameContaining(name, pageable);
         boolean isEmpty = filteredTagList.getTotalElements() == 0;
@@ -37,7 +37,7 @@ public class TagRestController {
         } else return new ResponseEntity<>(filteredTagList, HttpStatus.OK);
     }
 
-    @PostMapping(params = "action=create", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(params = "action=create")
     public ResponseEntity<String> createTag(@Valid @RequestBody Tag tag) {
         Tag checkedTag = tagService.findByName(tag.getName());
         if (checkedTag != null) {
@@ -48,7 +48,7 @@ public class TagRestController {
         }
     }
 
-    @PutMapping(params = {"action=edit", "id"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(params = {"action=edit", "id"})
     public ResponseEntity<String> editTag(@Valid @RequestBody Tag tag, @RequestParam Long id) {
         Tag checkedTag = tagService.findByName(tag.getName());
         if (checkedTag != null) {
@@ -60,7 +60,7 @@ public class TagRestController {
         }
     }
 
-    @DeleteMapping(params = {"action=delete", "id"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(params = {"action=delete", "id"})
     public ResponseEntity<String> deleteTag(@RequestParam Long id) {
         tagService.deleteById(id);
         return new ResponseEntity<>("Tag title removed in database!", HttpStatus.OK);

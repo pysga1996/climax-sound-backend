@@ -38,10 +38,10 @@ public class Song extends MediaObject {
     private Collection<Comment> comments;
 
     @ColumnDefault("0")
-    private Long displayRating = 0L;
+    private Long displayRating;
 
     @ColumnDefault("0")
-    private Long listeningFrequency = 0L;
+    private Long listeningFrequency;
 
     private Boolean liked;
 

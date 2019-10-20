@@ -7,8 +7,8 @@ import com.lambda.service.SongService;
 import com.lambda.service.impl.AvatarStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -95,13 +95,14 @@ public class ArtistRestController {
     }
 
     @GetMapping(value = "/song-list", params = "artist-id")
-    public ResponseEntity<Page<Song>> getSongListOfArtist(@RequestParam("artist-id") Long id, Pageable pageable) {
+    public ResponseEntity<Page<Song>> getSongListOfArtist(@RequestParam("artist-id") Long id, @PageableDefault(size = 5) Pageable pageable) {
         Optional<Artist> artist = artistService.findById(id);
         if (artist.isPresent()) {
-            Page<Song> songs = songService.findAllByArtistsContains(artist.get(), pageable);
-            if (songs.getTotalElements() == 0) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            } return new ResponseEntity<>(songs, HttpStatus.OK);
+            Page<Song> songList = songService.findAllByArtistsContains(artist.get(), pageable);
+            if (songList.getTotalElements() > 0) {
+                songService.setLike(songList);
+                return new ResponseEntity<>(songList, HttpStatus.OK);
+            } return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

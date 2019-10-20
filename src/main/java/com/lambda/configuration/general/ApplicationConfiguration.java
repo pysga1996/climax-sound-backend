@@ -118,11 +118,11 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 //        return properties;
 //    }
 
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
-        registry.addFormatter(new LocalDateFormatter());
-        registry.addConverter(new StringToUploadFormConverter());
-    }
+//    @Override
+//    public void addFormatters(FormatterRegistry registry) {
+//        registry.addFormatter(new LocalDateFormatter());
+//        registry.addConverter(new StringToUploadFormConverter());
+//    }
 
 //    @Override
 //    public void addResourceHandlers(ResourceHandlerRegistry registry) {

@@ -21,7 +21,7 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
 
     Iterable<Artist> findAllByNameContaining(String name);
 
-    Page<Artist> findAllByAlbums_Name(String name, Pageable pageable);
+    Page<Artist> findAllByAlbums_Title(String title, Pageable pageable);
 
 //    @Query("SELECT a, s FROM Artist a JOIN FETCH a.songs s")
     Optional<Artist> findById(@Param("id") Long id);

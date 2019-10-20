@@ -118,6 +118,7 @@ public class SongRestController {
     @GetMapping(value = "/detail", params = "id")
     public ResponseEntity<Song> songDetail(@RequestParam("id") Long id) {
         Optional<Song> song = songService.findById(id);
+        song.ifPresent(value -> songService.setLike(value));
         return song.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
