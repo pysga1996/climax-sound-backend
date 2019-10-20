@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
-import com.lambda.converter.StringToUploadFormConverter;
 import com.lambda.formatter.LocalDateFormatter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -162,7 +161,7 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 //        return localeResolver;
 //    }
 
-//    @Bean(title = "multipartResolver")
+//    @Bean(name = "multipartResolver")
 //    public CommonsMultipartResolver getResolver() throws IOException {
 //        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
 //        //Set the maximum allowed size (in bytes) for each individual file.
@@ -170,15 +169,4 @@ public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
 //        //You may also set other available properties.
 //        return resolver;
 //    }
-
-    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
-        for (HttpMessageConverter converter : converters) {
-            if (converter instanceof org.springframework.http.converter.json.MappingJackson2HttpMessageConverter) {
-                ObjectMapper mapper = ((MappingJackson2HttpMessageConverter) converter).getObjectMapper();
-                mapper.registerModule(new Hibernate5Module());
-                // replace Hibernate4Module() with the proper class for your hibernate version.
-            }
-        }
-    }
-
 }

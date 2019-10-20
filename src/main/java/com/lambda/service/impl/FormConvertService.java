@@ -1,11 +1,7 @@
 package com.lambda.service.impl;
 
 import com.lambda.model.entity.*;
-import com.lambda.model.form.AlbumForm;
-import com.lambda.model.form.AudioUploadForm;
-import com.lambda.model.form.MediaForm;
 import com.lambda.model.form.UserForm;
-import com.lambda.model.util.MediaObject;
 import com.lambda.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -117,71 +113,6 @@ public class FormConvertService {
             return theme;
         }
         return null;
-    }
-
-    private Boolean checkSongExistence(AudioUploadForm audioUploadForm) {
-        Iterable<Song> checkedSongs = songService.findAllByTitle(audioUploadForm.getName());
-        boolean isExisted = false;
-//        for (Song checkedSong: checkedSongs) {
-//            if (compareTwoArtistSet(checkedSong.getArtists(), audioUploadForm.getArtists().split(","))) {
-//                isExisted = true;
-//                break;
-//            }
-//        }
-        return isExisted;
-    }
-
-    private Boolean checkAlbumExistence(AlbumForm albumForm) {
-        Iterable<Album> checkedAlbums = albumService.findAllByTitle(albumForm.getName());
-        boolean isExisted = false;
-//        for (Album checkedAlbum: checkedAlbums) {
-//            if (compareTwoArtistSet(checkedAlbum.getArtists(), albumForm.getArtists().split(","))) {
-//                isExisted = true;
-//                break;
-//            }
-//        }
-        return isExisted;
-    }
-
-    private boolean compareTwoArtistSet(Collection<Artist> checkedArtistCollection, String[] artistStringArray) {
-        Set<Artist> checkedArtistSet = new HashSet<>(checkedArtistCollection);
-        Set<String> checkedArtistStringSet = new HashSet<>();
-        for (Artist artist: checkedArtistSet) {
-            checkedArtistStringSet.add(artist.getName());
-        }
-        Set<String> artistStringSet = new HashSet<>(Arrays.asList(artistStringArray));
-        return checkedArtistStringSet.equals(artistStringSet);
-    }
-
-    public Song convertToSong(AudioUploadForm audioUploadForm) {
-        if (checkSongExistence(audioUploadForm)) return null;
-        String songName = audioUploadForm.getName();
-        Date releaseDate = audioUploadForm.getReleaseDate();
-        Song song = new Song(songName, releaseDate);
-        setFields(song, audioUploadForm);
-        return song;
-    }
-
-    public Album convertToAlbum(AlbumForm albumForm) {
-        if (checkAlbumExistence(albumForm)) return null;
-        String songName = albumForm.getName();
-        Date releaseDate = albumForm.getReleaseDate();
-        Album album = new Album(songName, releaseDate);
-        setFields(album, albumForm);
-        return album;
-    }
-
-    private void setFields(MediaObject mediaObject, MediaForm mediaForm) {
-        Collection<Artist> artistsList = mediaForm.getArtists();
-        mediaObject.setArtists(artistsList);
-        Collection<Genre> genreList = convertStringToGenreList(mediaForm.getGenres());
-        mediaObject.setGenres(genreList);
-        Collection<Tag> tagList = convertStringToTagList(mediaForm.getTags());
-        mediaObject.setTags(tagList);
-        Country country = convertStringToMood(mediaForm.getCountry().trim());
-        mediaObject.setCountry(country);
-        Theme theme = convertToActivity(mediaForm.getCountry().toLowerCase().trim());
-        mediaObject.setTheme(theme);
     }
 
     public User convertToUser(UserForm userForm, boolean createAction) {

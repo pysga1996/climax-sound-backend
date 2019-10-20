@@ -157,9 +157,8 @@ public class SongServiceImpl implements SongService {
     @Override
     public boolean hasUserLiked(Long songId) {
         Long userId = userDetailService.getCurrentUser().getId();
-        Like peopleWhoLikeds = likeRepository.findBySongIdAndUserId(songId, userId);
-//        Long size = StreamSupport.stream(peopleWhoLikeds.spliterator(), false).count();
-        return (peopleWhoLikeds != null);
+        Like like = likeRepository.findBySongIdAndUserId(songId, userId);
+        return (like != null);
     }
 
     @Override

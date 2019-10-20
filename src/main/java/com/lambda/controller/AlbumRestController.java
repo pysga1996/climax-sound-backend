@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
@@ -59,7 +60,7 @@ public class AlbumRestController {
         return album.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/search")
     public ResponseEntity<Page<Album>> albumSearch(@RequestParam String name, Pageable pageable) {
         Page<Album> filteredAlbumList = albumService.findAllByTitleContaining(name, pageable);
         boolean isEmpty = filteredAlbumList.getTotalElements() == 0;
@@ -68,12 +69,15 @@ public class AlbumRestController {
         } else return new ResponseEntity<>(filteredAlbumList, HttpStatus.OK);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/upload")
-    public ResponseEntity<Long> createAlbum(@Valid @RequestPart("album") Album album, @RequestPart("cover") MultipartFile file) {
+    public ResponseEntity<Long> createAlbum(@Valid @RequestPart("album") Album album, @RequestPart(value = "cover", required = false) MultipartFile file) {
         try {
             albumService.save(album);
-            String fileName = coverStorageService.saveToFirebaseStorage(album, file);
-            album.setCoverUrl(fileName);
+            if (file != null) {
+                String fileName = coverStorageService.saveToFirebaseStorage(album, file);
+                album.setCoverUrl(fileName);
+            }
             albumService.save(album);
             return new ResponseEntity<>(album.getId(), HttpStatus.OK);
         } catch (Exception e) {
@@ -84,24 +88,30 @@ public class AlbumRestController {
         }
     }
 
-    @PutMapping(value = "/edit", params = {"id"})
-    public ResponseEntity<String> editAlbum(@Valid @RequestBody AlbumForm albumForm, @RequestParam Long id) {
-        Album album = formConvertService.convertToAlbum(albumForm);
-        if (album != null) {
-            album.setId(id);
-            albumService.save(album);
-            return new ResponseEntity<>("Album updated successfully!", HttpStatus.OK);
-        } else return new ResponseEntity<>("Album has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping(value = "/edit", params = "id")
+    public ResponseEntity<Void> editAlbum(@Valid @RequestPart("album") Album album, @RequestPart(value = "cover", required = false) MultipartFile file, @RequestParam("id") Long id) {
+        if (file != null) {
+            String fileName = coverStorageService.saveToFirebaseStorage(album, file);
+            album.setCoverUrl(fileName);
+        }
+        Optional<Album> oldAlbum = albumService.findById(id);
+        if (oldAlbum.isPresent()) {
+            albumService.setFields(oldAlbum.get(), album);
+            albumService.save(oldAlbum.get());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping(value = "/delete", params = {"id"})
-    public ResponseEntity<String> deleteAlbum(@RequestParam Long id) {
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping(value = "/delete", params = "id")
+    public ResponseEntity<Void> deleteAlbum(@RequestParam("id") Long id) {
         Collection<Song> songsToDelete = new ArrayList<>();
         Iterable<Song> songs = songService.findAllByAlbum_Id(id);
         songs.forEach(songsToDelete::add);
         songService.deleteAll(songsToDelete);
         albumService.deleteById(id);
-        return new ResponseEntity<>("Album removed successfully!", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

@@ -6,8 +6,6 @@ import com.lambda.service.AlbumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.prepost.PostFilter;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -40,6 +38,20 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public Page<Album> findAllByArtist_Name(String title, Pageable pageable) {
         return albumRepository.findAllByArtist_Name(title, pageable);
+    }
+
+    @Override
+    public void setFields(Album oldAlbumInfo, Album newAlbumInfo) {
+        oldAlbumInfo.setTitle(newAlbumInfo.getTitle());
+        oldAlbumInfo.setArtists(newAlbumInfo.getArtists());
+        oldAlbumInfo.setGenres(newAlbumInfo.getGenres());
+        oldAlbumInfo.setCountry(newAlbumInfo.getCountry());
+        oldAlbumInfo.setReleaseDate(newAlbumInfo.getReleaseDate());
+        oldAlbumInfo.setTags(newAlbumInfo.getTags());
+        oldAlbumInfo.setTheme(newAlbumInfo.getTheme());
+        if(newAlbumInfo.getCoverUrl()!= null) {
+            oldAlbumInfo.setCoverUrl(newAlbumInfo.getCoverUrl());
+        }
     }
 
     @Override
