@@ -3,6 +3,7 @@ package com.lambda.repository;
 import com.lambda.model.entity.Artist;
 import com.lambda.model.entity.Playlist;
 import com.lambda.model.entity.Song;
+import com.lambda.model.entity.User;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +44,8 @@ public interface SongRepository extends JpaRepository<Song, Long> {
     Page<Song> findAllByTitleContaining(String title, Pageable pageable);
 
     Page<Song> findAllByArtistsContains(Artist artist, Pageable pageable);
+
+    Page<Song> findAllByUsersContains(User user, Pageable pageable);
 
     @Query("SELECT s FROM Song s JOIN s.albums a WHERE a.id = :id")
     Page<Song> findAllByAlbum_Id(@Param("id") Long id, Pageable pageable);

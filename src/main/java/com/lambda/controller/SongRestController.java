@@ -85,7 +85,7 @@ public class SongRestController {
 //    }
 
     @GetMapping(value = "/list")
-    public ResponseEntity<Page<Song>> songList(Pageable pageable, @RequestParam(value = "sort", required = false) String sort) {
+    public ResponseEntity<Page<Song>> songList(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "sort", required = false) String sort) {
         Page<Song> songList = songService.findAll(pageable, sort);
         if (songList.getTotalElements() == 0) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -170,7 +170,7 @@ public class SongRestController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/my-song")
     public ResponseEntity<Page<Song>> mySongList(Pageable pageable) {
-        Page<Song> mySongList = songService.findAllByUploader_Id(userDetailService.getCurrentUser().getId(), pageable);
+        Page<Song> mySongList = songService.findAllByUsersContains(userDetailService.getCurrentUser(), pageable);
         if (mySongList.getTotalElements() > 0) {
             return new ResponseEntity<>(mySongList, HttpStatus.OK);
         } else return new ResponseEntity<>(HttpStatus.NO_CONTENT);

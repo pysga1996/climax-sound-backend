@@ -3,6 +3,7 @@ package com.lambda.service.impl;
 import com.lambda.model.entity.Artist;
 import com.lambda.model.entity.Like;
 import com.lambda.model.entity.Song;
+import com.lambda.model.entity.User;
 import com.lambda.repository.LikeRepository;
 import com.lambda.repository.SongRepository;
 import com.lambda.service.SongService;
@@ -101,6 +102,13 @@ public class SongServiceImpl implements SongService {
     @Override
     public Page<Song> findAllByArtistsContains(Artist artist, Pageable pageable) {
         return songRepository.findAllByArtistsContains(artist, pageable);
+    }
+
+    @Override
+    public Page<Song> findAllByUsersContains(User user, Pageable pageable) {
+        Page<Song> songList = songRepository.findAllByUsersContains(user, pageable);
+        setLike(songList);
+        return songList;
     }
 
     @Override

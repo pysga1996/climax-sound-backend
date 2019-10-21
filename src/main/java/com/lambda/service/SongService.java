@@ -2,6 +2,7 @@ package com.lambda.service;
 
 import com.lambda.model.entity.Artist;
 import com.lambda.model.entity.Song;
+import com.lambda.model.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -16,6 +17,7 @@ public interface SongService {
     Page<Song> findAllByUploader_Id(Long id, Pageable pageable);
     Page<Song> findAllByTitleContaining(String title, Pageable pageable);
     Page<Song> findAllByArtistsContains(Artist artist, Pageable pageable);
+    Page<Song> findAllByUsersContains(User user, Pageable pageable);
     Page<Song> findAllByOrderByReleaseDateDesc(Pageable pageable);
     Page<Song> findAllByOrderByListeningFrequencyDesc(Pageable pageable);
     Page<Song> findAllByOrderByDisplayRatingDesc(Pageable pageable);

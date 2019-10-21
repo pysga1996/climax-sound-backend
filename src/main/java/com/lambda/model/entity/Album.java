@@ -80,6 +80,10 @@ public class Album extends MediaObject {
     @JoinColumn(name = "theme_id")
     private Theme theme;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User uploader;
+
     @JsonBackReference("user-favoriteAlbums")
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "favoriteAlbums")
     @Fetch(value = FetchMode.SUBSELECT)

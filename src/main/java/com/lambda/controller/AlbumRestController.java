@@ -8,6 +8,7 @@ import com.lambda.service.SongService;
 import com.lambda.service.impl.CoverStorageService;
 import com.lambda.service.impl.DownloadService;
 import com.lambda.service.impl.FormConvertService;
+import com.lambda.service.impl.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,9 @@ public class AlbumRestController {
 
     @Autowired
     ArtistService artistService;
+
+    @Autowired
+    UserDetailServiceImpl userDetailService;
 
     @Autowired
     CoverStorageService coverStorageService;
@@ -75,6 +79,7 @@ public class AlbumRestController {
                 String fileName = coverStorageService.saveToFirebaseStorage(album, file);
                 album.setCoverUrl(fileName);
             }
+            album.setUploader(userDetailService.getCurrentUser());
             albumService.save(album);
             return new ResponseEntity<>(album.getId(), HttpStatus.OK);
         } catch (Exception e) {

@@ -66,6 +66,7 @@ public class UserRestController {
     @Autowired
     private ArtistService artistService;
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile")
     public ResponseEntity<User> getCurrentUser() {
         User user = userDetailService.getCurrentUser();
@@ -75,15 +76,24 @@ public class UserRestController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/upload-avatar")
+    public ResponseEntity<Void> uploadAvatar(@RequestParam("avatar") MultipartFile multipartFile) {
+        User currentUser = userDetailService.getCurrentUser();
+        if (multipartFile != null) {
+            String fileDownloadUri = avatarStorageService.saveToFirebaseStorage(currentUser, multipartFile);
+            currentUser.setAvatarUrl(fileDownloadUri);
+        }
+        userService.save(currentUser);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @PutMapping("/profile")
-    public ResponseEntity<Void> updateProfile(@RequestPart("user") User user , @RequestPart(value = "avatar",required = false) MultipartFile multipartFile) {
+    public ResponseEntity<Void> updateProfile(@RequestBody User user) {
         User oldUser = userDetailService.getCurrentUser();
         if (user != null) {
-            if (multipartFile != null) {
-                String fileDownloadUri = avatarStorageService.saveToFirebaseStorage(oldUser, multipartFile);
-                user.setAvatarUrl(fileDownloadUri);
-            }
-            userService.setFieldsEdit(oldUser,user);
+            userService.setFieldsEdit(oldUser, user);
             userService.save(oldUser);
             return new ResponseEntity<>(HttpStatus.OK);
         } else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -109,7 +119,8 @@ public class UserRestController {
         return downloadService.generateUrl(fileName, request, avatarStorageService);
     }
 
-    @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("isAnonymous()")
+    @PostMapping(value = "/register")
     public ResponseEntity<Void> createUser(@Valid @RequestBody UserForm userForm) {
         User user = formConvertService.convertToUser(userForm, true);
         if (user == null) return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
@@ -121,6 +132,7 @@ public class UserRestController {
         return new ResponseEntity<>( HttpStatus.OK);
     }
 
+    @PreAuthorize("isAnonymous()")
     @PostMapping(value = "/login")
     public ResponseEntity<LoginResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         // Xác thực từ username và password.
@@ -135,8 +147,7 @@ public class UserRestController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         // Trả về jwt cho người dùng.
         String jwt = tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
-        User currentUser = userDetailService.getCurrentUser();
-        LoginResponse loginResponse = new LoginResponse(currentUser.getId(), currentUser.getUsername(), currentUser.getRoles(), jwt);
+        LoginResponse loginResponse = new LoginResponse(jwt);
         return new ResponseEntity<>(loginResponse, HttpStatus.OK);
     }
 
@@ -178,7 +189,7 @@ public class UserRestController {
     public ResponseEntity<SearchResponse> search(@RequestParam("name") String name){
         Iterable<Song> songs = songService.findAllByTitleContaining(name);
         Iterable<Artist> artists = artistService.findAllByNameContaining(name);
-        SearchResponse  searchResponse = new SearchResponse(songs,artists);
+        SearchResponse  searchResponse = new SearchResponse(songs, artists);
         return new ResponseEntity<>(searchResponse, HttpStatus.OK);
     }
 
