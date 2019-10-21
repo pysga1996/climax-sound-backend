@@ -19,6 +19,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.util.List;
@@ -37,8 +38,9 @@ import java.util.List;
 @ComponentScan("com.lambda")
 @EnableSpringDataWebSupport
 //@PropertySource("classpath:GlobalConfigApp.properties")
-public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
+public class ApplicationConfiguration implements WebMvcConfigurer {
 
+    @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         for (HttpMessageConverter converter : converters) {
             if (converter instanceof org.springframework.http.converter.json.MappingJackson2HttpMessageConverter) {
