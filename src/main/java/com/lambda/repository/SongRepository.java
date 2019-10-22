@@ -40,7 +40,7 @@ public interface SongRepository extends JpaRepository<Song, Long> {
     Page<Song> findAllByUploader_Id(Long id, Pageable pageable);
 
     @Query(nativeQuery = true, value = "SELECT * FROM public.song "
-            + "WHERE LOWER(unaccent(title)) LIKE LOWER(unaccent(:title))")
+            + "WHERE unaccent(title) LIKE unaccent(:title)||'%'")
     Iterable<Song> findAllByTitleContaining(@Param("title") String title);
 
     Page<Song> findAllByTitleContaining(String title, Pageable pageable);

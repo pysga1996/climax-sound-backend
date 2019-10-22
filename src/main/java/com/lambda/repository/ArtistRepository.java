@@ -17,11 +17,11 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
 
     Iterable<Artist> findFirst10ByNameContaining(String name);
 
-    Page<Artist> findAllByNameContaining(@Param("name") String name, Pageable pageable);
+    Page<Artist> findAllByNameContaining(String name, Pageable pageable);
 
     @Query(nativeQuery = true, value = "SELECT * FROM public.artist "
-            + "WHERE LOWER(unaccent(name)) LIKE LOWER(unaccent(:name))")
-    Iterable<Artist> findAllByNameContaining(String name);
+            + "WHERE unaccent(name) LIKE unaccent(:name)||'%'")
+    Iterable<Artist> findAllByNameContaining(@Param("name") String name);
 
     Page<Artist> findAllByAlbums_Title(String title, Pageable pageable);
 
