@@ -22,6 +22,7 @@ public class Genre {
     private Integer id;
 
     @NotBlank
+    @Column(unique = true, nullable = false)
     private String name;
 
     @JsonBackReference("song-genre")

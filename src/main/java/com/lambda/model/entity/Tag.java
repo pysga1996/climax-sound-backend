@@ -22,7 +22,7 @@ public class Tag {
     private Long id;
 
     @NotBlank
-//    @Column(title = "tag_name")
+    @Column(unique = true, nullable = false)
     private String name;
 
     @JsonBackReference(value = "song-tag")

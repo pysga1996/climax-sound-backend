@@ -91,7 +91,7 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public Iterable<Song> findAllByTitleContaining(String name) {
-        return songRepository.findAllByTitleContainingIgnoreCase(name);
+        return songRepository.findAllByTitleContaining(name);
     }
 
     @Override

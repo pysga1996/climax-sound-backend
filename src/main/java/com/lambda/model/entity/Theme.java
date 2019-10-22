@@ -20,6 +20,7 @@ public class Theme {
     private Integer id;
 
     @NotBlank
+    @Column(unique = true, nullable = false)
     private String name;
 
     @JsonManagedReference("song-theme")

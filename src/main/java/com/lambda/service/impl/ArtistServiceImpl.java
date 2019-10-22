@@ -33,7 +33,7 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public Page<Artist> findAllByNameContaining(String name, Pageable pageable) {
-        return artistRepository.findAllByNameContainingIgnoreCase(name, pageable);
+        return artistRepository.findAllByNameContaining(name, pageable);
     }
 
     @Override
