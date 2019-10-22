@@ -1,7 +1,7 @@
 package com.lambda.controller;
 
-import com.lambda.model.entity.Country;
-import com.lambda.service.CountryService;
+import com.lambda.model.entity.Genre;
+import com.lambda.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,40 +13,45 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Optional;
 
+@CrossOrigin(origins = {"https://climax-sound.netlify.com", "http://localhost:4200"}, allowedHeaders = "*")
 @RestController
-@RequestMapping("/api/country")
-public class RestCountryController {
+@RequestMapping("/api/genre")
+public class GenreRestController {
     @Autowired
-    CountryService countryService;
+    GenreService genreService;
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/list")
-    public ResponseEntity<Page<Country>> songList(Pageable pageable) {
-        Page<Country> songList = countryService.findAll(pageable);
-        if (songList.getTotalElements() > 0) {
-            return new ResponseEntity<>(songList, HttpStatus.OK);
+    public ResponseEntity<Page<Genre>> genreList(Pageable pageable) {
+        Page<Genre> genreList = genreService.findAll(pageable);
+        if (genreList.getTotalElements() > 0) {
+            return new ResponseEntity<>(genreList, HttpStatus.OK);
         } else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(value = "/detail", params = "id")
-    public ResponseEntity<Country> songDetail(Integer id) {
-        Optional<Country> country = countryService.findById(id);
+    public ResponseEntity<Genre> genreDetail(Integer id) {
+        Optional<Genre> country = genreService.findById(id);
         return country.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/create")
-    public ResponseEntity<Void> createCountry(@Valid @RequestBody Country country) {
-        countryService.save(country);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Void> createGenre(@Valid @RequestBody Genre genre) {
+        try {
+            genreService.save(genre);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value = "/edit")
-    public ResponseEntity<Void> editCountry(@Valid @RequestBody Country country) {
+    public ResponseEntity<Void> editGenre(@Valid @RequestBody Genre genre) {
         try {
-            countryService.save(country);
+            genreService.save(genre);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -55,9 +60,9 @@ public class RestCountryController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(value = "/delete", params = "id")
-    public ResponseEntity<Void> deleteCountry(@Valid @RequestParam Integer id) {
+    public ResponseEntity<Void> deleteGenre(@Valid @RequestParam Integer id) {
         try {
-            countryService.deleteById(id);
+            genreService.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
