@@ -62,7 +62,7 @@ public class PlaylistRestController {
 
     @PreAuthorize("isAuthenticated()")
     @PutMapping(value = "/edit", params = "id")
-    public ResponseEntity<String> editPlaylist(@Valid @RequestBody Playlist playlist, @RequestParam Long id) {
+    public ResponseEntity<String> editPlaylist(@Valid @RequestBody Playlist playlist, @RequestParam("id") Long id) {
         Optional<Playlist> oldPlaylist = playlistService.findById(id);
         if (oldPlaylist.isPresent()) {
             if (playlistService.checkPlaylistOwner(id)) {

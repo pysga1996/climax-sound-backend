@@ -99,7 +99,6 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     public boolean checkPlaylistOwner(Long id) {
-        System.out.println(id);
         Optional<Playlist> playlist = findById(id);
         User currentUser = userDetailService.getCurrentUser();
         if (playlist.isPresent() && currentUser.getId()!=null) {
