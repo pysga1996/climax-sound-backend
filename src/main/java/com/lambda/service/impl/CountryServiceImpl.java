@@ -37,7 +37,7 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public void save(Country country) {
-        countryRepository.save(country);
+        countryRepository.saveAndFlush(country);
     }
 
     @Override

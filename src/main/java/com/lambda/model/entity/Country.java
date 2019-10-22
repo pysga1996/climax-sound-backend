@@ -21,6 +21,7 @@ public class Country {
     private Integer id;
 
     @NotBlank
+    @Column(unique = true, nullable = false)
     private String name;
 
 

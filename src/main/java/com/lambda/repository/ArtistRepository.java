@@ -17,7 +17,7 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
 
     Iterable<Artist> findFirst10ByNameContaining(String name);
 
-    Page<Artist> findAllByNameContaining(String name, Pageable pageable);
+    Page<Artist> findAllByNameContainingIgnoreCase(String name, Pageable pageable);
 
     Iterable<Artist> findAllByNameContaining(String name);
 

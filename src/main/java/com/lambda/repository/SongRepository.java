@@ -39,7 +39,7 @@ public interface SongRepository extends JpaRepository<Song, Long> {
 
     Page<Song> findAllByUploader_Id(Long id, Pageable pageable);
 
-    Iterable<Song> findAllByTitleContaining(String title);
+    Iterable<Song> findAllByTitleContainingIgnoreCase(String title);
 
     Page<Song> findAllByTitleContaining(String title, Pageable pageable);
 

@@ -31,6 +31,7 @@ public class ArtistRestController {
     @Autowired
     AvatarStorageService avatarStorageService;
 
+    @PreAuthorize("permitAll()")
     @GetMapping(value = "/search", params = "name")
     public ResponseEntity<Iterable<Artist>> searchArtistByName(@RequestParam("name") String name) {
         Iterable<Artist> artistList = artistService.findTop10ByNameContaining(name);
@@ -43,6 +44,7 @@ public class ArtistRestController {
         } else return new ResponseEntity<>(artistList, HttpStatus.OK);
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping(value = "/list")
     public ResponseEntity<Page<Artist>> getArtistList(Pageable pageable) {
         Page<Artist> artistList = artistService.findAll(pageable);
@@ -52,6 +54,7 @@ public class ArtistRestController {
         return new ResponseEntity<>(artistList, HttpStatus.OK);
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping(value = "/detail", params = "id")
     public ResponseEntity<Artist> artistDetail(@RequestParam("id") Long id) {
         Optional<Artist> artist = artistService.findById(id);
@@ -73,6 +76,7 @@ public class ArtistRestController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value = "/edit", params = "id")
     public ResponseEntity<Void> updateArtist(@RequestParam("id") Long id, @RequestPart("artist") Artist artist, @RequestPart(value = "avatar", required = false) MultipartFile multipartFile) {
         Optional<Artist> oldArtist = artistService.findById(id);
@@ -84,16 +88,17 @@ public class ArtistRestController {
             artistService.setFields(oldArtist.get(), artist);
             artistService.save(oldArtist.get());
             return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(value = "/delete", params = "id")
     public ResponseEntity<Void> deleteArtist(@RequestParam("id") Long id) {
         artistService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping(value = "/song-list", params = "artist-id")
     public ResponseEntity<Page<Song>> getSongListOfArtist(@RequestParam("artist-id") Long id, @PageableDefault(size = 5) Pageable pageable) {
         Optional<Artist> artist = artistService.findById(id);
