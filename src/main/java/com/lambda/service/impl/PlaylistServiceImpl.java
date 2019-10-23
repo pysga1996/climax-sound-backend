@@ -111,16 +111,5 @@ public class PlaylistServiceImpl implements PlaylistService {
         User currentUser = userDetailService.getCurrentUser();
         Optional<Song> song = songService.findById(songId);
         return song.map(value -> playlistRepository.findAllByUser_IdAndSongsNotContains(currentUser.getId(), value)).orElse(null);
-
-//        Collection<Playlist> playlistCollection = new ArrayList<>();
-//        for (Playlist playlist: playlistList) {
-//            playlistCollection.add(playlist);
-//        }
-//        List<Playlist> filteredPlaylistList = new ArrayList<>();
-//        for (Playlist playlist: playlistCollection) {
-//            if (!checkSongExistence(playlist, songId)) {
-//                filteredPlaylistList.add(playlist);
-//            }
-//        }
     }
 }

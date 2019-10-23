@@ -99,7 +99,7 @@ public class PlaylistRestController {
     @PutMapping(value = "/remove-song")
     public ResponseEntity<Void> removeSongFromPlaylist(@RequestParam("song-id") Long songId, @RequestParam("playlist-id")Long playlistId) {
         if (playlistService.checkPlaylistOwner(playlistId)) {
-            boolean result = playlistService.deleteSongFromPlaylist(songId,playlistId);
+            boolean result = playlistService.deleteSongFromPlaylist(songId, playlistId);
             if(result) {
                 return new ResponseEntity<>(HttpStatus.OK);
             } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
