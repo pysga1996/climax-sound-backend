@@ -73,14 +73,18 @@ public class UserRestController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/upload-avatar")
-    public ResponseEntity<Void> uploadAvatar(@RequestParam("avatar") MultipartFile multipartFile) {
-        User currentUser = userDetailService.getCurrentUser();
-        if (multipartFile != null) {
-            String fileDownloadUri = avatarStorageService.saveToFirebaseStorage(currentUser, multipartFile);
-            currentUser.setAvatarUrl(fileDownloadUri);
+    public ResponseEntity<String> uploadAvatar(@RequestParam("heroku local") MultipartFile multipartFile) {
+        try {
+            User currentUser = userDetailService.getCurrentUser();
+            if (multipartFile != null) {
+                String fileDownloadUri = avatarStorageService.saveToFirebaseStorage(currentUser, multipartFile);
+                currentUser.setAvatarUrl(fileDownloadUri);
+            }
+            userService.save(currentUser);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        userService.save(currentUser);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
