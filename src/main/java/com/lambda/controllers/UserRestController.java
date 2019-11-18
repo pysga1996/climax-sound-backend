@@ -87,6 +87,7 @@ public class UserRestController {
             for (StackTraceElement st: e.getStackTrace()) {
                 error = error.concat(st.toString());
             }
+            error = error.concat( e.getCause().getMessage());
             return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
