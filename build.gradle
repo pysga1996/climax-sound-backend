@@ -45,7 +45,7 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-core'
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate5'
-	implementation 'org.springframework.security:spring-security-jwt:1.0.10'
+	implementation 'org.springframework.security:spring-security-jwt'
 	runtimeOnly 'org.postgresql:postgresql'
 	implementation 'org.projectlombok:lombok'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
