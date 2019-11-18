@@ -73,7 +73,7 @@ public class UserRestController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/upload-avatar")
-    public ResponseEntity<String> uploadAvatar(@RequestParam("heroku local") MultipartFile multipartFile) {
+    public ResponseEntity<String> uploadAvatar(@RequestParam("avatar") MultipartFile multipartFile) {
         try {
             User currentUser = userDetailService.getCurrentUser();
             if (multipartFile != null) {
