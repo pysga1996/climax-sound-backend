@@ -83,10 +83,7 @@ public class UserRestController {
             userService.save(currentUser);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            String error = "";
-            for (StackTraceElement st: e.getStackTrace()) {
-                error = error.concat(st.toString());
-            }
+            String error = e.getMessage();
             return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
