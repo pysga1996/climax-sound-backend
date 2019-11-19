@@ -54,9 +54,9 @@ public class CountryRepositoryTest {
 
     @Test
     public void whenSave_thenFoundInDB() {
-        Country US = new Country("US");
-        countryRepository.save(US);
-        Country found = countryRepository.findByName("US");
+        Country HK = new Country("Hong Kong");
+        countryRepository.save(HK);
+        Country found = countryRepository.findByName("Hong Kong");
         assertThat(found).isNotNull();
     }
 

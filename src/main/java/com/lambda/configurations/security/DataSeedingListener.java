@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-//@Component
+@Component
 public class DataSeedingListener {
     private boolean alreadySetup = false;
 

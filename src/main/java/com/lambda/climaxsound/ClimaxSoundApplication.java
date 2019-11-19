@@ -29,13 +29,13 @@ public class ClimaxSoundApplication extends SpringBootServletInitializer {
 		SpringApplication.run(ClimaxSoundApplication.class, args);
 	}
 
-//	@Autowired
-//	DataSeedingListener dataSeedingListener;
+	@Autowired
+	DataSeedingListener dataSeedingListener;
 
-//	@EventListener(ContextRefreshedEvent.class)
-//	public void dataSeeding() {
-//		dataSeedingListener.onApplicationEvent();
-//	}
+	@EventListener(ContextRefreshedEvent.class)
+	public void dataSeeding() {
+		dataSeedingListener.onApplicationEvent();
+	}
 
 //	@Bean
 //	public HerokuNotIdle herokuNotIdle(){
