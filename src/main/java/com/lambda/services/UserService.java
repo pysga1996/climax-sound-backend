@@ -1,6 +1,7 @@
 package com.lambda.services;
 
 import com.lambda.models.entities.User;
+import com.lambda.models.utilities.SearchResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,4 +18,5 @@ public interface UserService {
     void setFields(User newUserInfo, User oldUserInfo);
     void setFieldsEdit(User oldUserInfo, User newUserInfo);
     User setInfo(Long id, User currentUser);
+    SearchResponse search(String searchText);
 }

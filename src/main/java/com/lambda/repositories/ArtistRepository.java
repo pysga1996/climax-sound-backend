@@ -19,6 +19,8 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
 
     Page<Artist> findAllByNameContaining(String name, Pageable pageable);
 
+    Iterable<Artist> findAllByNameContainingIgnoreCase(String name);
+
 //    @Query(nativeQuery = true, value = "SELECT * FROM public.artist "
 //            + "WHERE LOWER(unaccent(name)) LIKE LOWER(unaccent(:name))||'%'")
     Iterable<Artist> findAllByUnaccentNameContainingIgnoreCase(String name);

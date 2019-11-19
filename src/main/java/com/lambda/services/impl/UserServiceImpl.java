@@ -1,7 +1,12 @@
 package com.lambda.services.impl;
 
+import com.lambda.models.entities.Artist;
+import com.lambda.models.entities.Song;
 import com.lambda.models.entities.User;
+import com.lambda.models.utilities.SearchResponse;
 import com.lambda.repositories.UserRepository;
+import com.lambda.services.ArtistService;
+import com.lambda.services.SongService;
 import com.lambda.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.*;
 
 @Service
@@ -19,6 +23,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private SongService songService;
+
+    @Autowired
+    private ArtistService artistService;
 
     @Override
     public Page<User> findAll(Pageable pageable) {
@@ -90,5 +100,12 @@ public class UserServiceImpl implements UserService {
         } else if (user.isPresent() && user.get().getId().equals(currentUser.getId())) {
             return currentUser;
         } else return null;
+    }
+
+    @Override
+    public SearchResponse search(String searchText) {
+        Iterable<Song> songs = songService.findAllByTitleContaining(searchText);
+        Iterable<Artist> artists = artistService.findAllByNameContaining(searchText);
+        return new SearchResponse(songs, artists);
     }
 }

@@ -39,9 +39,4 @@ public class ClimaxSoundApplication extends SpringBootServletInitializer {
 		dataSeedingListener.onApplicationEvent();
 	}
 
-	@Bean
-	public HerokuNotIdle herokuNotIdle(){
-		return new HerokuNotIdle();
-	}
-
 }

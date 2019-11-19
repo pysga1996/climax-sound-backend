@@ -92,8 +92,13 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public Iterable<Song> findAllByTitleContaining(String name) {
-        name = StringAccentRemover.removeStringAccent(name);
-        return songRepository.findAllByUnaccentTitleContainingIgnoreCase(name);
+        if (name.equals(StringAccentRemover.removeStringAccent(name))) {
+            return songRepository.findAllByTitleContainingIgnoreCase(name);
+        } else {
+            name = StringAccentRemover.removeStringAccent(name);
+            return songRepository.findAllByUnaccentTitleContainingIgnoreCase(name);
+        }
+
     }
 
     @Override
