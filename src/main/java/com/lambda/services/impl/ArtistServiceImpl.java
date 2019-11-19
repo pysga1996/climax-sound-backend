@@ -32,8 +32,7 @@ public class ArtistServiceImpl implements ArtistService {
         if (name.equals(StringAccentRemover.removeStringAccent(name))) {
             return artistRepository.findFirst10ByUnaccentNameContainingIgnoreCase(name);
         } else {
-            name = StringAccentRemover.removeStringAccent(name);
-            return artistRepository.findAllByNameContainingIgnoreCase(name);
+            return artistRepository.findFirst10ByNameContainingIgnoreCase(name);
         }
     }
 
@@ -81,10 +80,9 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public Iterable<Artist> findAllByNameContaining(String name) {
         if (name.equals(StringAccentRemover.removeStringAccent(name))) {
-            return artistRepository.findAllByNameContainingIgnoreCase(name);
-        } else {
-            name = StringAccentRemover.removeStringAccent(name);
             return artistRepository.findAllByUnaccentNameContainingIgnoreCase(name);
+        } else {
+            return artistRepository.findAllByNameContainingIgnoreCase(name);
         }
     }
 
