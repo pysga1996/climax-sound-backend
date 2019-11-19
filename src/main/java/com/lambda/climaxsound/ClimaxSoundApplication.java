@@ -1,5 +1,6 @@
 package com.lambda.climaxsound;
 
+import com.lambda.configurations.general.HerokuNotIdle;
 import com.lambda.configurations.security.DataSeedingListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -7,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -37,9 +39,9 @@ public class ClimaxSoundApplication extends SpringBootServletInitializer {
 		dataSeedingListener.onApplicationEvent();
 	}
 
-//	@Bean
-//	public HerokuNotIdle herokuNotIdle(){
-//		return new HerokuNotIdle();
-//	}
+	@Bean
+	public HerokuNotIdle herokuNotIdle(){
+		return new HerokuNotIdle();
+	}
 
 }
