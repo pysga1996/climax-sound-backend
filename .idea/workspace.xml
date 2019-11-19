@@ -1,23 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bc94efd9-f0bc-40eb-ad2a-87d2fc0f8ca5" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/formatters/StringAccentRemover.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/services_test/CountryServiceTest.java" afterDir="false" />
+    <list default="true" id="bc94efd9-f0bc-40eb-ad2a-87d2fc0f8ca5" name="Default Changelist" comment="version 0.999">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/climaxsound/ClimaxSoundApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/climaxsound/ClimaxSoundApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hibernate.env" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysql.env" beforeDir="false" afterPath="$PROJECT_DIR$/mysql.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/postgresql.env" beforeDir="false" afterPath="$PROJECT_DIR$/postgresql.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/ApplicationConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/ApplicationConfiguration.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/configurations/security/DataSeedingListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configurations/security/DataSeedingListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/models/Views.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/models/entities/Artist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/models/entities/Artist.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/models/entities/Song.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/models/entities/Song.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/repositories/ArtistRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/repositories/ArtistRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/repositories/SongRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/repositories/SongRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/services/impl/ArtistServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/services/impl/ArtistServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/services/impl/SongServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/services/impl/SongServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/repositories_test/CountryRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/repositories_test/CountryRepositoryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/configurations/security/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configurations/security/SecurityConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/ClimaxSoundApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/ClimaxSoundApplicationTests.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/classes/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -62,6 +54,41 @@
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
         <item name="postgres-heroku" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="postgres-heroku" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="postgres-heroku" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="d9lfgg6p1rlj1: database" type="162271b6:PgImplModel$Database" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="postgres-heroku" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="d9lfgg6p1rlj1: database" type="162271b6:PgImplModel$Database" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="postgres-heroku" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="d9lfgg6p1rlj1: database" type="162271b6:PgImplModel$Database" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="postgres-heroku" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="d9lfgg6p1rlj1: database" type="162271b6:PgImplModel$Database" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
+        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
       </path>
     </expand>
     <select />
@@ -111,89 +138,96 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.env">
+        <entry file="file://$PROJECT_DIR$/mysql.env">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="18" selection-start-line="18" selection-end-line="18" />
+            <state relative-caret-position="147">
+              <caret line="7" column="53" selection-start-line="7" selection-start-column="53" selection-end-line="7" selection-end-column="53" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/formatters/StringAccentRemover.java">
+        <entry file="file://$PROJECT_DIR$/postgresql.env">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-22">
-              <caret line="2" column="32" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="32" />
+            <state relative-caret-position="126">
+              <caret line="6" column="48" selection-start-line="6" selection-start-column="48" selection-end-line="6" selection-end-column="48" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/services/impl/ArtistServiceImpl.java">
+        <entry file="file://$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/ClimaxSoundApplicationTests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="194">
-              <caret line="78" column="63" selection-start-line="78" selection-start-column="63" selection-end-line="78" selection-end-column="63" />
+            <state relative-caret-position="105">
+              <caret line="8" column="74" selection-start-line="8" selection-start-column="74" selection-end-line="8" selection-end-column="74" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repositories/ArtistRepository.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/ApplicationConfiguration.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="248">
-              <caret line="23" column="52" selection-start-line="23" selection-start-column="21" selection-end-line="23" selection-end-column="52" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/services/impl/SongServiceImpl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="106" column="5" lean-forward="true" selection-start-line="106" selection-start-column="5" selection-end-line="106" selection-end-column="5" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repositories/SongRepository.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="40" column="52" selection-start-line="40" selection-start-column="52" selection-end-line="40" selection-end-column="52" />
+            <state relative-caret-position="399">
+              <caret line="37" column="23" selection-start-line="37" selection-start-column="23" selection-end-line="37" selection-end-column="23" />
               <folding>
-                <element signature="e#0#48#1" expanded="true" />
-                <element signature="e#0#64#1" expanded="true" />
-                <element signature="e#0#53#1" expanded="true" />
-                <element signature="e#0#53#1" expanded="true" />
-                <element signature="e#0#64#1" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#1247#1248#0" expanded="true" />
+                <element signature="e#1302#1303#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/controllers/UserRestController.java">
+        <entry file="file://$PROJECT_DIR$/.env">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="190" column="50" lean-forward="true" selection-start-line="190" selection-start-column="50" selection-end-line="190" selection-end-column="50" />
+            <state relative-caret-position="189">
+              <caret line="9" selection-start-line="9" selection-end-line="9" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/models/utilities/UploadResponse.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/security/SecurityConfiguration.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="48">
-              <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+            <state relative-caret-position="294">
+              <caret line="95" column="48" selection-start-line="95" selection-start-column="48" selection-end-line="95" selection-end-column="48" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/repositories_test/ArtistRepositoryTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="42">
+              <caret line="2" column="33" selection-start-line="2" selection-start-column="33" selection-end-line="2" selection-end-column="33" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/models/entities/Song.java">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="278">
-              <caret line="28" column="25" lean-forward="true" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="25" />
+            <state relative-caret-position="84">
+              <caret line="23" column="27" selection-start-line="23" selection-start-column="27" selection-end-line="23" selection-end-column="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/resources/application.properties">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1113">
+              <caret line="1" column="1" lean-forward="true" selection-start-line="1" selection-start-column="1" selection-end-line="1" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/repositories_test/CountryRepositoryTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="21">
+              <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -240,9 +274,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/controller/ArtistRestController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/GenreService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/GenreServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/controller/GenreRestController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/controller/CountryRestController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Genre.java" />
@@ -254,7 +285,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/PlaylistServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/model/entity/Song.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/lambda/repository/CountryRepositoryTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/ClimaxSoundApplicationTests.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/SongServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/service/impl/DuplicateSongService.java" />
         <option value="$PROJECT_DIR$/src/main/resources/schema-h2.sql" />
@@ -269,28 +299,32 @@
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/services/impl/UserServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/models/utilities/LoginResponse.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/services/UserService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/security/SecurityConfiguration.java" />
         <option value="$PROJECT_DIR$/google_credentials.env" />
         <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/controllers/UserRestController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/services/StorageService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/HerokuNotIdle.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/security/DataSeedingListener.java" />
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/test/resources/application.properties" />
         <option value="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/repositories_test/CountryRepositoryTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/services_test/CountryServiceTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/ApplicationConfiguration.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/climaxsound/ClimaxSoundApplication.java" />
-        <option value="$APPLICATION_CONFIG_DIR$/consoles/.datagrid/cell" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/models/entities/Song.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/models/entities/Artist.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/models/utilities/StringAccentRemover.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/formatters/StringAccentRemover.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repositories/SongRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/repositories/ArtistRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/services/impl/ArtistServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repositories/SongRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/services/impl/SongServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/services/impl/ArtistServiceImpl.java" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/.datagrid/cell" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/security/DataSeedingListener.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/climaxsound/ClimaxSoundApplication.java" />
+        <option value="$PROJECT_DIR$/hibernate.env" />
+        <option value="$PROJECT_DIR$/mysql.env" />
+        <option value="$PROJECT_DIR$/postgresql.env" />
+        <option value="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/ClimaxSoundApplicationTests.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/ApplicationConfiguration.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/security/SecurityConfiguration.java" />
       </list>
     </option>
   </component>
@@ -306,6 +340,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -477,13 +512,30 @@
               <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="climaxsound" type="462c0819:PsiDirectoryNode" />
+              <item name="repositories_test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
+              <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="climaxsound" type="462c0819:PsiDirectoryNode" />
+              <item name="services_test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
+              <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -513,7 +565,7 @@
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers" value="true" />
     <property name="database.console.LAST_STATE" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/google_credentials.env" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/postgresql.env" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -598,21 +650,6 @@
       <module name="climax-sound.test" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.lambda.climaxsound.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.lambda.climaxsound" />
-      <option name="MAIN_CLASS_NAME" value="com.lambda.climaxsound.CountryRepositoryTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CountryRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="climax-sound.test" />
-      <extension name="coverage">
-        <pattern>
           <option name="PATTERN" value="com.lambda.climaxsound.repositories_test.*" />
           <option name="ENABLED" value="true" />
         </pattern>
@@ -639,23 +676,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="CountryRepositoryTest.whenDelete_thenNotFoundInDB" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="climax-sound.test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.lambda.climaxsound.repositories_test.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.lambda.climaxsound.repositories_test" />
-      <option name="MAIN_CLASS_NAME" value="com.lambda.climaxsound.repositories_test.CountryRepositoryTest" />
-      <option name="METHOD_NAME" value="whenDelete_thenNotFoundInDB" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CountryRepositoryTest.whenFindAll_thenReturn4Countries" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CountryRepositoryTest.whenFindAll_thenReturn4Countries" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
       <module name="climax-sound.test" />
       <extension name="coverage">
         <pattern>
@@ -672,8 +693,7 @@
         <ENTRIES>
           <ENTRY IS_ENABLED="true" PARSER="runconfig" />
           <ENTRY IS_ENABLED="true" PARSER="env" PATH="google_credentials.env" />
-          <ENTRY IS_ENABLED="true" PARSER="env" PATH="hibernate.env" />
-          <ENTRY IS_ENABLED="true" PARSER="env" PATH="mysql.env" />
+          <ENTRY IS_ENABLED="true" PARSER="env" PATH="postgresql.env" />
         </ENTRIES>
       </extension>
       <option name="PACKAGE_NAME" value="com.lambda.climaxsound.repositories_test" />
@@ -681,38 +701,6 @@
       <option name="METHOD_NAME" value="whenFindAll_thenReturn4Countries" />
       <option name="TEST_OBJECT" value="method" />
       <option name="PARAMETERS" value="" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CountryRepositoryTest.whenFindById_thenReturnCountry" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="climax-sound.test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.lambda.climaxsound.repositories_test.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.lambda.climaxsound.repositories_test" />
-      <option name="MAIN_CLASS_NAME" value="com.lambda.climaxsound.repositories_test.CountryRepositoryTest" />
-      <option name="METHOD_NAME" value="whenFindById_thenReturnCountry" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CountryRepositoryTest.whenSave_thenFoundInDB" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="climax-sound.test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.lambda.climaxsound.repositories_test.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.lambda.climaxsound.repositories_test" />
-      <option name="MAIN_CLASS_NAME" value="com.lambda.climaxsound.repositories_test.CountryRepositoryTest" />
-      <option name="METHOD_NAME" value="whenSave_thenFoundInDB" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -728,7 +716,6 @@
         <ENTRIES>
           <ENTRY IS_ENABLED="true" PARSER="runconfig" />
           <ENTRY IS_ENABLED="true" PARSER="env" PATH="mysql.env" />
-          <ENTRY IS_ENABLED="true" PARSER="env" PATH="hibernate.env" />
           <ENTRY IS_ENABLED="true" PARSER="env" PATH="google_credentials.env" />
         </ENTRIES>
       </extension>
@@ -741,21 +728,8 @@
     <list>
       <item itemvalue="Gradle.spring-climax-sound [clean build]" />
       <item itemvalue="JUnit.CountryRepositoryTest.whenFindAll_thenReturn4Countries" />
-      <item itemvalue="JUnit.CountryRepositoryTest" />
-      <item itemvalue="JUnit.CountryRepositoryTest.whenSave_thenFoundInDB" />
-      <item itemvalue="JUnit.CountryRepositoryTest.whenDelete_thenNotFoundInDB" />
-      <item itemvalue="JUnit.CountryRepositoryTest.whenFindById_thenReturnCountry" />
       <item itemvalue="Spring Boot.ClimaxSoundApplication" />
     </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="JUnit.CountryRepositoryTest.whenFindAll_thenReturn4Countries" />
-        <item itemvalue="JUnit.CountryRepositoryTest" />
-        <item itemvalue="JUnit.CountryRepositoryTest.whenFindById_thenReturnCountry" />
-        <item itemvalue="JUnit.CountryRepositoryTest.whenDelete_thenNotFoundInDB" />
-        <item itemvalue="JUnit.CountryRepositoryTest.whenSave_thenFoundInDB" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -944,21 +918,8 @@
       <workItem from="1574151084321" duration="947000" />
       <workItem from="1574152450137" duration="6396000" />
       <workItem from="1574160893212" duration="1237000" />
-      <workItem from="1574165791464" duration="1420000" />
-    </task>
-    <task id="LOCAL-00051" summary="add like/unlike api">
-      <created>1571039233690</created>
-      <option name="number" value="00051" />
-      <option name="presentableId" value="LOCAL-00051" />
-      <option name="project" value="LOCAL" />
-      <updated>1571039233690</updated>
-    </task>
-    <task id="LOCAL-00052" summary="add like/unlike api">
-      <created>1571045881504</created>
-      <option name="number" value="00052" />
-      <option name="presentableId" value="LOCAL-00052" />
-      <option name="project" value="LOCAL" />
-      <updated>1571045881504</updated>
+      <workItem from="1574165791464" duration="2795000" />
+      <workItem from="1574168925178" duration="1837000" />
     </task>
     <task id="LOCAL-00053" summary="Merge branch 'minhduc' of https://github.com/pysga1996/project.spring-climax-sound&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;src/main/java/com/lambda/model/entity/Artist.java&#10;#&#9;src/main/java/com/lambda/model/entity/Song.java&#10;#&#9;src/main/java/com/lambda/service/ArtistService.java">
       <created>1571046056673</created>
@@ -1289,43 +1250,57 @@
       <option name="project" value="LOCAL" />
       <updated>1574151033089</updated>
     </task>
-    <option name="localTasksCounter" value="100" />
+    <task id="LOCAL-00100" summary="version 0.999">
+      <created>1574167274380</created>
+      <option name="number" value="00100" />
+      <option name="presentableId" value="LOCAL-00100" />
+      <option name="project" value="LOCAL" />
+      <updated>1574167274381</updated>
+    </task>
+    <task id="LOCAL-00101" summary="version 0.999">
+      <created>1574167649529</created>
+      <option name="number" value="00101" />
+      <option name="presentableId" value="LOCAL-00101" />
+      <option name="project" value="LOCAL" />
+      <updated>1574167649529</updated>
+    </task>
+    <option name="localTasksCounter" value="102" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="CountryRepositoryTest - 2019.11.19 at 16h 47m 21s.xml">
-      <configuration name="CountryRepositoryTest" configurationId="JUnit" />
+    <history-entry file="CountryRepositoryTest_whenFindAll_thenReturn4Countries - 2019.11.19 at 20h 01m 06s.xml">
+      <configuration name="CountryRepositoryTest.whenFindAll_thenReturn4Countries" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="CountryRepositoryTest - 2019.11.19 at 16h 47m 45s.xml">
-      <configuration name="CountryRepositoryTest" configurationId="JUnit" />
+    <history-entry file="CountryRepositoryTest_whenFindAll_thenReturn4Countries - 2019.11.19 at 20h 02m 07s.xml">
+      <configuration name="CountryRepositoryTest.whenFindAll_thenReturn4Countries" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="CountryRepositoryTest_whenSave_thenFoundInDB - 2019.11.19 at 16h 50m 52s.xml">
-      <configuration name="CountryRepositoryTest.whenSave_thenFoundInDB" configurationId="JUnit" />
+    <history-entry file="CountryRepositoryTest_whenFindAll_thenReturn4Countries - 2019.11.19 at 20h 09m 29s.xml">
+      <configuration name="CountryRepositoryTest.whenFindAll_thenReturn4Countries" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="CountryRepositoryTest_whenDelete_thenNotFoundInDB - 2019.11.19 at 16h 53m 56s.xml">
-      <configuration name="CountryRepositoryTest.whenDelete_thenNotFoundInDB" configurationId="JUnit" />
+    <history-entry file="CountryRepositoryTest_whenFindAll_thenReturn4Countries - 2019.11.19 at 20h 10m 17s.xml">
+      <configuration name="CountryRepositoryTest.whenFindAll_thenReturn4Countries" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="CountryRepositoryTest_whenDelete_thenNotFoundInDB - 2019.11.19 at 16h 55m 29s.xml">
-      <configuration name="CountryRepositoryTest.whenDelete_thenNotFoundInDB" configurationId="JUnit" />
+    <history-entry file="CountryRepositoryTest_whenFindAll_thenReturn4Countries - 2019.11.19 at 20h 12m 21s.xml">
+      <configuration name="CountryRepositoryTest.whenFindAll_thenReturn4Countries" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="CountryRepositoryTest_whenDelete_thenNotFoundInDB - 2019.11.19 at 16h 56m 18s.xml">
-      <configuration name="CountryRepositoryTest.whenDelete_thenNotFoundInDB" configurationId="JUnit" />
+    <history-entry file="CountryRepositoryTest_whenFindAll_thenReturn4Countries - 2019.11.19 at 20h 20m 32s.xml">
+      <configuration name="CountryRepositoryTest.whenFindAll_thenReturn4Countries" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="CountryRepositoryTest_whenFindById_thenReturnCountry - 2019.11.19 at 17h 00m 37s.xml">
-      <configuration name="CountryRepositoryTest.whenFindById_thenReturnCountry" configurationId="JUnit" />
+    <history-entry file="CountryRepositoryTest_whenFindAll_thenReturn4Countries - 2019.11.19 at 20h 24m 30s.xml">
+      <configuration name="CountryRepositoryTest.whenFindAll_thenReturn4Countries" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="CountryRepositoryTest - 2019.11.19 at 17h 00m 57s.xml">
-      <configuration name="CountryRepositoryTest" configurationId="JUnit" />
+    <history-entry file="CountryRepositoryTest_whenFindAll_thenReturn4Countries - 2019.11.19 at 20h 26m 49s.xml">
+      <configuration name="CountryRepositoryTest.whenFindAll_thenReturn4Countries" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="CountryRepositoryTest - 2019.11.19 at 17h 01m 19s.xml">
-      <configuration name="CountryRepositoryTest" configurationId="JUnit" />
+    <history-entry file="CountryRepositoryTest_whenFindAll_thenReturn4Countries - 2019.11.19 at 20h 35m 49s.xml">
+      <configuration name="CountryRepositoryTest.whenFindAll_thenReturn4Countries" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="CountryRepositoryTest_whenFindAll_thenReturn4Countries - 2019.11.19 at 17h 01m 45s.xml">
+    <history-entry file="CountryRepositoryTest_whenFindAll_thenReturn4Countries - 2019.11.19 at 20h 37m 21s.xml">
       <configuration name="CountryRepositoryTest.whenFindAll_thenReturn4Countries" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="762795000" />
+    <option name="totallyTimeSpent" value="766007000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1337,9 +1312,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <frame x="0" y="-1" width="1920" height="1040" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4974093" visible="true" weight="0.22453083" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4974093" visible="true" weight="0.22678763" />
       <window_info id="Structure" order="1" sideWeight="0.50259066" side_tool="true" weight="0.17342582" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -1350,7 +1326,7 @@
       <window_info id="Web" order="8" sideWeight="0.5011062" side_tool="true" weight="0.24332978" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32668883" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49786553" weight="0.3765227" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49786553" visible="true" weight="0.3754153" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4994664" weight="0.358804" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -1359,7 +1335,7 @@
       <window_info anchor="bottom" id="sbt-shell-toolwindow" order="8" />
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50213444" side_tool="true" weight="0.36417034" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.49893278" visible="true" weight="0.29515418" />
+      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49893278" weight="0.29515418" />
       <window_info anchor="bottom" id="Java Enterprise" order="12" weight="0.32794118" />
       <window_info anchor="bottom" id="Spring" order="13" weight="0.32890365" />
       <window_info anchor="bottom" id="Version Control" order="14" weight="0.2934662" />
@@ -1377,7 +1353,7 @@
       <window_info anchor="right" id="Gradle" order="7" weight="0.15901814" />
       <window_info anchor="right" id="Palette&#9;" order="8" />
       <window_info anchor="right" id="Theme Preview" order="9" />
-      <window_info anchor="right" id="Database" order="10" sideWeight="0.49913645" visible="true" weight="0.17158177" />
+      <window_info anchor="right" id="Database" order="10" sideWeight="0.49913645" visible="true" weight="0.2470651" />
       <window_info anchor="right" id="Bean Validation" order="11" weight="0.3295302" />
       <window_info anchor="right" id="Coverage" order="12" sideWeight="0.50086355" side_tool="true" weight="0.17182498" />
     </layout>
@@ -1512,20 +1488,6 @@
     </SUITE>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/services/impl/CountryServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/controllers/AdminRestController.java" />
-    <entry file="file://$PROJECT_DIR$/Procfile">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/settings.gradle">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/HerokuNotIdle.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/models/entities/Album.java">
       <provider selected="true" editor-type-id="text-editor" />
@@ -1585,17 +1547,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/postgresql.env" />
-    <entry file="file://$PROJECT_DIR$/mysql.env">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hibernate.env">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="42">
-          <caret line="2" column="53" selection-start-line="2" selection-start-column="53" selection-end-line="2" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/5.1.9.RELEASE/119dacc2a72dadc85d35fbd08ef16bdc382b24c5/spring-core-5.1.9.RELEASE-sources.jar!/org/springframework/util/Assert.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="174">
@@ -1638,55 +1589,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/repositories_test/CountryRepositoryTest.java" />
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/services_test/CountryServiceTest.java" />
     <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/lambda_user">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
           <filtering>
             <filter text="" />
           </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/resources/application.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-105">
-          <caret line="1" column="1" lean-forward="true" selection-start-line="1" selection-start-column="1" selection-end-line="1" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/security/DataSeedingListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1437">
-          <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/ApplicationConfiguration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/security/SecurityConfiguration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="33" column="82" selection-start-line="33" selection-start-column="82" selection-end-line="33" selection-end-column="82" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/climaxsound/ClimaxSoundApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="17" column="17" selection-start-line="17" selection-start-column="17" selection-end-line="17" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1706,24 +1614,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="23" column="27" selection-start-line="23" selection-start-column="27" selection-end-line="23" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.env">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="18" selection-start-line="18" selection-end-line="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/models/entities/Song.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="278">
-          <caret line="28" column="25" lean-forward="true" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="25" />
+          <caret line="28" column="25" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="25" />
         </state>
       </provider>
     </entry>
@@ -1765,42 +1659,156 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/controllers/UserRestController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="144">
-          <caret line="190" column="50" lean-forward="true" selection-start-line="190" selection-start-column="50" selection-end-line="190" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repositories/SongRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="40" column="52" selection-start-line="40" selection-start-column="52" selection-end-line="40" selection-end-column="52" />
-          <folding>
-            <element signature="e#0#48#1" expanded="true" />
-            <element signature="e#0#64#1" expanded="true" />
-            <element signature="e#0#53#1" expanded="true" />
-            <element signature="e#0#53#1" expanded="true" />
-            <element signature="e#0#64#1" expanded="true" />
-          </folding>
+          <caret line="190" column="50" selection-start-line="190" selection-start-column="50" selection-end-line="190" selection-end-column="50" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repositories/ArtistRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="23" column="52" selection-start-line="23" selection-start-column="21" selection-end-line="23" selection-end-column="52" />
+        <state relative-caret-position="299">
+          <caret line="23" column="62" selection-start-line="23" selection-start-column="62" selection-end-line="23" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://3c5cd30b-bff9-4fb2-b1cb-e5ac2a75f8fc/database/d9lfgg6p1rlj1/schema/public/table/country">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering>
+            <filter text="" />
+          </filtering>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/services/impl/ArtistServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
-          <caret line="78" column="63" selection-start-line="78" selection-start-column="63" selection-end-line="78" selection-end-column="63" />
+        <state relative-caret-position="1281">
+          <caret line="82" column="37" selection-start-line="82" selection-start-column="37" selection-end-line="82" selection-end-column="37" />
+          <folding>
+            <element signature="e#2533#2534#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/services_test/CountryServiceTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/services/impl/SongServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="106" column="5" lean-forward="true" selection-start-line="106" selection-start-column="5" selection-end-line="106" selection-end-column="5" />
+        <state relative-caret-position="2037">
+          <caret line="97" selection-start-line="97" selection-end-line="97" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repositories/SongRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="630">
+          <caret line="40" column="63" selection-start-line="40" selection-start-column="62" selection-end-line="40" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/climaxsound/ClimaxSoundApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="421">
+          <caret line="31" column="14" lean-forward="true" selection-start-line="31" selection-start-column="14" selection-end-line="31" selection-end-column="14" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/security/DataSeedingListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="19" column="12" selection-start-line="19" selection-start-column="12" selection-end-line="19" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hibernate.env">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/repositories_test/CountryRepositoryTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="21">
+          <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mysql.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="7" column="53" selection-start-line="7" selection-start-column="53" selection-end-line="7" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/postgresql.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="6" column="48" selection-start-line="6" selection-start-column="48" selection-end-line="6" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="23" column="27" selection-start-line="23" selection-start-column="27" selection-end-line="23" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/resources/application.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1113">
+          <caret line="1" column="1" lean-forward="true" selection-start-line="1" selection-start-column="1" selection-end-line="1" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-test/2.2.1.RELEASE/b097a4aa5d3aaf5ed4ca93605865da1753de4345/spring-boot-test-2.2.1.RELEASE-sources.jar!/org/springframework/boot/test/context/SpringBootTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="129" column="9" selection-start-line="129" selection-start-column="9" selection-end-line="129" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/ClimaxSoundApplicationTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="8" column="74" selection-start-line="8" selection-start-column="74" selection-end-line="8" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/ApplicationConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="37" column="23" selection-start-line="37" selection-start-column="23" selection-end-line="37" selection-end-column="23" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1247#1248#0" expanded="true" />
+            <element signature="e#1302#1303#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/security/SecurityConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="95" column="48" selection-start-line="95" selection-start-column="48" selection-end-line="95" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/repositories_test/ArtistRepositoryTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="2" column="33" selection-start-line="2" selection-start-column="33" selection-end-line="2" selection-end-column="33" />
         </state>
       </provider>
     </entry>

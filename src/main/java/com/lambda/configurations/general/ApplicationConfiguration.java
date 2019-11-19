@@ -2,10 +2,14 @@ package com.lambda.configurations.general;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import java.util.List;
 
@@ -23,9 +27,14 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
         }
     }
 
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        // Password encoder, để Spring Security sử dụng mã hóa mật khẩu người dùng
-//        return new BCryptPasswordEncoder();
-//    }
+    @Bean(name = "mvcHandlerMappingIntrospector")
+    public HandlerMappingIntrospector mvcHandlerMappingIntrospector() {
+        return new HandlerMappingIntrospector();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        // Password encoder, để Spring Security sử dụng mã hóa mật khẩu người dùng
+        return new BCryptPasswordEncoder();
+    }
 }
