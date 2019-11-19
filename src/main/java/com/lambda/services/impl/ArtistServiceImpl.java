@@ -1,5 +1,6 @@
 package com.lambda.services.impl;
 
+import com.lambda.formatters.StringAccentRemover;
 import com.lambda.models.entities.Artist;
 import com.lambda.repositories.ArtistRepository;
 import com.lambda.services.ArtistService;
@@ -43,6 +44,8 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public void save(Artist artist) {
+        String unaccentName = StringAccentRemover.removeStringAccent(artist.getName());
+        artist.setUnaccentName(unaccentName);
         artistRepository.saveAndFlush(artist);
     }
 
@@ -72,7 +75,8 @@ public class ArtistServiceImpl implements ArtistService {
     }
     @Override
     public Iterable<Artist> findAllByNameContaining(String name) {
-        return artistRepository.findAllByNameContaining(name);
+        name = StringAccentRemover.removeStringAccent(name);
+        return artistRepository.findAllByUnaccentNameContaining(name);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.lambda.services.impl;
 
+import com.lambda.formatters.StringAccentRemover;
 import com.lambda.models.entities.Artist;
 import com.lambda.models.entities.Like;
 import com.lambda.models.entities.Song;
@@ -91,7 +92,8 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public Iterable<Song> findAllByTitleContaining(String name) {
-        return songRepository.findAllByTitleContaining(name);
+        name = StringAccentRemover.removeStringAccent(name);
+        return songRepository.findAllByUnaccentTitleContaining(name);
     }
 
     @Override
@@ -123,6 +125,8 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public Song save(Song song) {
+        String unaccentTitle = StringAccentRemover.removeStringAccent(song.getTitle());
+        song.setUnaccentTitle(unaccentTitle);
         songRepository.saveAndFlush(song);
         return song;
     }

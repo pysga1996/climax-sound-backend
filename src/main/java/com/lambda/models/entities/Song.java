@@ -28,6 +28,9 @@ public class Song extends MediaObject {
     @NotBlank
     private String title;
 
+    @JsonIgnore
+    private String unaccentTitle;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date releaseDate;
 

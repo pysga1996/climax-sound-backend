@@ -10,16 +10,15 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@SpringBootApplication
-@ComponentScan("com.lambda")
+@SpringBootApplication(scanBasePackages = {"com.lambda.models"})
+@ComponentScan(basePackages = "com.lambda")
 @EntityScan( basePackages = {"com.lambda.models"} )
+@EnableJpaRepositories(basePackages = {"com.lambda.repositories"})
 @EnableScheduling
 public class ClimaxSoundApplication extends SpringBootServletInitializer {
-
-	@Autowired
-	DataSeedingListener dataSeedingListener;
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder applicationBuilder) {
@@ -30,10 +29,13 @@ public class ClimaxSoundApplication extends SpringBootServletInitializer {
 		SpringApplication.run(ClimaxSoundApplication.class, args);
 	}
 
-	@EventListener(ContextRefreshedEvent.class)
-	public void dataSeeding() {
-		dataSeedingListener.onApplicationEvent();
-	}
+//	@Autowired
+//	DataSeedingListener dataSeedingListener;
+
+//	@EventListener(ContextRefreshedEvent.class)
+//	public void dataSeeding() {
+//		dataSeedingListener.onApplicationEvent();
+//	}
 
 //	@Bean
 //	public HerokuNotIdle herokuNotIdle(){

@@ -24,6 +24,9 @@ public class Artist {
     @NotBlank
     private String name;
 
+    @JsonIgnore
+    private String unaccentName;
+
     @DateTimeFormat(pattern = "MM-dd-yyyy")
     private Date birthDate;
 
