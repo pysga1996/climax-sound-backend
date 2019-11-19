@@ -15,7 +15,9 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
 //    @Query(value = "SELECT * FROM album WHERE BINARY title=:title", nativeQuery = true)
     Artist findByName(String name);
 
-    Iterable<Artist> findFirst10ByNameContaining(String name);
+    Iterable<Artist> findFirst10ByUnaccentNameContainingIgnoreCase(String name);
+
+    Iterable<Artist> findFirst10ByNameContainingIgnoreCase(String name);
 
     Page<Artist> findAllByNameContaining(String name, Pageable pageable);
 

@@ -29,7 +29,12 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public Iterable<Artist> findTop10ByNameContaining(String name) {
-        return artistRepository.findFirst10ByNameContaining(name);
+        if (name.equals(StringAccentRemover.removeStringAccent(name))) {
+            return artistRepository.findFirst10ByUnaccentNameContainingIgnoreCase(name);
+        } else {
+            name = StringAccentRemover.removeStringAccent(name);
+            return artistRepository.findAllByNameContainingIgnoreCase(name);
+        }
     }
 
     @Override
