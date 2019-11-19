@@ -93,7 +93,7 @@ public class SongServiceImpl implements SongService {
     @Override
     public Iterable<Song> findAllByTitleContaining(String name) {
         name = StringAccentRemover.removeStringAccent(name);
-        return songRepository.findAllByUnaccentTitleContaining(name);
+        return songRepository.findAllByUnaccentTitleContainingIgnoreCase(name);
     }
 
     @Override
@@ -126,7 +126,7 @@ public class SongServiceImpl implements SongService {
     @Override
     public Song save(Song song) {
         String unaccentTitle = StringAccentRemover.removeStringAccent(song.getTitle());
-        song.setUnaccentTitle(unaccentTitle);
+        song.setUnaccentTitle(unaccentTitle.toLowerCase());
         songRepository.saveAndFlush(song);
         return song;
     }

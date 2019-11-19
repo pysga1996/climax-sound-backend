@@ -45,7 +45,7 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public void save(Artist artist) {
         String unaccentName = StringAccentRemover.removeStringAccent(artist.getName());
-        artist.setUnaccentName(unaccentName);
+        artist.setUnaccentName(unaccentName.toLowerCase());
         artistRepository.saveAndFlush(artist);
     }
 
@@ -76,7 +76,7 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public Iterable<Artist> findAllByNameContaining(String name) {
         name = StringAccentRemover.removeStringAccent(name);
-        return artistRepository.findAllByUnaccentNameContaining(name);
+        return artistRepository.findAllByUnaccentNameContainingIgnoreCase(name);
     }
 
     @Override

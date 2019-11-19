@@ -38,7 +38,7 @@ public interface SongRepository extends JpaRepository<Song, Long> {
 
 //    @Query(nativeQuery = true, value = "SELECT * FROM public.song "
 //            + "WHERE LOWER(unaccent(title)) LIKE LOWER(unaccent(:title))||'%'")
-    Iterable<Song> findAllByUnaccentTitleContaining(String title);
+    Iterable<Song> findAllByUnaccentTitleContainingIgnoreCase(String title);
 
     Page<Song> findAllByTitleContaining(String title, Pageable pageable);
 
