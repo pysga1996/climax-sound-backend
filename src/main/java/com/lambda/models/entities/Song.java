@@ -1,6 +1,8 @@
 package com.lambda.models.entities;
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.lambda.helpers.CustomUserJsonSerializer;
 import com.lambda.models.utilities.MediaObject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,7 +21,7 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"comments", "liked", "albums", "tags", "genres", "users", "playlists", "country", "theme", "uploader", "blobString"}, allowGetters = true, ignoreUnknown=true)
+@JsonIgnoreProperties(value = {"comments", "liked", "albums", "tags", "genres", "users", "playlists", "country", "theme", "uploader"}, allowGetters = true, ignoreUnknown=true)
 public class Song extends MediaObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -51,6 +53,7 @@ public class Song extends MediaObject {
     @Column(columnDefinition = "TEXT")
     private String lyric;
 
+    @JsonIgnore
     private String blobString;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -92,6 +95,7 @@ public class Song extends MediaObject {
     private Collection<User> users;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonSerialize(using = CustomUserJsonSerializer.class)
     @JoinColumn(name = "user_id")
     private User uploader;
 
