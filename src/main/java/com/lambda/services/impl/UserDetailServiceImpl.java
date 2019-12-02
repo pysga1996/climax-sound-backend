@@ -33,11 +33,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Kiểm tra xem user có tồn tại trong database không?
         Optional<User> user = userService.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException(username);
-        }
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         if (user.isPresent()) {
             Collection<Role> roles = user.get().getRoles();
@@ -45,8 +41,9 @@ public class UserDetailServiceImpl implements UserDetailsService {
                 grantedAuthorities.add(new SimpleGrantedAuthority(role.getAuthority()));
             }
             return new CustomUserDetails(user.get().getUsername(), user.get().getPassword(), grantedAuthorities);
+        } else {
+            throw new UsernameNotFoundException(username);
         }
-        return null;
     }
 
     public User getCurrentUser() {
