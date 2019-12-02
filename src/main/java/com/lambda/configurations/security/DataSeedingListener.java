@@ -1,9 +1,7 @@
 package com.lambda.configurations.security;
 
-import com.lambda.models.entities.Privilege;
 import com.lambda.models.entities.Role;
 import com.lambda.models.entities.User;
-import com.lambda.services.PrivilegeService;
 import com.lambda.services.RoleService;
 import com.lambda.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 
 @Component
+@Transactional
 public class DataSeedingListener {
     private boolean alreadySetup = false;
 
@@ -27,45 +26,23 @@ public class DataSeedingListener {
     private RoleService roleService;
 
     @Autowired
-    private PrivilegeService privilegeService;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
 
     public void onApplicationEvent() {
         if (alreadySetup)
             return;
-        Privilege readNote
-                = createPrivilegeIfNotFound("SONG_READ");
-        Privilege writeNote
-                = createPrivilegeIfNotFound("SONG_WRITE");
-
-        List<Privilege> adminPrivileges = Arrays.asList(
-                readNote, writeNote);
-        createRoleIfNotFound("ROLE_ADMIN", adminPrivileges);
-        createRoleIfNotFound("ROLE_USER", Arrays.asList(readNote));
+        createRoleIfNotFound("ROLE_ADMIN");
+        createRoleIfNotFound("ROLE_USER");
         createAccounts();
         alreadySetup = true;
     }
 
-//    @Transactional
-    private Privilege createPrivilegeIfNotFound(String name) {
-        Privilege privilege = privilegeService.findByName(name);
-        if (privilege == null) {
-            privilege = new Privilege(name);
-            privilegeService.save(privilege);
-        }
-        return privilege;
-    }
+    private void createRoleIfNotFound(String authority) {
 
-    private void createRoleIfNotFound(
-            String name, Collection<Privilege> privileges) {
-
-        Role role = roleService.findByName(name);
+        Role role = roleService.findByAuthority(authority);
         if (role == null) {
-            role = new Role(name);
-            role.setPrivileges(privileges);
+            role = new Role(authority);
             roleService.save(role);
         }
     }
@@ -76,31 +53,30 @@ public class DataSeedingListener {
         String password;
         String firstName;
         String lastName = "Lambda";
-        if (!userService.findByUsername(username).isPresent()) {
-            password = passwordEncoder.encode("Lambda123456");
-            firstName = "Admin";
-            HashSet<Role> roles1 = new HashSet<>();
-            roles1.add(roleService.findByName("ROLE_USER"));
-            roles1.add(roleService.findByName("ROLE_ADMIN"));
-            User admin = new User(username, password, roles1);
-            admin.setGender(true);
-            admin.setFirstName(firstName);
-            admin.setLastName(lastName);
-            userService.save(admin);
-        }
 
         // Member account
         username = "member";
+        HashSet<Role> roles2 = new HashSet<>();
         if (!userService.findByUsername(username).isPresent()) {
             password = passwordEncoder.encode("Lambda123456");
             firstName = "Member";
-            HashSet<Role> roles2 = new HashSet<>();
-            roles2.add(roleService.findByName("ROLE_USER"));
+            roles2.add(roleService.findByAuthority("ROLE_USER"));
             User member = new User(username, password, roles2);
             member.setGender(true);
             member.setFirstName(firstName);
             member.setLastName(lastName);
             userService.save(member);
+        }
+
+        if (!userService.findByUsername(username).isPresent()) {
+            password = passwordEncoder.encode("Lambda123456");
+            firstName = "Admin";
+            roles2.add(roleService.findByAuthority("ROLE_ADMIN"));
+            User admin = new User(username, password, roles2);
+            admin.setGender(true);
+            admin.setFirstName(firstName);
+            admin.setLastName(lastName);
+            userService.save(admin);
         }
     }
 }

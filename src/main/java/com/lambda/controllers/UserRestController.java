@@ -1,14 +1,10 @@
 package com.lambda.controllers;
 
-import com.lambda.models.entities.Artist;
 import com.lambda.models.entities.Role;
-import com.lambda.models.entities.Song;
 import com.lambda.models.entities.User;
 import com.lambda.models.forms.UserForm;
 import com.lambda.models.utilities.*;
 import com.lambda.repositories.RoleRepository;
-import com.lambda.services.ArtistService;
-import com.lambda.services.SongService;
 import com.lambda.services.UserService;
 import com.lambda.services.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,8 +26,8 @@ import java.util.*;
 public class UserRestController {
     private static final String DEFAULT_ROLE = "ROLE_USER";
 
-    @Autowired
-    private JwtTokenProvider tokenProvider;
+//    @Autowired
+//    private JwtTokenProvider tokenProvider;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -121,7 +114,7 @@ public class UserRestController {
         try {
             User user = formConvertService.convertToUser(userForm, true);
             if (user == null) return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
-            Role role = roleRepository.findByName(DEFAULT_ROLE);
+            Role role = roleRepository.findByAuthority(DEFAULT_ROLE);
             Set<Role> roles = new HashSet<>();
             roles.add(role);
             user.setRoles(roles);
@@ -132,25 +125,25 @@ public class UserRestController {
         }
     }
 
-    @PreAuthorize("isAnonymous()")
-    @PostMapping(value = "/login")
-    public ResponseEntity<LoginResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-        // Xác thực từ username và password.
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
-                        loginRequest.getPassword()
-                )
-        );
-        // Nếu không xảy ra exception tức là thông tin hợp lệ
-        // Set thông tin authentication vào Security Context
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        // Trả về jwt cho người dùng.
-        String jwt = tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
-        Optional<User> currentUser = userService.findByUsername(authentication.getName());
-        LoginResponse loginResponse = currentUser.map(user -> new LoginResponse(jwt, user.getId())).orElseGet(() -> new LoginResponse(jwt, null));
-        return new ResponseEntity<>(loginResponse, HttpStatus.OK);
-    }
+//    @PreAuthorize("isAnonymous()")
+//    @PostMapping(value = "/login")
+//    public ResponseEntity<LoginResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+//        // Xác thực từ username và password.
+//        Authentication authentication = authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(
+//                        loginRequest.getUsername(),
+//                        loginRequest.getPassword()
+//                )
+//        );
+//        // Nếu không xảy ra exception tức là thông tin hợp lệ
+//        // Set thông tin authentication vào Security Context
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        // Trả về jwt cho người dùng.
+//        String jwt = tokenProvider.generateToken((CustomUserDetails) authentication.getPrincipal());
+//        Optional<User> currentUser = userService.findByUsername(authentication.getName());
+//        LoginResponse loginResponse = currentUser.map(user -> new LoginResponse(jwt, user.getId())).orElseGet(() -> new LoginResponse(jwt, null));
+//        return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+//    }
 
     @GetMapping("/random")
     public RandomStuff randomStuff(){

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -110,10 +111,10 @@ public class User {
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;
 
-    public User(String username, String password, Collection<Role> roles) {
+    public User(String username, String password, Collection<Role> autorities) {
         this.username = username;
         this.password = password;
-        this.roles = roles;
+        this.roles = autorities;
     }
 
     public User(String firstName, String lastName, Boolean gender, String avatarUrl) {

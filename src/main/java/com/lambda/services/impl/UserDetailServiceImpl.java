@@ -42,7 +42,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         if (user.isPresent()) {
             Collection<Role> roles = user.get().getRoles();
             for (Role role : roles) {
-                grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
+                grantedAuthorities.add(new SimpleGrantedAuthority(role.getAuthority()));
             }
             return new CustomUserDetails(user.get().getUsername(), user.get().getPassword(), grantedAuthorities);
         }

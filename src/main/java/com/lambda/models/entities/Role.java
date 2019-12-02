@@ -1,19 +1,16 @@
 package com.lambda.models.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.Collection;
 
 @Entity
 @Data
 @NoArgsConstructor
-public class Role {
+public class Role implements GrantedAuthority {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -22,24 +19,9 @@ public class Role {
 
     @NotBlank
     @Column(unique = true, nullable = false)
-    private String name;
+    private String authority;
 
-    @JsonBackReference("user-role")
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    @Fetch(value = FetchMode.SUBSELECT)
-    private Collection<User> users;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
-    @JoinTable(
-            name = "role_privilege",
-            joinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "privilege_id", referencedColumnName = "id"))
-    private Collection<Privilege> privileges;
-
-    public Role(String name) {
-        this.name = name;
+    public Role(String authority) {
+        this.authority = authority;
     }
 }

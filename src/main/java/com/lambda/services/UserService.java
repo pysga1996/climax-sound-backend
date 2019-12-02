@@ -11,7 +11,7 @@ public interface UserService {
     Optional<User> findByUsername(String username);
     Page<User> findAll(Pageable pageable);
     Page<User> findByUsernameContaining(String username, Pageable pageable);
-    Page<User> findByRoles_Name(String username, Pageable pageable);
+    Page<User> findByRoles_Authority(String username, Pageable pageable);
     Optional<User> findById(Long id);
     void save(User user);
     void deleteById(Long id);

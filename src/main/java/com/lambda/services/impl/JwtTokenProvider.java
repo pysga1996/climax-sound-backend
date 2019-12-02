@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
-@Service
+//@Service
 public class JwtTokenProvider {
     // Secret key
     private static final String JWT_SECRET = "lambda";

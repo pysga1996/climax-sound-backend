@@ -84,9 +84,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 //    @Autowired
 //    public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.inMemoryAuthentication().withUser("bill").password("abc123").roles("USER");
-//        auth.inMemoryAuthentication().withUser("admin").password("root123").roles("ADMIN");
-//        auth.inMemoryAuthentication().withUser("dba").password("root123").roles("ADMIN","DBA");
+//        auth.inMemoryAuthentication().withUser("bill").password("abc123").autorities("USER");
+//        auth.inMemoryAuthentication().withUser("admin").password("root123").autorities("ADMIN");
+//        auth.inMemoryAuthentication().withUser("dba").password("root123").autorities("ADMIN","DBA");
 //    }
 
     @Override
@@ -99,6 +99,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers("/oauth/token").permitAll()
                 .antMatchers("/api/login", "/api/register",  "/api/song/download/**", "/api/song/upload", "/api/album/upload", "/api/album/download/**").permitAll()
                 .antMatchers("/api/admin/**").access("hasRole('ADMIN')")
                 .antMatchers("/api/**").permitAll()
@@ -122,7 +123,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
         ;
         // Thêm một lớp Filter kiểm tra jwt
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.cors();
