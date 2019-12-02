@@ -1,6 +1,7 @@
 package com.lambda.configurations.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -25,6 +26,9 @@ import javax.sql.DataSource;
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter {
+
+    @Autowired
+    private Environment environment;
 
     @Autowired
     private DataSource dataSource;
@@ -53,8 +57,7 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter 
     @Bean
     public RemoteTokenServices tokenService() {
         RemoteTokenServices tokenService = new RemoteTokenServices();
-        tokenService.setCheckTokenEndpointUrl(
-                "http://localhost:8081/lambda-authorization/oauth/check_token");
+        tokenService.setCheckTokenEndpointUrl(environment.getProperty("AUTHSERVER"));
         tokenService.setClientId("fooClientIdPassword");
         tokenService.setClientSecret("secret");
         return tokenService;
