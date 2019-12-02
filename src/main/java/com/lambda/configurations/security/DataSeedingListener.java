@@ -48,14 +48,13 @@ public class DataSeedingListener {
     }
 
     private void createAccounts() {
-        // Admin account
-        String username = "admin";
+
         String password;
         String firstName;
         String lastName = "Lambda";
 
         // Member account
-        username = "member";
+        String  username = "member";
         HashSet<Role> roles2 = new HashSet<>();
         if (!userService.findByUsername(username).isPresent()) {
             password = passwordEncoder.encode("Lambda123456");
@@ -67,6 +66,9 @@ public class DataSeedingListener {
             member.setLastName(lastName);
             userService.save(member);
         }
+
+        // Admin account
+        username = "admin";
 
         if (!userService.findByUsername(username).isPresent()) {
             password = passwordEncoder.encode("Lambda123456");
