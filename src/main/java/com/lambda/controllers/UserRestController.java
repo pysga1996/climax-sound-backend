@@ -126,9 +126,9 @@ public class UserRestController {
     public ResponseEntity<String> createUser(@Valid @RequestBody UserForm userForm, WebRequest request) {
         try {
             User user = formConvertService.convertToUser(userForm, true);
-//            if (user == null) {
-//                throw new Exception();
-//            }
+            if (user == null) {
+                return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+            }
             Role role = roleRepository.findByAuthority(DEFAULT_ROLE);
             Set<Role> roles = new HashSet<>();
             roles.add(role);
