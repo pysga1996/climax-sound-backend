@@ -126,7 +126,9 @@ public class UserRestController {
     public ResponseEntity<String> createUser(@Valid @RequestBody UserForm userForm, WebRequest request) {
         try {
             User user = formConvertService.convertToUser(userForm, true);
-            if (user == null) return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+//            if (user == null) {
+//                throw new Exception();
+//            }
             Role role = roleRepository.findByAuthority(DEFAULT_ROLE);
             Set<Role> roles = new HashSet<>();
             roles.add(role);
@@ -136,7 +138,11 @@ public class UserRestController {
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, request.getLocale(), appUrl));
             return new ResponseEntity<>( HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            StringBuilder stringBuilder = new StringBuilder();
+            for (StackTraceElement line: e.getStackTrace()) {
+                stringBuilder.append(line).append("\n");
+            }
+            return new ResponseEntity<>(stringBuilder.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
