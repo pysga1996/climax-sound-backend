@@ -40,7 +40,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(recipientAddress);
         email.setSubject(subject);
-        email.setText(message + "\n" + environment.getProperty("FRONTEND_HOST") + confirmationUrl);
+        email.setText(message + "\n" + environment.getProperty("BACKEND_HOST") + confirmationUrl);
         mailSender.send(email);
     }
 }

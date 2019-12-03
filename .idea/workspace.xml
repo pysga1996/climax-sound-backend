@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bc94efd9-f0bc-40eb-ad2a-87d2fc0f8ca5" name="Default Changelist" comment="" />
+    <list default="true" id="bc94efd9-f0bc-40eb-ad2a-87d2fc0f8ca5" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/host.env" beforeDir="false" afterPath="$PROJECT_DIR$/host.env" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/classes/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -128,11 +131,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/controllers/UserRestController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="177">
-              <caret line="134" column="33" lean-forward="true" selection-start-line="134" selection-start-column="33" selection-end-line="134" selection-end-column="33" />
+            <state relative-caret-position="174">
+              <caret line="141" column="63" lean-forward="true" selection-start-line="141" selection-start-column="63" selection-end-line="141" selection-end-column="63" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -140,15 +143,22 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/HerokuNotIdle.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="252">
+              <caret line="16" column="68" selection-start-line="16" selection-start-column="35" selection-end-line="16" selection-end-column="68" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/services/impl/UserServiceImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="895">
-              <caret line="141" column="9" lean-forward="true" selection-start-line="141" selection-start-column="9" selection-end-line="141" selection-end-column="9" />
+            <state relative-caret-position="2394">
+              <caret line="141" column="9" selection-start-line="141" selection-start-column="9" selection-end-line="141" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#5481#5482#0" expanded="true" />
-                <element signature="e#5500#5501#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -157,8 +167,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/listeners/RegistrationListener.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="281">
-              <caret line="37" column="46" lean-forward="true" selection-start-line="37" selection-start-column="46" selection-end-line="37" selection-end-column="46" />
+            <state relative-caret-position="525">
+              <caret line="37" column="46" selection-start-line="37" selection-start-column="46" selection-end-line="37" selection-end-column="46" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -169,8 +179,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/TokenCleaner.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="169">
-              <caret line="18" column="82" lean-forward="true" selection-start-line="18" selection-start-column="4" selection-end-line="18" selection-end-column="82" />
+            <state relative-caret-position="147">
+              <caret line="18" column="82" selection-start-line="18" selection-start-column="4" selection-end-line="18" selection-end-column="82" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -181,8 +191,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
-              <caret line="94" column="43" lean-forward="true" selection-start-line="94" selection-start-column="43" selection-end-line="94" selection-end-column="43" />
+            <state relative-caret-position="1974">
+              <caret line="94" column="43" selection-start-line="94" selection-start-column="43" selection-end-line="94" selection-end-column="43" />
             </state>
           </provider>
         </entry>
@@ -190,7 +200,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repositories/VerificationTokenRepository.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
+            <state relative-caret-position="210">
               <caret line="15" column="53" selection-start-line="15" selection-start-column="28" selection-end-line="15" selection-end-column="53" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -202,7 +212,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/models/entities/VerificationToken.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="337">
+            <state relative-caret-position="462">
               <caret line="29" column="27" selection-start-line="29" selection-start-column="17" selection-end-line="29" selection-end-column="27" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -295,7 +305,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/models/entities/User.java" />
         <option value="$PROJECT_DIR$/yahoo_mail.env" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/models/entities/VerificationToken.java" />
-        <option value="$PROJECT_DIR$/host.env" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/listeners/RegistrationListener.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/services/UserService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/services/impl/UserServiceImpl.java" />
@@ -304,6 +313,7 @@
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/customizations/CustomBadRequestHandler.java" />
         <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/controllers/UserRestController.java" />
+        <option value="$PROJECT_DIR$/host.env" />
       </list>
     </option>
   </component>
@@ -318,8 +328,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -590,6 +598,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -744,7 +754,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="CountryRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CountryRepositoryTest" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
       <module name="climax-sound.test" />
       <extension name="coverage">
         <pattern>
@@ -867,7 +877,6 @@
       <list>
         <item itemvalue="JUnit.ArtistRepositoryTest" />
         <item itemvalue="JUnit.ArtistRepositoryTest.whenFindAll_returnArtistIterable" />
-        <item itemvalue="JUnit.CountryRepositoryTest" />
       </list>
     </recent_temporary>
   </component>
@@ -1108,13 +1117,7 @@
       <workItem from="1575347351717" duration="1968000" />
       <workItem from="1575355003076" duration="5267000" />
       <workItem from="1575376104411" duration="15525000" />
-    </task>
-    <task id="LOCAL-00083" summary="version 0.999">
-      <created>1571803311482</created>
-      <option name="number" value="00083" />
-      <option name="presentableId" value="LOCAL-00083" />
-      <option name="project" value="LOCAL" />
-      <updated>1571803311483</updated>
+      <workItem from="1575393936573" duration="1008000" />
     </task>
     <task id="LOCAL-00084" summary="version 0.999">
       <created>1573971001259</created>
@@ -1452,7 +1455,14 @@
       <option name="project" value="LOCAL" />
       <updated>1575392906405</updated>
     </task>
-    <option name="localTasksCounter" value="132" />
+    <task id="LOCAL-00132" summary="add Email verification">
+      <created>1575394154576</created>
+      <option name="number" value="00132" />
+      <option name="presentableId" value="LOCAL-00132" />
+      <option name="project" value="LOCAL" />
+      <updated>1575394154581</updated>
+    </task>
+    <option name="localTasksCounter" value="133" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1488,7 +1498,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="881277000" />
+    <option name="totallyTimeSpent" value="882285000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1501,8 +1511,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-1" width="1920" height="1040" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4974093" visible="true" weight="0.22198506" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4974093" visible="true" weight="0.22465315" />
       <window_info id="Structure" order="1" sideWeight="0.50259066" side_tool="true" weight="0.17342582" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -1522,7 +1533,7 @@
       <window_info anchor="bottom" id="sbt-shell-toolwindow" order="8" />
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50213444" side_tool="true" weight="0.36417034" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.49893278" visible="true" weight="0.58862877" />
+      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49893278" visible="true" weight="0.5875139" />
       <window_info anchor="bottom" id="Java Enterprise" order="12" weight="0.3277592" />
       <window_info anchor="bottom" id="Spring" order="13" weight="0.32664436" />
       <window_info anchor="bottom" id="Version Control" order="14" weight="0.2934662" />
@@ -1866,15 +1877,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/verification_token">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="af55fb02-ad74-4e74-b70f-9b7e6b82b6f7">
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/models/entities/User.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="288">
@@ -1903,62 +1905,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/HerokuNotIdle.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="12" column="4" lean-forward="true" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/models/entities/VerificationToken.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="337">
-          <caret line="29" column="27" selection-start-line="29" selection-start-column="17" selection-end-line="29" selection-end-column="27" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repositories/VerificationTokenRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="15" column="53" selection-start-line="15" selection-start-column="28" selection-end-line="15" selection-end-column="53" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/yahoo_mail.env">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="6" selection-start-line="6" selection-end-line="6" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/services/impl/UserServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="895">
-          <caret line="141" column="9" lean-forward="true" selection-start-line="141" selection-start-column="9" selection-end-line="141" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5481#5482#0" expanded="true" />
-            <element signature="e#5500#5501#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/listeners/RegistrationListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="37" column="46" lean-forward="true" selection-start-line="37" selection-start-column="46" selection-end-line="37" selection-end-column="46" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/events/OnRegistrationCompleteEvent.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="215">
@@ -1978,23 +1924,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/TokenCleaner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="169">
-          <caret line="18" column="82" lean-forward="true" selection-start-line="18" selection-start-column="4" selection-end-line="18" selection-end-column="82" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="94" column="43" lean-forward="true" selection-start-line="94" selection-start-column="43" selection-end-line="94" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/customizations/CustomBadRequestHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="379">
@@ -2005,47 +1934,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/host.env">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="35" lean-forward="true" selection-start-column="35" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/5.2.1.RELEASE/5247d73874757aa411626d2bf156360768005dc5/spring-web-5.2.1.RELEASE-sources.jar!/org/springframework/web/context/request/WebRequest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="109">
           <caret line="35" column="17" selection-start-line="35" selection-start-column="17" selection-end-line="35" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://3c5cd30b-bff9-4fb2-b1cb-e5ac2a75f8fc/database/d9lfgg6p1rlj1/schema/public/table/user_role">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="af55fb02-ad74-4e74-b70f-9b7e6b82b6f7">
-          <filtering>
-            <filter text="" />
-          </filtering>
-          <column-attributes>
-            <column name="ctid" enabled="false" position="-1" />
-          </column-attributes>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://3c5cd30b-bff9-4fb2-b1cb-e5ac2a75f8fc/database/d9lfgg6p1rlj1/schema/public/table/verification_token">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="af55fb02-ad74-4e74-b70f-9b7e6b82b6f7">
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://3c5cd30b-bff9-4fb2-b1cb-e5ac2a75f8fc/database/d9lfgg6p1rlj1/schema/public/table/lambda_user">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="af55fb02-ad74-4e74-b70f-9b7e6b82b6f7">
-          <filtering>
-            <filter text="" />
-          </filtering>
         </state>
       </provider>
     </entry>
@@ -2059,13 +1951,130 @@
     <entry file="jar:///usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar!/java/lang/Thread.class">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/controllers/UserRestController.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/services/impl/UserServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="134" column="33" lean-forward="true" selection-start-line="134" selection-start-column="33" selection-end-line="134" selection-end-column="33" />
+        <state relative-caret-position="2394">
+          <caret line="141" column="9" selection-start-line="141" selection-start-column="9" selection-end-line="141" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/listeners/RegistrationListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="37" column="46" selection-start-line="37" selection-start-column="46" selection-end-line="37" selection-end-column="46" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/TokenCleaner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="18" column="82" selection-start-line="18" selection-start-column="4" selection-end-line="18" selection-end-column="82" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1974">
+          <caret line="94" column="43" selection-start-line="94" selection-start-column="43" selection-end-line="94" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repositories/VerificationTokenRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="15" column="53" selection-start-line="15" selection-start-column="28" selection-end-line="15" selection-end-column="53" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/models/entities/VerificationToken.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="29" column="27" selection-start-line="29" selection-start-column="17" selection-end-line="29" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/verification_token">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state projectRestartId="4a05b2fe-10a4-4f54-bb27-3bb0a973d0dc">
+          <filtering>
+            <filter text="" />
+          </filtering>
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://3c5cd30b-bff9-4fb2-b1cb-e5ac2a75f8fc/database/d9lfgg6p1rlj1/schema/public/table/verification_token">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state projectRestartId="4a05b2fe-10a4-4f54-bb27-3bb0a973d0dc">
+          <filtering>
+            <filter text="" />
+          </filtering>
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://3c5cd30b-bff9-4fb2-b1cb-e5ac2a75f8fc/database/d9lfgg6p1rlj1/schema/public/table/user_role">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state projectRestartId="4a05b2fe-10a4-4f54-bb27-3bb0a973d0dc">
+          <filtering>
+            <filter text="" />
+          </filtering>
+          <column-attributes>
+            <column name="ctid" enabled="false" position="-1" />
+          </column-attributes>
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://3c5cd30b-bff9-4fb2-b1cb-e5ac2a75f8fc/database/d9lfgg6p1rlj1/schema/public/table/lambda_user">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state projectRestartId="4a05b2fe-10a4-4f54-bb27-3bb0a973d0dc">
+          <filtering>
+            <filter text="" />
+          </filtering>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yahoo_mail.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="2" selection-start-line="2" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/host.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="35" selection-start-column="35" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/controllers/UserRestController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="141" column="63" lean-forward="true" selection-start-line="141" selection-start-column="63" selection-end-line="141" selection-end-column="63" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/HerokuNotIdle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="16" column="68" selection-start-line="16" selection-start-column="35" selection-end-line="16" selection-end-column="68" />
         </state>
       </provider>
     </entry>
