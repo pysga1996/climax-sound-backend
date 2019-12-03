@@ -23,7 +23,7 @@ public class TokenCleaner {
 
     @Scheduled(fixedDelay=86400000)
     public void herokuNotIdle(){
-        List<VerificationToken> verificationTokenList = verificationTokenRepository.findAllByExpirationBefore(new Date());
+        List<VerificationToken> verificationTokenList = verificationTokenRepository.findAllByExpiryDateBefore(new Date());
         verificationTokenRepository.deleteAll(verificationTokenList);
         LOG.debug("Tokens cleared!");
     }
