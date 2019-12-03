@@ -123,7 +123,7 @@ public class UserRestController {
 
     @PreAuthorize("isAnonymous()")
     @PostMapping(value = "/register")
-    public ResponseEntity<Void> createUser(@Valid @RequestBody UserForm userForm, WebRequest request) {
+    public ResponseEntity<String> createUser(@Valid @RequestBody UserForm userForm, WebRequest request) {
         try {
             User user = formConvertService.convertToUser(userForm, true);
             if (user == null) return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
@@ -135,9 +135,8 @@ public class UserRestController {
             String appUrl = request.getContextPath();
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, request.getLocale(), appUrl));
             return new ResponseEntity<>( HttpStatus.OK);
-
         } catch (Exception e) {
-            return new ResponseEntity<>( HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
