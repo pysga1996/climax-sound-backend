@@ -1,4 +1,4 @@
-package com.lambda.configurations.security_customization;
+package com.lambda.configurations.customizations;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

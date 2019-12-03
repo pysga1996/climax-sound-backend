@@ -1,7 +1,7 @@
 package com.lambda.configurations.security;
 
-import com.lambda.configurations.security_customization.CustomMethodSecurityExpressionHandler;
-import com.lambda.configurations.security_customization.CustomPermissionEvaluator;
+import com.lambda.configurations.customizations.CustomMethodSecurityExpressionHandler;
+import com.lambda.configurations.customizations.CustomPermissionEvaluator;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;

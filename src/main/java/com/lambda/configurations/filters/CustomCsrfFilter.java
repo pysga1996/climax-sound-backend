@@ -1,4 +1,4 @@
-package com.lambda.configurations.security_filter;
+package com.lambda.configurations.filters;
 
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Component;

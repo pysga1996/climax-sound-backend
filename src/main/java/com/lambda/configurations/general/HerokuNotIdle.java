@@ -14,6 +14,6 @@ public class HerokuNotIdle {
     public void herokuNotIdle(){
         LOG.debug("Heroku not idle execution");
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.getForObject("http://climax-sound.herokuapp.com", Object.class);
+        restTemplate.getForObject("https://lambda-authorization-server.herokuapp.com", Object.class);
     }
 }

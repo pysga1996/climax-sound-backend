@@ -1,4 +1,4 @@
-package com.lambda.configurations.security_customization;
+package com.lambda.configurations.customizations;
 
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;

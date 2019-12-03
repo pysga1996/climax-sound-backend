@@ -1,4 +1,4 @@
-package com.lambda.configurations.security_customization;
+package com.lambda.configurations.customizations;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
