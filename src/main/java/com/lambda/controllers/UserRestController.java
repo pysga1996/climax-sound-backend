@@ -138,11 +138,11 @@ public class UserRestController {
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, request.getLocale(), appUrl));
             return new ResponseEntity<>( HttpStatus.OK);
         } catch (Exception e) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (StackTraceElement line: e.getStackTrace()) {
-                stringBuilder.append(line).append("\n");
-            }
-            return new ResponseEntity<>(stringBuilder.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+//            StringBuilder stringBuilder = new StringBuilder();
+//            for (StackTraceElement line: e.getStackTrace()) {
+//                stringBuilder.append(line).append("\n");
+//            }
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
