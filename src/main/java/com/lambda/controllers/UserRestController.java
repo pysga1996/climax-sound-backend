@@ -10,6 +10,7 @@ import com.lambda.services.UserService;
 import com.lambda.services.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.MessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -35,6 +36,9 @@ public class UserRestController {
 
     @Autowired
     private Environment environment;
+
+    @Autowired
+    private MessageSource messageSource;
 
 //    @Autowired
 //    private JwtTokenProvider tokenProvider;
@@ -138,11 +142,7 @@ public class UserRestController {
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, request.getLocale(), appUrl));
             return new ResponseEntity<>( HttpStatus.OK);
         } catch (Exception e) {
-//            StringBuilder stringBuilder = new StringBuilder();
-//            for (StackTraceElement line: e.getStackTrace()) {
-//                stringBuilder.append(line).append("\n");
-//            }
-            return new ResponseEntity<>(e.getMessage() + "\n" + environment.getProperty("MAIL_PASSWORD"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
