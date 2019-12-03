@@ -3,8 +3,10 @@ package com.lambda.services.impl;
 import com.lambda.models.entities.Artist;
 import com.lambda.models.entities.Song;
 import com.lambda.models.entities.User;
+import com.lambda.models.entities.VerificationToken;
 import com.lambda.models.utilities.SearchResponse;
 import com.lambda.repositories.UserRepository;
+import com.lambda.repositories.VerificationTokenRepository;
 import com.lambda.services.ArtistService;
 import com.lambda.services.SongService;
 import com.lambda.services.UserService;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -20,6 +23,9 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    private VerificationTokenRepository tokenRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -107,5 +113,45 @@ public class UserServiceImpl implements UserService {
         Iterable<Song> songs = songService.findAllByTitleContaining(searchText);
         Iterable<Artist> artists = artistService.findAllByNameContaining(searchText);
         return new SearchResponse(songs, artists);
+    }
+
+    private boolean emailExist(String email) {
+        User user = userRepository.findByEmail(email);
+        return user != null;
+    }
+
+    @Override
+    public void createVerificationToken(User user, String token) {
+        VerificationToken myToken = new VerificationToken(token, user);
+        tokenRepository.save(myToken);
+    }
+
+    @Override
+    public void getVerificationToken(String token) throws Exception {
+        if (token == null) {
+            throw new InvalidTokenException("1");
+        }
+        VerificationToken verificationToken = tokenRepository.findByToken(token);
+        if (verificationToken == null) {
+            throw new InvalidTokenException("1");
+        }
+        User user = verificationToken.getUser();
+        Calendar cal = Calendar.getInstance();
+        if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
+            throw new InvalidTokenException("2");
+        }
+        user.setEnabled(true);
+        this.save(user);
+        this.removeToken(verificationToken);
+    }
+
+    @Override
+    public User findUserByToken(String verificationToken) {
+        return tokenRepository.findByToken(verificationToken).getUser();
+    }
+
+    @Override
+    public void removeToken(VerificationToken token) {
+        tokenRepository.delete(token);
     }
 }

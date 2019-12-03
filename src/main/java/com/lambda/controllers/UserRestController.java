@@ -1,5 +1,6 @@
 package com.lambda.controllers;
 
+import com.lambda.configurations.events.OnRegistrationCompleteEvent;
 import com.lambda.models.entities.Role;
 import com.lambda.models.entities.User;
 import com.lambda.models.forms.UserForm;
@@ -8,16 +9,22 @@ import com.lambda.repositories.RoleRepository;
 import com.lambda.services.UserService;
 import com.lambda.services.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.*;
 
 @CrossOrigin(origins = {"https://climax-sound.netlify.com", "http://localhost:4200"}, allowedHeaders = "*")
@@ -26,8 +33,14 @@ import java.util.*;
 public class UserRestController {
     private static final String DEFAULT_ROLE = "ROLE_USER";
 
+    @Autowired
+    private Environment environment;
+
 //    @Autowired
 //    private JwtTokenProvider tokenProvider;
+
+    @Autowired
+    ApplicationEventPublisher eventPublisher;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -110,7 +123,7 @@ public class UserRestController {
 
     @PreAuthorize("isAnonymous()")
     @PostMapping(value = "/register")
-    public ResponseEntity<Void> createUser(@Valid @RequestBody UserForm userForm) {
+    public ResponseEntity<Void> createUser(@Valid @RequestBody UserForm userForm, WebRequest request) {
         try {
             User user = formConvertService.convertToUser(userForm, true);
             if (user == null) return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
@@ -119,9 +132,33 @@ public class UserRestController {
             roles.add(role);
             user.setRoles(roles);
             userService.save(user);
+            String appUrl = request.getContextPath();
+            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, request.getLocale(), appUrl));
             return new ResponseEntity<>( HttpStatus.OK);
+
         } catch (Exception e) {
             return new ResponseEntity<>( HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PreAuthorize("permitAll()")
+    @GetMapping("/registration-confirm")
+    public ResponseEntity<String> confirmRegistration(@RequestParam("token") String token) {
+        HttpHeaders headers = new HttpHeaders();
+        StringBuilder uri = new StringBuilder(Objects.requireNonNull(environment.getProperty("FRONTEND_HOST"))).append("/complete-registration");
+        try {
+            userService.getVerificationToken(token);
+            uri.append("?status=0");
+            headers.setLocation(URI.create(uri.toString()));
+            return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+        } catch (InvalidTokenException ex) {
+            uri.append("?status=").append(ex.getMessage());
+            headers.setLocation(URI.create(uri.toString()));
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.MOVED_PERMANENTLY);
+        } catch (Exception ex) {
+            uri.append("?status=").append(ex.getMessage());
+            headers.setLocation(URI.create(uri.toString()));
+            return new ResponseEntity<>(HttpStatus.MOVED_PERMANENTLY);
         }
     }
 
@@ -145,58 +182,58 @@ public class UserRestController {
 //        return new ResponseEntity<>(loginResponse, HttpStatus.OK);
 //    }
 
-    @GetMapping("/random")
-    public RandomStuff randomStuff(){
-        // Creating object of Set
-        Set<String> arrset1 = new HashSet<String>();
+        @GetMapping("/random")
+        public RandomStuff randomStuff(){
+            // Creating object of Set
+            Set<String> arrset1 = new HashSet<String>();
 
-        // Populating arrset1
-        arrset1.add("A");
-        arrset1.add("B");
-        arrset1.add("C");
-        arrset1.add("D");
-        arrset1.add("E");
+            // Populating arrset1
+            arrset1.add("A");
+            arrset1.add("B");
+            arrset1.add("C");
+            arrset1.add("D");
+            arrset1.add("E");
 
-        // print arrset1
-        System.out.println("First Set: "
-                + arrset1);
+            // print arrset1
+            System.out.println("First Set: "
+                    + arrset1);
 
-        // Creating another object of Set
-        Set<String> arrset2 = new HashSet<String>();
+            // Creating another object of Set
+            Set<String> arrset2 = new HashSet<String>();
 
-        // Populating arrset2
-        arrset2.add("C");
-        arrset2.add("D");
-        arrset2.add("A");
-        arrset2.add("B");
-        arrset2.add("E");
+            // Populating arrset2
+            arrset2.add("C");
+            arrset2.add("D");
+            arrset2.add("A");
+            arrset2.add("B");
+            arrset2.add("E");
 
-        // print arrset2
-        System.out.println("Second Set: "
-                + arrset2);
-        boolean value = arrset1.equals(arrset2);
-        return new RandomStuff(Boolean.toString(value));
+            // print arrset2
+            System.out.println("Second Set: "
+                    + arrset2);
+            boolean value = arrset1.equals(arrset2);
+            return new RandomStuff(Boolean.toString(value));
 //        return new RandomStuff("JWT Hợp lệ mới có thể thấy được message này");
-    }
+        }
 
-    @GetMapping(value = "/search", params = "name")
-    public ResponseEntity<SearchResponse> search(@RequestParam("name") String name){
-        try {
-            SearchResponse searchResponse = userService.search(name);
-            return new ResponseEntity<>(searchResponse, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        @GetMapping(value = "/search", params = "name")
+        public ResponseEntity<SearchResponse> search(@RequestParam("name") String name){
+            try {
+                SearchResponse searchResponse = userService.search(name);
+                return new ResponseEntity<>(searchResponse, HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        @PreAuthorize("hasRole('ADMIN')")
+        @DeleteMapping(value = "/delete-user", params = "id")
+        public ResponseEntity<Void> deleteUser(@RequestParam("id")Long id) {
+            try {
+                userService.deleteById(id);
+                return new ResponseEntity<>(HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
     }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping(value = "/delete-user", params = "id")
-    public ResponseEntity<Void> deleteUser(@RequestParam("id")Long id) {
-        try {
-            userService.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-}

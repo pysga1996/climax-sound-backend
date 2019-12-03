@@ -1,6 +1,7 @@
 package com.lambda.services;
 
 import com.lambda.models.entities.User;
+import com.lambda.models.entities.VerificationToken;
 import com.lambda.models.utilities.SearchResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,4 +20,8 @@ public interface UserService {
     void setFieldsEdit(User oldUserInfo, User newUserInfo);
     User setInfo(Long id, User currentUser);
     SearchResponse search(String searchText);
+    void createVerificationToken(User user, String token);
+    void getVerificationToken(String VerificationToken) throws Exception;
+    User findUserByToken(String verificationToken);
+    void removeToken(VerificationToken token);
 }

@@ -57,6 +57,7 @@ public class User {
     @Pattern(regexp = "^(\\(?\\+?[0-9]*\\)?)?[0-9_\\- ()]*${10,13}")
     private String phoneNumber;
 
+    @NotBlank
     @Email
     private String email;
 
@@ -108,7 +109,6 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Collection<Comment> comments;
 
-    @ColumnDefault("0")
     private boolean enabled = false;
     private boolean accountNonExpired = true;
     private boolean accountNonLocked = true;
@@ -118,6 +118,7 @@ public class User {
         this.username = username;
         this.password = password;
         this.roles = autorities;
+        this.enabled = false;
     }
 
     public User(String firstName, String lastName, Boolean gender, String avatarUrl) {
@@ -125,6 +126,7 @@ public class User {
         this.lastName = lastName;
         this.gender = gender;
         this.avatarUrl = avatarUrl;
+        this.enabled = false;
     }
 
     public User(String username, String password, String firstName, String lastName, Boolean gender, Date birthDate, String phoneNumber, String email) {
@@ -136,6 +138,7 @@ public class User {
         this.birthDate = birthDate;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.enabled = false;
     }
 
     @Override
