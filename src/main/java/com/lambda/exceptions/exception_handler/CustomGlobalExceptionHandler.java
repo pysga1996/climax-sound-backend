@@ -1,4 +1,4 @@
-package com.lambda.exceptions;
+package com.lambda.exceptions.exception_handler;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

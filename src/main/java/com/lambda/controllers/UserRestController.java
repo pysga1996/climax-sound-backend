@@ -1,8 +1,12 @@
 package com.lambda.controllers;
 
 import com.lambda.configurations.events.OnRegistrationCompleteEvent;
+import com.lambda.configurations.events.OnResetPasswordEvent;
+import com.lambda.exceptions.UserNotFoundException;
 import com.lambda.models.entities.Role;
 import com.lambda.models.entities.User;
+import com.lambda.models.forms.GetResetPasswordTokenForm;
+import com.lambda.models.forms.PasswordDto;
 import com.lambda.models.forms.UserForm;
 import com.lambda.models.utilities.*;
 import com.lambda.repositories.RoleRepository;
@@ -10,20 +14,18 @@ import com.lambda.services.UserService;
 import com.lambda.services.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.MessageSource;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.*;
@@ -36,9 +38,6 @@ public class UserRestController {
 
     @Autowired
     private Environment environment;
-
-    @Autowired
-    private MessageSource messageSource;
 
 //    @Autowired
 //    private JwtTokenProvider tokenProvider;
@@ -70,11 +69,16 @@ public class UserRestController {
     @PreAuthorize("permitAll()")
     @GetMapping("/profile/{id}")
     public ResponseEntity<User> getCurrentUser(@PathVariable("id") Long id) {
-        User currentUser = userDetailService.getCurrentUser();
-        User user = userService.setInfo(id, currentUser);
-        if (user != null) {
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        } else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        try {
+            User currentUser = userDetailService.getCurrentUser();
+            User user = userService.setInfo(id, currentUser);
+            if (user != null) {
+                return new ResponseEntity<>(user, HttpStatus.OK);
+            } else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -96,13 +100,17 @@ public class UserRestController {
 
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/profile")
-    public ResponseEntity<Void> updateProfile(@RequestBody User user) {
-        User oldUser = userDetailService.getCurrentUser();
-        if (user != null) {
+    public ResponseEntity<Void> updateProfile(@Valid @RequestBody User user) {
+        try {
+            User oldUser = userDetailService.getCurrentUser();
             userService.setFieldsEdit(oldUser, user);
             userService.save(oldUser);
             return new ResponseEntity<>(HttpStatus.OK);
-        } else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (NullPointerException ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 //    @PostMapping("/avatar")
@@ -120,10 +128,10 @@ public class UserRestController {
 //        } else return new ResponseEntity<>("Not found user with the given id in database!", HttpStatus.NOT_FOUND);
 //    }
 
-    @GetMapping("/avatar/{fileName:.+}")
-    public ResponseEntity<Resource> getAvatar(@PathVariable("fileName") String fileName, HttpServletRequest request) {
-        return downloadService.generateUrl(fileName, request, avatarStorageService);
-    }
+//    @GetMapping("/avatar/{fileName:.+}")
+//    public ResponseEntity<Resource> getAvatar(@PathVariable("fileName") String fileName, HttpServletRequest request) {
+//        return downloadService.generateUrl(fileName, request, avatarStorageService);
+//    }
 
     @PreAuthorize("isAnonymous()")
     @PostMapping(value = "/register")
@@ -159,11 +167,64 @@ public class UserRestController {
         } catch (InvalidTokenException ex) {
             uri.append("?status=").append(ex.getMessage());
             headers.setLocation(URI.create(uri.toString()));
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.MOVED_PERMANENTLY);
+            return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
         } catch (Exception ex) {
+            uri.append("?status=3");
+            headers.setLocation(URI.create(uri.toString()));
+            return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+        }
+    }
+
+    @PreAuthorize("permitAll()")
+    @PostMapping("/reset-password")
+    public ResponseEntity<Void> resetPassword(@RequestBody GetResetPasswordTokenForm getResetPasswordTokenForm, WebRequest request) {
+        try {
+            String userEmail = getResetPasswordTokenForm.getEmail();
+            User user = userService.findByEmail(userEmail);
+            if (user == null) {
+                throw new UserNotFoundException();
+            }
+            String appUrl = request.getContextPath();
+            eventPublisher.publishEvent(new OnResetPasswordEvent(user, request.getLocale(), appUrl));
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PreAuthorize("permitAll()")
+    @GetMapping(value = "/reset-password", params = {"id", "token"})
+    public ResponseEntity showChangePasswordPage(@RequestParam("id") long id, @RequestParam("token") String token) {
+        HttpHeaders headers = new HttpHeaders();
+        StringBuilder uri = new StringBuilder(Objects.requireNonNull(environment.getProperty("FRONTEND_HOST"))).append("/reset-password-submission");
+        try {
+            userService.validatePasswordResetToken(id, token);
+            uri.append("?status=0").append("&id=").append(id).append("&token=").append(token);
+            headers.setLocation(URI.create(uri.toString()));
+            return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+        } catch (InvalidTokenException ex) {
             uri.append("?status=").append(ex.getMessage());
             headers.setLocation(URI.create(uri.toString()));
-            return new ResponseEntity<>(HttpStatus.MOVED_PERMANENTLY);
+            return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+        } catch (Exception ex) {
+            uri.append("?status=3");
+            headers.setLocation(URI.create(uri.toString()));
+            return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+        }
+    }
+
+    @PreAuthorize("permitAll()")
+    @PutMapping(value = "/reset-password", params = {"id", "token"})
+    public ResponseEntity<String> savePassword(@Valid @RequestBody PasswordDto passwordDto, @RequestParam("id") Long id, @RequestParam("token") String token) {
+        try {
+            userService.validatePasswordResetToken(id, token);
+            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            userService.changeUserPassword(user, passwordDto.getNewPassword());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (InvalidTokenException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -186,40 +247,6 @@ public class UserRestController {
 //        LoginResponse loginResponse = currentUser.map(user -> new LoginResponse(jwt, user.getId())).orElseGet(() -> new LoginResponse(jwt, null));
 //        return new ResponseEntity<>(loginResponse, HttpStatus.OK);
 //    }
-
-        @GetMapping("/random")
-        public RandomStuff randomStuff(){
-            // Creating object of Set
-            Set<String> arrset1 = new HashSet<String>();
-
-            // Populating arrset1
-            arrset1.add("A");
-            arrset1.add("B");
-            arrset1.add("C");
-            arrset1.add("D");
-            arrset1.add("E");
-
-            // print arrset1
-            System.out.println("First Set: "
-                    + arrset1);
-
-            // Creating another object of Set
-            Set<String> arrset2 = new HashSet<String>();
-
-            // Populating arrset2
-            arrset2.add("C");
-            arrset2.add("D");
-            arrset2.add("A");
-            arrset2.add("B");
-            arrset2.add("E");
-
-            // print arrset2
-            System.out.println("Second Set: "
-                    + arrset2);
-            boolean value = arrset1.equals(arrset2);
-            return new RandomStuff(Boolean.toString(value));
-//        return new RandomStuff("JWT Hợp lệ mới có thể thấy được message này");
-        }
 
         @GetMapping(value = "/search", params = "name")
         public ResponseEntity<SearchResponse> search(@RequestParam("name") String name){

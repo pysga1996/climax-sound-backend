@@ -1,10 +1,8 @@
 package com.lambda.services.impl;
 
-import com.lambda.models.entities.Artist;
-import com.lambda.models.entities.Song;
-import com.lambda.models.entities.User;
-import com.lambda.models.entities.VerificationToken;
+import com.lambda.models.entities.*;
 import com.lambda.models.utilities.SearchResponse;
+import com.lambda.repositories.PasswordResetTokenRepository;
 import com.lambda.repositories.UserRepository;
 import com.lambda.repositories.VerificationTokenRepository;
 import com.lambda.services.ArtistService;
@@ -13,6 +11,10 @@ import com.lambda.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private VerificationTokenRepository tokenRepository;
+
+    @Autowired
+    private PasswordResetTokenRepository passwordResetTokenRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -59,6 +64,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Override
@@ -153,5 +163,32 @@ public class UserServiceImpl implements UserService {
     @Override
     public void removeToken(VerificationToken token) {
         tokenRepository.delete(token);
+    }
+
+    @Override
+    public void createPasswordResetToken(User user, String token) {
+        PasswordResetToken myToken = new PasswordResetToken(token, user);
+        passwordResetTokenRepository.save(myToken);
+    }
+
+    @Override
+    public void validatePasswordResetToken(long id, String token) throws Exception {
+        PasswordResetToken passToken = passwordResetTokenRepository.findByToken(token);
+        if ((passToken == null) || (passToken.getUser().getId() != id)) {
+            throw new InvalidTokenException("1");
+        }
+        Calendar cal = Calendar.getInstance();
+        if ((passToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
+            throw new InvalidTokenException("2");
+        }
+        User user = passToken.getUser();
+        Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getRoles());
+        SecurityContextHolder.getContext().setAuthentication(auth);
+    }
+
+    @Override
+    public void changeUserPassword(User user, String password) {
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
     }
 }

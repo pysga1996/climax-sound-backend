@@ -9,12 +9,12 @@ import java.util.Locale;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class OnRegistrationCompleteEvent extends ApplicationEvent implements CustomEvent {
+public class OnResetPasswordEvent extends ApplicationEvent implements CustomEvent {
     private String appUrl;
     private Locale locale;
     private User user;
 
-    public OnRegistrationCompleteEvent(User user, Locale locale, String appUrl) {
+    public OnResetPasswordEvent(User user, Locale locale, String appUrl) {
         super(user);
         this.user = user;
         this.locale = locale;

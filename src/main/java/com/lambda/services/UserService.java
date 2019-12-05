@@ -14,6 +14,7 @@ public interface UserService {
     Page<User> findByUsernameContaining(String username, Pageable pageable);
     Page<User> findByRoles_Authority(String username, Pageable pageable);
     Optional<User> findById(Long id);
+    User findByEmail(String email);
     void save(User user);
     void deleteById(Long id);
     void setFields(User newUserInfo, User oldUserInfo);
@@ -24,4 +25,7 @@ public interface UserService {
     void getVerificationToken(String VerificationToken) throws Exception;
     User findUserByToken(String verificationToken);
     void removeToken(VerificationToken token);
+    void createPasswordResetToken(User user, String token);
+    void validatePasswordResetToken(long id, String token) throws Exception;
+    void changeUserPassword(User user, String password);
 }

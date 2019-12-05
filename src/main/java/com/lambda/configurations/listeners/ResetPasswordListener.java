@@ -1,20 +1,21 @@
 package com.lambda.configurations.listeners;
 
-
-import com.lambda.configurations.events.OnRegistrationCompleteEvent;
+import com.lambda.configurations.events.OnResetPasswordEvent;
 import com.lambda.models.entities.User;
 import com.lambda.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
+import org.springframework.core.env.Environment;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 import java.util.UUID;
 
 @Component
-public class RegistrationListener extends CustomListener implements ApplicationListener<OnRegistrationCompleteEvent> {
-
+public class ResetPasswordListener extends CustomListener implements ApplicationListener<OnResetPasswordEvent> {
     @Autowired
     private MessageSource messageSource;
 
@@ -22,23 +23,23 @@ public class RegistrationListener extends CustomListener implements ApplicationL
     private UserService userService;
 
     @Override
-    public void onApplicationEvent(OnRegistrationCompleteEvent event) {
-        this.confirmRegistration(event);
+    public void onApplicationEvent(OnResetPasswordEvent event) {
+        this.confirmResetPassword(event);
     }
 
-    private void confirmRegistration(OnRegistrationCompleteEvent event) {
+    private void confirmResetPassword(OnResetPasswordEvent event) {
         Locale locale;
         try {
             locale = event.getLocale();
         } catch (Exception e) {
             locale = Locale.US;
         }
-        String emailSubject = messageSource.getMessage("registration.email.title",new Object[] {}, locale);
-        String emailText = messageSource.getMessage("registration.email.text",new Object[] {}, locale);
-        String param = "/api/registration-confirm?token=";
+        String emailSubject = messageSource.getMessage("reset-password.email.title",new Object[] {}, locale);
+        String emailText = messageSource.getMessage("reset-password.email.text",new Object[] {}, locale);
+        String param = "/api/reset-password?token=";
         User user = event.getUser();
         String token = UUID.randomUUID().toString();
-        userService.createVerificationToken(user, token);
+        userService.createPasswordResetToken(user, token);
         super.sendMail(emailSubject, emailText, param, token, user, event);
     }
 }

@@ -32,15 +32,15 @@ public class ArtistRepositoryTest {
         assertThat(found.getTotalElements()).isEqualTo(11);
     }
 
-    @Test
-    public void whenFindByUnaccentName_returnArtistIterable() {
-        Iterable<Artist> found = artistRepository.findAllByUnaccentNameContainingIgnoreCase("lam");
-        Iterator iterator = found.iterator();
-        int resultCount = 0;
-        while (iterator.hasNext()) {
-            resultCount++;
-        }
-        assertThat(resultCount).isEqualTo(1);
-    }
+//    @Test
+//    public void whenFindByUnaccentName_returnArtistIterable() {
+//        Iterable<Artist> found = artistRepository.findAllByUnaccentNameContainingIgnoreCase("lam");
+//        Iterator iterator = found.iterator();
+//        int resultCount = 0;
+//        while (iterator.hasNext()) {
+//            resultCount++;
+//        }
+//        assertThat(resultCount).isEqualTo(1);
+//    }
 
 }
