@@ -1,6 +1,7 @@
 package com.lambda.services.impl;
 
 import com.lambda.models.entities.Album;
+import com.lambda.models.entities.Song;
 import com.lambda.repositories.AlbumRepository;
 import com.lambda.services.AlbumService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 
 @Service
@@ -62,5 +65,21 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public void deleteById(Long id) {
         albumRepository.deleteById(id);
+    }
+
+    @Override
+    public void pushToAlbum(Song song, Long albumId) {
+        if (albumId != null) {
+            Optional<Album> album = albumRepository.findById(albumId);
+            if (album.isPresent()) {
+                Collection<Song> songList = album.get().getSongs();
+                if (songList == null) {
+                    songList = new ArrayList<>();
+                }
+                songList.add(song);
+                album.get().setSongs(songList);
+                albumRepository.save(album.get());
+            }
+        }
     }
 }

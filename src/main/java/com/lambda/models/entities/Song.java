@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.lambda.helpers.CustomUserJsonSerializer;
 import com.lambda.models.utilities.MediaObject;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -14,12 +12,15 @@ import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
 
 @Entity
 @Data
+@Builder(toBuilder = true)
 @EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"comments", "liked", "albums", "tags", "genres", "users", "playlists", "country", "theme", "uploader"}, allowGetters = true, ignoreUnknown=true)
 public class Song extends MediaObject {
@@ -42,10 +43,10 @@ public class Song extends MediaObject {
     private Collection<Comment> comments;
 
     @ColumnDefault("0")
-    private Long displayRating;
+    private Long displayRating = 0L;
 
     @ColumnDefault("0")
-    private Long listeningFrequency;
+    private Long listeningFrequency = 0L;
 
     private Boolean liked;
 
@@ -113,6 +114,8 @@ public class Song extends MediaObject {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "theme_id")
     private Theme theme;
+
+    private Duration duration;
 
     public Song(String title, Date releaseDate) {
         this.title = title;

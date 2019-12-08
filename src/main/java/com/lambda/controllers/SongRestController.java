@@ -51,27 +51,16 @@ public class SongRestController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/upload")
-    public ResponseEntity<Void> uploadSong(@RequestPart("song") Song song, @RequestPart("audio") MultipartFile file, @RequestParam(value = "album-id", required = false) Long id) {
+    public ResponseEntity<Void> uploadSong(@RequestPart("song") Song song, @RequestPart("audio") MultipartFile file, @RequestParam(value = "album-albumId", required = false) Long albumId) {
         try {
             Song songToSave = songService.save(song);
             String fileDownloadUri = audioStorageService.saveToFirebaseStorage(songToSave, file);
             songToSave.setUrl(fileDownloadUri);
             songToSave.setUploader(userDetailService.getCurrentUser());
-            if (id != null) {
-                Optional<Album> album = albumService.findById(id);
-                if (album.isPresent()) {
-                    Collection<Song> songList = album.get().getSongs();
-                    if (songList == null) {
-                        songList = new ArrayList<>();
-                    }
-                    songList.add(song);
-                    album.get().setSongs(songList);
-                    albumService.save(album.get());
-                }
-            }
+            albumService.pushToAlbum(song, albumId);
             songService.save(songToSave);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
+        } catch (Exception ex) {
             if (song.getId() != null) {
                 songService.deleteById(song.getId());
             }

@@ -1,6 +1,7 @@
 package com.lambda.services;
 
 import com.lambda.models.entities.Album;
+import com.lambda.models.entities.Song;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -15,4 +16,5 @@ public interface AlbumService {
     void setFields(Album oldAlbumInfo, Album newAlbumInfo);
     void save(Album album);
     void deleteById(Long id);
+    void pushToAlbum(Song song, Long albumId);
 }
