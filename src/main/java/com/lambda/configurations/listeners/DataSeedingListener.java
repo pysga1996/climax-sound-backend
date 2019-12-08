@@ -1,4 +1,4 @@
-package com.lambda.configurations.security;
+package com.lambda.configurations.listeners;
 
 import com.lambda.models.entities.Role;
 import com.lambda.models.entities.User;
@@ -9,10 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Component
 @Transactional

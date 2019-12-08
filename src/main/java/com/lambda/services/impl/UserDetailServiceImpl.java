@@ -64,15 +64,4 @@ public class UserDetailServiceImpl implements UserDetailsService {
         return user;
     }
 
-//    public boolean checkLogin(User user) {
-//        Iterable<User> users = userRepository.findAll();
-//        boolean isCorrectUser = false;
-//        for (User currentUser: users) {
-//            if (currentUser.getUsername().equals(user.getUsername())) {
-//                isCorrectUser = true;
-//            }
-//        }
-//        return isCorrectUser;
-//    }
-
 }

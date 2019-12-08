@@ -1,6 +1,8 @@
 package com.lambda.configurations.general;
 
+import com.lambda.models.entities.PasswordResetToken;
 import com.lambda.models.entities.VerificationToken;
+import com.lambda.repositories.PasswordResetTokenRepository;
 import com.lambda.repositories.VerificationTokenRepository;
 import com.lambda.services.UserService;
 import org.slf4j.Logger;
@@ -14,17 +16,21 @@ import java.util.Date;
 import java.util.List;
 
 @Component
-@Scope("singleton")
 public class TokenCleaner {
     private static final Logger LOG = LoggerFactory.getLogger(TokenCleaner.class);
 
     @Autowired
     private VerificationTokenRepository verificationTokenRepository;
 
+    @Autowired
+    private PasswordResetTokenRepository passwordResetTokenRepository;
+
     @Scheduled(fixedDelay=86400000)
     public void herokuNotIdle(){
         List<VerificationToken> verificationTokenList = verificationTokenRepository.findAllByExpiryDateBefore(new Date());
+        List<PasswordResetToken> passwordResetTokenList = passwordResetTokenRepository.findAllByExpiryDateBefore(new Date());
         verificationTokenRepository.deleteAll(verificationTokenList);
+        passwordResetTokenRepository.deleteAll(passwordResetTokenList);
         LOG.debug("Tokens cleared!");
     }
 }

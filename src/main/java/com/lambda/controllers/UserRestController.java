@@ -10,6 +10,7 @@ import com.lambda.models.forms.PasswordDto;
 import com.lambda.models.forms.UserForm;
 import com.lambda.models.utilities.*;
 import com.lambda.repositories.RoleRepository;
+import com.lambda.services.RoleService;
 import com.lambda.services.UserService;
 import com.lambda.services.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class UserRestController {
     ApplicationEventPublisher eventPublisher;
 
     @Autowired
-    private RoleRepository roleRepository;
+    private RoleService roleService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -141,7 +142,7 @@ public class UserRestController {
             if (user == null) {
                 return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
             }
-            Role role = roleRepository.findByAuthority(DEFAULT_ROLE);
+            Role role = roleService.findByAuthority(DEFAULT_ROLE);
             Set<Role> roles = new HashSet<>();
             roles.add(role);
             user.setRoles(roles);

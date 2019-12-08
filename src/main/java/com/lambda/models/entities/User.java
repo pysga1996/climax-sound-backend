@@ -57,7 +57,6 @@ public class User {
     @Pattern(regexp = "^(\\(?\\+?[0-9]*\\)?)?[0-9_\\- ()]*${10,13}")
     private String phoneNumber;
 
-    @NotBlank
     @Email
     private String email;
 

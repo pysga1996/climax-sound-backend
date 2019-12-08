@@ -3,6 +3,8 @@ package com.lambda.models.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.lambda.helpers.CustomUserJsonSerializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
@@ -37,6 +39,7 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     private Song song;
 
+    @JsonSerialize(using = CustomUserJsonSerializer.class)
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 

@@ -1,31 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bc94efd9-f0bc-40eb-ad2a-87d2fc0f8ca5" name="Default Changelist" comment="add Email verification">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configurations/events/CustomEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configurations/events/OnResetPasswordEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configurations/listeners/CustomListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configurations/listeners/ResetPasswordListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/exceptions/UserNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/models/entities/PasswordResetToken.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/models/forms/GetResetPasswordTokenForm.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/models/forms/PasswordDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/repositories/PasswordResetTokenRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/validators/RepeatedPasswordValidator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lambda/validators/constraints/RepeatedPasswordConstraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="bc94efd9-f0bc-40eb-ad2a-87d2fc0f8ca5" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/repositories_test/UserRepositoryTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/configurations/events/OnRegistrationCompleteEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configurations/events/OnRegistrationCompleteEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/configurations/listeners/RegistrationListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configurations/listeners/RegistrationListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/climaxsound/ClimaxSoundApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/climaxsound/ClimaxSoundApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/configurations/customizations/CustomRestAuthenticationSuccessHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configurations/customizations/CustomRestAuthenticationSuccessHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/HerokuNotIdle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/HerokuNotIdle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/TokenCleaner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/TokenCleaner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/configurations/security/DataSeedingListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configurations/listeners/DataSeedingListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/controllers/UserRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/controllers/UserRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/exceptions/CustomGlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/exceptions/exception_handler/CustomGlobalExceptionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/repositories/VerificationTokenRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/repositories/VerificationTokenRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/services/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/services/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/services/impl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/i18n/message.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/i18n/message.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/i18n/message_en.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/i18n/message_en.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/i18n/message_vi.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/i18n/message_vi.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/repositories_test/ArtistRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/repositories_test/ArtistRepositoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/exceptions/exception_handler/CustomExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/exceptions/exception_handlers/CustomExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/exceptions/exception_handler/CustomGlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/exceptions/exception_handlers/CustomGlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/helpers/CustomUserJsonSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/helpers/CustomUserJsonSerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/models/entities/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/models/entities/Comment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/models/entities/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/models/entities/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/models/entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/models/entities/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/repositories/PasswordResetTokenRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/repositories/PasswordResetTokenRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/services/impl/FormConvertService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/services/impl/FormConvertService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/services/impl/UserDetailServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/services/impl/UserDetailServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/repositories_test/CountryRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/repositories_test/CountryRepositoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/application.properties" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/classes/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -70,6 +66,41 @@
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
         <item name="postgres-heroku" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="postgres-heroku" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="postgres-heroku" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="d9lfgg6p1rlj1: database" type="162271b6:PgImplModel$Database" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="postgres-heroku" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="d9lfgg6p1rlj1: database" type="162271b6:PgImplModel$Database" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="postgres-heroku" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="d9lfgg6p1rlj1: database" type="162271b6:PgImplModel$Database" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="postgres-heroku" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="d9lfgg6p1rlj1: database" type="162271b6:PgImplModel$Database" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="public: schema" type="983ebcf7:PgImplModel$Schema" />
+        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
       </path>
     </expand>
     <select />
@@ -119,22 +150,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/controllers/UserRestController.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/climaxsound/ClimaxSoundApplication.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="221" column="35" lean-forward="true" selection-start-line="221" selection-start-column="35" selection-end-line="221" selection-end-column="35" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/services/impl/UserServiceImpl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-35">
-              <caret line="169" column="49" selection-start-line="169" selection-start-column="49" selection-end-line="169" selection-end-column="49" />
+            <state relative-caret-position="441">
+              <caret line="34" column="32" selection-start-line="34" selection-start-column="32" selection-end-line="34" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -143,9 +162,75 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/lambda_user">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/events/OnRegistrationCompleteEvent.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="126">
+              <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/HerokuNotIdle.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="13" selection-start-line="13" selection-end-line="14" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/TokenCleaner.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="126">
+              <caret line="19" column="21" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/events/OnResetPasswordEvent.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="126">
+              <caret line="11" column="81" selection-start-line="11" selection-start-column="81" selection-end-line="11" selection-end-column="81" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/events/CustomEvent.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="84">
+              <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/ApplicationConfiguration.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/services/impl/UserDetailServiceImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="331">
+              <caret line="64" column="5" selection-start-line="64" selection-start-column="5" selection-end-line="64" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="das://3c5cd30b-bff9-4fb2-b1cb-e5ac2a75f8fc/database/d9lfgg6p1rlj1/schema/public/table/lambda_user">
           <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-            <state projectRestartId="fe481e5b-c10e-4fe5-be80-2085cbe6dbb8">
+            <state projectRestartId="8df6da90-c486-4f91-b448-a919cfd557f8">
               <filtering>
                 <filter text="" />
               </filtering>
@@ -154,37 +239,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/models/forms/PasswordDto.java">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="175">
-              <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/validators/constraints/RepeatedPasswordConstraint.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
-              <caret line="13" column="44" lean-forward="true" selection-start-line="13" selection-start-column="44" selection-end-line="13" selection-end-column="44" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/validators/RepeatedPasswordValidator.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="14" column="90" selection-start-line="14" selection-start-column="90" selection-end-line="14" selection-end-column="90" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="504">
+              <caret line="24" column="57" selection-start-line="24" selection-start-column="57" selection-end-line="24" selection-end-column="57" />
             </state>
           </provider>
         </entry>
@@ -231,16 +289,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/services/impl/JwtTokenProvider.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/security_filter/JwtAuthenticationFilter.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/services/StorageService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/models/entities/Role.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/services/impl/PrivilegeServiceImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/services/RoleService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/services/impl/RoleServiceImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repositories/RoleRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/models/utilities/CustomUserDetails.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/services/impl/UserDetailServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/security/DataSeedingListener.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/ClimaxSoundApplicationTests.java" />
         <option value="$PROJECT_DIR$/mysql.env" />
@@ -248,17 +296,11 @@
         <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/security/OAuth2ResourceServerConfig.java" />
         <option value="$PROJECT_DIR$/build.gradle" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/HerokuNotIdle.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repositories/UserRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/models/entities/User.java" />
         <option value="$PROJECT_DIR$/yahoo_mail.env" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/models/entities/VerificationToken.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/TokenCleaner.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/customizations/CustomBadRequestHandler.java" />
         <option value="$PROJECT_DIR$/host.env" />
-        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
         <option value="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/ClimaxSoundTestConfiguration.java" />
-        <option value="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/repositories_test/CountryRepositoryTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/models/entities/PasswordResetToken.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/exceptions/UserNotFoundException.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/events/OnRegistrationCompleteEvent.java" />
@@ -267,26 +309,41 @@
         <option value="$PROJECT_DIR$/src/main/resources/static/i18n/message.properties" />
         <option value="$PROJECT_DIR$/src/main/resources/static/i18n/message_en.properties" />
         <option value="$PROJECT_DIR$/src/main/resources/static/i18n/message_vi.properties" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repositories/PasswordResetTokenRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/repositories/VerificationTokenRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/services/UserService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/services/impl/UserServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/exceptions/exception_handler/CustomGlobalExceptionHandler.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/repositories_test/ArtistRepositoryTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/models/forms/PasswordDto.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/models/forms/GetResetPasswordTokenForm.java" />
-        <option value="$APPLICATION_CONFIG_DIR$/consoles/.datagrid/cell" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/listeners/CustomListener.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/listeners/ResetPasswordListener.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/listeners/RegistrationListener.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/validators/constraints/RepeatedPasswordConstraint.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/controllers/UserRestController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/validators/RepeatedPasswordValidator.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repositories/PasswordResetTokenRepository.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/HerokuNotIdle.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/controllers/UserRestController.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/repositories_test/CountryRepositoryTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/helpers/CustomUserJsonSerializer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/models/entities/Comment.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/services/impl/FormConvertService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/services/UserService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/customizations/CustomRestAuthenticationSuccessHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/services/impl/UserServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/test/resources/application.properties" />
+        <option value="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/repositories_test/UserRepositoryTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/models/entities/Role.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/models/entities/User.java" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/.datagrid/cell" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/repositories/UserRepository.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/climaxsound/ClimaxSoundApplication.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/listeners/DataSeedingListener.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/TokenCleaner.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
+        <option value="$PROJECT_DIR$/src/main/java/com/lambda/services/impl/UserDetailServiceImpl.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-10" />
     <option name="width" value="980" />
     <option name="height" value="1040" />
   </component>
@@ -296,31 +353,12 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
               <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
-              <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="build" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
-              <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="build" type="462c0819:PsiDirectoryNode" />
-              <item name="tmp" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
-              <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="build" type="462c0819:PsiDirectoryNode" />
-              <item name="tmp" type="462c0819:PsiDirectoryNode" />
-              <item name="bootJar" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
@@ -374,27 +412,7 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="lambda" type="462c0819:PsiDirectoryNode" />
               <item name="configurations" type="462c0819:PsiDirectoryNode" />
-              <item name="customizations" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
-              <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="lambda" type="462c0819:PsiDirectoryNode" />
-              <item name="configurations" type="462c0819:PsiDirectoryNode" />
               <item name="events" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
-              <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="lambda" type="462c0819:PsiDirectoryNode" />
-              <item name="configurations" type="462c0819:PsiDirectoryNode" />
-              <item name="filters" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
@@ -452,7 +470,7 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="lambda" type="462c0819:PsiDirectoryNode" />
               <item name="exceptions" type="462c0819:PsiDirectoryNode" />
-              <item name="exception_handler" type="462c0819:PsiDirectoryNode" />
+              <item name="exception_handlers" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
@@ -544,43 +562,7 @@
               <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="lambda" type="462c0819:PsiDirectoryNode" />
-              <item name="validators" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
-              <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="lambda" type="462c0819:PsiDirectoryNode" />
-              <item name="validators" type="462c0819:PsiDirectoryNode" />
-              <item name="constraints" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
-              <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
-              <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="i18n" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
-              <item name="spring-climax-sound" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="i18n" type="462c0819:PsiDirectoryNode" />
-              <item name="Resource Bundle 'message'" type="a6c14932:ResourceBundleNode" />
             </path>
             <path>
               <item name="climax-sound" type="b2602c69:ProjectViewProjectNode" />
@@ -623,6 +605,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -665,7 +648,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="MTConfigurable" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.ide.settings.notifications" />
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
@@ -868,6 +851,36 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="UserRepositoryTest.whenFindByName_thenReturnCountry" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="climax-sound.test" />
+      <shortenClasspath name="MANIFEST" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lambda.climaxsound.repositories_test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <extension name="net.ashald.envfile">
+        <option name="IS_ENABLED" value="true" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" />
+          <ENTRY IS_ENABLED="true" PARSER="env" PATH="$PROJECT_DIR$/../environment/mysql.env" />
+          <ENTRY IS_ENABLED="true" PARSER="env" PATH="$PROJECT_DIR$/../environment/host.env" />
+        </ENTRIES>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.lambda.climaxsound.repositories_test" />
+      <option name="MAIN_CLASS_NAME" value="com.lambda.climaxsound.repositories_test.UserRepositoryTest" />
+      <option name="METHOD_NAME" value="whenFindByName_thenReturnCountry" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="PARAMETERS" value="" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ClimaxSoundApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="climax-sound.main" />
       <extension name="net.ashald.envfile">
@@ -895,10 +908,12 @@
       <item itemvalue="JUnit.CountryRepositoryTest" />
       <item itemvalue="JUnit.ArtistRepositoryTest" />
       <item itemvalue="JUnit.ArtistRepositoryTest.whenFindAll_returnArtistIterable" />
+      <item itemvalue="JUnit.UserRepositoryTest.whenFindByName_thenReturnCountry" />
       <item itemvalue="Spring Boot.ClimaxSoundApplication" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.UserRepositoryTest.whenFindByName_thenReturnCountry" />
         <item itemvalue="JUnit.ArtistRepositoryTest" />
         <item itemvalue="JUnit.ArtistRepositoryTest.whenFindAll_returnArtistIterable" />
       </list>
@@ -1145,14 +1160,14 @@
       <workItem from="1575398627002" duration="2809000" />
       <workItem from="1575476776585" duration="5595000" />
       <workItem from="1575557559387" duration="7531000" />
-      <workItem from="1575567676330" duration="3070000" />
-    </task>
-    <task id="LOCAL-00089" summary="version 0.999">
-      <created>1574073367098</created>
-      <option name="number" value="00089" />
-      <option name="presentableId" value="LOCAL-00089" />
-      <option name="project" value="LOCAL" />
-      <updated>1574073367098</updated>
+      <workItem from="1575567676330" duration="5763000" />
+      <workItem from="1575646497744" duration="2922000" />
+      <workItem from="1575653196052" duration="1950000" />
+      <workItem from="1575660032717" duration="761000" />
+      <workItem from="1575723360958" duration="1202000" />
+      <workItem from="1575731177523" duration="3024000" />
+      <workItem from="1575737456539" duration="7081000" />
+      <workItem from="1575764272203" duration="1370000" />
     </task>
     <task id="LOCAL-00090" summary="version 0.999">
       <created>1574074172856</created>
@@ -1490,43 +1505,50 @@
       <option name="project" value="LOCAL" />
       <updated>1575401325880</updated>
     </task>
-    <option name="localTasksCounter" value="138" />
+    <task id="LOCAL-00138" summary="add reset password">
+      <created>1575571436819</created>
+      <option name="number" value="00138" />
+      <option name="presentableId" value="LOCAL-00138" />
+      <option name="project" value="LOCAL" />
+      <updated>1575571436820</updated>
+    </task>
+    <option name="localTasksCounter" value="139" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="CountryRepositoryTest_whenFindAll_thenReturn4Countries - 2019.12.04 at 01h 59m 42s.xml">
-      <configuration name="CountryRepositoryTest.whenFindAll_thenReturn4Countries" configurationId="JUnit" />
+    <history-entry file="UserRepositoryTest_whenFindByName_thenReturnCountry - 2019.12.08 at 01h 23m 13s.xml">
+      <configuration name="UserRepositoryTest.whenFindByName_thenReturnCountry" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="CountryRepositoryTest_whenFindAll_thenReturn4Countries - 2019.12.04 at 02h 02m 20s.xml">
-      <configuration name="CountryRepositoryTest.whenFindAll_thenReturn4Countries" configurationId="JUnit" />
+    <history-entry file="UserRepositoryTest_whenFindByName_thenReturnCountry - 2019.12.08 at 01h 23m 44s.xml">
+      <configuration name="UserRepositoryTest.whenFindByName_thenReturnCountry" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="CountryRepositoryTest_whenFindAll_thenReturn4Countries - 2019.12.04 at 02h 03m 15s.xml">
-      <configuration name="CountryRepositoryTest.whenFindAll_thenReturn4Countries" configurationId="JUnit" />
+    <history-entry file="UserRepositoryTest_whenFindByName_thenReturnCountry - 2019.12.08 at 01h 25m 40s.xml">
+      <configuration name="UserRepositoryTest.whenFindByName_thenReturnCountry" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="CountryRepositoryTest_whenFindAll_thenReturn4Countries - 2019.12.04 at 02h 04m 59s.xml">
-      <configuration name="CountryRepositoryTest.whenFindAll_thenReturn4Countries" configurationId="JUnit" />
+    <history-entry file="UserRepositoryTest_whenFindByName_thenReturnCountry - 2019.12.08 at 01h 26m 12s.xml">
+      <configuration name="UserRepositoryTest.whenFindByName_thenReturnCountry" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="CountryRepositoryTest_whenFindAll_thenReturn4Countries - 2019.12.04 at 02h 09m 14s.xml">
-      <configuration name="CountryRepositoryTest.whenFindAll_thenReturn4Countries" configurationId="JUnit" />
+    <history-entry file="UserRepositoryTest_whenFindByName_thenReturnCountry - 2019.12.08 at 01h 26m 28s.xml">
+      <configuration name="UserRepositoryTest.whenFindByName_thenReturnCountry" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="CountryRepositoryTest - 2019.12.04 at 02h 12m 57s.xml">
-      <configuration name="CountryRepositoryTest" configurationId="JUnit" />
+    <history-entry file="UserRepositoryTest_whenFindByName_thenReturnCountry - 2019.12.08 at 01h 27m 16s.xml">
+      <configuration name="UserRepositoryTest.whenFindByName_thenReturnCountry" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="CountryRepositoryTest - 2019.12.04 at 02h 14m 14s.xml">
-      <configuration name="CountryRepositoryTest" configurationId="JUnit" />
+    <history-entry file="UserRepositoryTest_whenFindByName_thenReturnCountry - 2019.12.08 at 01h 28m 41s.xml">
+      <configuration name="UserRepositoryTest.whenFindByName_thenReturnCountry" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="CountryRepositoryTest - 2019.12.04 at 02h 15m 57s.xml">
-      <configuration name="CountryRepositoryTest" configurationId="JUnit" />
+    <history-entry file="UserRepositoryTest_whenFindByName_thenReturnCountry - 2019.12.08 at 01h 29m 37s.xml">
+      <configuration name="UserRepositoryTest.whenFindByName_thenReturnCountry" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ArtistRepositoryTest - 2019.12.04 at 02h 22m 57s.xml">
-      <configuration name="ArtistRepositoryTest" configurationId="JUnit" />
+    <history-entry file="UserRepositoryTest_whenFindByName_thenReturnCountry - 2019.12.08 at 01h 29m 58s.xml">
+      <configuration name="UserRepositoryTest.whenFindByName_thenReturnCountry" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ArtistRepositoryTest - 2019.12.05 at 21h 57m 31s.xml">
-      <configuration name="ArtistRepositoryTest" configurationId="JUnit" />
+    <history-entry file="UserRepositoryTest_whenFindByName_thenReturnCountry - 2019.12.08 at 01h 30m 48s.xml">
+      <configuration name="UserRepositoryTest.whenFindByName_thenReturnCountry" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="904051000" />
+    <option name="totallyTimeSpent" value="925054000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1539,9 +1561,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-1" width="1920" height="1040" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4974093" visible="true" weight="0.23479189" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4974093" visible="true" weight="0.18409818" />
       <window_info id="Structure" order="1" sideWeight="0.50259066" side_tool="true" weight="0.17342582" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -1551,21 +1572,21 @@
       <window_info id="Learn" order="7" />
       <window_info id="Web" order="8" sideWeight="0.5011062" side_tool="true" weight="0.24332978" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32664436" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49786553" weight="0.37235227" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4994664" visible="true" weight="0.35785952" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32599118" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49731904" visible="true" weight="0.37123746" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49798927" weight="0.35682818" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32887402" />
-      <window_info anchor="bottom" id="Build" order="7" weight="0.32890365" />
-      <window_info anchor="bottom" id="sbt-shell-toolwindow" order="8" />
-      <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50213444" side_tool="true" weight="0.36417034" />
-      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49893278" weight="0.26086956" />
+      <window_info anchor="bottom" id="Build" order="6" weight="0.32890365" />
+      <window_info anchor="bottom" id="sbt-shell-toolwindow" order="7" />
+      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5020107" side_tool="true" weight="0.35682818" />
+      <window_info anchor="bottom" id="TODO" order="10" weight="0.3274596" />
+      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49893278" weight="0.26028922" />
       <window_info anchor="bottom" id="Java Enterprise" order="12" weight="0.3277592" />
       <window_info anchor="bottom" id="Spring" order="13" weight="0.32664436" />
       <window_info anchor="bottom" id="Version Control" order="14" weight="0.29319954" />
-      <window_info anchor="bottom" id="Messages" order="15" weight="0.33556297" />
+      <window_info anchor="bottom" id="Messages" order="15" weight="0.33480176" />
       <window_info anchor="bottom" id="Database Changes" order="16" weight="0.3274596" />
       <window_info anchor="bottom" id="Database Console" order="17" weight="0.3255814" />
       <window_info anchor="bottom" id="SQL Generator" order="18" weight="0.3274596" />
@@ -1580,7 +1601,7 @@
       <window_info anchor="right" id="Palette&#9;" order="8" />
       <window_info anchor="right" id="Theme Preview" order="9" />
       <window_info anchor="right" id="Coverage" order="10" sideWeight="0.50086355" side_tool="true" weight="0.17182498" />
-      <window_info anchor="right" id="Database" order="11" sideWeight="0.49913645" visible="true" weight="0.23479189" />
+      <window_info active="true" anchor="right" id="Database" order="11" sideWeight="0.49913645" visible="true" weight="0.2289221" />
       <window_info anchor="right" id="Bean Validation" order="12" weight="0.32924226" />
     </layout>
     <layout-to-restore>
@@ -1669,7 +1690,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="add edit song" />
     <MESSAGE value="add upload album feature" />
     <MESSAGE value="playlist minor bug fixes" />
     <MESSAGE value="update ui" />
@@ -1694,7 +1714,8 @@
     <MESSAGE value="version 0.999" />
     <MESSAGE value="version 2" />
     <MESSAGE value="add Email verification" />
-    <option name="LAST_COMMIT_MESSAGE" value="add Email verification" />
+    <MESSAGE value="add reset password" />
+    <option name="LAST_COMMIT_MESSAGE" value="add reset password" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1707,21 +1728,21 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/lambda/controllers/UserRestController.java</url>
-          <line>197</line>
+          <line>261</line>
           <properties />
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/lambda/controllers/UserRestController.java</url>
-          <line>181</line>
+          <line>251</line>
           <properties />
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/lambda/controllers/UserRestController.java</url>
-          <line>219</line>
+          <url>file://$PROJECT_DIR$/src/main/java/com/lambda/controllers/SongRestController.java</url>
+          <line>88</line>
           <properties />
-          <option name="timeStamp" value="14" />
+          <option name="timeStamp" value="21" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -1732,166 +1753,203 @@
     </SUITE>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/5.2.1.RELEASE/55e7202309d932c4d47ccec00500f98425406309/spring-core-5.2.1.RELEASE-sources.jar!/org/springframework/cglib/proxy/MethodProxy.java">
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/5.2.1.RELEASE/e13efee00643e55716f214a22e4f6a8fb8e3817/spring-tx-5.2.1.RELEASE-sources.jar!/org/springframework/transaction/interceptor/TransactionAspectSupport.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="217" selection-start-line="217" selection-end-line="217" />
+        <state relative-caret-position="154">
+          <caret line="385" selection-start-line="385" selection-end-line="385" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.env" />
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/5.2.1.RELEASE/43da4e562e25c4c5931e2dec04f2037f9d230391/spring-context-5.2.1.RELEASE-sources.jar!/org/springframework/context/event/SimpleApplicationEventMulticaster.java">
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/5.2.1.RELEASE/e13efee00643e55716f214a22e4f6a8fb8e3817/spring-tx-5.2.1.RELEASE-sources.jar!/org/springframework/transaction/interceptor/TransactionInterceptor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="140" selection-start-line="140" selection-end-line="140" />
+        <state relative-caret-position="138">
+          <caret line="98" selection-start-line="98" selection-end-line="98" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/customizations/CustomBadRequestHandler.java">
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/5.2.1.RELEASE/37720d061b744366e1e1faf5aa6838df99f3ec47/spring-aop-5.2.1.RELEASE-sources.jar!/org/springframework/aop/framework/ReflectiveMethodInvocation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="379">
-          <caret line="20" column="5" lean-forward="true" selection-start-line="20" selection-start-column="5" selection-end-line="20" selection-end-column="5" />
+        <state relative-caret-position="130">
+          <caret line="185" selection-start-line="185" selection-end-line="185" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/5.2.1.RELEASE/37720d061b744366e1e1faf5aa6838df99f3ec47/spring-aop-5.2.1.RELEASE-sources.jar!/org/springframework/aop/framework/CglibAopProxy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="691" selection-start-line="691" selection-end-line="691" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/5.2.1.RELEASE/43da4e562e25c4c5931e2dec04f2037f9d230391/spring-context-5.2.1.RELEASE-sources.jar!/org/springframework/context/event/ApplicationListenerMethodAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="138">
+          <caret line="299" selection-start-line="299" selection-end-line="299" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/models/forms/GetResetPasswordTokenForm.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/models/forms/UserForm.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/validators/constraints/RepeatedPasswordConstraint.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/validators/RepeatedPasswordValidator.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/controllers/UserRestController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="141">
+          <caret line="145" column="46" selection-start-line="145" selection-start-column="46" selection-end-line="145" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/5.2.1.RELEASE/5247d73874757aa411626d2bf156360768005dc5/spring-web-5.2.1.RELEASE-sources.jar!/org/springframework/web/context/request/WebRequest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/models/forms/PasswordDto.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/repositories_test/CountryRepositoryTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="109">
-          <caret line="35" column="17" selection-start-line="35" selection-start-column="17" selection-end-line="35" selection-end-column="17" />
+        <state relative-caret-position="205">
+          <caret line="44" column="4" lean-forward="true" selection-start-line="44" selection-start-column="4" selection-end-line="48" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/helpers/CustomUserJsonSerializer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="26" column="71" selection-start-line="26" selection-start-column="71" selection-end-line="26" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/models/entities/Comment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="42" column="39" lean-forward="true" selection-start-line="42" selection-start-column="39" selection-end-line="42" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/models/entities/PasswordResetToken.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="92">
+          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/services/impl/FormConvertService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="48">
-          <caret line="117" column="16" selection-start-line="117" selection-start-column="16" selection-end-line="117" selection-end-column="16" />
+        <state relative-caret-position="227">
+          <caret line="119" column="56" selection-start-line="119" selection-start-column="56" selection-end-line="119" selection-end-column="56" />
         </state>
       </provider>
     </entry>
-    <entry file="jar:///usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar!/java/lang/Thread.class">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/yahoo_mail.env" />
-    <entry file="file://$PROJECT_DIR$/host.env" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/HerokuNotIdle.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/services/UserService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="16" column="68" selection-start-line="16" selection-start-column="35" selection-end-line="16" selection-end-column="68" />
+        <state relative-caret-position="33">
+          <caret line="11" column="18" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="18" />
         </state>
       </provider>
     </entry>
-    <entry file="das://3c5cd30b-bff9-4fb2-b1cb-e5ac2a75f8fc/database/d9lfgg6p1rlj1/schema/public/table/verification_token">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="4a05b2fe-10a4-4f54-bb27-3bb0a973d0dc">
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://3c5cd30b-bff9-4fb2-b1cb-e5ac2a75f8fc/database/d9lfgg6p1rlj1/schema/public/table/user_role">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="4a05b2fe-10a4-4f54-bb27-3bb0a973d0dc">
-          <filtering>
-            <filter text="" />
-          </filtering>
-          <column-attributes>
-            <column name="ctid" enabled="false" position="-1" />
-          </column-attributes>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://3c5cd30b-bff9-4fb2-b1cb-e5ac2a75f8fc/database/d9lfgg6p1rlj1/schema/public/table/lambda_user">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="4a05b2fe-10a4-4f54-bb27-3bb0a973d0dc">
-          <filtering>
-            <filter text="" />
-          </filtering>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/customizations/CustomRestAuthenticationSuccessHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="36" column="12" selection-start-line="36" selection-start-column="12" selection-end-line="36" selection-end-column="12" />
         </state>
       </provider>
     </entry>
     <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/user_role">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="4a05b2fe-10a4-4f54-bb27-3bb0a973d0dc">
+        <state>
           <filtering>
             <filter text="" />
           </filtering>
         </state>
       </provider>
     </entry>
-    <entry file="das://3c5cd30b-bff9-4fb2-b1cb-e5ac2a75f8fc/database/d9lfgg6p1rlj1/schema/public/table/country">
+    <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/lambda_user">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="cad757f1-620c-493d-8e87-2325ce6483fd">
+        <state>
           <filtering>
             <filter text="" />
           </filtering>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="31" column="5" lean-forward="true" selection-start-line="31" selection-end-line="31" selection-end-column="28" />
+    <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/role">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering>
+            <filter text="" />
+          </filtering>
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/TokenCleaner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="169">
-          <caret line="18" column="82" selection-start-line="18" selection-start-column="4" selection-end-line="18" selection-end-column="82" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/ClimaxSoundApplicationTests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="8" selection-start-line="8" selection-end-line="8" selection-end-column="74" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/ClimaxSoundTestConfiguration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="9" column="42" selection-start-line="9" selection-start-column="42" selection-end-line="9" selection-end-column="42" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/_config.yml">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/resources/application.properties">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/repositories_test/CountryRepositoryTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="10" column="60" selection-start-line="10" selection-start-column="60" selection-end-line="10" selection-end-column="60" />
+        <state relative-caret-position="231">
+          <caret line="24" column="57" selection-start-line="24" selection-start-column="57" selection-end-line="24" selection-end-column="57" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/models/entities/VerificationToken.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/models/entities/Role.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="338">
-          <caret line="39" column="8" lean-forward="true" selection-start-line="39" selection-start-column="8" selection-end-line="41" selection-end-column="66" />
+        <state relative-caret-position="127">
+          <caret line="13" column="19" selection-start-line="13" selection-start-column="19" selection-end-line="13" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/models/entities/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="66" column="39" selection-start-line="66" selection-start-column="39" selection-end-line="66" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/5.2.1.RELEASE/55e7202309d932c4d47ccec00500f98425406309/spring-core-5.2.1.RELEASE-sources.jar!/org/springframework/cglib/proxy/MethodProxy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="220" selection-start-line="220" selection-end-line="220" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/controllers/SongRestController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="92" selection-start-line="92" selection-end-line="92" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repositories/PasswordResetTokenRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="48">
+          <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/listeners/DataSeedingListener.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/services/impl/UserServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="137">
+          <caret line="50" column="30" selection-start-line="50" selection-start-column="30" selection-end-line="50" selection-end-column="30" />
+          <folding>
+            <element signature="e#1714#1715#0" expanded="true" />
+            <element signature="e#1776#1777#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repositories/UserRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="24" column="35" selection-start-line="24" selection-start-column="35" selection-end-line="24" selection-end-column="35" />
+        <state relative-caret-position="240">
+          <caret line="18" column="29" selection-start-line="18" selection-start-column="19" selection-end-line="18" selection-end-column="33" />
           <folding>
             <element signature="e#0#62#1" expanded="true" />
             <element signature="e#0#74#1" expanded="true" />
@@ -1899,111 +1957,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/exceptions/UserNotFoundException.java">
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/repositories_test/UserRepositoryTest.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/climaxsound/ClimaxSoundApplication.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="22" column="1" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
+        <state relative-caret-position="441">
+          <caret line="34" column="32" selection-start-line="34" selection-start-column="32" selection-end-line="34" selection-end-column="32" />
           <folding>
-            <element signature="e#208#209#0" expanded="true" />
-            <element signature="e#231#232#0" expanded="true" />
-            <element signature="e#312#313#0" expanded="true" />
-            <element signature="e#349#350#0" expanded="true" />
-            <element signature="e#407#408#0" expanded="true" />
-            <element signature="e#437#438#0" expanded="true" />
-            <element signature="e#496#497#0" expanded="true" />
-            <element signature="e#524#525#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/events/OnRegistrationCompleteEvent.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="11" column="79" lean-forward="true" selection-start-line="11" selection-start-column="79" selection-end-line="11" selection-end-column="79" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/static/i18n/message.properties">
-      <provider editor-type-id="ResourceBundle" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="42">
-          <caret line="2" selection-start-line="2" selection-end-line="3" selection-end-column="70" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/static/i18n/message_vi.properties">
-      <provider editor-type-id="ResourceBundle" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="63">
-          <caret line="3" column="77" selection-start-line="3" selection-start-column="77" selection-end-line="3" selection-end-column="77" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/static/i18n/message_en.properties">
-      <provider editor-type-id="ResourceBundle" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="63">
-          <caret line="3" column="70" selection-start-line="3" selection-start-column="70" selection-end-line="3" selection-end-column="70" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repositories/PasswordResetTokenRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="126">
-          <caret line="6" selection-start-line="6" selection-end-line="6" selection-end-column="11" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repositories/VerificationTokenRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="10" column="11" selection-start-line="10" selection-start-column="11" selection-end-line="10" selection-end-column="11" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/models/entities/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="366">
-          <caret line="39" selection-start-line="39" selection-end-line="39" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/exceptions/exception_handler/CustomGlobalExceptionHandler.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/HerokuNotIdle.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
-          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+          <caret line="13" selection-start-line="13" selection-end-line="14" selection-end-column="14" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/repositories/ArtistRepository.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/TokenCleaner.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="27" column="21" selection-start-line="27" selection-start-column="21" selection-end-line="27" selection-end-column="21" />
+        <state relative-caret-position="126">
+          <caret line="19" column="21" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
         </state>
       </provider>
     </entry>
-    <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/verification_token">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="e903c56f-3039-411a-bbf3-c4192abee9cc">
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/repositories_test/ArtistRepositoryTest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/events/OnResetPasswordEvent.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="34" selection-start-line="34" selection-start-column="2" selection-end-line="43" selection-end-column="7" />
+        <state relative-caret-position="126">
+          <caret line="11" column="81" selection-start-line="11" selection-start-column="81" selection-end-line="11" selection-end-column="81" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -2012,143 +2001,38 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/events/CustomEvent.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="6" column="9" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="9" />
+        <state relative-caret-position="84">
+          <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/events/OnResetPasswordEvent.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/ApplicationConfiguration.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="11" column="81" selection-start-line="11" selection-start-column="81" selection-end-line="11" selection-end-column="81" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="105">
+          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/models/forms/GetResetPasswordTokenForm.java">
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="504">
+          <caret line="24" column="57" selection-start-line="24" selection-start-column="57" selection-end-line="24" selection-end-column="57" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/models/entities/PasswordResetToken.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/services/impl/UserDetailServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="284">
-          <caret line="37" column="11" selection-start-line="37" selection-start-column="11" selection-end-line="37" selection-end-column="11" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="331">
+          <caret line="64" column="5" selection-start-line="64" selection-start-column="5" selection-end-line="64" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/listeners/CustomListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="27" column="64" selection-start-line="27" selection-start-column="64" selection-end-line="27" selection-end-column="64" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/listeners/ResetPasswordListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="39" selection-start-line="39" selection-end-line="39" selection-end-column="36" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/listeners/RegistrationListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="41" column="73" selection-start-line="41" selection-start-column="73" selection-end-line="41" selection-end-column="73" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/password_reset_token">
+    <entry file="das://3c5cd30b-bff9-4fb2-b1cb-e5ac2a75f8fc/database/d9lfgg6p1rlj1/schema/public/table/lambda_user">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="fe481e5b-c10e-4fe5-be80-2085cbe6dbb8">
+        <state projectRestartId="8df6da90-c486-4f91-b448-a919cfd557f8">
           <filtering>
             <filter text="" />
           </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/models/forms/PasswordDto.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/validators/constraints/RepeatedPasswordConstraint.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="13" column="44" lean-forward="true" selection-start-line="13" selection-start-column="44" selection-end-line="13" selection-end-column="44" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/validators/RepeatedPasswordValidator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="14" column="90" selection-start-line="14" selection-start-column="90" selection-end-line="14" selection-end-column="90" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/lambda_user">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state projectRestartId="fe481e5b-c10e-4fe5-be80-2085cbe6dbb8">
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/services/UserService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="29" column="9" selection-start-line="29" selection-start-column="9" selection-end-line="29" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/controllers/UserRestController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="221" column="35" lean-forward="true" selection-start-line="221" selection-start-column="35" selection-end-line="221" selection-end-column="35" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/services/impl/UserServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-35">
-          <caret line="169" column="49" selection-start-line="169" selection-start-column="49" selection-end-line="169" selection-end-column="49" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>

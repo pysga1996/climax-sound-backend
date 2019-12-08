@@ -34,7 +34,7 @@ public class CustomRestAuthenticationSuccessHandler extends SavedRequestAwareAut
         String username = authentication.getPrincipal().toString();
         Optional<User> user = userService.findByUsername(username);
 
-        user.ifPresent(value -> LOGGER.info(value.getUsername() + " got is connected "));
+        user.ifPresent(value -> LOGGER.info(value + " got is connected "));
 
         PrintWriter writer = response.getWriter();
         mapper.writeValue(writer, user);

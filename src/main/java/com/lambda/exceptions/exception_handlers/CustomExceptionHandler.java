@@ -1,4 +1,4 @@
-package com.lambda.exceptions.exception_handler;
+package com.lambda.exceptions.exception_handlers;
 
 import com.lambda.models.utilities.ApiError;
 import org.springframework.http.HttpHeaders;
