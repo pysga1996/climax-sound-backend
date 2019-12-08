@@ -16,7 +16,7 @@ public class HerokuNotIdle {
 
     private static final Logger LOG = LoggerFactory.getLogger(HerokuNotIdle.class);
 
-    @Scheduled(fixedDelay=120000)
+    @Scheduled(fixedDelay=1800000)
     public void herokuNotIdle(){
         LOG.debug("Heroku not idle execution");
         RestTemplate restTemplate = new RestTemplate();
