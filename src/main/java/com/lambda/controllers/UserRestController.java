@@ -269,4 +269,14 @@ public class UserRestController {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
+
+        @GetMapping("/test")
+        public ResponseEntity<String> test() {
+            try {
+                return new ResponseEntity<>("Test", HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
     }

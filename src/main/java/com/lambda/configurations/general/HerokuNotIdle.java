@@ -20,6 +20,6 @@ public class HerokuNotIdle {
     public void herokuNotIdle(){
         LOG.debug("Heroku not idle execution");
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.getForObject(environment.getProperty("BACKEND_HOST"), Object.class);
+        restTemplate.getForObject(environment.getProperty("BACKEND_HOST") + "/climax-sound/api/test", Object.class);
     }
 }
