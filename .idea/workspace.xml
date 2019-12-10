@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="bc94efd9-f0bc-40eb-ad2a-87d2fc0f8ca5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/HerokuNotIdle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/HerokuNotIdle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/classes/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -130,11 +132,14 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/HerokuNotIdle.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="22" column="108" selection-start-line="22" selection-start-column="108" selection-end-line="22" selection-end-column="108" />
+            <state relative-caret-position="270">
+              <caret line="17" column="32" selection-start-line="17" selection-start-column="32" selection-end-line="17" selection-end-column="32" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -148,11 +153,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2280">
-              <caret line="95" column="23" selection-start-line="95" selection-start-column="23" selection-end-line="95" selection-end-column="23" />
+            <state relative-caret-position="212">
+              <caret line="25" column="37" selection-start-line="25" selection-start-column="37" selection-end-line="25" selection-end-column="37" />
             </state>
           </provider>
         </entry>
@@ -170,7 +175,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/TokenCleaner.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="264">
-              <caret line="24" column="14" selection-start-line="24" selection-start-column="14" selection-end-line="24" selection-end-column="14" />
+              <caret line="24" column="14" lean-forward="true" selection-start-line="24" selection-start-column="14" selection-end-line="24" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -235,7 +240,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/customizations/CustomBadRequestHandler.java" />
         <option value="$PROJECT_DIR$/host.env" />
         <option value="$PROJECT_DIR$/src/test/java/com/lambda/climaxsound/ClimaxSoundTestConfiguration.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/models/entities/PasswordResetToken.java" />
@@ -281,11 +285,12 @@
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/security/OAuth2ResourceServerConfig.java" />
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/services/StorageService.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
         <option value="$PROJECT_DIR$/src/test/resources/application.properties" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/.datagrid/cell" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/controllers/UserRestController.java" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/3c5cd30b-bff9-4fb2-b1cb-e5ac2a75f8fc/console.sql" />
         <option value="$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/HerokuNotIdle.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
       </list>
     </option>
   </component>
@@ -299,7 +304,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -562,7 +567,7 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1132,13 +1137,9 @@
       <workItem from="1575916058212" duration="853000" />
       <workItem from="1575917791926" duration="1092000" />
       <workItem from="1575921172625" duration="94000" />
-    </task>
-    <task id="LOCAL-00096" summary="version 0.999">
-      <created>1574080691702</created>
-      <option name="number" value="00096" />
-      <option name="presentableId" value="LOCAL-00096" />
-      <option name="project" value="LOCAL" />
-      <updated>1574080691702</updated>
+      <workItem from="1575921888305" duration="1127000" />
+      <workItem from="1575958850506" duration="676000" />
+      <workItem from="1575981307080" duration="1642000" />
     </task>
     <task id="LOCAL-00097" summary="version 0.999">
       <created>1574086094191</created>
@@ -1476,7 +1477,14 @@
       <option name="project" value="LOCAL" />
       <updated>1575916292007</updated>
     </task>
-    <option name="localTasksCounter" value="145" />
+    <task id="LOCAL-00145" summary="add hikari pool config">
+      <created>1575921924448</created>
+      <option name="number" value="00145" />
+      <option name="presentableId" value="LOCAL-00145" />
+      <option name="project" value="LOCAL" />
+      <updated>1575921924450</updated>
+    </task>
+    <option name="localTasksCounter" value="146" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1512,7 +1520,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="950740000" />
+    <option name="totallyTimeSpent" value="954185000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1525,8 +1533,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4974093" visible="true" weight="0.20174263" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4974093" visible="true" weight="0.20710456" />
       <window_info id="Structure" order="1" sideWeight="0.50259066" side_tool="true" weight="0.17342582" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -1546,13 +1555,13 @@
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5020107" side_tool="true" weight="0.35682818" />
       <window_info anchor="bottom" id="TODO" order="10" weight="0.3274596" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.49893278" visible="true" weight="0.35535976" />
+      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49893278" visible="true" weight="0.35535976" />
       <window_info anchor="bottom" id="Java Enterprise" order="12" weight="0.3277592" />
       <window_info anchor="bottom" id="Spring" order="13" weight="0.32664436" />
       <window_info anchor="bottom" id="Version Control" order="14" weight="0.29319954" />
       <window_info anchor="bottom" id="Messages" order="15" weight="0.33480176" />
       <window_info anchor="bottom" id="Database Changes" order="16" weight="0.3274596" />
-      <window_info anchor="bottom" id="Database Console" order="17" weight="0.3255814" />
+      <window_info anchor="bottom" id="Database Console" order="17" weight="0.32452276" />
       <window_info anchor="bottom" id="SQL Generator" order="18" weight="0.3274596" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -1739,33 +1748,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/user_role">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/lambda_user">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/role">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
+    <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/user_role" />
+    <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/lambda_user" />
+    <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/role" />
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/models/entities/Role.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="127">
@@ -1923,33 +1908,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/oauth_access_token">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/song">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/oauth_client_details">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering>
-            <filter text="" />
-          </filtering>
-        </state>
-      </provider>
-    </entry>
+    <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/oauth_access_token" />
+    <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/song" />
+    <entry file="das://b20f4906-d80c-4be7-8fff-8bf1061243b5/schema/climax_sound/table/oauth_client_details" />
     <entry file="das://3c5cd30b-bff9-4fb2-b1cb-e5ac2a75f8fc/database/d9lfgg6p1rlj1/schema/public/table/lambda_user" />
     <entry file="das://3c5cd30b-bff9-4fb2-b1cb-e5ac2a75f8fc/database/d9lfgg6p1rlj1/schema/public/table/oauth_access_token" />
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/controllers/SongRestController.java">
@@ -1985,24 +1946,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2280">
-          <caret line="95" column="23" selection-start-line="95" selection-start-column="23" selection-end-line="95" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/resources/application.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1920">
           <caret line="80" selection-start-line="80" selection-end-line="80" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/TokenCleaner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="24" column="14" selection-start-line="24" selection-start-column="14" selection-end-line="24" selection-end-column="14" />
         </state>
       </provider>
     </entry>
@@ -2020,10 +1967,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/3c5cd30b-bff9-4fb2-b1cb-e5ac2a75f8fc/console.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="31" selection-start-column="31" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/HerokuNotIdle.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="108" selection-start-line="22" selection-start-column="108" selection-end-line="22" selection-end-column="108" />
+        <state relative-caret-position="270">
+          <caret line="17" column="32" selection-start-line="17" selection-start-column="32" selection-end-line="17" selection-end-column="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/lambda/configurations/general/TokenCleaner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="24" column="14" lean-forward="true" selection-start-line="24" selection-start-column="14" selection-end-line="24" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="25" column="37" selection-start-line="25" selection-start-column="37" selection-end-line="25" selection-end-column="37" />
         </state>
       </provider>
     </entry>
