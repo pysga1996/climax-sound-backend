@@ -1,4 +1,4 @@
-package com.lambda.configurations.listeners;
+package com.lambda.listeners;
 
 import com.lambda.models.entities.Role;
 import com.lambda.models.entities.User;

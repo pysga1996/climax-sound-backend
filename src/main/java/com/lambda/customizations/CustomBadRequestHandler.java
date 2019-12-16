@@ -1,6 +1,5 @@
-package com.lambda.configurations.customizations;
+package com.lambda.customizations;
 
-import com.lambda.configurations.general.TokenCleaner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

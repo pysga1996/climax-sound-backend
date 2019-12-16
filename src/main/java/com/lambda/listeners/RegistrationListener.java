@@ -1,7 +1,7 @@
-package com.lambda.configurations.listeners;
+package com.lambda.listeners;
 
 
-import com.lambda.configurations.events.OnRegistrationCompleteEvent;
+import com.lambda.events.OnRegistrationCompleteEvent;
 import com.lambda.models.entities.User;
 import com.lambda.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

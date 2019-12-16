@@ -1,4 +1,4 @@
-package com.lambda.configurations.customizations;
+package com.lambda.customizations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lambda.models.entities.User;

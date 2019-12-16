@@ -1,4 +1,4 @@
-package com.lambda.configurations.filters;
+package com.lambda.filters;
 
 public class JwtAuthenticationFilter {
 //        extends OncePerRequestFilter {

@@ -1,14 +1,11 @@
-package com.lambda.configurations.listeners;
+package com.lambda.listeners;
 
-import com.lambda.configurations.events.OnResetPasswordEvent;
+import com.lambda.events.OnResetPasswordEvent;
 import com.lambda.models.entities.User;
 import com.lambda.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
-import org.springframework.core.env.Environment;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;

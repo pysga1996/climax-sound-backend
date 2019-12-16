@@ -1,7 +1,7 @@
 package com.lambda.controllers;
 
-import com.lambda.configurations.events.OnRegistrationCompleteEvent;
-import com.lambda.configurations.events.OnResetPasswordEvent;
+import com.lambda.events.OnRegistrationCompleteEvent;
+import com.lambda.events.OnResetPasswordEvent;
 import com.lambda.exceptions.UserNotFoundException;
 import com.lambda.models.entities.Role;
 import com.lambda.models.entities.User;
@@ -9,7 +9,6 @@ import com.lambda.models.forms.GetResetPasswordTokenForm;
 import com.lambda.models.forms.PasswordDto;
 import com.lambda.models.forms.UserForm;
 import com.lambda.models.utilities.*;
-import com.lambda.repositories.RoleRepository;
 import com.lambda.services.RoleService;
 import com.lambda.services.UserService;
 import com.lambda.services.impl.*;

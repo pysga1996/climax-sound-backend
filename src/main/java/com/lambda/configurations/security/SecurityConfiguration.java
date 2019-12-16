@@ -1,7 +1,7 @@
 package com.lambda.configurations.security;
 
-import com.lambda.configurations.customizations.*;
-import com.lambda.configurations.filters.JwtAuthenticationFilter;
+import com.lambda.customizations.*;
+import com.lambda.filters.JwtAuthenticationFilter;
 import com.lambda.services.PlaylistService;
 import com.lambda.services.impl.PlaylistServiceImpl;
 import com.lambda.services.impl.UserDetailServiceImpl;
@@ -52,7 +52,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter();
     }
-//    @Lazy
+    //    @Lazy
     @Autowired
     PasswordEncoder passwordEncoder;
 
@@ -96,10 +96,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/oauth/token").permitAll()
-                .antMatchers("/api/login", "/api/register",  "/api/song/download/**", "/api/song/upload", "/api/album/upload", "/api/album/download/**").permitAll()
                 .antMatchers("/api/admin/**").access("hasRole('ADMIN')")
-                .antMatchers("/api/**").permitAll()
+                .antMatchers("/oauth/token", "/api/login", "/api/register", "/api/song/download/**", "/api/song/upload", "/api/album/upload", "/api/album/download/**", "/api/**").permitAll()
                 .and().formLogin()
 //                .loginPage("/login")
 //                .loginProcessingUrl("/appLogin")
@@ -118,10 +116,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().logoutSuccessHandler(customRestLogoutSuccessHandler)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
-        ;
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().cors();
         // Thêm một lớp Filter kiểm tra jwt
 //        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.cors();
     }
 }

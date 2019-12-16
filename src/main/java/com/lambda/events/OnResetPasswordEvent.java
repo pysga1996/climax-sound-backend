@@ -1,4 +1,4 @@
-package com.lambda.configurations.events;
+package com.lambda.events;
 
 import com.lambda.models.entities.User;
 import lombok.Data;

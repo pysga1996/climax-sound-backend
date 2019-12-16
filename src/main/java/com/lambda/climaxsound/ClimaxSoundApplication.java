@@ -1,6 +1,6 @@
 package com.lambda.climaxsound;
 
-import com.lambda.configurations.listeners.DataSeedingListener;
+import com.lambda.listeners.DataSeedingListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
