@@ -1,9 +1,11 @@
 package com.lambda.controllers;
 
+import com.google.api.Http;
 import com.lambda.events.OnRegistrationCompleteEvent;
 import com.lambda.events.OnResetPasswordEvent;
 import com.lambda.exceptions.UserNotFoundException;
 import com.lambda.models.entities.Role;
+import com.lambda.models.entities.Setting;
 import com.lambda.models.entities.User;
 import com.lambda.models.forms.GetResetPasswordTokenForm;
 import com.lambda.models.forms.PasswordDto;
@@ -262,6 +264,17 @@ public class UserRestController {
                 userService.deleteById(id);
                 return new ResponseEntity<>(HttpStatus.OK);
             } catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        @PreAuthorize("isAuthenticated()")
+        @PostMapping("/setting")
+        public ResponseEntity<Void> changeSetting(@RequestBody Setting setting) {
+            try {
+                this.userService.changeSetting(setting);
+                return new ResponseEntity<>(HttpStatus.OK);
+            } catch (Exception ex) {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
