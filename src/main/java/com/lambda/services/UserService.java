@@ -1,14 +1,19 @@
 package com.lambda.services;
 
+import com.lambda.models.entities.Setting;
 import com.lambda.models.entities.User;
 import com.lambda.models.entities.VerificationToken;
 import com.lambda.models.utilities.SearchResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
 
 public interface UserService {
+    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+    User getCurrentUser();
     Optional<User> findByUsername(String username);
     Page<User> findAll(Pageable pageable);
     Page<User> findByUsernameContaining(String username, Pageable pageable);
@@ -28,4 +33,5 @@ public interface UserService {
     void createPasswordResetToken(User user, String token);
     void validatePasswordResetToken(long id, String token) throws Exception;
     void changeUserPassword(User user, String password);
+    void changeSetting(Setting setting);
 }

@@ -6,6 +6,7 @@ import com.lambda.models.entities.User;
 import com.lambda.repositories.LikeRepository;
 import com.lambda.services.LikeService;
 import com.lambda.services.SongService;
+import com.lambda.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +21,12 @@ public class LikeServiceImpl implements LikeService {
     LikeRepository likeRepository;
 
     @Autowired
-    UserDetailServiceImpl userDetailService;
+    UserService userService;
 
     @Override
     public void like(Long id) {
         Optional<Song> song = songService.findById(id);
-        User user =  userDetailService.getCurrentUser();
+        User user =  userService.getCurrentUser();
         if (song.isPresent()) {
             Like like = likeRepository.findBySongIdAndUserId(song.get().getId(), user.getId());
             if (like == null) {
@@ -38,7 +39,7 @@ public class LikeServiceImpl implements LikeService {
     @Override
     public void unlike(Long id) {
         Optional<Song> song = songService.findById(id);
-        User currentUser =  userDetailService.getCurrentUser();
+        User currentUser =  userService.getCurrentUser();
         if (song.isPresent()) {
             Like like = likeRepository.findBySongIdAndUserId(song.get().getId(), currentUser.getId());
             if (like != null) {

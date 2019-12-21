@@ -5,10 +5,10 @@ import com.lambda.models.entities.Song;
 import com.lambda.services.AlbumService;
 import com.lambda.services.ArtistService;
 import com.lambda.services.SongService;
+import com.lambda.services.UserService;
 import com.lambda.services.impl.CoverStorageService;
 import com.lambda.services.impl.DownloadService;
 import com.lambda.services.impl.FormConvertService;
-import com.lambda.services.impl.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,7 +36,7 @@ public class AlbumRestController {
     ArtistService artistService;
 
     @Autowired
-    UserDetailServiceImpl userDetailService;
+    UserService userService;
 
     @Autowired
     CoverStorageService coverStorageService;
@@ -82,7 +82,7 @@ public class AlbumRestController {
                 String fileName = coverStorageService.saveToFirebaseStorage(album, file);
                 album.setCoverUrl(fileName);
             }
-            album.setUploader(userDetailService.getCurrentUser());
+            album.setUploader(userService.getCurrentUser());
             albumService.save(album);
             return new ResponseEntity<>(album.getId(), HttpStatus.OK);
         } catch (Exception e) {

@@ -26,7 +26,7 @@ import java.util.Date;
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"avatarBlobString"
 ,"enabled","accountNonExpired","accountNonLocked","credentialsNonExpired"}, allowGetters = true, ignoreUnknown = true)
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -71,7 +71,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Collection<Role> roles;
+    private Collection<Role> authorities;
 
     @JsonBackReference("user-playlist")
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
@@ -108,15 +108,18 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Collection<Comment> comments;
 
+    @OneToOne(mappedBy = "user")
+    private Setting setting;
+
     private boolean enabled = false;
     private boolean accountNonExpired = true;
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;
 
-    public User(String username, String password, Collection<Role> autorities) {
+    public User(String username, String password, Collection<Role> authorities) {
         this.username = username;
         this.password = password;
-        this.roles = autorities;
+        this.authorities = authorities;
         this.enabled = false;
     }
 

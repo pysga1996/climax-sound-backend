@@ -8,6 +8,7 @@ import com.lambda.models.entities.User;
 import com.lambda.repositories.LikeRepository;
 import com.lambda.repositories.SongRepository;
 import com.lambda.services.SongService;
+import com.lambda.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +26,7 @@ public class SongServiceImpl implements SongService {
     LikeRepository likeRepository;
 
     @Autowired
-    UserDetailServiceImpl userDetailService;
+    UserService userService;
 
     @Autowired
     AudioStorageService audioStorageService;
@@ -172,7 +173,7 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public boolean hasUserLiked(Long songId) {
-        Long userId = userDetailService.getCurrentUser().getId();
+        Long userId = userService.getCurrentUser().getId();
         Like like = likeRepository.findBySongIdAndUserId(songId, userId);
         return (like != null);
     }

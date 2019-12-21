@@ -3,13 +3,14 @@ package com.lambda.controllers;
 import com.lambda.models.entities.Playlist;
 import com.lambda.models.entities.User;
 import com.lambda.services.PlaylistService;
-import com.lambda.services.impl.UserDetailServiceImpl;
+import com.lambda.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,12 +24,12 @@ public class PlaylistRestController {
     PlaylistService playlistService;
 
     @Autowired
-    UserDetailServiceImpl userDetailService;
+    UserService userService;
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/list")
     public ResponseEntity<Page<Playlist>> playlistList(Pageable pageable) {
-        User currentUser = userDetailService.getCurrentUser();
+        User currentUser = userService.getCurrentUser();
         Long id = currentUser.getId();
         Page<Playlist> playlistList = playlistService.findAllByUser_Id(id, pageable);
         boolean isEmpty = playlistList.getTotalElements() == 0;
@@ -54,7 +55,7 @@ public class PlaylistRestController {
         if (playlist == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            playlist.setUser(userDetailService.getCurrentUser());
+            playlist.setUser(userService.getCurrentUser());
             playlistService.save(playlist);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
@@ -67,7 +68,7 @@ public class PlaylistRestController {
         if (oldPlaylist.isPresent()) {
             if (playlistService.checkPlaylistOwner(id)) {
                 playlist.setId(id);
-                playlist.setUser(userDetailService.getCurrentUser());
+                playlist.setUser(userService.getCurrentUser());
                 playlist.setSongs(oldPlaylist.get().getSongs());
                 playlistService.save(playlist);
                 return new ResponseEntity<>(HttpStatus.OK);

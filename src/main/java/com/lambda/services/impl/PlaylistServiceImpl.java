@@ -6,6 +6,7 @@ import com.lambda.models.entities.User;
 import com.lambda.repositories.PlaylistRepository;
 import com.lambda.services.PlaylistService;
 import com.lambda.services.SongService;
+import com.lambda.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +25,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     SongService songService;
 
     @Autowired
-    UserDetailServiceImpl userDetailService;
+    UserService userService;
 
     @Override
     public boolean checkSongExistence(Playlist playlist, Long songId) {
@@ -100,7 +101,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Override
     public boolean checkPlaylistOwner(Long id) {
         Optional<Playlist> playlist = findById(id);
-        User currentUser = userDetailService.getCurrentUser();
+        User currentUser = userService.getCurrentUser();
         if (playlist.isPresent() && currentUser.getId()!=null) {
             return playlist.get().getUser().getId().equals(currentUser.getId());
         } else return false;
@@ -108,7 +109,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     public Iterable<Playlist> getPlaylistListToAdd(Long songId) {
-        User currentUser = userDetailService.getCurrentUser();
+        User currentUser = userService.getCurrentUser();
         Optional<Song> song = songService.findById(songId);
         return song.map(value -> playlistRepository.findAllByUser_IdAndSongsNotContains(currentUser.getId(), value)).orElse(null);
     }

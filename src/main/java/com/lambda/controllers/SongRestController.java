@@ -3,7 +3,6 @@ package com.lambda.controllers;
 import com.lambda.models.entities.*;
 import com.lambda.services.*;
 import com.lambda.services.impl.AudioStorageService;
-import com.lambda.services.impl.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -44,9 +42,6 @@ public class SongRestController {
     CommentService commentService;
 
     @Autowired
-    UserDetailServiceImpl userDetailService;
-
-    @Autowired
     private AudioStorageService audioStorageService;
 
     @PreAuthorize("isAuthenticated()")
@@ -56,7 +51,7 @@ public class SongRestController {
             Song songToSave = songService.save(song);
             String fileDownloadUri = audioStorageService.saveToFirebaseStorage(songToSave, file);
             songToSave.setUrl(fileDownloadUri);
-            songToSave.setUploader(userDetailService.getCurrentUser());
+            songToSave.setUploader(userService.getCurrentUser());
             albumService.pushToAlbum(song, albumId);
             songService.save(songToSave);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -159,7 +154,7 @@ public class SongRestController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/my-song")
     public ResponseEntity<Page<Song>> mySongList(Pageable pageable) {
-        Page<Song> mySongList = songService.findAllByUsersContains(userDetailService.getCurrentUser(), pageable);
+        Page<Song> mySongList = songService.findAllByUsersContains(userService.getCurrentUser(), pageable);
         if (mySongList.getTotalElements() > 0) {
             return new ResponseEntity<>(mySongList, HttpStatus.OK);
         } else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -182,7 +177,7 @@ public class SongRestController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/uploaded/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<Song>> userSongList(Pageable pageable) {
-        User currentUser = userDetailService.getCurrentUser();
+        User currentUser = userService.getCurrentUser();
         Page<Song> userSongList = songService.findAllByUploader_Id(currentUser.getId(), pageable);
         boolean isEmpty = userSongList.getTotalElements() == 0;
         if (isEmpty) {
@@ -207,7 +202,7 @@ public class SongRestController {
         Optional<Song> song = songService.findById(id);
         if (song.isPresent()) {
             LocalDateTime localDateTime = LocalDateTime.now();
-            User currentUser = userDetailService.getCurrentUser();
+            User currentUser = userService.getCurrentUser();
             comment.setLocalDateTime(localDateTime);
             comment.setSong(song.get());
             comment.setUser(currentUser);
@@ -220,7 +215,7 @@ public class SongRestController {
     @DeleteMapping(params = {"comment", "comment-id"})
     public ResponseEntity<Void> deleteCommentOnSong(@RequestParam("comment-id") Long id) {
         Optional<Comment> comment = commentService.findById(id);
-        if (comment.isPresent() && comment.get().getUser().getId().equals(userDetailService.getCurrentUser().getId())) {
+        if (comment.isPresent() && comment.get().getUser().getId().equals(userService.getCurrentUser().getId())) {
             commentService.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);

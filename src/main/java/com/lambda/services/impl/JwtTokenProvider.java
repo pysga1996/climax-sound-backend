@@ -1,9 +1,9 @@
 package com.lambda.services.impl;
 
-import com.lambda.models.utilities.CustomUserDetails;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -17,7 +17,7 @@ public class JwtTokenProvider {
     private static final Long JWT_EXPIRATION = 86400000000L;
     private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class.getName());
 
-    public String generateToken(CustomUserDetails userDetails) {
+    public String generateToken(UserDetails userDetails) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + JWT_EXPIRATION);
         // Generate JWT from username

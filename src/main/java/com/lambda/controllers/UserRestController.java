@@ -52,9 +52,6 @@ public class UserRestController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private UserDetailServiceImpl userDetailService;
-
-    @Autowired
     private UserService userService;
 
     @Autowired
@@ -70,7 +67,7 @@ public class UserRestController {
     @GetMapping("/profile/{id}")
     public ResponseEntity<User> getCurrentUser(@PathVariable("id") Long id) {
         try {
-            User currentUser = userDetailService.getCurrentUser();
+            User currentUser = userService.getCurrentUser();
             User user = userService.setInfo(id, currentUser);
             if (user != null) {
                 return new ResponseEntity<>(user, HttpStatus.OK);
@@ -85,7 +82,7 @@ public class UserRestController {
     @PostMapping("/upload-avatar")
     public ResponseEntity<String> uploadAvatar(@RequestParam("avatar") MultipartFile multipartFile) {
         try {
-            User currentUser = userDetailService.getCurrentUser();
+            User currentUser = userService.getCurrentUser();
             if (multipartFile != null) {
                 String fileDownloadUri = avatarStorageService.saveToFirebaseStorage(currentUser, multipartFile);
                 currentUser.setAvatarUrl(fileDownloadUri);
@@ -102,7 +99,7 @@ public class UserRestController {
     @PutMapping("/profile")
     public ResponseEntity<Void> updateProfile(@Valid @RequestBody User user) {
         try {
-            User oldUser = userDetailService.getCurrentUser();
+            User oldUser = userService.getCurrentUser();
             userService.setFieldsEdit(oldUser, user);
             userService.save(oldUser);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -144,7 +141,7 @@ public class UserRestController {
             Role role = roleService.findByAuthority(DEFAULT_ROLE);
             Set<Role> roles = new HashSet<>();
             roles.add(role);
-            user.setRoles(roles);
+            user.setAuthorities(roles);
             userService.save(user);
             String appUrl = request.getContextPath();
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, request.getLocale(), appUrl));

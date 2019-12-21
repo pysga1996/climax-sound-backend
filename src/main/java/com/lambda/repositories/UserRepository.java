@@ -12,15 +12,15 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    @Query("SELECT u FROM User u INNER JOIN FETCH u.roles r WHERE u.id=:id")
+    @Query("SELECT u FROM User u INNER JOIN FETCH u.authorities r WHERE u.id=:id")
     Optional<User> findById(@Param("id") Long id);
 
-    @Query("SELECT u FROM User u INNER JOIN FETCH u.roles r WHERE u.username=:username")
+    @Query("SELECT u FROM User u INNER JOIN FETCH u.authorities r WHERE u.username=:username")
     Optional<User> findByUsername(@Param("username") String username);
 
     Page<User> findByUsernameContaining(String username, Pageable pageable);
 
-    Page<User> findByRoles_Authority(String username, Pageable pageable);
+    Page<User> findByAuthorities_Authority(String authority, Pageable pageable);
 
     User findByEmail(String email);
 }

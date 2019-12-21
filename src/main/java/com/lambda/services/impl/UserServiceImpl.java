@@ -3,18 +3,22 @@ package com.lambda.services.impl;
 import com.lambda.models.entities.*;
 import com.lambda.models.utilities.SearchResponse;
 import com.lambda.repositories.PasswordResetTokenRepository;
+import com.lambda.repositories.SettingRepository;
 import com.lambda.repositories.UserRepository;
 import com.lambda.repositories.VerificationTokenRepository;
 import com.lambda.services.ArtistService;
 import com.lambda.services.SongService;
 import com.lambda.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.stereotype.Service;
@@ -22,9 +26,13 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class UserServiceImpl implements UserService {
+@Primary
+public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    SettingRepository settingRepository;
 
     @Autowired
     private VerificationTokenRepository tokenRepository;
@@ -40,6 +48,38 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ArtistService artistService;
+
+    @Autowired
+    private UserService userService;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> user = userService.findByUsername(username);
+        if (user.isPresent()) {
+            return user.get();
+        } else {
+            throw new UsernameNotFoundException(username);
+        }
+    }
+
+    @Override
+    public User getCurrentUser() {
+        User user;
+        String username;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        if (userService.findByUsername(username).isPresent()) {
+            user = userService.findByUsername(username).get();
+        } else {
+            user = new User();
+            user.setUsername("Anonymous");
+        }
+        return user;
+    }
 
     @Override
     public Page<User> findAll(Pageable pageable) {
@@ -57,8 +97,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<User> findByRoles_Authority(String username, Pageable pageable) {
-        return userRepository.findByRoles_Authority(username, pageable);
+    public Page<User> findByRoles_Authority(String authority, Pageable pageable) {
+        return userRepository.findByAuthorities_Authority(authority, pageable);
     }
 
     @Override
@@ -83,7 +123,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void setFields(User newUserInfo, User oldUserInfo) {
-        newUserInfo.setRoles(oldUserInfo.getRoles());
+        newUserInfo.setAuthorities(oldUserInfo.getAuthorities());
         newUserInfo.setAccountNonExpired(oldUserInfo.isAccountNonExpired());
         newUserInfo.setAccountNonLocked(oldUserInfo.isAccountNonLocked());
         newUserInfo.setCredentialsNonExpired(oldUserInfo.isCredentialsNonExpired());
@@ -182,7 +222,7 @@ public class UserServiceImpl implements UserService {
             throw new InvalidTokenException("2");
         }
         User user = passToken.getUser();
-        Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getRoles());
+        Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
 
@@ -190,5 +230,13 @@ public class UserServiceImpl implements UserService {
     public void changeUserPassword(User user, String password) {
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
+    }
+
+    @Override
+    public void changeSetting(Setting setting) {
+        this.settingRepository.save(setting);
+        User currentUSer = getCurrentUser();
+        currentUSer.setSetting(setting);
+        this.userRepository.save(getCurrentUser());
     }
 }
