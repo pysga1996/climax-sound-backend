@@ -1,6 +1,7 @@
 package com.lambda.listeners;
 
 import com.lambda.models.entities.Role;
+import com.lambda.models.entities.Setting;
 import com.lambda.models.entities.User;
 import com.lambda.services.RoleService;
 import com.lambda.services.UserService;
@@ -45,13 +46,12 @@ public class DataSeedingListener {
     }
 
     private void createAccounts() {
-
         String password;
         String firstName;
         String lastName = "Lambda";
 
         // Member account
-        String  username = "member";
+        String username = "member";
         HashSet<Role> roles2 = new HashSet<>();
         if (!userService.findByUsername(username).isPresent()) {
             password = passwordEncoder.encode("Lambda123456");
@@ -61,7 +61,7 @@ public class DataSeedingListener {
             member.setGender(true);
             member.setFirstName(firstName);
             member.setLastName(lastName);
-            userService.save(member);
+            userService.save(member, true);
         }
 
         // Admin account
@@ -75,7 +75,7 @@ public class DataSeedingListener {
             admin.setGender(true);
             admin.setFirstName(firstName);
             admin.setLastName(lastName);
-            userService.save(admin);
+            userService.save(admin, true);
         }
     }
 }

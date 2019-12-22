@@ -1,7 +1,6 @@
 package com.lambda.services.impl;
 
 import com.lambda.models.entities.*;
-import com.lambda.models.forms.UserForm;
 import com.lambda.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -113,18 +112,5 @@ public class FormConvertService {
             return theme;
         }
         return null;
-    }
-
-    public User convertToUser(UserForm userForm, boolean createAction) {
-        String username = userForm.getUsername();
-        if (userService.findByUsername(username) != null && createAction) return null;
-        String password = passwordEncoder.encode(userForm.getPassword());
-        String firstName = userForm.getFirstName();
-        String lastName = userForm.getLastName();
-        String phoneNumber = userForm.getPhoneNumber();
-        Boolean gender = userForm.getGender();
-        Date birthDate = userForm.getBirthDate();
-        String email = userForm.getEmail();
-        return new User(username, password, firstName, lastName, gender, birthDate, phoneNumber,  email);
     }
 }

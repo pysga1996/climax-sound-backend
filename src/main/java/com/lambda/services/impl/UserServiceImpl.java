@@ -7,6 +7,7 @@ import com.lambda.repositories.SettingRepository;
 import com.lambda.repositories.UserRepository;
 import com.lambda.repositories.VerificationTokenRepository;
 import com.lambda.services.ArtistService;
+import com.lambda.services.RoleService;
 import com.lambda.services.SongService;
 import com.lambda.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +29,16 @@ import java.util.*;
 @Service
 @Primary
 public class UserServiceImpl implements UserService, UserDetailsService {
-    @Autowired
-    UserRepository userRepository;
+    private static final String DEFAULT_ROLE = "ROLE_USER";
 
     @Autowired
-    SettingRepository settingRepository;
+    private UserRepository userRepository;
+
+    @Autowired
+    private SettingRepository settingRepository;
+
+    @Autowired
+    private RoleService roleService;
 
     @Autowired
     private VerificationTokenRepository tokenRepository;
@@ -112,8 +118,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void save(User user) {
-        userRepository.saveAndFlush(user);
+    public User save(User user, boolean createAction) {
+        if (createAction) {
+            if (userService.findByUsername(user.getUsername()).isPresent()) {
+                return null;
+            } else {
+                Role role = roleService.findByAuthority(DEFAULT_ROLE);
+                Set<Role> roles = new HashSet<>();
+                roles.add(role);
+                user.setAuthorities(roles);
+                userRepository.saveAndFlush(user);
+                userService.createSetting(user);
+                return user;
+            }
+        } else {
+            userRepository.saveAndFlush(user);
+            return user;
+        }
     }
 
     @Override
@@ -191,7 +212,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new InvalidTokenException("2");
         }
         user.setEnabled(true);
-        this.save(user);
+        userRepository.saveAndFlush(user);
         this.removeToken(verificationToken);
     }
 
@@ -233,10 +254,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public void createSetting(User user) {
+        Setting setting = new Setting();
+        setting.setUser(user);
+        settingRepository.save(setting);
+    }
+
+    @Override
     public void changeSetting(Setting setting) {
+        setting.setUser(this.getCurrentUser());
         this.settingRepository.save(setting);
-        User currentUSer = getCurrentUser();
-        currentUSer.setSetting(setting);
-        this.userRepository.save(getCurrentUser());
     }
 }

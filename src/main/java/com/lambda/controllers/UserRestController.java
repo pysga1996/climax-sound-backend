@@ -1,17 +1,13 @@
 package com.lambda.controllers;
 
-import com.google.api.Http;
 import com.lambda.events.OnRegistrationCompleteEvent;
 import com.lambda.events.OnResetPasswordEvent;
 import com.lambda.exceptions.UserNotFoundException;
-import com.lambda.models.entities.Role;
 import com.lambda.models.entities.Setting;
 import com.lambda.models.entities.User;
 import com.lambda.models.forms.GetResetPasswordTokenForm;
 import com.lambda.models.forms.PasswordDto;
-import com.lambda.models.forms.UserForm;
 import com.lambda.models.utilities.*;
-import com.lambda.services.RoleService;
 import com.lambda.services.UserService;
 import com.lambda.services.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +32,6 @@ import java.util.*;
 @RestController
 @RequestMapping("/api")
 public class UserRestController {
-    private static final String DEFAULT_ROLE = "ROLE_USER";
-
     @Autowired
     private Environment environment;
 
@@ -46,9 +40,6 @@ public class UserRestController {
 
     @Autowired
     ApplicationEventPublisher eventPublisher;
-
-    @Autowired
-    private RoleService roleService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -61,9 +52,6 @@ public class UserRestController {
 
     @Autowired
     private DownloadService downloadService;
-
-    @Autowired
-    FormConvertService formConvertService;
 
     @PreAuthorize("permitAll()")
     @GetMapping("/profile/{id}")
@@ -89,7 +77,7 @@ public class UserRestController {
                 String fileDownloadUri = avatarStorageService.saveToFirebaseStorage(currentUser, multipartFile);
                 currentUser.setAvatarUrl(fileDownloadUri);
             }
-            userService.save(currentUser);
+            userService.save(currentUser, false);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             String error = e.getMessage();
@@ -103,7 +91,7 @@ public class UserRestController {
         try {
             User oldUser = userService.getCurrentUser();
             userService.setFieldsEdit(oldUser, user);
-            userService.save(oldUser);
+            userService.save(oldUser, false);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (NullPointerException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -134,17 +122,12 @@ public class UserRestController {
 
     @PreAuthorize("isAnonymous()")
     @PostMapping(value = "/register")
-    public ResponseEntity<String> createUser(@Valid @RequestBody UserForm userForm, WebRequest request) {
+    public ResponseEntity<String> createUser(@Valid @RequestBody User user, WebRequest request) {
         try {
-            User user = formConvertService.convertToUser(userForm, true);
-            if (user == null) {
+            User savedUser = userService.save(user, true);
+            if (savedUser == null) {
                 return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
             }
-            Role role = roleService.findByAuthority(DEFAULT_ROLE);
-            Set<Role> roles = new HashSet<>();
-            roles.add(role);
-            user.setAuthorities(roles);
-            userService.save(user);
             String appUrl = request.getContextPath();
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, request.getLocale(), appUrl));
             return new ResponseEntity<>( HttpStatus.OK);

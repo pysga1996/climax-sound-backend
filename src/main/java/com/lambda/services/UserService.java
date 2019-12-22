@@ -20,7 +20,7 @@ public interface UserService {
     Page<User> findByRoles_Authority(String username, Pageable pageable);
     Optional<User> findById(Long id);
     User findByEmail(String email);
-    void save(User user);
+    User save(User user, boolean createAction);
     void deleteById(Long id);
     void setFields(User newUserInfo, User oldUserInfo);
     void setFieldsEdit(User oldUserInfo, User newUserInfo);
@@ -33,5 +33,6 @@ public interface UserService {
     void createPasswordResetToken(User user, String token);
     void validatePasswordResetToken(long id, String token) throws Exception;
     void changeUserPassword(User user, String password);
+    void createSetting(User user);
     void changeSetting(Setting setting);
 }
