@@ -43,9 +43,11 @@ public class Song extends MediaObject {
     @OneToMany(mappedBy = "song", fetch = FetchType.LAZY)
     private Collection<Comment> comments;
 
+    @Builder.Default
     @ColumnDefault("0")
     private Long displayRating = 0L;
 
+    @Builder.Default
     @ColumnDefault("0")
     private Long listeningFrequency = 0L;
 

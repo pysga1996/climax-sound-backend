@@ -18,6 +18,7 @@ public class Setting {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Builder.Default
     private Boolean darkMode = true;
 
     @JsonIgnore

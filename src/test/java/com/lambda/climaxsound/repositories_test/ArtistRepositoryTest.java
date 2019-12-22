@@ -29,7 +29,7 @@ public class ArtistRepositoryTest {
     @Test
     public void whenFindAll_returnArtistIterable() {
         Page<Artist> found = artistRepository.findAll(pageable);
-        assertThat(found.getTotalElements()).isEqualTo(11);
+        assertThat(found.getTotalElements()).isEqualTo(9);
     }
 
 //    @Test
