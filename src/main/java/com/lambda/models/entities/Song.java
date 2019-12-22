@@ -2,7 +2,6 @@ package com.lambda.models.entities;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.lambda.helpers.CustomDurationJsonSerializer;
 import com.lambda.helpers.CustomUserJsonSerializer;
 import com.lambda.models.utilities.MediaObject;
 import lombok.*;
@@ -12,7 +11,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.validation.constraints.NotBlank;
 import java.time.Duration;
 import java.util.Collection;
@@ -119,7 +117,6 @@ public class Song extends MediaObject {
     @JoinColumn(name = "theme_id")
     private Theme theme;
 
-    @JsonSerialize(using = CustomDurationJsonSerializer.class)
     private Duration duration;
 
     public Song(String title, Date releaseDate) {
