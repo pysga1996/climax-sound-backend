@@ -26,26 +26,54 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/album")
 public class AlbumRestController {
-    @Autowired
-    AlbumService albumService;
+    private AlbumService albumService;
 
     @Autowired
-    SongService songService;
+    public void setAlbumService(AlbumService albumService) {
+        this.albumService = albumService;
+    }
+
+    private SongService songService;
 
     @Autowired
-    ArtistService artistService;
+    public void setSongService(SongService songService) {
+        this.songService = songService;
+    }
+
+    private ArtistService artistService;
 
     @Autowired
-    UserService userService;
+    public void setArtistService(ArtistService artistService) {
+        this.artistService = artistService;
+    }
+
+    private UserService userService;
 
     @Autowired
-    CoverStorageService coverStorageService;
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    private CoverStorageService coverStorageService;
 
     @Autowired
-    FormConvertService formConvertService;
+    public void setCoverStorageService(CoverStorageService coverStorageService) {
+        this.coverStorageService = coverStorageService;
+    }
+
+    private FormConvertService formConvertService;
 
     @Autowired
+    public void setFormConvertService(FormConvertService formConvertService) {
+        this.formConvertService = formConvertService;
+    }
+
     private DownloadService downloadService;
+
+    @Autowired
+    public void setDownloadService(DownloadService downloadService) {
+        this.downloadService = downloadService;
+    }
 
     @GetMapping(value = "/list")
     public ResponseEntity<Page<Album>> albumList(Pageable pageable) {

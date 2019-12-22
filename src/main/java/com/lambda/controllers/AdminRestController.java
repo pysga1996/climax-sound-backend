@@ -16,8 +16,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/admin")
 public class AdminRestController {
-    @Autowired
     private UserService userService;
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping(params = "action=list")
     public ResponseEntity<Page<User>> getUserList(Pageable pageable) {

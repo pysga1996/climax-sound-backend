@@ -17,15 +17,26 @@ import java.util.*;
 public class DataSeedingListener {
     private boolean alreadySetup = false;
 
-    @Autowired
     private UserService userService;
 
     @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
     private RoleService roleService;
 
     @Autowired
+    public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
+    }
+
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public void onApplicationEvent() {
         if (alreadySetup)

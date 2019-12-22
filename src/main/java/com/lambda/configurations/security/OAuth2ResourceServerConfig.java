@@ -26,12 +26,34 @@ import javax.sql.DataSource;
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter {
-
-    @Autowired
     private Environment environment;
 
+    @Primary
+    @Bean
+    public RemoteTokenServices tokenService() {
+        RemoteTokenServices tokenService = new RemoteTokenServices();
+        tokenService.setCheckTokenEndpointUrl(environment.getProperty("AUTHSERVER"));
+        tokenService.setClientId("fooClientIdPassword");
+        tokenService.setClientSecret("secret");
+        return tokenService;
+    }
+
+    @Bean
+    public TokenStore tokenStore() {
+        return new JdbcTokenStore(dataSource);
+    }
+
     @Autowired
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
+
     private DataSource dataSource;
+
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     public void configure(final HttpSecurity http) throws Exception {
@@ -45,31 +67,5 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter 
     public void configure(final ResourceServerSecurityConfigurer config) {
         config.tokenServices(tokenService());
     }
-
-//    @Bean
-//    @Primary
-//    public DefaultTokenServices tokenServices() {
-//        final DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
-//        defaultTokenServices.setTokenStore(tokenStore());
-//        return defaultTokenServices;
-//    }
-
-    @Primary
-    @Bean
-    public RemoteTokenServices tokenService() {
-        RemoteTokenServices tokenService = new RemoteTokenServices();
-        tokenService.setCheckTokenEndpointUrl(environment.getProperty("AUTHSERVER"));
-        tokenService.setClientId("fooClientIdPassword");
-        tokenService.setClientSecret("secret");
-        return tokenService;
-    }
-
-    // JDBC token store configuration
-
-    @Bean
-    public TokenStore tokenStore() {
-        return new JdbcTokenStore(dataSource);
-    }
-
 
 }

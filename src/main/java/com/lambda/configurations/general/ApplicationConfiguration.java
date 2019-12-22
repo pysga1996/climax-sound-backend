@@ -21,8 +21,6 @@ import java.util.List;
 
 @Configuration
 public class ApplicationConfiguration implements WebMvcConfigurer {
-    @Autowired
-    private DataSource dataSource;
 
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -30,7 +28,6 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
             if (converter instanceof org.springframework.http.converter.json.MappingJackson2HttpMessageConverter) {
                 ObjectMapper mapper = ((MappingJackson2HttpMessageConverter) converter).getObjectMapper();
                 mapper.registerModule(new Hibernate5Module());
-                // replace Hibernate4Module() with the proper class for your hibernate version.
             }
         }
     }

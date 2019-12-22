@@ -15,11 +15,19 @@ import java.util.UUID;
 @Component
 public class RegistrationListener extends CustomListener implements ApplicationListener<OnRegistrationCompleteEvent> {
 
-    @Autowired
     private MessageSource messageSource;
 
     @Autowired
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+
     private UserService userService;
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public void onApplicationEvent(OnRegistrationCompleteEvent event) {

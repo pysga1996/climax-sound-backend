@@ -26,42 +26,55 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private static final String[] CSRF_IGNORE = {"/api/login", "/api/register"};
 
-    @Autowired
-    CustomRestAuthenticationSuccessHandler customRestAuthenticationSuccessHandler;
+    private CustomRestAuthenticationSuccessHandler customRestAuthenticationSuccessHandler;
 
     @Autowired
-    CustomRestAuthenticationFailureHandler customRestAuthenticationFailureHandler;
-
-    @Autowired
-    CustomRestAccessDeniedHandler customRestAccessDeniedHandler;
-
-    @Autowired
-    CustomRestAuthenticationEntryPoint customRestAuthenticationEntryPoint;
-
-    @Autowired
-    CustomRestLogoutSuccessHandler customRestLogoutSuccessHandler;
-
-    @Autowired
-    UserDetailsService userService;
-
-    @Bean
-    PlaylistService playlistService() {
-        return new PlaylistServiceImpl();
+    public void setCustomRestAuthenticationSuccessHandler(CustomRestAuthenticationSuccessHandler customRestAuthenticationSuccessHandler) {
+        this.customRestAuthenticationSuccessHandler = customRestAuthenticationSuccessHandler;
     }
 
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter();
-    }
-    //    @Lazy
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    private CustomRestAuthenticationFailureHandler customRestAuthenticationFailureHandler;
 
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        // Password encoder, để Spring Security sử dụng mã hóa mật khẩu người dùng
-//        return new BCryptPasswordEncoder();
-//    }
+    @Autowired
+    public void setCustomRestAuthenticationFailureHandler(CustomRestAuthenticationFailureHandler customRestAuthenticationFailureHandler) {
+        this.customRestAuthenticationFailureHandler = customRestAuthenticationFailureHandler;
+    }
+
+    private CustomRestAccessDeniedHandler customRestAccessDeniedHandler;
+
+    @Autowired
+    public void setCustomRestAccessDeniedHandler(CustomRestAccessDeniedHandler customRestAccessDeniedHandler) {
+        this.customRestAccessDeniedHandler = customRestAccessDeniedHandler;
+    }
+
+
+    private CustomRestAuthenticationEntryPoint customRestAuthenticationEntryPoint;
+
+    @Autowired
+    public void setCustomRestAuthenticationEntryPoint(CustomRestAuthenticationEntryPoint customRestAuthenticationEntryPoint) {
+        this.customRestAuthenticationEntryPoint = customRestAuthenticationEntryPoint;
+    }
+
+    private CustomRestLogoutSuccessHandler customRestLogoutSuccessHandler;
+
+    @Autowired
+    public void setCustomRestLogoutSuccessHandler(CustomRestLogoutSuccessHandler customRestLogoutSuccessHandler) {
+        this.customRestLogoutSuccessHandler = customRestLogoutSuccessHandler;
+    }
+
+    private UserDetailsService userService;
+
+    @Autowired
+    public void setUserService(UserDetailsService userService) {
+        this.userService = userService;
+    }
+
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Bean(BeanIds.AUTHENTICATION_MANAGER)
     @Override
@@ -88,11 +101,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //    }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder)
-            throws Exception {
-        authenticationManagerBuilder
-                .userDetailsService(userService) // Cung cáp userservice cho spring security
-                .passwordEncoder(passwordEncoder); // cung cấp password encoder
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
     }
 
     @Override

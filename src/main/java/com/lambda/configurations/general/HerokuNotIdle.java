@@ -10,8 +10,12 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 public class HerokuNotIdle {
-    @Autowired
     private Environment environment;
+
+    @Autowired
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
 
     private static final Logger LOG = LoggerFactory.getLogger(HerokuNotIdle.class);
 

@@ -1,5 +1,8 @@
 package com.lambda.filters;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class JwtAuthenticationFilter {
 //        extends OncePerRequestFilter {
 //

@@ -19,11 +19,19 @@ import java.util.List;
 public class TokenCleaner {
     private static final Logger LOG = LoggerFactory.getLogger(TokenCleaner.class);
 
-    @Autowired
     private VerificationTokenRepository verificationTokenRepository;
 
     @Autowired
+    public void setVerificationTokenRepository(VerificationTokenRepository verificationTokenRepository) {
+        this.verificationTokenRepository = verificationTokenRepository;
+    }
+
     private PasswordResetTokenRepository passwordResetTokenRepository;
+
+    @Autowired
+    public void setPasswordResetTokenRepository(PasswordResetTokenRepository passwordResetTokenRepository) {
+        this.passwordResetTokenRepository = passwordResetTokenRepository;
+    }
 
     @Scheduled(fixedDelay=86400000)
     public void herokuNotIdle(){
