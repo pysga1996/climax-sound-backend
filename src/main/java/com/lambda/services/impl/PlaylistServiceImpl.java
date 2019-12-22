@@ -85,17 +85,11 @@ public class PlaylistServiceImpl implements PlaylistService {
         Optional<Playlist> playlist = this.findById(playlistId);
         if(playlist.isPresent()) {
             Collection<Song> songList = playlist.get().getSongs();
-            Collection<Song> newSongList = new HashSet<>();
-            for (Song song: songList) {
-                if (!song.getId().equals(songId)) {
-                    newSongList.add(song);
-                }
-            }
-            playlist.get().setSongs(newSongList);
+            songList.removeIf(song -> (song.getId().equals(songId)));
+            playlist.get().setSongs(songList);
             playlistRepository.save(playlist.get());
             return true;
-        }
-        return false;
+        } else return false;
     }
 
     @Override
