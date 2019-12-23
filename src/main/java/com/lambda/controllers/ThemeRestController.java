@@ -16,8 +16,12 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/activity")
 public class ThemeRestController {
+    private ThemeService themeService;
+
     @Autowired
-    ThemeService themeService;
+    public void setThemeService(ThemeService themeService) {
+        this.themeService = themeService;
+    }
 
     @GetMapping(params = "action=list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<Theme>> activityList(Pageable pageable) {

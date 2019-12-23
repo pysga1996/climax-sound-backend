@@ -22,14 +22,26 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/artist")
 public class ArtistRestController {
-    @Autowired
-    ArtistService artistService;
+    private ArtistService artistService;
 
     @Autowired
-    SongService songService;
+    public void setArtistService(ArtistService artistService) {
+        this.artistService = artistService;
+    }
+
+    private SongService songService;
 
     @Autowired
-    AvatarStorageService avatarStorageService;
+    public void setSongService(SongService songService) {
+        this.songService = songService;
+    }
+
+    private AvatarStorageService avatarStorageService;
+
+    @Autowired
+    public void setAvatarStorageService(AvatarStorageService avatarStorageService) {
+        this.avatarStorageService = avatarStorageService;
+    }
 
     @PreAuthorize("permitAll()")
     @GetMapping(value = "/search", params = "name")

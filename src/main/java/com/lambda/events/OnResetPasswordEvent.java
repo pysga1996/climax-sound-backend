@@ -1,13 +1,15 @@
 package com.lambda.events;
 
 import com.lambda.models.entities.User;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.context.ApplicationEvent;
 
 import java.util.Locale;
 
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = true)
 public class OnResetPasswordEvent extends ApplicationEvent implements CustomEvent {
     private String appUrl;

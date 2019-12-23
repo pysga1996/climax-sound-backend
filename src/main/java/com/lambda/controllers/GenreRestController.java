@@ -17,8 +17,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/genre")
 public class GenreRestController {
+    private GenreService genreService;
+
     @Autowired
-    GenreService genreService;
+    public void setGenreService(GenreService genreService) {
+        this.genreService = genreService;
+    }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/list")

@@ -1,21 +1,12 @@
 package com.lambda.models.utilities;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class RandomStuff {
-
     private String message;
-
-    public RandomStuff() {
-    }
-
-    public RandomStuff(String message) {
-        this.message = message;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }

@@ -32,26 +32,49 @@ import java.util.*;
 @RestController
 @RequestMapping("/api")
 public class UserRestController {
-    @Autowired
     private Environment environment;
 
-//    @Autowired
+    @Autowired
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
+    //    @Autowired
 //    private JwtTokenProvider tokenProvider;
 
-    @Autowired
-    ApplicationEventPublisher eventPublisher;
+    private ApplicationEventPublisher eventPublisher;
 
     @Autowired
+    public void setEventPublisher(ApplicationEventPublisher eventPublisher) {
+        this.eventPublisher = eventPublisher;
+    }
+
     private AuthenticationManager authenticationManager;
 
     @Autowired
+    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
+
     private UserService userService;
 
     @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
     private AvatarStorageService avatarStorageService;
 
     @Autowired
+    public void setAvatarStorageService(AvatarStorageService avatarStorageService) {
+        this.avatarStorageService = avatarStorageService;
+    }
+
     private DownloadService downloadService;
+
+    @Autowired
+    public void setDownloadService(DownloadService downloadService) {
+        this.downloadService = downloadService;
+    }
 
     @PreAuthorize("permitAll()")
     @GetMapping("/profile/{id}")

@@ -7,6 +7,7 @@ import com.lambda.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
@@ -30,7 +31,7 @@ public class RegistrationListener extends CustomListener implements ApplicationL
     }
 
     @Override
-    public void onApplicationEvent(OnRegistrationCompleteEvent event) {
+    public void onApplicationEvent(@NonNull OnRegistrationCompleteEvent event) {
         this.confirmRegistration(event);
     }
 

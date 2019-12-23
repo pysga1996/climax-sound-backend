@@ -23,26 +23,47 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/song")
 public class SongRestController {
-    @Autowired
-    SongService songService;
+    private SongService songService;
 
     @Autowired
-    AlbumService albumService;
+    public void setSongService(SongService songService) {
+        this.songService = songService;
+    }
+
+    private AlbumService albumService;
 
     @Autowired
-    ArtistService artistService;
+    public void setAlbumService(AlbumService albumService) {
+        this.albumService = albumService;
+    }
+
+    private UserService userService;
 
     @Autowired
-    UserService userService;
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    private LikeService likeService;
 
     @Autowired
-    LikeService likeService;
+    public void setLikeService(LikeService likeService) {
+        this.likeService = likeService;
+    }
+
+    private CommentService commentService;
 
     @Autowired
-    CommentService commentService;
+    public void setCommentService(CommentService commentService) {
+        this.commentService = commentService;
+    }
 
-    @Autowired
     private AudioStorageService audioStorageService;
+
+    @Autowired
+    public void setAudioStorageService(AudioStorageService audioStorageService) {
+        this.audioStorageService = audioStorageService;
+    }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/upload")

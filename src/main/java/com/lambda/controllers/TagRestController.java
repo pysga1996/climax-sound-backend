@@ -15,8 +15,12 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/tag")
 public class TagRestController {
+    private TagService tagService;
+
     @Autowired
-    TagService tagService;
+    public void setTagService(TagService tagService) {
+        this.tagService = tagService;
+    }
 
     @GetMapping(params = "action=list")
     public ResponseEntity<Page<Tag>> tagList(Pageable pageable) {

@@ -20,11 +20,19 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/playlist")
 public class PlaylistRestController {
-    @Autowired
-    PlaylistService playlistService;
+    private PlaylistService playlistService;
 
     @Autowired
-    UserService userService;
+    public void setPlaylistService(PlaylistService playlistService) {
+        this.playlistService = playlistService;
+    }
+
+    private UserService userService;
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/list")

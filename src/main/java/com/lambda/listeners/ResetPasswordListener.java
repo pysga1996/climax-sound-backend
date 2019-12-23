@@ -6,6 +6,7 @@ import com.lambda.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
@@ -13,14 +14,22 @@ import java.util.UUID;
 
 @Component
 public class ResetPasswordListener extends CustomListener implements ApplicationListener<OnResetPasswordEvent> {
-    @Autowired
     private MessageSource messageSource;
 
     @Autowired
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+
     private UserService userService;
 
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
     @Override
-    public void onApplicationEvent(OnResetPasswordEvent event) {
+    public void onApplicationEvent(@NonNull OnResetPasswordEvent event) {
         this.confirmResetPassword(event);
     }
 

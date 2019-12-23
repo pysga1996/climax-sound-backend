@@ -13,13 +13,21 @@ import org.springframework.stereotype.Component;
 @Scope("singleton")
 public abstract class CustomListener {
 
-    @Autowired
     private JavaMailSender mailSender;
 
     @Autowired
+    public void setMailSender(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
+
     private Environment environment;
 
-    public void sendMail(String emailSubject, String emailText, String param, String token, User user, CustomEvent event) {
+    @Autowired
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
+
+    void sendMail(String emailSubject, String emailText, String param, String token, User user, CustomEvent event) {
         String recipientAddress = user.getEmail();
         String confirmationUrl = event.getAppUrl() + param + token;
         SimpleMailMessage email = new SimpleMailMessage();
