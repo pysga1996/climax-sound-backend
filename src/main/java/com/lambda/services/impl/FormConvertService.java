@@ -1,6 +1,7 @@
 package com.lambda.services.impl;
 
 import com.lambda.models.entities.*;
+import com.lambda.models.forms.SongUploadForm;
 import com.lambda.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,7 +38,7 @@ public class FormConvertService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    private Collection<Artist> convertStringToArtistList(String string) {
+    public Collection<Artist> convertStringToArtistList(String string) {
         String[] artistsString = string.split(",");
         Collection<Artist> artistList = new HashSet<>();
         for (String artistString: artistsString) {
@@ -56,7 +57,7 @@ public class FormConvertService {
         return artistList;
     }
 
-    private Collection<Genre> convertStringToGenreList(String string) {
+    public Collection<Genre> convertStringToGenreList(String string) {
         String[] genresString = string.split(",");
         Collection<Genre> genreList = new HashSet<>();
         for (String genreString: genresString) {
@@ -75,7 +76,7 @@ public class FormConvertService {
         return genreList;
     }
 
-    private Collection<Tag> convertStringToTagList(String string) {
+    public Collection<Tag> convertStringToTagList(String string) {
         String[] tagsString = string.split(",");
         Collection<Tag> tagList = new HashSet<>();
         for (String tagString: tagsString) {
@@ -94,7 +95,7 @@ public class FormConvertService {
         return tagList;
     }
 
-    private Country convertStringToMood(String string) {
+    public Country convertStringToMood(String string) {
         Country checkedCountry = countryService.findByName(string);
         if (checkedCountry == null && !string.isEmpty()) {
             Country country = new Country(string);
@@ -104,7 +105,7 @@ public class FormConvertService {
         return null;
     }
 
-    private Theme convertToActivity(String string) {
+    public Theme convertToActivity(String string) {
         Theme checkedTheme = themeService.findByName(string);
         if (checkedTheme == null && !string.isEmpty()) {
             Theme theme = new Theme(string);
@@ -112,5 +113,23 @@ public class FormConvertService {
             return theme;
         }
         return null;
+    }
+
+    public Song convertSongUploadFormToSong(SongUploadForm songUploadForm) {
+        Song song = new Song();
+        song.setTitle(songUploadForm.getTitle());
+        song.setCountry(songUploadForm.getCountry());
+        song.setArtists(songUploadForm.getArtists());
+        song.setDuration(songUploadForm.getDuration());
+        song.setLyric(songUploadForm.getLyric());
+        song.setReleaseDate(songUploadForm.getReleaseDate());
+        song.setGenres(songUploadForm.getGenres());
+        String[] tagsString = songUploadForm.getTags().split(",");
+        List<Tag> tagList = new LinkedList<>();
+        for (String tagString: tagsString) {
+            tagList.add(new Tag(tagString.trim().toLowerCase()));
+        }
+        song.setTags(tagList);
+        return song;
     }
 }

@@ -1,6 +1,7 @@
 package com.lambda.models.entities;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
@@ -12,10 +13,10 @@ import java.util.Collection;
 
 @Entity
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"songs", "albums"})
 public class Country {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

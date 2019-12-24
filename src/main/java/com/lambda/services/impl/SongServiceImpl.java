@@ -1,12 +1,10 @@
 package com.lambda.services.impl;
 
 import com.lambda.formatters.StringAccentRemover;
-import com.lambda.models.entities.Artist;
-import com.lambda.models.entities.Like;
-import com.lambda.models.entities.Song;
-import com.lambda.models.entities.User;
+import com.lambda.models.entities.*;
 import com.lambda.repositories.LikeRepository;
 import com.lambda.repositories.SongRepository;
+import com.lambda.repositories.TagRepository;
 import com.lambda.services.SongService;
 import com.lambda.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,21 +13,45 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Optional;
 
 @Service
 public class SongServiceImpl implements SongService {
-    @Autowired
-    SongRepository songRepository;
+    private SongRepository songRepository;
 
     @Autowired
-    LikeRepository likeRepository;
+    public void setSongRepository(SongRepository songRepository) {
+        this.songRepository = songRepository;
+    }
+
+    private LikeRepository likeRepository;
 
     @Autowired
-    UserService userService;
+    public void setLikeRepository(LikeRepository likeRepository) {
+        this.likeRepository = likeRepository;
+    }
+
+    private UserService userService;
 
     @Autowired
-    AudioStorageService audioStorageService;
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    private TagRepository tagRepository;
+
+    @Autowired
+    public void setTagRepository(TagRepository tagRepository) {
+        this.tagRepository = tagRepository;
+    }
+
+    private AudioStorageService audioStorageService;
+
+    @Autowired
+    public void setAudioStorageService(AudioStorageService audioStorageService) {
+        this.audioStorageService = audioStorageService;
+    }
 
     @Override
     public Page<Song> findAll(Pageable pageable, String sort) {
@@ -130,6 +152,12 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public Song save(Song song) {
+        Collection<Tag> tags = song.getTags();
+        for (Tag tag: tags) {
+            if (tagRepository.findByName("tag") == null) {
+                tagRepository.saveAndFlush(tag);
+            }
+        }
         String unaccentTitle = StringAccentRemover.removeStringAccent(song.getTitle());
         song.setUnaccentTitle(unaccentTitle.toLowerCase());
         songRepository.saveAndFlush(song);

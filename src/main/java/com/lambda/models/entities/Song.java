@@ -22,7 +22,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"comments", "liked", "albums", "tags", "genres", "users", "playlists", "country", "theme", "uploader"}, allowGetters = true, ignoreUnknown=true)
+@JsonIgnoreProperties(value = {"comments", "liked", "albums", "genres", "users", "playlists", "theme", "uploader"}, allowGetters = true, ignoreUnknown=true)
 public class Song extends MediaObject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

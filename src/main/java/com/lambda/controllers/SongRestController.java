@@ -1,8 +1,10 @@
 package com.lambda.controllers;
 
 import com.lambda.models.entities.*;
+import com.lambda.models.forms.SongUploadForm;
 import com.lambda.services.*;
 import com.lambda.services.impl.AudioStorageService;
+import com.lambda.services.impl.FormConvertService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -58,6 +60,13 @@ public class SongRestController {
         this.commentService = commentService;
     }
 
+    private FormConvertService formConvertService;
+
+    @Autowired
+    public void setFormConvertService(FormConvertService formConvertService) {
+        this.formConvertService = formConvertService;
+    }
+
     private AudioStorageService audioStorageService;
 
     @Autowired
@@ -67,7 +76,8 @@ public class SongRestController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/upload")
-    public ResponseEntity<Void> uploadSong(@RequestPart("song") Song song, @RequestPart("audio") MultipartFile file, @RequestParam(value = "album-albumId", required = false) Long albumId) {
+    public ResponseEntity<Void> uploadSong(@Valid @RequestPart("song") SongUploadForm songUploadForm, @RequestPart("audio") MultipartFile file, @RequestParam(value = "album-albumId", required = false) Long albumId) {
+        Song song = formConvertService.convertSongUploadFormToSong(songUploadForm);
         try {
             Song songToSave = songService.save(song);
             String fileDownloadUri = audioStorageService.saveToFirebaseStorage(songToSave, file);
