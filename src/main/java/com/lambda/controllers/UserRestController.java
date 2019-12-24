@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
@@ -56,6 +57,13 @@ public class UserRestController {
     }
 
     private UserService userService;
+
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -147,6 +155,7 @@ public class UserRestController {
     @PostMapping(value = "/register")
     public ResponseEntity<String> createUser(@Valid @RequestBody User user, WebRequest request) {
         try {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             User savedUser = userService.save(user, true);
             if (savedUser == null) {
                 return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
