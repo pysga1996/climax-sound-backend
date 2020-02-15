@@ -31,32 +31,69 @@ import java.util.*;
 public class UserServiceImpl implements UserService, UserDetailsService {
     private static final String DEFAULT_ROLE = "ROLE_USER";
 
-    @Autowired
     private UserRepository userRepository;
 
+
     @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     private SettingRepository settingRepository;
 
     @Autowired
+    public void setSettingRepository(SettingRepository settingRepository) {
+        this.settingRepository = settingRepository;
+    }
+
     private RoleService roleService;
 
     @Autowired
-    private VerificationTokenRepository tokenRepository;
+    public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
+    }
+
+    private VerificationTokenRepository verificationTokenRepository;
 
     @Autowired
+    public void setVerificationTokenRepository(VerificationTokenRepository verificationTokenRepository) {
+        this.verificationTokenRepository = verificationTokenRepository;
+    }
+
     private PasswordResetTokenRepository passwordResetTokenRepository;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    public void setPasswordResetTokenRepository(PasswordResetTokenRepository passwordResetTokenRepository) {
+        this.passwordResetTokenRepository = passwordResetTokenRepository;
+    }
+
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
     private SongService songService;
 
     @Autowired
+    public void setSongService(SongService songService) {
+        this.songService = songService;
+    }
+
     private ArtistService artistService;
 
     @Autowired
+    public void setArtistService(ArtistService artistService) {
+        this.artistService = artistService;
+    }
+
     private UserService userService;
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -194,7 +231,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void createVerificationToken(User user, String token) {
         VerificationToken myToken = new VerificationToken(token, user);
-        tokenRepository.save(myToken);
+        verificationTokenRepository.save(myToken);
     }
 
     @Override
@@ -202,7 +239,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (token == null) {
             throw new InvalidTokenException("1");
         }
-        VerificationToken verificationToken = tokenRepository.findByToken(token);
+        VerificationToken verificationToken = verificationTokenRepository.findByToken(token);
         if (verificationToken == null) {
             throw new InvalidTokenException("1");
         }
@@ -218,12 +255,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User findUserByToken(String verificationToken) {
-        return tokenRepository.findByToken(verificationToken).getUser();
+        return verificationTokenRepository.findByToken(verificationToken).getUser();
     }
 
     @Override
     public void removeToken(VerificationToken token) {
-        tokenRepository.delete(token);
+        verificationTokenRepository.delete(token);
     }
 
     @Override

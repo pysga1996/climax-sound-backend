@@ -8,12 +8,12 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-@Component
+//@Component
 public class HerokuNotIdle {
     private Environment environment;
 
-    @Autowired
-    public void setEnvironment(Environment environment) {
+//    @Autowired
+    public HerokuNotIdle(Environment environment) {
         this.environment = environment;
     }
 

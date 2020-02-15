@@ -25,7 +25,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter {
+public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
     private Environment environment;
 
     @Primary

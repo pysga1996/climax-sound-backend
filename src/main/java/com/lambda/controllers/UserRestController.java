@@ -13,9 +13,7 @@ import com.lambda.services.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -297,7 +295,7 @@ public class UserRestController {
         @GetMapping("/test")
         public ResponseEntity<String> test() {
             try {
-                return new ResponseEntity<>("Test", HttpStatus.OK);
+                return new ResponseEntity<>("Test",HttpStatus.OK);
             } catch (Exception e) {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
