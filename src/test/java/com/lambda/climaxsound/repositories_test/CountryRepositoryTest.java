@@ -1,6 +1,6 @@
 package com.lambda.climaxsound.repositories_test;
 
-import com.lambda.models.entities.Country;
+import com.lambda.model.entities.Country;
 import com.lambda.repositories.CountryRepository;
 import org.junit.Before;
 import org.junit.Test;

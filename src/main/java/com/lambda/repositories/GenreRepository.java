@@ -1,6 +1,6 @@
 package com.lambda.repositories;
 
-import com.lambda.models.entities.Genre;
+import com.lambda.model.entities.Genre;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

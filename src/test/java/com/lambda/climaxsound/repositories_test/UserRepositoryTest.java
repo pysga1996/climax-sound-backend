@@ -1,6 +1,6 @@
 package com.lambda.climaxsound.repositories_test;
 
-import com.lambda.models.entities.User;
+import com.lambda.model.entities.User;
 import com.lambda.repositories.UserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,7 +11,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 
-import static java.util.Locale.UK;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)

@@ -1,7 +1,7 @@
 package com.lambda.repositories;
 
-import com.lambda.models.entities.User;
-import com.lambda.models.entities.VerificationToken;
+import com.lambda.model.entities.User;
+import com.lambda.model.entities.VerificationToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

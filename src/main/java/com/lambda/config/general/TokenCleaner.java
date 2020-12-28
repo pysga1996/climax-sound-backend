@@ -1,0 +1,42 @@
+package com.lambda.config.general;
+
+import com.lambda.model.entities.PasswordResetToken;
+import com.lambda.model.entities.VerificationToken;
+import com.lambda.repositories.PasswordResetTokenRepository;
+import com.lambda.repositories.VerificationTokenRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+import java.util.Date;
+import java.util.List;
+
+@Component
+public class TokenCleaner {
+    private static final Logger LOG = LoggerFactory.getLogger(TokenCleaner.class);
+
+    private VerificationTokenRepository verificationTokenRepository;
+
+    @Autowired
+    public void setVerificationTokenRepository(VerificationTokenRepository verificationTokenRepository) {
+        this.verificationTokenRepository = verificationTokenRepository;
+    }
+
+    private PasswordResetTokenRepository passwordResetTokenRepository;
+
+    @Autowired
+    public void setPasswordResetTokenRepository(PasswordResetTokenRepository passwordResetTokenRepository) {
+        this.passwordResetTokenRepository = passwordResetTokenRepository;
+    }
+
+    @Scheduled(fixedDelay=86400000)
+    public void herokuNotIdle(){
+        List<VerificationToken> verificationTokenList = verificationTokenRepository.findAllByExpiryDateBefore(new Date());
+        List<PasswordResetToken> passwordResetTokenList = passwordResetTokenRepository.findAllByExpiryDateBefore(new Date());
+        verificationTokenRepository.deleteAll(verificationTokenList);
+        passwordResetTokenRepository.deleteAll(passwordResetTokenList);
+        LOG.debug("Tokens cleared!");
+    }
+}

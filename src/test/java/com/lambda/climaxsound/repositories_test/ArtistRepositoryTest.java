@@ -1,8 +1,7 @@
 package com.lambda.climaxsound.repositories_test;
 
-import com.lambda.models.entities.Artist;
+import com.lambda.model.entities.Artist;
 import com.lambda.repositories.ArtistRepository;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.Iterator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -1,10 +1,9 @@
 package com.lambda.repositories;
 
-import com.lambda.models.entities.Artist;
+import com.lambda.model.entities.Artist;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 

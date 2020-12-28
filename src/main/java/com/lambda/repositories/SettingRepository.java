@@ -1,6 +1,6 @@
 package com.lambda.repositories;
 
-import com.lambda.models.entities.Setting;
+import com.lambda.model.entities.Setting;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

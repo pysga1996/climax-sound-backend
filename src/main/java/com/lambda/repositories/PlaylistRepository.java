@@ -1,7 +1,7 @@
 package com.lambda.repositories;
 
-import com.lambda.models.entities.Playlist;
-import com.lambda.models.entities.Song;
+import com.lambda.model.entities.Playlist;
+import com.lambda.model.entities.Song;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

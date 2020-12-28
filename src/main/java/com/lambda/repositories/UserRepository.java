@@ -1,6 +1,6 @@
 package com.lambda.repositories;
 
-import com.lambda.models.entities.User;
+import com.lambda.model.entities.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
