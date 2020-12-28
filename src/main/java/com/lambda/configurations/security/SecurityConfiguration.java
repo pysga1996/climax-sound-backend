@@ -107,10 +107,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.requiresChannel()
+        http
+//                .requiresChannel()
                 // Heroku https config
-                .requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null)
-                .requiresSecure().and()
+//                .requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null)
+//                .requiresSecure().and()
                 .authorizeRequests()
                 .antMatchers("/api/admin/**").access("hasRole('ADMIN')")
                 .antMatchers("/oauth/token", "/api/login", "/api/register", "/api/song/download/**", "/api/song/upload", "/api/album/upload", "/api/album/download/**", "/api/**").permitAll()
@@ -136,6 +137,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and().cors();
         // Thêm một lớp Filter kiểm tra jwt
 //        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-        http.requiresChannel().anyRequest().requiresSecure();
+//        http.requiresChannel().anyRequest().requiresSecure();
     }
 }

@@ -24,51 +24,23 @@ import java.util.Optional;
 @RequestMapping("/api/song")
 public class SongRestController {
     private SongService songService;
-
-    @Autowired
-    public void setSongService(SongService songService) {
-        this.songService = songService;
-    }
-
     private AlbumService albumService;
-
-    @Autowired
-    public void setAlbumService(AlbumService albumService) {
-        this.albumService = albumService;
-    }
-
     private UserService userService;
-
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
     private LikeService likeService;
-
-    @Autowired
-    public void setLikeService(LikeService likeService) {
-        this.likeService = likeService;
-    }
-
     private CommentService commentService;
-
-    @Autowired
-    public void setCommentService(CommentService commentService) {
-        this.commentService = commentService;
-    }
-
     private FormConvertService formConvertService;
-
-    @Autowired
-    public void setFormConvertService(FormConvertService formConvertService) {
-        this.formConvertService = formConvertService;
-    }
-
     private AudioStorageService audioStorageService;
 
     @Autowired
-    public void setAudioStorageService(AudioStorageService audioStorageService) {
+    public SongRestController(SongService songService, AlbumService albumService, UserService userService,
+                              LikeService likeService, CommentService commentService,
+                              FormConvertService formConvertService, AudioStorageService audioStorageService) {
+        this.songService = songService;
+        this.albumService = albumService;
+        this.userService = userService;
+        this.likeService = likeService;
+        this.commentService = commentService;
+        this.formConvertService = formConvertService;
         this.audioStorageService = audioStorageService;
     }
 
@@ -98,13 +70,13 @@ public class SongRestController {
 //    }
 
     @GetMapping(value = "/list")
-    public ResponseEntity<Page<Song>> songList(@PageableDefault(size = 10) Pageable pageable, @RequestParam(value = "sort", required = false) String sort) {
+    public ResponseEntity<Page<Song>> songList(@PageableDefault() Pageable pageable, @RequestParam(value = "sort", required = false) String sort) {
         Page<Song> songList = songService.findAll(pageable, sort);
         HttpCookie httpCookie = ResponseCookie.from("pysga-climax-sound", "shit").maxAge(300).path("/").build();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(HttpHeaders.SET_COOKIE, httpCookie.toString());
-//        httpHeaders.add("Access-Control-Expose-Headers", "Set-Cookie");
-//        httpHeaders.add("Access-Control-Allow-Credentials", "true");
+        httpHeaders.add(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Set-Cookie");
+        httpHeaders.add(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
         if (songList.getTotalElements() == 0) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
