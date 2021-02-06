@@ -9,8 +9,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -34,23 +32,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final LogoutSuccessHandler customRestLogoutSuccessHandler;
 
-    private final UserDetailsService userService;
-
-    private final PasswordEncoder passwordEncoder;
-
     public SecurityConfiguration(AuthenticationSuccessHandler customRestAuthenticationSuccessHandler,
                                  AuthenticationFailureHandler customRestAuthenticationFailureHandler,
                                  AccessDeniedHandler customRestAccessDeniedHandler,
                                  AuthenticationEntryPoint customRestAuthenticationEntryPoint,
-                                 LogoutSuccessHandler customRestLogoutSuccessHandler,
-                                 UserDetailsService userService, PasswordEncoder passwordEncoder) {
+                                 LogoutSuccessHandler customRestLogoutSuccessHandler) {
         this.customRestAuthenticationSuccessHandler = customRestAuthenticationSuccessHandler;
         this.customRestAuthenticationFailureHandler = customRestAuthenticationFailureHandler;
         this.customRestAccessDeniedHandler = customRestAccessDeniedHandler;
         this.customRestAuthenticationEntryPoint = customRestAuthenticationEntryPoint;
         this.customRestLogoutSuccessHandler = customRestLogoutSuccessHandler;
-        this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Bean(BeanIds.AUTHENTICATION_MANAGER)
@@ -75,8 +66,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService)
-                .passwordEncoder(passwordEncoder);
+//        auth.userDetailsService(userService)
+//                .passwordEncoder(passwordEncoder);
     }
 
     @Override

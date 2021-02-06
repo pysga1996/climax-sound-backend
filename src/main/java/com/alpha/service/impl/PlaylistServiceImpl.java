@@ -49,7 +49,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     public Page<Playlist> findAllByUser_Id(Long userId, Pageable pageable) {
-        return playlistRepository.findAllByUser_Id(userId, pageable);
+        return playlistRepository.findAllByUserId(userId, pageable);
     }
 
     @Override
@@ -110,6 +110,6 @@ public class PlaylistServiceImpl implements PlaylistService {
     public Iterable<Playlist> getPlaylistListToAdd(Long songId) {
         UserDTO currentUser = userService.getCurrentUser();
         Optional<Song> song = songService.findById(songId);
-        return song.map(value -> playlistRepository.findAllByUser_IdAndSongsNotContains(currentUser.getId(), value)).orElse(null);
+        return song.map(value -> playlistRepository.findAllByUserIdAndSongsNotContains(currentUser.getId(), value)).orElse(null);
     }
 }

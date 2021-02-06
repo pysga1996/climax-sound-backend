@@ -25,8 +25,8 @@ public interface SongRepository extends JpaRepository<Song, Long> {
 
     Iterable<Song> findFirst10ByOrderByListeningFrequencyDesc();
 
-    @Query("SELECT s FROM Song s ORDER BY SIZE(s.users) DESC")
-    Page<Song> findAllByOrderByUsers_Size(Pageable pageable);
+//    @Query("SELECT s FROM Song s ORDER BY SIZE(s.users) DESC")
+//    Page<Song> findAllByOrderByUsers_Size(Pageable pageable);
 
     @Query("SELECT s from Song s LEFT JOIN FETCH s.comments c WHERE s.id=:id")
     Optional<Song> findById(@Param("id") Long id);

@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication(scanBasePackages = {"com.alpha"})
-@EntityScan(basePackages = {"com.lambda.models"})
+@EntityScan(basePackages = {"com.alpha.model"})
 @EnableJpaRepositories(basePackages = {"com.alpha.repositories"})
 @EnableScheduling
 public class AlphaSoundServiceApplication extends SpringBootServletInitializer {

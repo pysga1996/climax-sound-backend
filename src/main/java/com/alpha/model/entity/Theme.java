@@ -29,10 +29,10 @@ public class Theme {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
 
-    @JsonManagedReference("album-theme")
-    @OneToMany(mappedBy = "theme", fetch = FetchType.LAZY)
-    @Fetch(value = FetchMode.SUBSELECT)
-    private Collection<Album> albums;
+//    @JsonManagedReference("album-theme")
+//    @OneToMany(mappedBy = "theme", fetch = FetchType.LAZY)
+//    @Fetch(value = FetchMode.SUBSELECT)
+//    private Collection<Album> albums;
 
     public Theme(String name) {
         this.name = name;

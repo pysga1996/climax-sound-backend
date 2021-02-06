@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-public class ApplicationConfiguration implements WebMvcConfigurer {
+public class AppConfig implements WebMvcConfigurer {
 
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {

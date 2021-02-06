@@ -25,6 +25,9 @@ public class Playlist {
     @NotBlank
     private String title;
 
+    @Column
+    private Long userId;
+
     @Transient
     private UserDTO user;
 

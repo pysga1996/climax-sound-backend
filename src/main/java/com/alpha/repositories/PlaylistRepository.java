@@ -16,9 +16,9 @@ public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
     @Query("SELECT p FROM Playlist p LEFT JOIN FETCH p.songs WHERE p.id=:id")
     Optional<Playlist> findById(@Param("id") Long id);
 
-    Iterable<Playlist> findAllByUser_IdAndSongsNotContains(Long userId, Song song);
+    Iterable<Playlist> findAllByUserIdAndSongsNotContains(Long userId, Song song);
 
-    Page<Playlist> findAllByUser_Id(Long userId, Pageable pageable);
+    Page<Playlist> findAllByUserId(Long userId, Pageable pageable);
 
     Page<Playlist> findAllByTitleContaining(String title, Pageable pageable);
 }

@@ -1,5 +1,5 @@
 custom:
-  auth-server: ${AUTH_SERVER:}
+  auth-service: ${AUTH_SERVER:}
 logging:
   level:
     org:
@@ -25,9 +25,7 @@ spring:
       minimum-idle: 10
     tomcat:
       connection-properties: stringtype=unspecified
-    url: jdbc:postgresql://192.168.0.100:5432/alpha_sound
-    username: postgres
-    password: 123456
+    url: jdbc:${DATABASE_URL:}
   jackson:
     serialization:
       FAIL_ON_EMPTY_BEANS: false

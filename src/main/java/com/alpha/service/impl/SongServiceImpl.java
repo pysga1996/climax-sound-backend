@@ -48,7 +48,8 @@ public class SongServiceImpl implements SongService {
         } else if (sort != null && sort.equals("listeningFrequency")) {
             return songRepository.findAllByOrderByListeningFrequencyDesc(pageable);
         } else if (sort != null && sort.equals("likesCount")) {
-            return songRepository.findAllByOrderByUsers_Size(pageable);
+//            return songRepository.findAllByOrderByUsers_Size(pageable);
+            return null;
         } else {
             return songRepository.findAll(pageable);
         }
@@ -81,7 +82,8 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public Page<Song> findAllByLikesCount(Pageable pageable) {
-        return songRepository.findAllByOrderByUsers_Size(pageable);
+//        return songRepository.findAllByOrderByUsers_Size(pageable);
+        return null;
     }
 
     @Override

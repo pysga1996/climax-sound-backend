@@ -14,6 +14,7 @@
       </ENTRIES>
     </extension>
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.alpha.AlphaSoundServiceApplication" />
+    <option name="ACTIVE_PROFILES" value="default" />
     <option name="ALTERNATIVE_JRE_PATH" />
     <method v="2">
       <option name="Make" enabled="true" />
