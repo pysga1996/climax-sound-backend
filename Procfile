@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT $JAVA_OPTS -Dspring.profiles.active=cloud -jar build/libs/climax-sound-0.0.1-SNAPSHOT.jar -Dspring.datasource.url=jdbc:postgresql://ec2-54-163-230-199.compute-1.amazonaws.com:5432/d9lfgg6p1rlj1
+web: java -Dserver.port=$PORT $JAVA_OPTS -Dspring.profiles.active=heroku -jar build/libs/alpha-sound-service-0.0.1-SNAPSHOT.jar --spring.config.name=application-heroku

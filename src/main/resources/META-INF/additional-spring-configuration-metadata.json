@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "custom.oauth2.tokenEndpoint",
+      "type": "java.lang.String",
+      "description": "Description for custom.oauth2.tokenEndpoint."
+  }
+] }
