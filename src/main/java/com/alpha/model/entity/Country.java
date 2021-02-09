@@ -1,6 +1,5 @@
 package com.alpha.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,15 +10,16 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"songs", "albums"})
+@Entity
+@Table(name = "country")
 public class Country {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "country_id_gen")
+    @SequenceGenerator(name = "country_id_gen", sequenceName = "country_id_seq", allocationSize = 1)
     private Integer id;
 
     @NotBlank
@@ -34,7 +34,4 @@ public class Country {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> albums;
 
-    public Country(String name) {
-        this.name = name;
-    }
 }

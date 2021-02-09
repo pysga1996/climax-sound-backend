@@ -1,12 +1,14 @@
 package com.alpha.controller;
 
+import com.alpha.constant.CrossOriginConfig;
+import com.alpha.model.dto.CommentDTO;
+import com.alpha.model.dto.SongDTO;
 import com.alpha.model.dto.SongUploadForm;
 import com.alpha.model.dto.UserDTO;
-import com.alpha.model.entity.Comment;
-import com.alpha.model.entity.Song;
 import com.alpha.service.*;
-import com.alpha.service.impl.AudioStorageService;
 import com.alpha.service.impl.FormConvertService;
+import com.alpha.util.helper.UserInfoJsonStringifier;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,84 +19,86 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
 
-@CrossOrigin(origins = {"https://alpha-sound.netlify.com", "http://localhost:4200"}, allowedHeaders = "*")
+@Log4j2
+@CrossOrigin(origins = {CrossOriginConfig.Origins.ALPHA_SOUND, CrossOriginConfig.Origins.LOCAL_HOST},
+        allowCredentials = "true", allowedHeaders = "*", exposedHeaders = {HttpHeaders.SET_COOKIE})
 @RestController
 @RequestMapping("/api/song")
 public class SongRestController {
 
     private final SongService songService;
-    private final AlbumService albumService;
+
     private final UserService userService;
+
     private final LikeService likeService;
+
     private final CommentService commentService;
+
     private final FormConvertService formConvertService;
-    private final AudioStorageService audioStorageService;
+
+    private final StorageService storageService;
 
     @Autowired
-    public SongRestController(SongService songService, AlbumService albumService, UserService userService,
+    public SongRestController(SongService songService, UserService userService,
                               LikeService likeService, CommentService commentService,
-                              FormConvertService formConvertService, AudioStorageService audioStorageService) {
+                              FormConvertService formConvertService, StorageService storageService) {
         this.songService = songService;
-        this.albumService = albumService;
         this.userService = userService;
         this.likeService = likeService;
         this.commentService = commentService;
         this.formConvertService = formConvertService;
-        this.audioStorageService = audioStorageService;
+        this.storageService = storageService;
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/upload")
-    public ResponseEntity<Void> uploadSong(@Valid @RequestPart("song") SongUploadForm songUploadForm, @RequestPart("audio") MultipartFile file, @RequestParam(value = "album-albumId", required = false) Long albumId) {
-        Song song = formConvertService.convertSongUploadFormToSong(songUploadForm);
+    public ResponseEntity<Void> uploadSong(@Valid @RequestPart("song") SongUploadForm songUploadForm,
+                                           @RequestPart("audio") MultipartFile file,
+                                           @RequestParam(value = "album-albumId", required = false)
+                                                       Long albumId) {
+        SongDTO song = formConvertService.convertSongUploadFormToSong(songUploadForm);
         try {
-            Song songToSave = songService.save(song);
-            String fileDownloadUri = audioStorageService.saveToFirebaseStorage(songToSave, file);
-            songToSave.setUrl(fileDownloadUri);
-            songToSave.setUploader(userService.getCurrentUser());
-            albumService.pushToAlbum(song, albumId);
-            songService.save(songToSave);
+            this.songService.uploadAndSaveSong(file, song, albumId);
+            log.info("Upload song successfully!");
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception ex) {
+            log.error("Error while uploading song: ", ex);
             if (song.getId() != null) {
-                songService.deleteById(song.getId());
+                this.songService.deleteById(song.getId());
             }
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-//    @GetMapping("/download/{fileName:.+}")
-//    public ResponseEntity<Resource> downloadAudio(@PathVariable String fileName, HttpServletRequest request) {
-//        return downloadService.generateUrl(fileName, request, audioStorageService);
-//    }
-
+    @PreAuthorize("permitAll()")
     @GetMapping(value = "/list")
-    public ResponseEntity<Page<Song>> songList(@PageableDefault() Pageable pageable, @RequestParam(value = "sort", required = false) String sort) {
-        Page<Song> songList = songService.findAll(pageable, sort);
+    public ResponseEntity<Page<SongDTO>> songList(@PageableDefault() Pageable pageable,
+                                                  @RequestParam(value = "sort", required = false) String sort) {
+        Page<SongDTO> songList = this.songService.findAll(pageable, sort);
         HttpCookie httpCookie = ResponseCookie.from("pysga-alpha-sound", "shit").maxAge(300).path("/").build();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(HttpHeaders.SET_COOKIE, httpCookie.toString());
-        httpHeaders.add(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Set-Cookie");
-        httpHeaders.add(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
         if (songList.getTotalElements() == 0) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(httpHeaders, HttpStatus.NO_CONTENT);
         } else {
-            songService.setLike(songList);
+            this.songService.setLike(songList);
             return new ResponseEntity<>(songList, httpHeaders, HttpStatus.OK);
         }
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping(value = "/list-top")
-    public ResponseEntity<Iterable<Song>> topSongList(@RequestParam(value = "sort", required = false) String sort) {
-        Iterable<Song> songList;
+    public ResponseEntity<Iterable<SongDTO>> topSongList(@RequestParam(value = "sort", required = false) String sort) {
+        Iterable<SongDTO> songList;
         if (sort != null) {
-            songList = songService.findTop10By(sort);
+            songList = this.songService.findTop10By(sort);
         } else {
-            songList = songService.findAll();
+            songList = this.songService.findAll();
         }
         int size = 0;
         if (songList instanceof Collection) {
@@ -103,21 +107,23 @@ public class SongRestController {
         if (size == 0) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
-            songService.setLike(songList);
+            this.songService.setLike(songList);
             return new ResponseEntity<>(songList, HttpStatus.OK);
         }
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping(value = "/detail", params = "id")
-    public ResponseEntity<Song> songDetail(@RequestParam("id") Long id) {
-        Optional<Song> song = songService.findById(id);
+    public ResponseEntity<SongDTO> songDetail(@RequestParam("id") Long id) {
+        Optional<SongDTO> song = this.songService.findById(id);
         song.ifPresent(songService::setLike);
-        return song.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return song.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping(value = "/search", params = "name")
-    public ResponseEntity<Iterable<Song>> songListByName(@RequestParam("name") String name) {
-        Iterable<Song> songList = songService.findAllByTitleContaining(name);
+    public ResponseEntity<Iterable<SongDTO>> songListByName(@RequestParam("name") String name) {
+        Iterable<SongDTO> songList = this.songService.findAllByTitleContaining(name);
         int listSize = 0;
         if (songList instanceof Collection) {
             listSize = ((Collection<?>) songList).size();
@@ -128,42 +134,46 @@ public class SongRestController {
         return new ResponseEntity<>(songList, HttpStatus.OK);
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping(value = "/search", params = "tag")
-    public ResponseEntity<Page<Song>> songListByTag(@RequestParam("tag") String tag, Pageable pageable) {
-        Page<Song> songList = songService.findAllByTag_Name(tag, pageable);
+    public ResponseEntity<Page<SongDTO>> songListByTag(@RequestParam("tag") String tag, Pageable pageable) {
+        Page<SongDTO> songList = this.songService.findAllByTag_Name(tag, pageable);
         if (songList.getTotalElements() == 0) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(songList, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('UPDATE_SONG')")
     @PutMapping(value = "/edit", params = "id")
-    public ResponseEntity<Void> editSong(@RequestPart("song") Song song, @RequestParam("id") Long id, @RequestPart(value = "audio", required = false) MultipartFile multipartFile) {
-        Optional<Song> oldSong = songService.findById(id);
+    public ResponseEntity<Void> editSong(@RequestPart("song") SongDTO song, @RequestParam("id") Long id,
+                                         @RequestPart(value = "audio", required = false)
+                                                 MultipartFile multipartFile) throws IOException {
+        Optional<SongDTO> oldSong = this.songService.findById(id);
         if (oldSong.isPresent()) {
             if (multipartFile != null) {
-                String fileDownloadUri = audioStorageService.saveToFirebaseStorage(oldSong.get(), multipartFile);
+                String fileDownloadUri = this.storageService.upload(multipartFile, oldSong.get());
                 song.setUrl(fileDownloadUri);
             }
-            songService.setFields(oldSong.get(), song);
-            songService.save(oldSong.get());
+            this.songService.setFields(oldSong.get(), song);
+            this.songService.save(oldSong.get());
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('DELETE_SONG')")
     @DeleteMapping(value = "/delete", params = "id")
     public ResponseEntity<Void> deleteSong(@RequestParam("id") Long id) {
-        songService.deleteById(id);
+        this.songService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/my-song")
-    public ResponseEntity<Page<Song>> mySongList(Pageable pageable) {
-        Page<Song> mySongList = songService.findAllByUsersContains(userService.getCurrentUser(), pageable);
+    public ResponseEntity<Page<SongDTO>> mySongList(Pageable pageable) {
+        Page<SongDTO> mySongList = this.songService
+                .findAllByUsersContains(userService.getCurrentUser(), pageable);
         if (mySongList.getTotalElements() > 0) {
             return new ResponseEntity<>(mySongList, HttpStatus.OK);
         } else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -172,50 +182,52 @@ public class SongRestController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping(params = {"like", "song-id"})
     public ResponseEntity<Void> likeSong(@RequestParam("song-id") Long id) {
-        likeService.like(id);
+        this.likeService.like(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping(params = {"unlike", "song-id"})
     public ResponseEntity<Void> dislikeSong(@RequestParam("song-id") Long id) {
-        likeService.unlike(id);
+        this.likeService.unlike(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/uploaded/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<Song>> userSongList(Pageable pageable) {
-        UserDTO currentUser = userService.getCurrentUser();
-        Page<Song> userSongList = songService.findAllByUploader_Id(currentUser.getId(), pageable);
+    public ResponseEntity<Page<SongDTO>> userSongList(Pageable pageable) {
+        UserDTO currentUser = this.userService.getCurrentUser();
+        Page<SongDTO> userSongList = this.songService.findAllByUploader_Id(currentUser.getId(), pageable);
         boolean isEmpty = userSongList.getTotalElements() == 0;
         if (isEmpty) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else return new ResponseEntity<>(userSongList, HttpStatus.OK);
     }
 
+    @PreAuthorize("permitAll()")
     @PostMapping(params = {"listen", "song-id"})
     public ResponseEntity<Void> listenToSong(@RequestParam("song-id") Long id) {
-        Optional<Song> song = songService.findById(id);
+        Optional<SongDTO> song = this.songService.findById(id);
         if (song.isPresent()) {
             long currentListeningFrequency = song.get().getListeningFrequency();
             song.get().setListeningFrequency(++currentListeningFrequency);
-            songService.save(song.get());
+            this.songService.save(song.get());
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping(params = {"comment", "song-id"})
-    public ResponseEntity<Void> commentOnSong(@Valid @RequestBody Comment comment, @RequestParam("song-id") Long id) {
-        Optional<Song> song = songService.findById(id);
+    public ResponseEntity<Void> commentOnSong(@Valid @RequestBody CommentDTO comment,
+                                              @RequestParam("song-id") Long id) {
+        Optional<SongDTO> song = this.songService.findById(id);
         if (song.isPresent()) {
             LocalDateTime localDateTime = LocalDateTime.now();
             UserDTO currentUser = userService.getCurrentUser();
             comment.setLocalDateTime(localDateTime);
             comment.setSong(song.get());
-            comment.setUser(currentUser);
-            commentService.save(comment);
+            comment.setUserInfo(UserInfoJsonStringifier.stringify(currentUser));
+            this.commentService.save(comment);
             return new ResponseEntity<>(HttpStatus.OK);
         } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -223,9 +235,10 @@ public class SongRestController {
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping(params = {"comment", "comment-id"})
     public ResponseEntity<Void> deleteCommentOnSong(@RequestParam("comment-id") Long id) {
-        Optional<Comment> comment = commentService.findById(id);
-        if (comment.isPresent() && comment.get().getUser().getId().equals(userService.getCurrentUser().getId())) {
-            commentService.deleteById(id);
+        Optional<CommentDTO> comment = this.commentService.findById(id);
+        if (comment.isPresent() && comment.get().getUserInfo().getId()
+                .equals(userService.getCurrentUser().getId())) {
+            this.commentService.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

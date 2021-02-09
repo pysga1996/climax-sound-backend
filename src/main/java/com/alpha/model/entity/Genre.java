@@ -1,7 +1,5 @@
 package com.alpha.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,30 +8,26 @@ import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 
 @Entity
+@Table(name = "genre")
 @Data
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"songs", "albums"}, allowGetters = true, ignoreUnknown = true)
 public class Genre {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "genre_id_gen")
+    @SequenceGenerator(name = "genre_id_gen", sequenceName = "genre_id_seq", allocationSize = 1)
     private Integer id;
 
     @NotBlank
     @Column(unique = true, nullable = false)
     private String name;
 
-    @JsonBackReference("song-genre")
     @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
     private Collection<Song> songs;
 
-    @JsonBackReference("album-genre")
     @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
     private Collection<Album> albums;
 
-    public Genre(String name) {
-        this.name = name;
-    }
 }
 
 

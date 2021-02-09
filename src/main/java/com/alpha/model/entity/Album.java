@@ -1,14 +1,14 @@
 package com.alpha.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.alpha.model.dto.UserDTO;
-import com.alpha.model.util.MediaObject;
+import com.alpha.model.util.UploadObject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -16,14 +16,15 @@ import java.util.Collection;
 import java.util.Date;
 
 @Entity
+@Table(name = "album")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"users", "coverBlobString", "coverUrl"}, allowGetters = true)
-public class Album extends MediaObject {
+public class Album extends UploadObject {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "album_id_gen")
+    @SequenceGenerator(name = "album_id_gen", sequenceName = "album_id_seq", allocationSize = 1)
     private Long id;
 
     @NotBlank
@@ -86,11 +87,6 @@ public class Album extends MediaObject {
     @Transient
     private Collection<UserDTO> users;
 
-    public Album(String title, Date releaseDate) {
-        this.title = title;
-        this.releaseDate = releaseDate;
-    }
-
     @Override
     public String toString() {
         return "Album{" +
@@ -98,5 +94,33 @@ public class Album extends MediaObject {
                 ", title='" + title + '\'' +
                 ", releaseDate=" + releaseDate +
                 '}';
+    }
+
+    @Override
+    public String getUrl() {
+        return coverUrl;
+    }
+
+    @Override
+    public String createFileName(String ext) {
+        artists = this.getArtists();
+        String artistsString = this.getArtistString(artists);
+        return StringUtils.cleanPath(this.getId().toString().concat(" - ")
+                .concat(this.getTitle()).concat(artistsString).concat(".").concat(ext));
+    }
+
+    @Override
+    public String getFolder() {
+        return "cover";
+    }
+
+    @Override
+    public String getBlobString() {
+        return coverBlobString;
+    }
+
+    @Override
+    public void setBlobString(String blobString) {
+        this.setCoverBlobString(blobString);
     }
 }

@@ -26,7 +26,8 @@ public class CountryRepositoryTest {
 
     @BeforeAll
     public void SetUp() {
-        UK = new Country("UK");
+        UK = new Country();
+        UK.setName("UK");
         countryRepository.save(UK);
     }
 
@@ -50,7 +51,8 @@ public class CountryRepositoryTest {
 
     @Test
     public void whenSave_thenFoundInDB() {
-        Country HK = new Country("Hong Kong");
+        Country HK = new Country();
+        HK.setName("Hong Kong");
         countryRepository.save(HK);
         Country found = countryRepository.findByName("Hong Kong");
         assertThat(found).isNotNull();

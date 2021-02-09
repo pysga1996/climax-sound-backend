@@ -1,10 +1,13 @@
 custom:
-  auth-service: ${AUTH_SERVER:}
+  auth-service: ${AUTH_SERVICE:}
+  client-id: ${CLIENT_ID:}
+  client-secret: ${CLIENT_SECRET:}
 logging:
   level:
     org:
       springframework:
         web: DEBUG
+  config: classpath:log4j-spring.xml
 server:
   servlet:
     context-path: /alpha-sound
@@ -32,7 +35,7 @@ spring:
     serialization:
       FAIL_ON_EMPTY_BEANS: false
   jpa:
-    generate-ddl: true
+    generate-ddl: false
     show-sql: true
     open-in-view: false
     properties:
@@ -40,11 +43,12 @@ spring:
         current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
         dialect: org.hibernate.dialect.PostgreSQL10Dialect
         format_sql: true
-        hb2ddl:
-          auto: update
+        default_schema: alpha_sound
         jdbc:
           lob:
             non_contextual_creation: true
+    hibernate:
+      ddl-auto: none
   main:
     allow-bean-definition-overriding: true
   messages:
@@ -57,3 +61,10 @@ spring:
       file-size-threshold: 2KB
       max-file-size: 200MB
       max-request-size: 215MB
+storage:
+  cloudinary:
+    url: ${CLOUDINARY_URL:}
+  firebase:
+    credentials: ${FIREBASE_CREDENTIALS:}
+  local:
+    upload-dir: ${UPLOAD_DIR:}

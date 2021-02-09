@@ -1,44 +1,36 @@
 package com.alpha.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.alpha.model.dto.UserDTO;
-import com.alpha.model.util.MediaObject;
-import com.alpha.util.helper.CustomUserJsonSerializer;
+import com.alpha.model.util.UploadObject;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
 
-@Entity
 @Data
 @Builder(toBuilder = true)
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"comments", "liked", "albums", "genres", "users", "playlists", "theme", "uploader"}, allowGetters = true, ignoreUnknown = true)
-public class Song extends MediaObject {
+@Entity
+@Table(name = "song")
+public class Song extends UploadObject {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "song_id_gen")
+    @SequenceGenerator(name = "song_id_gen", sequenceName = "song_id_seq", allocationSize = 1)
     private Long id;
 
-    @NotBlank
     private String title;
 
-    @JsonIgnore
     private String unaccentTitle;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date releaseDate;
 
     private String url;
@@ -54,17 +46,17 @@ public class Song extends MediaObject {
     @ColumnDefault("0")
     private Long listeningFrequency = 0L;
 
+    @Transient
     private Boolean liked;
 
     //    @Column(columnDefinition = "LONGTEXT")
     @Column(columnDefinition = "TEXT")
     private String lyric;
 
-    @JsonIgnore
     private String blobString;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
+    @JoinTable(schema = "alpha_sound",
             name = "song_artist",
             joinColumns = @JoinColumn(
                     name = "song_id", referencedColumnName = "id"),
@@ -97,35 +89,25 @@ public class Song extends MediaObject {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Genre> genres;
 
-    @JsonBackReference(value = "user-favoriteSongs")
     @Transient
     private Collection<UserDTO> users;
 
-    @JsonSerialize(using = CustomUserJsonSerializer.class)
     @Transient
     private UserDTO uploader;
 
-    @JsonBackReference(value = "playlist-song")
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "songs")
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Playlist> playlists;
 
-    @JsonBackReference("song-country")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "country_id")
     private Country country;
 
-    @JsonBackReference("song-theme")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "theme_id")
     private Theme theme;
 
     private Duration duration;
-
-    public Song(String title, Date releaseDate) {
-        this.title = title;
-        this.releaseDate = releaseDate;
-    }
 
     @Override
     public String toString() {
@@ -135,5 +117,18 @@ public class Song extends MediaObject {
                 ", releaseDate=" + releaseDate +
                 ", url='" + url + '\'' +
                 '}';
+    }
+
+    @Override
+    public String createFileName(String ext) {
+        artists = this.getArtists();
+        String artistsString = this.getArtistString(artists);
+        return StringUtils.cleanPath(this.getId().toString().concat(" - ")
+                .concat(this.getTitle()).concat(artistsString).concat(".").concat(ext));
+    }
+
+    @Override
+    public String getFolder() {
+        return "audio";
     }
 }

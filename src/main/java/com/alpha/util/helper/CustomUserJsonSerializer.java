@@ -1,9 +1,9 @@
 package com.alpha.util.helper;
 
+import com.alpha.model.dto.UserDTO;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.alpha.model.dto.UserDTO;
 
 import java.io.IOException;
 
@@ -22,11 +22,9 @@ public class CustomUserJsonSerializer extends StdSerializer<UserDTO> {
         jsonGenerator.writeStringField("id", user.getId().toString());
         jsonGenerator.writeStringField("username", user.getUsername());
         jsonGenerator.writeStringField("firstName", user.getUsername());
-        jsonGenerator.writeStringField("lastName", user.getLastName());
-        jsonGenerator.writeStringField("avatarUrl", user.getAvatarUrl());
         jsonGenerator.writeObjectFieldStart("setting");
         jsonGenerator.writeNumberField("id", user.getSetting().getId());
-        jsonGenerator.writeBooleanField("darkMode", user.getSetting().getDarkMode());
+        jsonGenerator.writeBooleanField("darkMode", user.getSetting() == null ? false : user.getSetting().getDarkMode());
         jsonGenerator.writeEndObject();
         jsonGenerator.writeEndObject();
     }

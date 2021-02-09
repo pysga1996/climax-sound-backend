@@ -1,10 +1,12 @@
 package com.alpha.controller;
 
-import com.alpha.model.entity.Theme;
+import com.alpha.constant.CrossOriginConfig;
+import com.alpha.model.dto.ThemeDTO;
 import com.alpha.service.ThemeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@CrossOrigin(origins = {"https://alpha-sound.netlify.com", "http://localhost:4200"}, allowedHeaders = "*")
-@RestController
+@CrossOrigin(origins = {CrossOriginConfig.Origins.ALPHA_SOUND, CrossOriginConfig.Origins.LOCAL_HOST},
+        allowCredentials = "true", allowedHeaders = "*", exposedHeaders = {HttpHeaders.SET_COOKIE})@RestController
 @RequestMapping("/api/activity")
 public class ThemeRestController {
     private ThemeService themeService;
@@ -24,8 +26,8 @@ public class ThemeRestController {
     }
 
     @GetMapping(params = "action=list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<Theme>> activityList(Pageable pageable) {
-        Page<Theme> activityList = themeService.findAll(pageable);
+    public ResponseEntity<Page<ThemeDTO>> activityList(Pageable pageable) {
+        Page<ThemeDTO> activityList = themeService.findAll(pageable);
         boolean isEmpty = activityList.getTotalElements() == 0;
         if (isEmpty) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -33,8 +35,8 @@ public class ThemeRestController {
     }
 
     @GetMapping(params = "action=search", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<Theme>> activitySearch(@RequestParam String name, Pageable pageable) {
-        Page<Theme> filteredActivityList = themeService.findAllByNameContaining(name, pageable);
+    public ResponseEntity<Page<ThemeDTO>> activitySearch(@RequestParam String name, Pageable pageable) {
+        Page<ThemeDTO> filteredActivityList = themeService.findAllByNameContaining(name, pageable);
         boolean isEmpty = filteredActivityList.getTotalElements() == 0;
         if (isEmpty) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -42,7 +44,7 @@ public class ThemeRestController {
     }
 
     @PostMapping(params = "action=create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createActivity(@Valid @RequestBody Theme mood) {
+    public ResponseEntity<String> createActivity(@Valid @RequestBody ThemeDTO mood) {
         if (mood == null) {
             return new ResponseEntity<>("Theme title has already existed in database!", HttpStatus.BAD_REQUEST);
         } else {
@@ -52,8 +54,8 @@ public class ThemeRestController {
     }
 
     @PutMapping(params = {"action=edit", "id"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> editActivity(@Valid @RequestBody Theme theme, @RequestParam Integer id) {
-        Theme checkedTheme = themeService.findByName(theme.getName());
+    public ResponseEntity<String> editActivity(@Valid @RequestBody ThemeDTO theme, @RequestParam Integer id) {
+        ThemeDTO checkedTheme = themeService.findByName(theme.getName());
         if (checkedTheme != null) {
             return new ResponseEntity<>("Theme title has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
         } else {

@@ -1,51 +1,74 @@
 package com.alpha.service.impl;
 
+import com.alpha.mapper.CountryMapper;
+import com.alpha.model.dto.CountryDTO;
 import com.alpha.model.entity.Country;
 import com.alpha.repositories.CountryRepository;
 import com.alpha.service.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CountryServiceImpl implements CountryService {
 
     private final CountryRepository countryRepository;
 
+    private final CountryMapper countryMapper;
+
     @Autowired
-    public CountryServiceImpl(CountryRepository countryRepository) {
+    public CountryServiceImpl(CountryRepository countryRepository, CountryMapper countryMapper) {
         this.countryRepository = countryRepository;
+        this.countryMapper = countryMapper;
     }
 
     @Override
-    public Optional<Country> findById(Integer id) {
-        return countryRepository.findById(id);
+    @Transactional(readOnly = true)
+    public Optional<CountryDTO> findById(Integer id) {
+        return this.countryRepository.findById(id)
+                .map(this.countryMapper::entityToDto);
     }
 
     @Override
-    public Country findByName(String name) {
-        return countryRepository.findByName(name);
+    @Transactional(readOnly = true)
+    public CountryDTO findByName(String name) {
+        return this.countryMapper.entityToDto(this.countryRepository.findByName(name));
     }
 
     @Override
-    public Page<Country> findAll(Pageable pageable) {
-        return countryRepository.findAll(pageable);
+    @Transactional(readOnly = true)
+    public Page<CountryDTO> findAll(Pageable pageable) {
+        Page<Country> countryPage = this.countryRepository.findAll(pageable);
+        return new PageImpl<>(countryPage.getContent()
+                .stream()
+                .map(this.countryMapper::entityToDto)
+                .collect(Collectors.toList()), pageable, countryPage.getTotalElements());
     }
 
     @Override
-    public Page<Country> findAllByNameContaining(String name, Pageable pageable) {
-        return countryRepository.findAllByNameContaining(name, pageable);
+    @Transactional(readOnly = true)
+    public Page<CountryDTO> findAllByNameContaining(String name, Pageable pageable) {
+        Page<Country> countryPage = this.countryRepository.findAllByNameContaining(name, pageable);
+        return new PageImpl<>(countryPage.getContent()
+                .stream()
+                .map(this.countryMapper::entityToDto)
+                .collect(Collectors.toList()), pageable, countryPage.getTotalElements());
     }
 
     @Override
-    public void save(Country country) {
-        countryRepository.saveAndFlush(country);
+    @Transactional
+    public void save(CountryDTO country) {
+        countryRepository.saveAndFlush(this.countryMapper.dtoToEntity(country));
     }
 
     @Override
+    @Transactional
     public void deleteById(Integer id) {
         countryRepository.deleteById(id);
     }

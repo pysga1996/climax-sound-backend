@@ -1,32 +1,29 @@
 package com.alpha.service;
 
-import com.alpha.model.entity.Artist;
+import com.alpha.model.dto.ArtistDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Collection;
 import java.util.Optional;
 
 public interface ArtistService {
-    Optional<Artist> findById(Long id);
+    Optional<ArtistDTO> findById(Long id);
 
-    Artist findByName(String name);
+    ArtistDTO findByName(String name);
 
-    Iterable<Artist> findTop10ByNameContaining(String name);
+    Iterable<ArtistDTO> findTop10ByNameContaining(String name);
 
-    Page<Artist> findAllByNameContaining(String name, Pageable pageable);
+    Page<ArtistDTO> findAllByNameContaining(String name, Pageable pageable);
 
-    Page<Artist> findAllByAlbums_Name(String name, Pageable pageable);
+    Page<ArtistDTO> findAllByAlbums_Name(String name, Pageable pageable);
 
-    void save(Artist artist);
+    void save(ArtistDTO artist);
 
-    String convertToString(Collection<Artist> artists);
+    Page<ArtistDTO> findAll(Pageable pageable);
 
-    Page<Artist> findAll(Pageable pageable);
+    void setFields(ArtistDTO oldArtistInfo, ArtistDTO newArtistInfo);
 
-    void setFields(Artist oldArtistInfo, Artist newArtistInfo);
-
-    Iterable<Artist> findAllByNameContaining(String name);
+    Iterable<ArtistDTO> findAllByNameContaining(String name);
 
     void deleteById(Long id);
 }

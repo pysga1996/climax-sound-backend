@@ -20,10 +20,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ArtistRepositoryTest {
+    private final Pageable pageable = PageRequest.of(0, 10);
     @Autowired
     ArtistRepository artistRepository;
-
-    private final Pageable pageable = PageRequest.of(0,10);
 
     @Test
     public void whenFindAll_returnArtistIterable() {

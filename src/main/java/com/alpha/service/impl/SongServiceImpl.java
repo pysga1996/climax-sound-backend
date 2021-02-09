@@ -1,26 +1,40 @@
 package com.alpha.service.impl;
 
+import com.alpha.mapper.SongMapper;
+import com.alpha.mapper.TagMapper;
+import com.alpha.model.dto.ArtistDTO;
+import com.alpha.model.dto.SongDTO;
+import com.alpha.model.dto.TagDTO;
 import com.alpha.model.dto.UserDTO;
+import com.alpha.model.entity.Album;
 import com.alpha.model.entity.Artist;
 import com.alpha.model.entity.Like;
 import com.alpha.model.entity.Song;
-import com.alpha.model.entity.Tag;
-import com.alpha.repositories.LikeRepository;
-import com.alpha.repositories.SongRepository;
-import com.alpha.repositories.TagRepository;
+import com.alpha.repositories.*;
 import com.alpha.service.SongService;
+import com.alpha.service.StorageService;
 import com.alpha.service.UserService;
 import com.alpha.util.formatter.StringAccentRemover;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.Spliterator;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class SongServiceImpl implements SongService {
+
+    private final ArtistRepository artistRepository;
 
     private final SongRepository songRepository;
 
@@ -30,147 +44,242 @@ public class SongServiceImpl implements SongService {
 
     private final TagRepository tagRepository;
 
-    private final AudioStorageService audioStorageService;
+    private final StorageService storageService;
+
+    private final SongMapper songMapper;
+
+    private final TagMapper tagMapper;
+
+    private final AlbumRepository albumRepository;
 
     @Autowired
-    public SongServiceImpl(SongRepository songRepository, LikeRepository likeRepository, UserService userService, TagRepository tagRepository, AudioStorageService audioStorageService) {
+    public SongServiceImpl(ArtistRepository artistRepository, SongRepository songRepository,
+                           AlbumRepository albumRepository,
+                           LikeRepository likeRepository, UserService userService,
+                           TagRepository tagRepository, StorageService storageService,
+                           SongMapper songMapper, TagMapper tagMapper) {
+        this.artistRepository = artistRepository;
         this.songRepository = songRepository;
         this.likeRepository = likeRepository;
         this.userService = userService;
         this.tagRepository = tagRepository;
-        this.audioStorageService = audioStorageService;
+        this.storageService = storageService;
+        this.songMapper = songMapper;
+        this.tagMapper = tagMapper;
+        this.albumRepository = albumRepository;
     }
 
     @Override
-    public Page<Song> findAll(Pageable pageable, String sort) {
+    @Transactional(readOnly = true)
+    public Page<SongDTO> findAll(Pageable pageable, String sort) {
+        Page<Song> songPage;
         if (sort != null && sort.equals("releaseDate")) {
-            return songRepository.findAllByOrderByReleaseDateDesc(pageable);
+            songPage = this.songRepository.findAllByOrderByReleaseDateDesc(pageable);
         } else if (sort != null && sort.equals("listeningFrequency")) {
-            return songRepository.findAllByOrderByListeningFrequencyDesc(pageable);
+            songPage = this.songRepository.findAllByOrderByListeningFrequencyDesc(pageable);
         } else if (sort != null && sort.equals("likesCount")) {
 //            return songRepository.findAllByOrderByUsers_Size(pageable);
-            return null;
+            songPage = new PageImpl<>(new ArrayList<>());
         } else {
-            return songRepository.findAll(pageable);
+            songPage = this.songRepository.findAll(pageable);
         }
+        return new PageImpl<>(songPage.getContent()
+                .stream()
+                .map(this.songMapper::entityToDto)
+                .collect(Collectors.toList()), pageable, songPage.getTotalElements());
     }
 
     @Override
-    public Iterable<Song> findAll() {
-        return songRepository.findAll();
+    @Transactional(readOnly = true)
+    public Iterable<SongDTO> findAll() {
+        return this.songRepository.findAll().stream()
+                .map(this.songMapper::entityToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Iterable<Song> findTop10By(String sort) {
-        return songRepository.findFirst10ByOrderByListeningFrequencyDesc();
+    @Transactional(readOnly = true)
+    public Iterable<SongDTO> findTop10By(String sort) {
+        return StreamSupport.stream(
+                this.songRepository.findFirst10ByOrderByListeningFrequencyDesc().spliterator(), false)
+                .map(this.songMapper::entityToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Page<Song> findAllByOrderByReleaseDateDesc(Pageable pageable) {
-        return songRepository.findAllByOrderByReleaseDateDesc(pageable);
+    @Transactional(readOnly = true)
+    public Page<SongDTO> findAllByOrderByReleaseDateDesc(Pageable pageable) {
+        Page<Song> songPage = this.songRepository.findAllByOrderByReleaseDateDesc(pageable);
+        return new PageImpl<>(songPage.getContent()
+                .stream()
+                .map(this.songMapper::entityToDto)
+                .collect(Collectors.toList()), pageable, songPage.getTotalElements());
     }
 
     @Override
-    public Page<Song> findAllByOrderByDisplayRatingDesc(Pageable pageable) {
-        return songRepository.findAllByOrderByDisplayRatingDesc(pageable);
+    @Transactional(readOnly = true)
+    public Page<SongDTO> findAllByOrderByDisplayRatingDesc(Pageable pageable) {
+        Page<Song> songPage = this.songRepository.findAllByOrderByDisplayRatingDesc(pageable);
+        return new PageImpl<>(songPage.getContent()
+                .stream()
+                .map(this.songMapper::entityToDto)
+                .collect(Collectors.toList()), pageable, songPage.getTotalElements());
     }
 
     @Override
-    public Page<Song> findAllByOrderByListeningFrequencyDesc(Pageable pageable) {
-        return songRepository.findAllByOrderByListeningFrequencyDesc(pageable);
+    @Transactional(readOnly = true)
+    public Page<SongDTO> findAllByOrderByListeningFrequencyDesc(Pageable pageable) {
+        Page<Song> songPage = this.songRepository.findAllByOrderByListeningFrequencyDesc(pageable);
+        return new PageImpl<>(songPage.getContent()
+                .stream()
+                .map(this.songMapper::entityToDto)
+                .collect(Collectors.toList()), pageable, songPage.getTotalElements());
     }
 
     @Override
-    public Page<Song> findAllByLikesCount(Pageable pageable) {
+    @Transactional(readOnly = true)
+    public Page<SongDTO> findAllByLikesCount(Pageable pageable) {
 //        return songRepository.findAllByOrderByUsers_Size(pageable);
         return null;
     }
 
     @Override
-    public Page<Song> findAllByUploader_Id(Long id, Pageable pageable) {
-        return songRepository.findAllByUploader_Id(id, pageable);
+    @Transactional(readOnly = true)
+    public Page<SongDTO> findAllByUploader_Id(Long id, Pageable pageable) {
+        Page<Song> songPage = this.songRepository.findAllByUploader_Id(id, pageable);
+        return new PageImpl<>(songPage.getContent()
+                .stream()
+                .map(this.songMapper::entityToDto)
+                .collect(Collectors.toList()), pageable, songPage.getTotalElements());
     }
 
     @Override
-    public Optional<Song> findById(Long id) {
-        return songRepository.findById(id);
+    @Transactional(readOnly = true)
+    public Optional<SongDTO> findById(Long id) {
+        return this.songRepository.findById(id).map(this.songMapper::entityToDto);
     }
 
     @Override
-    public Iterable<Song> findAllByTitle(String title) {
-        return songRepository.findAllByTitle(title);
+    @Transactional(readOnly = true)
+    public Iterable<SongDTO> findAllByTitle(String title) {
+        Spliterator<Song> songSpliterator = this.songRepository.findAllByTitle(title).spliterator();
+        return StreamSupport.stream(songSpliterator, false)
+                .map(this.songMapper::entityToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Iterable<Song> findAllByTitleContaining(String name) {
+    @Transactional(readOnly = true)
+    public Iterable<SongDTO> findAllByTitleContaining(String name) {
+        Spliterator<Song> songSpliterator;
         if (name.equals(StringAccentRemover.removeStringAccent(name))) {
-            return songRepository.findAllByUnaccentTitleContainingIgnoreCase(name);
+            songSpliterator = this.songRepository
+                    .findAllByUnaccentTitleContainingIgnoreCase(name).spliterator();
         } else {
-            return songRepository.findAllByTitleContainingIgnoreCase(name);
+            songSpliterator = this.songRepository
+                    .findAllByTitleContainingIgnoreCase(name).spliterator();
         }
+        return StreamSupport.stream(songSpliterator, false)
+                .map(this.songMapper::entityToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<SongDTO> findAllByTitleContaining(String name, Pageable pageable) {
+        Page<Song> songPage = this.songRepository.findAllByTitleContaining(name, pageable);
+        return new PageImpl<>(songPage.getContent()
+                .stream()
+                .map(this.songMapper::entityToDto)
+                .collect(Collectors.toList()), pageable, songPage.getTotalElements());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<SongDTO> findAllByArtistsContains(ArtistDTO artist, Pageable pageable) {
+        Optional<Artist> artistOptional = this.artistRepository.findById(artist.getId());
+        if (artistOptional.isPresent()) {
+            Page<Song> songPage = this.songRepository
+                    .findAllByArtistsContains(artistOptional.get(), pageable);
+            return new PageImpl<>(songPage.getContent()
+                    .stream()
+                    .map(this.songMapper::entityToDto)
+                    .collect(Collectors.toList()), pageable, songPage.getTotalElements());
+        } else return new PageImpl<>(new ArrayList<>());
 
     }
 
     @Override
-    public Page<Song> findAllByTitleContaining(String name, Pageable pageable) {
-        return songRepository.findAllByTitleContaining(name, pageable);
+    @Transactional(readOnly = true)
+    public Page<SongDTO> findAllByUsersContains(UserDTO user, Pageable pageable) {
+        Page<Song> songList = this.songRepository.findAllByUsersContains(user, pageable);
+        Page<SongDTO> songDTOPage = songList.map(this.songMapper::entityToDto);
+        setLike(songDTOPage);
+        return songDTOPage;
     }
 
     @Override
-    public Page<Song> findAllByArtistsContains(Artist artist, Pageable pageable) {
-        return songRepository.findAllByArtistsContains(artist, pageable);
+    @Transactional(readOnly = true)
+    public Page<SongDTO> findAllByTag_Name(String name, Pageable pageable) {
+        Page<Song> songPage = this.songRepository.findAllByTag_Name(name, pageable);
+        return new PageImpl<>(songPage.getContent()
+                .stream()
+                .map(this.songMapper::entityToDto)
+                .collect(Collectors.toList()), pageable, songPage.getTotalElements());
+
     }
 
     @Override
-    public Page<Song> findAllByUsersContains(UserDTO user, Pageable pageable) {
-        Page<Song> songList = songRepository.findAllByUsersContains(user, pageable);
-        setLike(songList);
-        return songList;
+    @Transactional(readOnly = true)
+    public Iterable<SongDTO> findAllByAlbum_Id(Long id) {
+        Spliterator<Song> songSpliterator = this.songRepository.findAllByAlbum_Id(id).spliterator();
+        return StreamSupport.stream(songSpliterator, false)
+                .map(this.songMapper::entityToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Page<Song> findAllByTag_Name(String name, Pageable pageable) {
-        return songRepository.findAllByTag_Name(name, pageable);
-    }
-
-    @Override
-    public Iterable<Song> findAllByAlbum_Id(Long id) {
-        return songRepository.findAllByAlbum_Id(id);
-    }
-
-    @Override
-    public Song save(Song song) {
-        Collection<Tag> tags = song.getTags();
-        for (Tag tag : tags) {
-            if (tagRepository.findByName("tag") == null) {
-                tagRepository.saveAndFlush(tag);
+    @Transactional
+    public SongDTO save(SongDTO song) {
+        if (song.getTags() != null) {
+            Collection<TagDTO> tags = song.getTags();
+            for (TagDTO tag : tags) {
+                if (tagRepository.findByName("tag") == null) {
+                    this.tagRepository.saveAndFlush(this.tagMapper.dtoToEntity(tag));
+                }
             }
         }
         String unaccentTitle = StringAccentRemover.removeStringAccent(song.getTitle());
         song.setUnaccentTitle(unaccentTitle.toLowerCase());
-        songRepository.saveAndFlush(song);
+        Song songEntity = this.songMapper.dtoToEntity(song);
+        this.songRepository.saveAndFlush(songEntity);
+        song.setId(songEntity.getId());
         return song;
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         Optional<Song> song = songRepository.findById(id);
         if (song.isPresent()) {
-            songRepository.deleteById(id);
+            this.songRepository.deleteById(id);
 //            String fileUrl = song.get().getUrl();
 //            String filename = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
 //            return audioStorageService.deleteLocalStorageFile(audioStorageService.audioStorageLocation, filename);
-            audioStorageService.deleteFirebaseStorageFile(song.get());
+            this.storageService.delete(song.get());
         }
     }
 
     @Override
-    public void deleteAll(Collection<Song> songs) {
-        songRepository.deleteAll(songs);
+    @Transactional
+    public void deleteAll(Collection<SongDTO> songs) {
+        this.songRepository.deleteAll(songs.stream()
+                .map(this.songMapper::dtoToEntity)
+                .collect(Collectors.toList()));
     }
 
     @Override
-    public void setFields(Song oldSongInfo, Song newSongInfo) {
+    public void setFields(SongDTO oldSongInfo, SongDTO newSongInfo) {
         oldSongInfo.setTitle(newSongInfo.getTitle());
         oldSongInfo.setArtists(newSongInfo.getArtists());
         oldSongInfo.setGenres(newSongInfo.getGenres());
@@ -184,33 +293,61 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public Page<Song> sortByDate(Pageable pageable) {
+    @Transactional(readOnly = true)
+    public Page<SongDTO> sortByDate(Pageable pageable) {
         return null;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean hasUserLiked(Long songId) {
-        Long userId = userService.getCurrentUser().getId();
-        Like like = likeRepository.findBySongIdAndUserId(songId, userId);
+        UserDTO userDTO = this.userService.getCurrentUser();
+        if (userDTO == null) return false;
+        Long userId = userDTO.getId();
+        Like like = this.likeRepository.findByLikeId_SongIdAndLikeId_UserId(songId, userId);
         return (like != null);
     }
 
     @Override
-    public void setLike(Song song) {
+    @Transactional(readOnly = true)
+    public void setLike(SongDTO song) {
         song.setLiked(hasUserLiked(song.getId()));
     }
 
     @Override
-    public void setLike(Page<Song> songList) {
-        for (Song song : songList) {
+    @Transactional(readOnly = true)
+    public void setLike(Page<SongDTO> songList) {
+        for (SongDTO song : songList) {
             song.setLiked(hasUserLiked(song.getId()));
         }
     }
 
     @Override
-    public void setLike(Iterable<Song> songList) {
-        for (Song song : songList) {
+    public void setLike(Iterable<SongDTO> songList) {
+        for (SongDTO song : songList) {
             song.setLiked(hasUserLiked(song.getId()));
         }
+    }
+
+    @Override
+    @Transactional
+    public void uploadAndSaveSong(MultipartFile file, SongDTO songDTO, Long albumId) throws IOException {
+        Song songToSave = this.songRepository.save(this.songMapper.dtoToEntity(songDTO));
+        String fileDownloadUri = this.storageService.upload(file, songToSave);
+        songToSave.setUrl(fileDownloadUri);
+        songToSave.setUploader(userService.getCurrentUser());
+        if (albumId != null) {
+            Optional<Album> album = this.albumRepository.findById(albumId);
+            if (album.isPresent()) {
+                Collection<Song> songList = album.get().getSongs();
+                if (songList == null) {
+                    songList = new ArrayList<>();
+                }
+                songList.add(songToSave);
+                album.get().setSongs(songList);
+                this.albumRepository.save(album.get());
+            }
+        }
+        this.songRepository.save(songToSave);
     }
 }

@@ -1,6 +1,7 @@
 package com.alpha.config.custom;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Component
+@Primary
 @SuppressWarnings("deprecation")
 public class CustomAccessTokenConverter implements AccessTokenConverter {
 

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -15,7 +16,8 @@ import java.util.Optional;
 @Repository
 public interface SongRepository extends JpaRepository<Song, Long> {
 
-    Page<Song> findAll(Pageable pageable);
+    @NonNull
+    Page<Song> findAll(@NonNull Pageable pageable);
 
     Page<Song> findAllByOrderByReleaseDateDesc(Pageable pageable);
 
@@ -29,7 +31,8 @@ public interface SongRepository extends JpaRepository<Song, Long> {
 //    Page<Song> findAllByOrderByUsers_Size(Pageable pageable);
 
     @Query("SELECT s from Song s LEFT JOIN FETCH s.comments c WHERE s.id=:id")
-    Optional<Song> findById(@Param("id") Long id);
+    @NonNull
+    Optional<Song> findById(@NonNull @Param("id") Long id);
 
     //    @Query(value = "SELECT * FROM song WHERE BINARY title=:title", nativeQuery = true)
     Iterable<Song> findAllByTitle(String title);

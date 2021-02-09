@@ -1,28 +1,27 @@
 package com.alpha.service;
 
-import com.alpha.model.entity.Album;
-import com.alpha.model.entity.Song;
+import com.alpha.model.dto.AlbumDTO;
+import com.alpha.model.dto.SongDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
 public interface AlbumService {
-    Optional<Album> findById(Long id);
 
-    Iterable<Album> findAllByTitle(String name);
+    Optional<AlbumDTO> findById(Long id);
 
-    Page<Album> findAll(Pageable pageable);
+    Iterable<AlbumDTO> findAllByTitle(String name);
 
-    Page<Album> findAllByTitleContaining(String name, Pageable pageable);
+    Page<AlbumDTO> findAll(Pageable pageable);
 
-    Page<Album> findAllByArtist_Name(String name, Pageable pageable);
+    Page<AlbumDTO> findAllByTitleContaining(String name, Pageable pageable);
 
-    void setFields(Album oldAlbumInfo, Album newAlbumInfo);
+    Page<AlbumDTO> findAllByArtist_Name(String name, Pageable pageable);
 
-    void save(Album album);
+    void setFields(AlbumDTO oldAlbumInfo, AlbumDTO newAlbumInfo);
+
+    void save(AlbumDTO album);
 
     void deleteById(Long id);
-
-    void pushToAlbum(Song song, Long albumId);
 }

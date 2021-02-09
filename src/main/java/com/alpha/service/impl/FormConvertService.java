@@ -1,7 +1,6 @@
 package com.alpha.service.impl;
 
-import com.alpha.model.dto.SongUploadForm;
-import com.alpha.model.entity.*;
+import com.alpha.model.dto.*;
 import com.alpha.service.*;
 import org.springframework.stereotype.Service;
 
@@ -31,14 +30,15 @@ public class FormConvertService {
         this.themeService = themeService;
     }
 
-    public Collection<Artist> convertStringToArtistList(String string) {
+    public Collection<ArtistDTO> convertStringToArtistList(String string) {
         String[] artistsString = string.split(",");
-        Collection<Artist> artistList = new HashSet<>();
+        Collection<ArtistDTO> artistList = new HashSet<>();
         for (String artistString : artistsString) {
             if (!artistString.trim().isEmpty()) {
-                Artist checkedArtist = artistService.findByName(artistString);
+                ArtistDTO checkedArtist = artistService.findByName(artistString);
                 if (checkedArtist == null) {
-                    Artist artist = new Artist(artistString.trim());
+                    ArtistDTO artist = new ArtistDTO();
+                    artist.setName(artistString.trim());
                     artistService.save(artist);
                     artistList.add(artist);
                 } else {
@@ -50,15 +50,16 @@ public class FormConvertService {
         return artistList;
     }
 
-    public Collection<Genre> convertStringToGenreList(String string) {
+    public Collection<GenreDTO> convertStringToGenreList(String string) {
         String[] genresString = string.split(",");
-        Collection<Genre> genreList = new HashSet<>();
+        Collection<GenreDTO> genreList = new HashSet<>();
         for (String genreString : genresString) {
             if (!genreString.trim().isEmpty()) {
-                Genre checkedGenre = genreService.findByName(genreString);
+                GenreDTO checkedGenre = this.genreService.findByName(genreString);
                 if (checkedGenre == null) {
-                    Genre genre = new Genre(genreString.toLowerCase().trim());
-                    genreService.save(genre);
+                    GenreDTO genre = new GenreDTO();
+                    genre.setName(genreString.toLowerCase().trim());
+                    this.genreService.save(genre);
                     genreList.add(genre);
                 } else {
                     genreList.add(checkedGenre);
@@ -69,15 +70,16 @@ public class FormConvertService {
         return genreList;
     }
 
-    public Collection<Tag> convertStringToTagList(String string) {
+    public Collection<TagDTO> convertStringToTagList(String string) {
         String[] tagsString = string.split(",");
-        Collection<Tag> tagList = new HashSet<>();
+        Collection<TagDTO> tagList = new HashSet<>();
         for (String tagString : tagsString) {
             if (!tagString.trim().isEmpty()) {
-                Tag checkedTag = tagService.findByName(tagString);
+                TagDTO checkedTag = this.tagService.findByName(tagString);
                 if (checkedTag == null) {
-                    Tag tag = new Tag(tagString.toLowerCase().trim());
-                    tagService.save(tag);
+                    TagDTO tag = new TagDTO();
+                    tag.setName(tagString.toLowerCase().trim());
+                    this.tagService.save(tag);
                     tagList.add(tag);
                 } else {
                     tagList.add(checkedTag);
@@ -88,28 +90,30 @@ public class FormConvertService {
         return tagList;
     }
 
-    public Country convertStringToMood(String string) {
-        Country checkedCountry = countryService.findByName(string);
+    public CountryDTO convertStringToMood(String string) {
+        CountryDTO checkedCountry = this.countryService.findByName(string);
         if (checkedCountry == null && !string.isEmpty()) {
-            Country country = new Country(string);
-            countryService.save(country);
+            CountryDTO country = new CountryDTO();
+            country.setName(string);
+            this.countryService.save(country);
             return country;
         }
         return null;
     }
 
-    public Theme convertToActivity(String string) {
-        Theme checkedTheme = themeService.findByName(string);
+    public ThemeDTO convertToActivity(String string) {
+        ThemeDTO checkedTheme = this.themeService.findByName(string);
         if (checkedTheme == null && !string.isEmpty()) {
-            Theme theme = new Theme(string);
-            themeService.save(theme);
+            ThemeDTO theme = new ThemeDTO();
+            theme.setName(string);
+            this.themeService.save(theme);
             return theme;
         }
         return null;
     }
 
-    public Song convertSongUploadFormToSong(SongUploadForm songUploadForm) {
-        Song song = new Song();
+    public SongDTO convertSongUploadFormToSong(SongUploadForm songUploadForm) {
+        SongDTO song = new SongDTO();
         song.setTitle(songUploadForm.getTitle());
         song.setCountry(songUploadForm.getCountry());
         song.setArtists(songUploadForm.getArtists());
@@ -117,12 +121,16 @@ public class FormConvertService {
         song.setLyric(songUploadForm.getLyric());
         song.setReleaseDate(songUploadForm.getReleaseDate());
         song.setGenres(songUploadForm.getGenres());
-        String[] tagsString = songUploadForm.getTags().split(",");
-        List<Tag> tagList = new LinkedList<>();
-        for (String tagString : tagsString) {
-            tagList.add(new Tag(tagString.trim().toLowerCase()));
+        if (songUploadForm.getTags() != null && !songUploadForm.getTags().trim().isEmpty()) {
+            String[] tagsString = songUploadForm.getTags().split(",");
+            List<TagDTO> tagList = new LinkedList<>();
+            for (String tagString : tagsString) {
+                TagDTO tagDTO = new TagDTO();
+                tagDTO.setName(tagString.trim().toLowerCase());
+                tagList.add(tagDTO);
+            }
+            song.setTags(tagList);
         }
-        song.setTags(tagList);
         return song;
     }
 }

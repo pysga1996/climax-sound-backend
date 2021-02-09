@@ -3,50 +3,55 @@ package com.alpha.service.impl;
 import com.alpha.model.dto.UserDTO;
 import com.alpha.model.entity.Like;
 import com.alpha.model.entity.Song;
+import com.alpha.model.entity.LikeId;
 import com.alpha.repositories.LikeRepository;
+import com.alpha.repositories.SongRepository;
 import com.alpha.service.LikeService;
-import com.alpha.service.SongService;
 import com.alpha.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
 public class LikeServiceImpl implements LikeService {
 
-    private final SongService songService;
+    private final SongRepository songRepository;
 
     private final LikeRepository likeRepository;
 
     private final UserService userService;
 
     @Autowired
-    public LikeServiceImpl(SongService songService, LikeRepository likeRepository, UserService userService) {
-        this.songService = songService;
+    public LikeServiceImpl(SongRepository songRepository, LikeRepository likeRepository,
+                           UserService userService) {
+        this.songRepository = songRepository;
         this.likeRepository = likeRepository;
         this.userService = userService;
     }
 
     @Override
+    @Transactional
     public void like(Long id) {
-        Optional<Song> song = songService.findById(id);
+        Optional<Song> song = this.songRepository.findById(id);
         UserDTO user = userService.getCurrentUser();
         if (song.isPresent()) {
-            Like like = likeRepository.findBySongIdAndUserId(song.get().getId(), user.getId());
+            Like like = this.likeRepository.findByLikeId_SongIdAndLikeId_UserId(song.get().getId(), user.getId());
             if (like == null) {
-                like = new Like(song.get().getId(), user.getId());
+                like = new Like(new LikeId(song.get().getId(), user.getId()));
                 likeRepository.save(like);
             }
         }
     }
 
     @Override
+    @Transactional
     public void unlike(Long id) {
-        Optional<Song> song = songService.findById(id);
+        Optional<Song> song = this.songRepository.findById(id);
         UserDTO currentUser = userService.getCurrentUser();
         if (song.isPresent()) {
-            Like like = likeRepository.findBySongIdAndUserId(song.get().getId(), currentUser.getId());
+            Like like = likeRepository.findByLikeId_SongIdAndLikeId_UserId(song.get().getId(), currentUser.getId());
             if (like != null) {
                 likeRepository.delete(like);
             }

@@ -1,26 +1,28 @@
 package com.alpha.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.jackson.JsonComponent;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import java.io.Serializable;
 
 @Data
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class SettingDTO {
+@JsonComponent
+public class SettingDTO implements Serializable {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    private static final long serialVersionUID = 43L;
+
     private Long id;
 
-    @Builder.Default
-    private Boolean darkMode = true;
+    private Long userId;
 
-    @JsonIgnore
-    private UserDTO user;
+    @Builder.Default
+    @JsonProperty("dark_mode")
+    private Boolean darkMode = true;
 }

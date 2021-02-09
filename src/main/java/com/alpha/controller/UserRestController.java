@@ -1,12 +1,23 @@
 package com.alpha.controller;
 
-import org.springframework.web.bind.annotation.*;
+import com.alpha.constant.CrossOriginConfig;
+import com.alpha.model.dto.UserDTO;
+import com.alpha.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = {"https://alpha-sound.netlify.com", "http://localhost:4200"}, allowedHeaders = "*")
-@RestController
+@CrossOrigin(origins = {CrossOriginConfig.Origins.ALPHA_SOUND, CrossOriginConfig.Origins.LOCAL_HOST},
+        allowCredentials = "true", allowedHeaders = "*", exposedHeaders = {HttpHeaders.SET_COOKIE})@RestController
 @RequestMapping("/api")
 public class UserRestController {
-//    private Environment environment;
+    //    private Environment environment;
 //
 //    @Autowired
 //    public void setEnvironment(Environment environment) {
@@ -29,8 +40,14 @@ public class UserRestController {
 //        this.authenticationManager = authenticationManager;
 //    }
 //
-//    private UserService userService;
-//
+    private final UserService userService;
+
+    @Autowired
+    public UserRestController(UserService userService) {
+        this.userService = userService;
+    }
+
+    //
 //    private PasswordEncoder passwordEncoder;
 //
 //    @Autowired
@@ -57,20 +74,18 @@ public class UserRestController {
 //        this.downloadService = downloadService;
 //    }
 //
-//    @PreAuthorize("permitAll()")
-//    @GetMapping("/profile/{id}")
-//    public ResponseEntity<UserDTO> getCurrentUser(@PathVariable("id") Long id) {
-//        try {
-//            UserDTO currentUser = userService.getCurrentUser();
-//            UserDTO user = userService.setInfo(id, currentUser);
-//            if (user != null) {
-//                return new ResponseEntity<>(user, HttpStatus.OK);
-//            } else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        } catch (Exception ex) {
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//
-//    }
+    @PreAuthorize("#oauth2.user")
+    @GetMapping("/profile")
+    public ResponseEntity<UserDTO> getCurrentUser() {
+        try {
+            UserDTO currentUser = this.userService.getCurrentUser();
+            if (currentUser != null) {
+                return new ResponseEntity<>(currentUser, HttpStatus.OK);
+            } else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 //
 //    @PreAuthorize("isAuthenticated()")
 //    @PostMapping("/upload-avatar")
@@ -121,7 +136,31 @@ public class UserRestController {
 //
 ////    @GetMapping("/avatar/{fileName:.+}")
 ////    public ResponseEntity<Resource> getAvatar(@PathVariable("fileName") String fileName, HttpServletRequest request) {
-////        return downloadService.generateUrl(fileName, request, avatarStorageService);
+////        Path path = Paths.get("");
+////        if (storageService instanceof AudioStorageService) {
+////            path = ((AudioStorageService) storageService).audioStorageLocation;
+////        } else if (storageService instanceof CoverStorageService) {
+////            path = ((CoverStorageService) storageService).coverStorageLocation;
+////        } else if (storageService instanceof AvatarStorageService) {
+////            path = ((AvatarStorageService) storageService).avatarStorageLocation;
+////        }
+//        // Load file as Resource
+//        Resource resource = storageService.loadFileAsResource(path, fileName);
+//        // Try to determine file's content type
+//        String contentType = null;
+//        try {
+//            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+//        } catch (IOException ex) {
+//            logger.info("Could not determine file type.");
+//        }
+//        // Fallback to the default content type if type could not be determined
+//        if (contentType == null) {
+//            contentType = "application/octet-stream";
+//        }
+//        return ResponseEntity.ok()
+//                .contentType(MediaType.parseMediaType(contentType))
+//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+//                .body(resource);
 ////    }
 //
 //    @PreAuthorize("isAnonymous()")
@@ -276,4 +315,4 @@ public class UserRestController {
 //            }
 //        }
 //
-    }
+}

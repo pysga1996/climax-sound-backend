@@ -1,6 +1,6 @@
 package com.alpha.service;
 
-import com.alpha.model.entity.Playlist;
+import com.alpha.model.dto.PlaylistDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -8,17 +8,17 @@ import java.util.Optional;
 
 public interface PlaylistService {
 
-    boolean checkSongExistence(Playlist playlist, Long songId);
+    boolean checkSongExistence(PlaylistDTO playlist, Long songId);
 
-    Optional<Playlist> findById(Long id);
+    Optional<PlaylistDTO> findById(Long id);
 
-    Iterable<Playlist> getPlaylistListToAdd(Long songId);
+    Iterable<PlaylistDTO> getPlaylistListToAdd(Long songId);
 
-    Page<Playlist> findAllByUser_Id(Long userId, Pageable pageable);
+    Page<PlaylistDTO> findAllByUser_Id(Long userId, Pageable pageable);
 
-    Page<Playlist> findAllByTitleContaining(String title, Pageable pageable);
+    Page<PlaylistDTO> findAllByTitleContaining(String title, Pageable pageable);
 
-    void save(Playlist playlist);
+    void save(PlaylistDTO playlist);
 
     void deleteById(Long id);
 

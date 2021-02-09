@@ -1,105 +1,95 @@
 package com.alpha.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.alpha.model.entity.Album;
-import com.alpha.model.entity.Comment;
-import com.alpha.model.entity.Playlist;
-import com.alpha.model.entity.Song;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.validation.constraints.*;
-import java.util.Collection;
-import java.util.Date;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @Data
-@EqualsAndHashCode()
+@AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"avatarBlobString"
-        , "enabled", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"}, allowGetters = true, ignoreUnknown = true)
-public class UserDTO implements UserDetails {
+public class UserDTO implements UserDetails, Serializable {
 
-    Collection<Playlist> playlists;
-    Collection<Song> uploadedSong;
     private Long id;
-    @NotBlank
-    @Pattern(regexp = "^[a-zA-Z0-9]+([a-zA-Z0-9]([_\\- ])[a-zA-Z0-9])*[a-zA-Z0-9]+${8,}")
-    private String username;
-    @NotBlank
-    private String password;
-    @NotBlank
-    @Size(min = 2, max = 20)
-    private String firstName;
-    @NotBlank
-    @Size(min = 2, max = 20)
-    private String lastName;
-    @NotNull
-    private Boolean gender;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date birthDate;
-    @Pattern(regexp = "^(\\(?\\+?[0-9]*\\)?)?[0-9_\\- ()]*${10,13}")
-    private String phoneNumber;
-    @Email
-    private String email;
-    private String avatarUrl;
-    private String avatarBlobString;
-    private Collection<RoleDTO> authorities;
-    @JsonIgnore
-    private Collection<Song> favoriteSongs;
-    @JsonIgnore
-    private Collection<Album> favoriteAlbums;
-    @JsonIgnore
-    private Collection<Comment> comments;
+
+    private UserProfileDTO userProfile;
 
     private SettingDTO setting;
 
-    private boolean enabled = false;
-    private boolean accountNonExpired = true;
-    private boolean accountNonLocked = true;
-    private boolean credentialsNonExpired = true;
+    private String username;
 
-    public UserDTO(String username, String password, Collection<RoleDTO> authorities) {
+    private String password;
+
+    private boolean enabled;
+
+    private boolean accountNonExpired;
+
+    private boolean accountNonLocked;
+
+    private boolean credentialsNonExpired;
+
+    private Set<GrantedAuthority> authorities;
+
+    public UserDTO(String username, String password, boolean enabled,
+                   boolean accountNonExpired, boolean accountNonLocked,
+                   boolean credentialsNonExpired, Set<GrantedAuthority> authorities) {
         this.username = username;
         this.password = password;
+        this.enabled = enabled;
+        this.accountNonExpired = accountNonExpired;
+        this.accountNonLocked = accountNonLocked;
+        this.credentialsNonExpired = credentialsNonExpired;
         this.authorities = authorities;
-        this.enabled = false;
-    }
-
-    public UserDTO(String firstName, String lastName, Boolean gender, String avatarUrl) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.avatarUrl = avatarUrl;
-        this.enabled = false;
-    }
-
-    public UserDTO(String username, String password, String firstName, String lastName, Boolean gender, Date birthDate, String phoneNumber, String email) {
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.birthDate = birthDate;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.enabled = false;
     }
 
     @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", gender=" + gender +
-                ", birthDate=" + birthDate +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return accountNonExpired;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return accountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return credentialsNonExpired;
+    }
+
+    @Override
+    public Set<GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    public Map<String, Boolean> getBasicInfo() {
+        Map<String, Boolean> otherInfo = new HashMap<>();
+        otherInfo.put("enabled", this.isEnabled());
+        otherInfo.put("accountNonLocked", this.isAccountNonLocked());
+        otherInfo.put("accountNonExpired", this.isAccountNonExpired());
+        otherInfo.put("credentialsNonExpired", this.isCredentialsNonExpired());
+        return otherInfo;
     }
 }
+

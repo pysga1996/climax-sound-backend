@@ -1,10 +1,13 @@
 package com.alpha.service.impl;
 
-import com.alpha.model.entity.Comment;
+import com.alpha.mapper.CommentMapper;
+import com.alpha.model.dto.CommentDTO;
 import com.alpha.repositories.CommentRepository;
 import com.alpha.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Optional;
 
 @Service
@@ -12,20 +15,28 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
 
+    private final CommentMapper commentMapper;
+
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository) {
+    public CommentServiceImpl(CommentRepository commentRepository, CommentMapper commentMapper) {
         this.commentRepository = commentRepository;
+        this.commentMapper = commentMapper;
     }
 
-    public Optional<Comment> findById(Long id) {
-        return commentRepository.findById(id);
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<CommentDTO> findById(Long id) {
+        return this.commentRepository.findById(id)
+                .map(this.commentMapper::entityToDto);
     }
 
-    public void save(Comment comment) {
-        commentRepository.saveAndFlush(comment);
+    @Transactional
+    public void save(CommentDTO comment) {
+        this.commentRepository.saveAndFlush(this.commentMapper.dtoToEntity(comment));
     }
 
+    @Transactional
     public void deleteById(Long id) {
-        commentRepository.deleteById(id);
+        this.commentRepository.deleteById(id);
     }
 }

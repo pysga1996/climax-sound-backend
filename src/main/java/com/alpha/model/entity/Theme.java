@@ -1,7 +1,5 @@
 package com.alpha.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
@@ -12,29 +10,26 @@ import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 
 @Entity
+@Table(name = "theme")
 @Data
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"songs", "albums"}, allowGetters = true, ignoreUnknown = true)
 public class Theme {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "theme_id_gen")
+    @SequenceGenerator(name = "theme_id_gen", sequenceName = "theme_id_seq", allocationSize = 1)
     private Integer id;
 
     @NotBlank
     @Column(unique = true, nullable = false)
     private String name;
 
-    @JsonManagedReference("song-theme")
     @OneToMany(mappedBy = "theme", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
 
-//    @JsonManagedReference("album-theme")
 //    @OneToMany(mappedBy = "theme", fetch = FetchType.LAZY)
 //    @Fetch(value = FetchMode.SUBSELECT)
 //    private Collection<Album> albums;
 
-    public Theme(String name) {
-        this.name = name;
-    }
 }

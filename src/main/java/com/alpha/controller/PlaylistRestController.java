@@ -1,12 +1,14 @@
 package com.alpha.controller;
 
+import com.alpha.constant.CrossOriginConfig;
+import com.alpha.model.dto.PlaylistDTO;
 import com.alpha.model.dto.UserDTO;
-import com.alpha.model.entity.Playlist;
 import com.alpha.service.PlaylistService;
 import com.alpha.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,8 +18,8 @@ import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Optional;
 
-@CrossOrigin(origins = {"https://alpha-sound.netlify.com", "http://localhost:4200"}, allowedHeaders = "*")
-@RestController
+@CrossOrigin(origins = {CrossOriginConfig.Origins.ALPHA_SOUND, CrossOriginConfig.Origins.LOCAL_HOST},
+        allowCredentials = "true", allowedHeaders = "*", exposedHeaders = {HttpHeaders.SET_COOKIE})@RestController
 @RequestMapping("/api/playlist")
 public class PlaylistRestController {
     private PlaylistService playlistService;
@@ -35,10 +37,10 @@ public class PlaylistRestController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/list")
-    public ResponseEntity<Page<Playlist>> playlistList(Pageable pageable) {
+    public ResponseEntity<Page<PlaylistDTO>> playlistList(Pageable pageable) {
         UserDTO currentUser = userService.getCurrentUser();
         Long id = currentUser.getId();
-        Page<Playlist> playlistList = playlistService.findAllByUser_Id(id, pageable);
+        Page<PlaylistDTO> playlistList = playlistService.findAllByUser_Id(id, pageable);
         boolean isEmpty = playlistList.getTotalElements() == 0;
         if (isEmpty) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -47,8 +49,8 @@ public class PlaylistRestController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/detail", params = "id")
-    public ResponseEntity<Playlist> playlistDetail(@RequestParam("id") Long id) {
-        Optional<Playlist> playlist = playlistService.findById(id);
+    public ResponseEntity<PlaylistDTO> playlistDetail(@RequestParam("id") Long id) {
+        Optional<PlaylistDTO> playlist = playlistService.findById(id);
         if (playlist.isPresent()) {
             if (playlistService.checkPlaylistOwner(id)) {
                 return new ResponseEntity<>(playlist.get(), HttpStatus.OK);
@@ -58,7 +60,7 @@ public class PlaylistRestController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/create")
-    public ResponseEntity<Void> createPlaylist(@Valid @RequestBody Playlist playlist) {
+    public ResponseEntity<Void> createPlaylist(@Valid @RequestBody PlaylistDTO playlist) {
         if (playlist == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
@@ -70,8 +72,8 @@ public class PlaylistRestController {
 
     @PreAuthorize("isAuthenticated()")
     @PutMapping(value = "/edit", params = "id")
-    public ResponseEntity<String> editPlaylist(@Valid @RequestBody Playlist playlist, @RequestParam("id") Long id) {
-        Optional<Playlist> oldPlaylist = playlistService.findById(id);
+    public ResponseEntity<String> editPlaylist(@Valid @RequestBody PlaylistDTO playlist, @RequestParam("id") Long id) {
+        Optional<PlaylistDTO> oldPlaylist = playlistService.findById(id);
         if (oldPlaylist.isPresent()) {
             if (playlistService.checkPlaylistOwner(id)) {
                 playlist.setId(id);
@@ -116,8 +118,8 @@ public class PlaylistRestController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/list-to-add")
-    public ResponseEntity<Iterable<Playlist>> showPlaylistListToAdd(@RequestParam("song-id") Long songId) {
-        Iterable<Playlist> filteredPlaylistList = playlistService.getPlaylistListToAdd(songId);
+    public ResponseEntity<Iterable<PlaylistDTO>> showPlaylistListToAdd(@RequestParam("song-id") Long songId) {
+        Iterable<PlaylistDTO> filteredPlaylistList = playlistService.getPlaylistListToAdd(songId);
         int size = 0;
         if (filteredPlaylistList instanceof Collection) {
             size = ((Collection<?>) filteredPlaylistList).size();

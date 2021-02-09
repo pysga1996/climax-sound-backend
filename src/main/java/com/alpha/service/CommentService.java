@@ -1,13 +1,14 @@
 package com.alpha.service;
 
-import com.alpha.model.entity.Comment;
+import com.alpha.model.dto.CommentDTO;
 
 import java.util.Optional;
 
 public interface CommentService {
-    Optional<Comment> findById(Long id);
 
-    void save(Comment comment);
+    Optional<CommentDTO> findById(Long id);
+
+    void save(CommentDTO comment);
 
     void deleteById(Long id);
 }

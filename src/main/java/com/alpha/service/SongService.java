@@ -1,62 +1,67 @@
 package com.alpha.service;
 
+import com.alpha.model.dto.ArtistDTO;
+import com.alpha.model.dto.SongDTO;
 import com.alpha.model.dto.UserDTO;
-import com.alpha.model.entity.Artist;
-import com.alpha.model.entity.Song;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Optional;
 
 public interface SongService {
-    Iterable<Song> findAll();
 
-    Page<Song> findAll(Pageable pageable, String sort);
+    Iterable<SongDTO> findAll();
 
-    Iterable<Song> findAllByTitle(String title);
+    Page<SongDTO> findAll(Pageable pageable, String sort);
 
-    Iterable<Song> findAllByTitleContaining(String title);
+    Iterable<SongDTO> findAllByTitle(String title);
 
-    Page<Song> findAllByUploader_Id(Long id, Pageable pageable);
+    Iterable<SongDTO> findAllByTitleContaining(String title);
 
-    Page<Song> findAllByTitleContaining(String title, Pageable pageable);
+    Page<SongDTO> findAllByUploader_Id(Long id, Pageable pageable);
 
-    Page<Song> findAllByArtistsContains(Artist artist, Pageable pageable);
+    Page<SongDTO> findAllByTitleContaining(String title, Pageable pageable);
 
-    Page<Song> findAllByUsersContains(UserDTO user, Pageable pageable);
+    Page<SongDTO> findAllByArtistsContains(ArtistDTO artist, Pageable pageable);
 
-    Page<Song> findAllByOrderByReleaseDateDesc(Pageable pageable);
+    Page<SongDTO> findAllByUsersContains(UserDTO user, Pageable pageable);
 
-    Page<Song> findAllByOrderByListeningFrequencyDesc(Pageable pageable);
+    Page<SongDTO> findAllByOrderByReleaseDateDesc(Pageable pageable);
 
-    Page<Song> findAllByOrderByDisplayRatingDesc(Pageable pageable);
+    Page<SongDTO> findAllByOrderByListeningFrequencyDesc(Pageable pageable);
 
-    Iterable<Song> findTop10By(String sort);
+    Page<SongDTO> findAllByOrderByDisplayRatingDesc(Pageable pageable);
 
-    Page<Song> findAllByLikesCount(Pageable pageable);
+    Iterable<SongDTO> findTop10By(String sort);
 
-    Optional<Song> findById(Long id);
+    Page<SongDTO> findAllByLikesCount(Pageable pageable);
 
-    Iterable<Song> findAllByAlbum_Id(Long id);
+    Optional<SongDTO> findById(Long id);
 
-    Page<Song> findAllByTag_Name(String name, Pageable pageable);
+    Iterable<SongDTO> findAllByAlbum_Id(Long id);
 
-    Song save(Song song);
+    Page<SongDTO> findAllByTag_Name(String name, Pageable pageable);
+
+    SongDTO save(SongDTO song);
 
     void deleteById(Long id);
 
-    void deleteAll(Collection<Song> songs);
+    void deleteAll(Collection<SongDTO> songs);
 
-    void setFields(Song oldSongInfo, Song newSongInfo);
+    void setFields(SongDTO oldSongInfo, SongDTO newSongInfo);
 
-    Page<Song> sortByDate(Pageable pageable);
+    Page<SongDTO> sortByDate(Pageable pageable);
 
     boolean hasUserLiked(Long songId);
 
-    void setLike(Page<Song> songList);
+    void setLike(Page<SongDTO> songList);
 
-    void setLike(Iterable<Song> songList);
+    void setLike(Iterable<SongDTO> songList);
 
-    void setLike(Song song);
+    void setLike(SongDTO song);
+
+    void uploadAndSaveSong(MultipartFile file, SongDTO song, Long albumId) throws IOException;
 }

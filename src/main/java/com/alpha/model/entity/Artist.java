@@ -1,34 +1,32 @@
 package com.alpha.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.alpha.model.util.UploadObject;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Date;
 
-@Entity
 @Data
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"albums", "songs", "avatarBlobString", "avatarUrl"}, allowGetters = true, ignoreUnknown = true)
-public class Artist {
+@Entity
+@Table(name = "artist")
+public class Artist extends UploadObject {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "artist_id_gen")
+    @SequenceGenerator(name = "artist_id_gen", sequenceName = "artist_id_seq", allocationSize = 1)
     private Long id;
 
-    @NotBlank
     private String name;
 
-    @JsonIgnore
     private String unaccentName;
 
-    @DateTimeFormat(pattern = "MM-dd-yyyy")
     private Date birthDate;
 
     private String avatarUrl;
@@ -49,17 +47,6 @@ public class Artist {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Album> albums;
 
-    public Artist(String name) {
-        this.name = name;
-    }
-
-    public Artist(String name, Date birthDate, String avatarUrl, String biography) {
-        this.name = name;
-        this.birthDate = birthDate;
-        this.avatarUrl = avatarUrl;
-        this.biography = biography;
-    }
-
     @Override
     public String toString() {
         return "Artist{" +
@@ -67,5 +54,30 @@ public class Artist {
                 ", name='" + name + '\'' +
                 ", birthDate=" + birthDate +
                 '}';
+    }
+
+    @Override
+    public String getUrl() {
+        return avatarUrl;
+    }
+
+    @Override
+    public String createFileName(String ext) {
+        return this.getId().toString().concat(" - ").concat(this.getName()).concat(".").concat(ext);
+    }
+
+    @Override
+    public String getFolder() {
+        return "avatar";
+    }
+
+    @Override
+    public String getBlobString() {
+        return avatarBlobString;
+    }
+
+    @Override
+    public void setBlobString(String blobString) {
+        this.setAvatarBlobString(blobString);
     }
 }

@@ -1,7 +1,7 @@
 package com.alpha.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.alpha.model.dto.UserDTO;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
@@ -11,14 +11,16 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 
-@Entity
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"user", "songs"}, allowGetters = true)
+@Entity
+@Table(name = "playlist")
 public class Playlist {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "playlist_id_gen")
+    @SequenceGenerator(name = "playlist_id_gen", sequenceName = "playlist_id_seq", allocationSize = 1)
     private Long id;
 
     //    @Column(columnDefinition = "VARCHAR(255) COLLATE utf8mb4_bin")

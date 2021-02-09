@@ -1,7 +1,6 @@
 package com.alpha.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.alpha.model.entity.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,7 +31,7 @@ public class SongUploadForm {
     private String url;
 
     @JsonIgnore
-    private Collection<Comment> comments;
+    private Collection<CommentDTO> comments;
 
     @Builder.Default
     private Long displayRating = 0L;
@@ -47,23 +46,23 @@ public class SongUploadForm {
     @JsonIgnore
     private String blobString;
 
-    private Collection<Artist> artists;
+    private Collection<ArtistDTO> artists;
 
-    private Collection<Album> albums;
+    private Collection<AlbumDTO> albums;
 
     private String tags;
 
-    private Collection<Genre> genres;
+    private Collection<GenreDTO> genres;
 
     private Collection<UserDTO> users;
 
     private UserDTO uploader;
 
-    private Collection<Playlist> playlists;
+    private Collection<PlaylistDTO> playlists;
 
-    private Country country;
+    private CountryDTO country;
 
-    private Theme theme;
+    private ThemeDTO theme;
 
     private Duration duration;
 }
