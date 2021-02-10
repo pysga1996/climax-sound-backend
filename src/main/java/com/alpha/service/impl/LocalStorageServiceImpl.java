@@ -6,8 +6,6 @@ import com.alpha.error.FileStorageException;
 import com.alpha.model.util.UploadObject;
 import com.alpha.service.StorageService;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
@@ -29,17 +27,20 @@ import java.nio.file.StandardCopyOption;
 @Profile({"default"})
 public class LocalStorageServiceImpl extends StorageService {
 
-    private static final Logger logger = LogManager.getLogger(LocalStorageServiceImpl.class);
-
     private final Path storageLocation;
 
     @Autowired
     public LocalStorageServiceImpl(StorageProperty storageProperty) {
         this.storageLocation = Paths.get(storageProperty.getUploadDir())
                 .toAbsolutePath().normalize();
-
+        Path audioPath = storageLocation.resolve("audio");
+        Path coverPath = storageLocation.resolve("cover");
+        Path avatarPath = storageLocation.resolve("avatar");
         try {
             Files.createDirectories(this.storageLocation);
+            Files.createDirectories(audioPath);
+            Files.createDirectories(coverPath);
+            Files.createDirectories(avatarPath);
         } catch (Exception ex) {
             throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
         }
@@ -77,7 +78,7 @@ public class LocalStorageServiceImpl extends StorageService {
     public void delete(UploadObject uploadObject) {
         Path filePath = storageLocation.resolve(uploadObject.getBlobString()).normalize();
         File file = filePath.toFile();
-        logger.info("Delete file {} success? {}", uploadObject.getBlobString(), file.delete());
+        log.info("Delete file {} success? {}", uploadObject.getBlobString(), file.delete());
     }
 
     @Override

@@ -1,28 +1,24 @@
 package com.alpha.config.custom;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Log4j2
 @Component
 public class CustomRestAccessDeniedHandler implements AccessDeniedHandler {
-
-    private static final Logger logger
-            = LoggerFactory.getLogger(CustomRestAccessDeniedHandler.class.getName());
 
     @Override
     public void handle(
             HttpServletRequest request,
             HttpServletResponse response,
-            AccessDeniedException exc) throws IOException, ServletException {
-
+            AccessDeniedException ex) throws IOException {
+        log.error("Access denied!", ex);
         response.sendError(HttpServletResponse.SC_FORBIDDEN,
                 "Access denied");
     }

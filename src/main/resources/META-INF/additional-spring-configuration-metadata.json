@@ -24,6 +24,11 @@
       "name": "custom.client-secret",
       "type": "java.lang.String",
       "description": "Description for custom.client-secret."
+    },
+    {
+      "name": "storage.temp",
+      "type": "java.lang.String",
+      "description": "Description for storage.temp."
     }
   ]
 }

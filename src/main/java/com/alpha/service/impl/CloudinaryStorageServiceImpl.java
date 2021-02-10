@@ -4,8 +4,7 @@ import com.alpha.model.util.UploadObject;
 import com.alpha.service.StorageService;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.cloudinary.json.JSONArray;
 import org.cloudinary.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +18,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+@Log4j2
 @Service
 @Profile({"heroku"})
 public class CloudinaryStorageServiceImpl extends StorageService {
 
-    private static final Logger logger = LogManager.getLogger(CloudinaryStorageServiceImpl.class);
-    private final Cloudinary cloudinary;
-    private final ServletContext servletContext;
     @Value("${storage.temp}")
     private String tempFolder;
+
+    private final Cloudinary cloudinary;
+
+    private final ServletContext servletContext;
 
     @Autowired
     public CloudinaryStorageServiceImpl(Cloudinary cloudinary, ServletContext servletContext) {
@@ -39,15 +40,15 @@ public class CloudinaryStorageServiceImpl extends StorageService {
     public String upload(MultipartFile multipartFile, UploadObject uploadObject) throws IOException {
         File tmpDir = new File(servletContext.getRealPath("/") + this.tempFolder);
         if (!tmpDir.exists()) {
-            logger.info("Created temp folder? {}", tmpDir.mkdir());
+            log.info("Created temp folder? {}", tmpDir.mkdir());
         }
         String ext = this.getExtension(multipartFile);
         String filename = uploadObject.createFileName(ext);
         File tmpFile = new File(tmpDir, filename);
         if (!tmpFile.exists()) {
-            logger.info("Created temp file? {}", tmpFile.createNewFile());
+            log.info("Created temp file? {}", tmpFile.createNewFile());
         }
-        logger.info("Path: {}", tmpFile.getCanonicalPath());
+        log.info("Path: {}", tmpFile.getCanonicalPath());
         multipartFile.transferTo(tmpFile);
         JSONArray accessControl = new JSONArray();
         JSONObject accessType = new JSONObject();
@@ -62,7 +63,7 @@ public class CloudinaryStorageServiceImpl extends StorageService {
                 "access_control", accessControl
         );
         Map<?, ?> uploadResult = this.cloudinary.uploader().upload(tmpFile, params);
-        logger.info("Delete temp file? {}", tmpFile.delete());
+        log.info("Delete temp file? {}", tmpFile.delete());
         return (String) uploadResult.get("secure_url");
     }
 

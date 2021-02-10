@@ -25,9 +25,7 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bc94efd9-f0bc-40eb-ad2a-87d2fc0f8ca5" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.run/alpha-sound-service [bootRun].run.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.run/alpha-sound-service [idea].run.xml" afterDir="false" />
+    <list default="true" id="bc94efd9-f0bc-40eb-ad2a-87d2fc0f8ca5" name="Default Changelist" comment="add mapstruct&#10;major fixes">
       <change afterPath="$PROJECT_DIR$/environment/oauth2.env" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/logs/2021-02/alpha-sound-service--10-tháng hai-2021-1.log.gz" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/logs/2021-02/alpha-sound-service--10-tháng hai-2021-2.log.gz" afterDir="false" />
@@ -37,22 +35,7 @@
       <change afterPath="$PROJECT_DIR$/logs/2021-02/alpha-sound-service--10-tháng hai-2021-6.log.gz" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/logs/2021-02/alpha-sound-service--10-tháng hai-2021-7.log.gz" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/logs/alpha-sound-service.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lombok.config" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/generated/com/alpha/mapper/UserInfoMapperImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/alpha/constant/CrossOriginConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/alpha/mapper/UserInfoMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/alpha/mapper/annotation/FullMapping.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/alpha/mapper/annotation/PureMapping.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/alpha/model/dto/UserInfoDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/alpha/model/entity/LikeId.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/alpha/model/entity/UserInfo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/alpha/util/helper/UserInfoJsonStringifier.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/log4j-spring.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.run/ALPHA_SOUND_SERVICE.run.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.run/ALPHA_SOUND_SERVICE.run.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/generated/com/alpha/mapper/AlbumMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/generated/com/alpha/mapper/AlbumMapperImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/generated/com/alpha/mapper/ArtistMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/generated/com/alpha/mapper/ArtistMapperImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/generated/com/alpha/mapper/CommentMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/generated/com/alpha/mapper/CommentMapperImpl.java" afterDir="false" />
@@ -62,69 +45,20 @@
       <change beforePath="$PROJECT_DIR$/src/main/generated/com/alpha/mapper/SongMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/generated/com/alpha/mapper/SongMapperImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/generated/com/alpha/mapper/TagMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/generated/com/alpha/mapper/TagMapperImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/generated/com/alpha/mapper/ThemeMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/generated/com/alpha/mapper/ThemeMapperImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/config/custom/CustomAccessTokenConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/config/custom/CustomAccessTokenConverter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/config/custom/CustomBeanConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/config/custom/CustomBeanConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/config/security/ResourceServerConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/config/security/ResourceServerConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/controller/AdminRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/controller/AdminRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/controller/AlbumRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/controller/AlbumRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/controller/ArtistRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/controller/ArtistRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/controller/CountryRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/controller/CountryRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/controller/GenreRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/controller/GenreRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/controller/PlaylistRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/controller/PlaylistRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/generated/com/alpha/mapper/UserInfoMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/generated/com/alpha/mapper/UserInfoMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/config/custom/CustomBadRequestHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/config/custom/CustomBadRequestHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/config/custom/CustomRestAccessDeniedHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/config/custom/CustomRestAccessDeniedHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/config/custom/CustomRestAuthenticationSuccessHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/config/custom/CustomRestAuthenticationSuccessHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/config/general/HerokuNotIdle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/config/general/HerokuNotIdle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/controller/ResourceRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/controller/ResourceRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/controller/SongRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/controller/SongRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/controller/TagRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/controller/TagRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/controller/ThemeRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/controller/ThemeRestController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/controller/UserRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/controller/UserRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/mapper/AlbumMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/mapper/AlbumMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/mapper/ArtistMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/mapper/ArtistMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/mapper/CommentMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/mapper/CommentMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/mapper/CountryMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/mapper/CountryMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/mapper/GenreMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/mapper/GenreMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/mapper/PlaylistMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/mapper/PlaylistMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/mapper/SongMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/mapper/SongMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/mapper/TagMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/mapper/TagMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/mapper/ThemeMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/mapper/ThemeMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/model/dto/AlbumDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/model/dto/AlbumDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/model/dto/ArtistDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/model/dto/ArtistDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/model/dto/CommentDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/model/dto/CommentDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/model/dto/CountryDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/model/dto/CountryDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/model/dto/GenreDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/model/dto/GenreDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/model/dto/SongDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/model/dto/SongDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/model/dto/TagDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/model/dto/TagDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/model/dto/ThemeDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/model/dto/ThemeDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/model/entity/Album.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/model/entity/Album.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/model/entity/Artist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/model/entity/Artist.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/model/entity/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/model/entity/Comment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/model/entity/Country.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/model/entity/Country.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/model/entity/Genre.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/model/entity/Genre.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/model/entity/Like.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/model/entity/Like.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/model/entity/Playlist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/model/entity/Playlist.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/model/entity/Song.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/model/entity/Song.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/model/entity/Tag.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/model/entity/Tag.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/model/entity/Theme.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/model/entity/Theme.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/repositories/LikeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/repositories/LikeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/service/AlbumService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/service/AlbumService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/service/SongService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/service/SongService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/AlbumServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/AlbumServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/ArtistServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/ArtistServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/CloudinaryUploadServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/CloudinaryStorageServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/CommentServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/CommentServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/CountryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/CountryServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/FirebaseUploadServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/FirebaseStorageServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/FormConvertService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/FormConvertService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/GenreServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/GenreServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/LikeServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/LikeServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/CloudinaryStorageServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/CloudinaryStorageServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/JwtTokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/JwtTokenProvider.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/LocalStorageServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/LocalStorageServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/PlaylistServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/PlaylistServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/SongServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/SongServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/TagServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/TagServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/ThemeServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alpha/service/impl/ThemeServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/additional-spring-configuration-metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/additional-spring-configuration-metadata.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application-heroku.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-heroku.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application-poweredge.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-poweredge.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/alpha/climaxsound/repositories_test/CountryRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/alpha/climaxsound/repositories_test/CountryRepositoryTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -727,21 +661,7 @@
       <workItem from="1612921230945" duration="3372000" />
       <workItem from="1612924657458" duration="14809000" />
       <workItem from="1612955088212" duration="14441000" />
-      <workItem from="1612979349646" duration="165000" />
-    </task>
-    <task id="LOCAL-00124" summary="add Email verification">
-      <created>1575386165468</created>
-      <option name="number" value="00124" />
-      <option name="presentableId" value="LOCAL-00124" />
-      <option name="project" value="LOCAL" />
-      <updated>1575386165468</updated>
-    </task>
-    <task id="LOCAL-00125" summary="add Email verification">
-      <created>1575386733228</created>
-      <option name="number" value="00125" />
-      <option name="presentableId" value="LOCAL-00125" />
-      <option name="project" value="LOCAL" />
-      <updated>1575386733228</updated>
+      <workItem from="1612979349646" duration="1227000" />
     </task>
     <task id="LOCAL-00126" summary="add Email verification">
       <created>1575389687364</created>
@@ -1072,7 +992,21 @@
       <option name="project" value="LOCAL" />
       <updated>1612870074314</updated>
     </task>
-    <option name="localTasksCounter" value="173" />
+    <task id="LOCAL-00173" summary="add mapstruct&#10;major fixes">
+      <created>1612979610385</created>
+      <option name="number" value="00173" />
+      <option name="presentableId" value="LOCAL-00173" />
+      <option name="project" value="LOCAL" />
+      <updated>1612979610385</updated>
+    </task>
+    <task id="LOCAL-00174" summary="add mapstruct&#10;major fixes">
+      <created>1612979635327</created>
+      <option name="number" value="00174" />
+      <option name="presentableId" value="LOCAL-00174" />
+      <option name="project" value="LOCAL" />
+      <updated>1612979635327</updated>
+    </task>
+    <option name="localTasksCounter" value="175" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1199,14 +1133,14 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="480" y="221" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1536.824@0.0.1536.824" timestamp="1612845051075" />
-    <state x="368" y="28" width="870" height="710" key="CommitChangelistDialog2" timestamp="1612870066782">
+    <state x="368" y="28" width="870" height="710" key="CommitChangelistDialog2" timestamp="1612979681168">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="368" y="28" width="870" height="710" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1612870066782" />
-    <state x="182" y="35" key="DiffContextDialog" timestamp="1612844134849">
+    <state x="368" y="28" width="870" height="710" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1612979681168" />
+    <state x="182" y="35" key="DiffContextDialog" timestamp="1612979678844">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="182" y="35" key="DiffContextDialog/0.0.1536.824@0.0.1536.824" timestamp="1612844134849" />
+    <state x="182" y="35" key="DiffContextDialog/0.0.1536.824@0.0.1536.824" timestamp="1612979678844" />
     <state x="394" y="148" key="FileChooserDialogImpl" timestamp="1612979481544">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -1271,10 +1205,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="277" y="0" width="1082" height="710" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1612979514627" />
-    <state x="361" y="141" key="Vcs.Push.Dialog.v2" timestamp="1612637644613">
+    <state x="361" y="141" key="Vcs.Push.Dialog.v2" timestamp="1612979708084">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="141" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1612637644613" />
+    <state x="361" y="141" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1612979708084" />
     <state x="617" y="271" width="307" height="281" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1" timestamp="1612632610195">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -1299,10 +1233,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="275" y="59" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1536.824@0.0.1536.824" timestamp="1612798339835" />
-    <state x="650" y="102" width="676" height="704" key="find.popup" timestamp="1612941186129">
+    <state x="650" y="102" width="676" height="704" key="find.popup" timestamp="1612980564853">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="650" y="102" width="676" height="704" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1612941186129" />
+    <state x="650" y="102" width="676" height="704" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1612980564853" />
     <state x="464" y="298" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1612635979328">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -1329,13 +1263,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/alpha/controller/UserRestController.java</url>
-          <line>80</line>
+          <line>82</line>
           <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/alpha/service/impl/CloudinaryStorageServiceImpl.java</url>
-          <line>39</line>
-          <option name="timeStamp" value="10" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/alpha/controller/SongRestController.java</url>

@@ -1,14 +1,14 @@
 package com.alpha.config.general;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.client.RestTemplate;
 
+@Log4j2
 //@Component
 public class HerokuNotIdle {
-    private static final Logger LOG = LoggerFactory.getLogger(HerokuNotIdle.class);
+
     private final Environment environment;
 
     //    @Autowired
@@ -18,7 +18,7 @@ public class HerokuNotIdle {
 
     @Scheduled(fixedDelay = 120000)
     public void herokuNotIdle() {
-        LOG.debug("Heroku not idle execution");
+        log.debug("Heroku not idle execution");
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getForObject(environment.getProperty("BACKEND_HOST") + "/alpha-sound/api/test", String.class);
     }

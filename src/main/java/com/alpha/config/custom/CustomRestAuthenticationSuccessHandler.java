@@ -3,25 +3,22 @@ package com.alpha.config.custom;
 import com.alpha.model.dto.UserDTO;
 import com.alpha.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Optional;
 
+@Log4j2
 @Component
 public class CustomRestAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomRestAuthenticationSuccessHandler.class);
 
     private final UserService userService;
 
@@ -32,14 +29,14 @@ public class CustomRestAuthenticationSuccessHandler extends SavedRequestAwareAut
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
+                                        Authentication authentication) throws IOException {
         response.setStatus(HttpServletResponse.SC_OK);
         MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
         ObjectMapper mapper = messageConverter.getObjectMapper();
         String username = authentication.getPrincipal().toString();
         Optional<UserDTO> user = userService.findByUsername(username);
 
-        user.ifPresent(value -> LOGGER.info(value + " got is connected "));
+        user.ifPresent(value -> log.info(value + " got is connected "));
 
         PrintWriter writer = response.getWriter();
         mapper.writeValue(writer, user);
