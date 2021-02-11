@@ -64,8 +64,8 @@ public class PlaylistRestController {
         if (playlist == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            playlist.setUser(userService.getCurrentUser());
-            playlistService.save(playlist);
+            playlist.setId(this.userService.getCurrentUser().getId());
+            this.playlistService.save(playlist);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
     }
@@ -77,9 +77,9 @@ public class PlaylistRestController {
         if (oldPlaylist.isPresent()) {
             if (playlistService.checkPlaylistOwner(id)) {
                 playlist.setId(id);
-                playlist.setUser(userService.getCurrentUser());
+                playlist.setUserId(this.userService.getCurrentUser().getId());
                 playlist.setSongs(oldPlaylist.get().getSongs());
-                playlistService.save(playlist);
+                this.playlistService.save(playlist);
                 return new ResponseEntity<>(HttpStatus.OK);
             } else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } else return new ResponseEntity<>("Playlist not found!", HttpStatus.NOT_FOUND);

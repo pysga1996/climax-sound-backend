@@ -5,8 +5,6 @@ import com.alpha.model.dto.AlbumDTO;
 import com.alpha.model.dto.SongDTO;
 import com.alpha.service.AlbumService;
 import com.alpha.service.SongService;
-import com.alpha.service.StorageService;
-import com.alpha.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -31,16 +29,9 @@ public class AlbumRestController {
 
     private final SongService songService;
 
-    private final UserService userService;
-
-    private final StorageService storageService;
-
-    public AlbumRestController(AlbumService albumService, SongService songService,
-                               UserService userService, StorageService storageService) {
+    public AlbumRestController(AlbumService albumService, SongService songService) {
         this.albumService = albumService;
         this.songService = songService;
-        this.userService = userService;
-        this.storageService = storageService;
     }
 
 
@@ -76,13 +67,7 @@ public class AlbumRestController {
                                             @RequestPart(value = "cover", required = false)
                                                     MultipartFile file) {
         try {
-            this.albumService.save(album);
-            if (file != null) {
-                String fileName = storageService.upload(file, album);
-                album.setCoverUrl(fileName);
-            }
-            album.setUploader(userService.getCurrentUser());
-            this.albumService.save(album);
+            this.albumService.uploadAndSaveAlbum(file, album);
             return new ResponseEntity<>(album.getId(), HttpStatus.OK);
         } catch (Exception e) {
             if (album.getId() != null) {
@@ -98,14 +83,7 @@ public class AlbumRestController {
                                           @RequestPart(value = "cover", required = false)
                                                   MultipartFile file,
                                           @RequestParam("id") Long id) throws IOException {
-        if (file != null) {
-            String fileName = this.storageService.upload(file, album);
-            album.setCoverUrl(fileName);
-        }
-        Optional<AlbumDTO> oldAlbum = this.albumService.findById(id);
-        if (oldAlbum.isPresent()) {
-            this.albumService.setFields(oldAlbum.get(), album);
-            this.albumService.save(oldAlbum.get());
+        if (this.albumService.editAlbum(file, album, id)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

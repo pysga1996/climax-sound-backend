@@ -31,7 +31,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-02-11T01:01:50+0700",
+    date = "2021-02-11T09:34:04+0700",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 1.8.0_261 (Oracle Corporation)"
 )
 @Component
@@ -453,7 +453,6 @@ public class AlbumMapperImpl extends AlbumMapper {
         playlistDTO.setId( playlist.getId() );
         playlistDTO.setTitle( playlist.getTitle() );
         playlistDTO.setUserId( playlist.getUserId() );
-        playlistDTO.setUser( playlist.getUser() );
         playlistDTO.setSongs( songCollectionToSongDTOCollection1( playlist.getSongs() ) );
 
         return playlistDTO;
@@ -783,7 +782,6 @@ public class AlbumMapperImpl extends AlbumMapper {
         playlist.setId( playlistDTO.getId() );
         playlist.setTitle( playlistDTO.getTitle() );
         playlist.setUserId( playlistDTO.getUserId() );
-        playlist.setUser( playlistDTO.getUser() );
         playlist.setSongs( songDTOCollectionToSongCollection1( playlistDTO.getSongs() ) );
 
         return playlist;

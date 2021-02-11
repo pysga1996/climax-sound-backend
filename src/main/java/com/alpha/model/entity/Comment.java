@@ -34,7 +34,7 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     private Song song;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserInfo userInfo;
 

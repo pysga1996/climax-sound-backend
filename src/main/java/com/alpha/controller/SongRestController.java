@@ -7,7 +7,6 @@ import com.alpha.model.dto.SongUploadForm;
 import com.alpha.model.dto.UserDTO;
 import com.alpha.service.*;
 import com.alpha.service.impl.FormConvertService;
-import com.alpha.util.helper.UserInfoJsonStringifier;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -219,15 +217,8 @@ public class SongRestController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping(params = {"comment", "song-id"})
     public ResponseEntity<Void> commentOnSong(@Valid @RequestBody CommentDTO comment,
-                                              @RequestParam("song-id") Long id) {
-        Optional<SongDTO> song = this.songService.findById(id);
-        if (song.isPresent()) {
-            LocalDateTime localDateTime = LocalDateTime.now();
-            UserDTO currentUser = userService.getCurrentUser();
-            comment.setLocalDateTime(localDateTime);
-            comment.setSong(song.get());
-            comment.setUserInfo(UserInfoJsonStringifier.stringify(currentUser));
-            this.commentService.save(comment);
+                                              @RequestParam("song-id") Long songId) {
+        if (this.commentService.save(comment, songId)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

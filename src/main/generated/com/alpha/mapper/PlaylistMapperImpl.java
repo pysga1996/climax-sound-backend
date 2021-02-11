@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-02-11T01:01:38+0700",
+    date = "2021-02-11T09:34:04+0700",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 1.8.0_261 (Oracle Corporation)"
 )
 @Component
@@ -33,7 +33,6 @@ public class PlaylistMapperImpl extends PlaylistMapper {
         playlistDTO.setId( playlist.getId() );
         playlistDTO.setTitle( playlist.getTitle() );
         playlistDTO.setUserId( playlist.getUserId() );
-        playlistDTO.setUser( playlist.getUser() );
         playlistDTO.setSongs( songCollectionToSongDTOCollection( playlist.getSongs() ) );
 
         return playlistDTO;
@@ -50,7 +49,6 @@ public class PlaylistMapperImpl extends PlaylistMapper {
         playlist1.setId( playlist.getId() );
         playlist1.setTitle( playlist.getTitle() );
         playlist1.setUserId( playlist.getUserId() );
-        playlist1.setUser( playlist.getUser() );
         playlist1.setSongs( songDTOCollectionToSongCollection( playlist.getSongs() ) );
 
         return playlist1;
@@ -95,7 +93,6 @@ public class PlaylistMapperImpl extends PlaylistMapper {
         playlistDTO.setId( playlist.getId() );
         playlistDTO.setTitle( playlist.getTitle() );
         playlistDTO.setUserId( playlist.getUserId() );
-        playlistDTO.setUser( playlist.getUser() );
 
         return playlistDTO;
     }
@@ -111,7 +108,6 @@ public class PlaylistMapperImpl extends PlaylistMapper {
         playlist1.setId( playlist.getId() );
         playlist1.setTitle( playlist.getTitle() );
         playlist1.setUserId( playlist.getUserId() );
-        playlist1.setUser( playlist.getUser() );
 
         return playlist1;
     }

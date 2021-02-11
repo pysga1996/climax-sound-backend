@@ -8,7 +8,7 @@ public interface CommentService {
 
     Optional<CommentDTO> findById(Long id);
 
-    void save(CommentDTO comment);
+    boolean save(CommentDTO comment, Long songId);
 
     void deleteById(Long id);
 }

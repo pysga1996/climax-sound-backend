@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 @Log4j2
@@ -64,11 +65,27 @@ public class CloudinaryStorageServiceImpl extends StorageService {
         );
         Map<?, ?> uploadResult = this.cloudinary.uploader().upload(tmpFile, params);
         log.info("Delete temp file? {}", tmpFile.delete());
+        String publicId = (String) uploadResult.get("public_id");
+        uploadObject.setBlobString(publicId);
         return (String) uploadResult.get("secure_url");
     }
 
     @Override
     public void delete(UploadObject uploadObject) {
+        Map<String, Object> deleteOption = new HashMap<>();
+        deleteOption.put("invalidate", true);
+        Map<?, ?> deleteResult;
+        try {
+            deleteResult = this.cloudinary.uploader()
+                    .destroy(uploadObject.getBlobString(), deleteOption);
+            if (deleteResult.get("result").equals("ok")) {
+                log.info("Delete resource success {}", uploadObject.getBlobString());
+            } else {
+                log.error("Delete resource failed {}", uploadObject.getBlobString());
+            }
+        } catch (IOException ex) {
+            log.error("Delete resource failed {} {}", uploadObject.getBlobString(), ex);
+        }
 
     }
 }

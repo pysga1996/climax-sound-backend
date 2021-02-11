@@ -30,9 +30,6 @@ public class Playlist {
     @Column
     private Long userId;
 
-    @Transient
-    private UserDTO user;
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "playlist_song",

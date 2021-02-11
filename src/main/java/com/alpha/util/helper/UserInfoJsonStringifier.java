@@ -14,7 +14,7 @@ public final class UserInfoJsonStringifier {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    public static UserInfoDTO stringify(UserDTO userDTO) {
+    public static UserInfo stringify(UserDTO userDTO) {
         Map<String, Object> userInfo = new HashMap<>();
         userInfo.put("name", userDTO.getUsername());
         if (userDTO.getUserProfile() != null) {
@@ -29,6 +29,6 @@ public final class UserInfoJsonStringifier {
         } catch (JsonProcessingException ex) {
             userInfoStr = "{}";
         }
-        return new UserInfoDTO(userDTO.getId(), userInfoStr);
+        return new UserInfo(userDTO.getId(), userInfoStr);
     }
 }

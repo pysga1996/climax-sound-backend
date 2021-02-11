@@ -21,7 +21,5 @@ public class PlaylistDTO {
 
     private Long userId;
 
-    private UserDTO user;
-
     private Collection<SongDTO> songs;
 }

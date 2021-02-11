@@ -81,8 +81,9 @@ public class Album extends UploadObject {
     @JoinColumn(name = "country_id")
     private Country country;
 
-    @Transient
-    private UserDTO uploader;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private UserInfo uploader;
 
     @Transient
     private Collection<UserDTO> users;

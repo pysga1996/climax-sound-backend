@@ -78,6 +78,9 @@ public class CustomUserAuthenticationConverter extends DefaultUserAuthentication
                 }
                 if (map.containsKey(SETTING)) {
                     SettingDTO settingDTO = this.mapper.convertValue(map.get(SETTING), SettingDTO.class);
+                    if (settingDTO == null) {
+                        settingDTO = new SettingDTO();
+                    }
                     userDTO.setSetting(settingDTO);
                 }
                 return new UsernamePasswordAuthenticationToken(userDTO, "N/A", userDTO.getAuthorities());

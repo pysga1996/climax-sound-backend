@@ -131,7 +131,7 @@ public class PlaylistServiceImpl implements PlaylistService {
         Optional<Playlist> playlist = this.playlistRepository.findById(id);
         UserDTO currentUser = this.userService.getCurrentUser();
         if (playlist.isPresent() && currentUser.getId() != null) {
-            return playlist.get().getUser().getId().equals(currentUser.getId());
+            return playlist.get().getUserId().equals(currentUser.getId());
         } else return false;
     }
 
