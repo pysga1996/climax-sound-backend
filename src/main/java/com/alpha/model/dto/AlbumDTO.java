@@ -42,7 +42,7 @@ public class AlbumDTO extends UploadObject {
 
     private CountryDTO country;
 
-    private UserDTO uploader;
+    private UserInfoDTO uploader;
 
     private Collection<UserDTO> users;
 

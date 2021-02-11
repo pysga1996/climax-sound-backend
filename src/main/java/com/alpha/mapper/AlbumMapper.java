@@ -10,7 +10,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR,
         typeConversionPolicy = ReportingPolicy.ERROR, uses = {SongMapper.class,
-        GenreMapper.class, ArtistMapper.class, TagMapper.class})
+        GenreMapper.class, ArtistMapper.class, TagMapper.class, UserInfoMapper.class})
 public abstract class AlbumMapper {
 
     @FullMapping

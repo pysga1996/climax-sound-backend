@@ -10,7 +10,6 @@ import com.alpha.model.dto.SongDTO;
 import com.alpha.model.dto.TagDTO;
 import com.alpha.model.dto.ThemeDTO;
 import com.alpha.model.dto.UserDTO;
-import com.alpha.model.dto.UserInfoDTO;
 import com.alpha.model.entity.Album;
 import com.alpha.model.entity.Artist;
 import com.alpha.model.entity.Comment;
@@ -21,7 +20,6 @@ import com.alpha.model.entity.Song;
 import com.alpha.model.entity.Song.SongBuilder;
 import com.alpha.model.entity.Tag;
 import com.alpha.model.entity.Theme;
-import com.alpha.model.entity.UserInfo;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -31,7 +29,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-02-11T09:34:04+0700",
+    date = "2021-02-11T10:55:24+0700",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 1.8.0_261 (Oracle Corporation)"
 )
 @Component
@@ -45,6 +43,8 @@ public class AlbumMapperImpl extends AlbumMapper {
     private ArtistMapper artistMapper;
     @Autowired
     private TagMapper tagMapper;
+    @Autowired
+    private UserInfoMapper userInfoMapper;
 
     @Override
     public AlbumDTO entityToDto(Album album) {
@@ -65,7 +65,7 @@ public class AlbumMapperImpl extends AlbumMapper {
         albumDTO.setArtists( artistCollectionToArtistDTOCollection( album.getArtists() ) );
         albumDTO.setTags( tagCollectionToTagDTOCollection( album.getTags() ) );
         albumDTO.setCountry( countryToCountryDTO( album.getCountry() ) );
-        albumDTO.setUploader( album.getUploader() );
+        albumDTO.setUploader( userInfoMapper.entityToDto( album.getUploader() ) );
         Collection<UserDTO> collection4 = album.getUsers();
         if ( collection4 != null ) {
             albumDTO.setUsers( new ArrayList<UserDTO>( collection4 ) );
@@ -93,7 +93,7 @@ public class AlbumMapperImpl extends AlbumMapper {
         album.setArtists( artistDTOCollectionToArtistCollection( albums.getArtists() ) );
         album.setTags( tagDTOCollectionToTagCollection( albums.getTags() ) );
         album.setCountry( countryDTOToCountry( albums.getCountry() ) );
-        album.setUploader( albums.getUploader() );
+        album.setUploader( userInfoMapper.dtoToEntity( albums.getUploader() ) );
         Collection<UserDTO> collection4 = albums.getUsers();
         if ( collection4 != null ) {
             album.setUsers( new ArrayList<UserDTO>( collection4 ) );
@@ -145,7 +145,7 @@ public class AlbumMapperImpl extends AlbumMapper {
         albumDTO.setCoverUrl( album.getCoverUrl() );
         albumDTO.setCoverBlobString( album.getCoverBlobString() );
         albumDTO.setCountry( countryToCountryDTO( album.getCountry() ) );
-        albumDTO.setUploader( album.getUploader() );
+        albumDTO.setUploader( userInfoMapper.entityToDto( album.getUploader() ) );
         Collection<UserDTO> collection = album.getUsers();
         if ( collection != null ) {
             albumDTO.setUsers( new ArrayList<UserDTO>( collection ) );
@@ -169,7 +169,7 @@ public class AlbumMapperImpl extends AlbumMapper {
         album1.setCoverUrl( album.getCoverUrl() );
         album1.setCoverBlobString( album.getCoverBlobString() );
         album1.setCountry( countryDTOToCountry( album.getCountry() ) );
-        album1.setUploader( album.getUploader() );
+        album1.setUploader( userInfoMapper.dtoToEntity( album.getUploader() ) );
         Collection<UserDTO> collection = album.getUsers();
         if ( collection != null ) {
             album1.setUsers( new ArrayList<UserDTO>( collection ) );
@@ -258,19 +258,6 @@ public class AlbumMapperImpl extends AlbumMapper {
         return collection1;
     }
 
-    protected UserInfoDTO userInfoToUserInfoDTO(UserInfo userInfo) {
-        if ( userInfo == null ) {
-            return null;
-        }
-
-        UserInfoDTO userInfoDTO = new UserInfoDTO();
-
-        userInfoDTO.setId( userInfo.getId() );
-        userInfoDTO.setInfo( userInfo.getInfo() );
-
-        return userInfoDTO;
-    }
-
     protected CommentDTO commentToCommentDTO(Comment comment) {
         if ( comment == null ) {
             return null;
@@ -282,7 +269,7 @@ public class AlbumMapperImpl extends AlbumMapper {
         commentDTO.setContent( comment.getContent() );
         commentDTO.setLocalDateTime( comment.getLocalDateTime() );
         commentDTO.setSong( songToSongDTO( comment.getSong() ) );
-        commentDTO.setUserInfo( userInfoToUserInfoDTO( comment.getUserInfo() ) );
+        commentDTO.setUserInfo( userInfoMapper.entityToDto( comment.getUserInfo() ) );
 
         return commentDTO;
     }
@@ -413,7 +400,7 @@ public class AlbumMapperImpl extends AlbumMapper {
         albumDTO.setArtists( artistCollectionToArtistDTOCollection1( album.getArtists() ) );
         albumDTO.setTags( tagCollectionToTagDTOCollection1( album.getTags() ) );
         albumDTO.setCountry( countryToCountryDTO( album.getCountry() ) );
-        albumDTO.setUploader( album.getUploader() );
+        albumDTO.setUploader( userInfoMapper.entityToDto( album.getUploader() ) );
         Collection<UserDTO> collection4 = album.getUsers();
         if ( collection4 != null ) {
             albumDTO.setUsers( new ArrayList<UserDTO>( collection4 ) );
@@ -587,19 +574,6 @@ public class AlbumMapperImpl extends AlbumMapper {
         return collection1;
     }
 
-    protected UserInfo userInfoDTOToUserInfo(UserInfoDTO userInfoDTO) {
-        if ( userInfoDTO == null ) {
-            return null;
-        }
-
-        UserInfo userInfo = new UserInfo();
-
-        userInfo.setId( userInfoDTO.getId() );
-        userInfo.setInfo( userInfoDTO.getInfo() );
-
-        return userInfo;
-    }
-
     protected Comment commentDTOToComment(CommentDTO commentDTO) {
         if ( commentDTO == null ) {
             return null;
@@ -611,7 +585,7 @@ public class AlbumMapperImpl extends AlbumMapper {
         comment.setContent( commentDTO.getContent() );
         comment.setLocalDateTime( commentDTO.getLocalDateTime() );
         comment.setSong( songDTOToSong( commentDTO.getSong() ) );
-        comment.setUserInfo( userInfoDTOToUserInfo( commentDTO.getUserInfo() ) );
+        comment.setUserInfo( userInfoMapper.dtoToEntity( commentDTO.getUserInfo() ) );
 
         return comment;
     }
@@ -742,7 +716,7 @@ public class AlbumMapperImpl extends AlbumMapper {
         album.setArtists( artistDTOCollectionToArtistCollection1( albumDTO.getArtists() ) );
         album.setTags( tagDTOCollectionToTagCollection1( albumDTO.getTags() ) );
         album.setCountry( countryDTOToCountry( albumDTO.getCountry() ) );
-        album.setUploader( albumDTO.getUploader() );
+        album.setUploader( userInfoMapper.dtoToEntity( albumDTO.getUploader() ) );
         Collection<UserDTO> collection4 = albumDTO.getUsers();
         if ( collection4 != null ) {
             album.setUsers( new ArrayList<UserDTO>( collection4 ) );
