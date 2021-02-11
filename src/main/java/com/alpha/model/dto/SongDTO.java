@@ -1,12 +1,11 @@
 package com.alpha.model.dto;
 
+import com.alpha.model.entity.UserInfo;
 import com.alpha.model.util.UploadObject;
-import com.alpha.util.helper.CustomUserJsonSerializer;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -68,8 +67,7 @@ public class SongDTO extends UploadObject {
     @JsonBackReference(value = "user-favoriteSongs")
     private Collection<UserDTO> users;
 
-    @JsonSerialize(using = CustomUserJsonSerializer.class)
-    private UserDTO uploader;
+    private UserInfo uploader;
 
     @JsonBackReference(value = "playlist-song")
     private Collection<PlaylistDTO> playlists;

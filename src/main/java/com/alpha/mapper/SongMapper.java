@@ -12,7 +12,7 @@ import java.util.List;
         typeConversionPolicy = ReportingPolicy.ERROR,
         uses = {AlbumMapper.class, ArtistMapper.class, CommentMapper.class,
                 CountryMapper.class, GenreMapper.class, ThemeMapper.class,
-                TagMapper.class, PlaylistMapper.class})
+                TagMapper.class, PlaylistMapper.class, UserInfoMapper.class})
 public abstract class SongMapper {
 
     @FullMapping

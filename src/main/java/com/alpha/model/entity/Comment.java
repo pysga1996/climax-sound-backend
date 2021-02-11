@@ -4,6 +4,8 @@ import com.alpha.model.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -36,6 +38,7 @@ public class Comment {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @NotFound(action = NotFoundAction.EXCEPTION)
     private UserInfo userInfo;
 
     @Override

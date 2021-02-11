@@ -3,12 +3,13 @@ package com.alpha.model.entity;
 import com.alpha.model.dto.UserDTO;
 import com.alpha.model.util.UploadObject;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.*;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
@@ -92,8 +93,10 @@ public class Song extends UploadObject {
     @Transient
     private Collection<UserDTO> users;
 
-    @Transient
-    private UserDTO uploader;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @NotFound(action = NotFoundAction.IGNORE)
+    private UserInfo uploader;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "songs")
     @Fetch(value = FetchMode.SUBSELECT)

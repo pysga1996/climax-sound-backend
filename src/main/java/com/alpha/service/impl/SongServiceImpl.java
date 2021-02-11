@@ -6,15 +6,13 @@ import com.alpha.model.dto.ArtistDTO;
 import com.alpha.model.dto.SongDTO;
 import com.alpha.model.dto.TagDTO;
 import com.alpha.model.dto.UserDTO;
-import com.alpha.model.entity.Album;
-import com.alpha.model.entity.Artist;
-import com.alpha.model.entity.Like;
-import com.alpha.model.entity.Song;
+import com.alpha.model.entity.*;
 import com.alpha.repositories.*;
 import com.alpha.service.SongService;
 import com.alpha.service.StorageService;
 import com.alpha.service.UserService;
 import com.alpha.util.formatter.StringAccentRemover;
+import com.alpha.util.helper.UserInfoJsonStringifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -335,7 +333,8 @@ public class SongServiceImpl implements SongService {
         Song songToSave = this.songRepository.save(this.songMapper.dtoToEntity(songDTO));
         String fileDownloadUri = this.storageService.upload(file, songToSave);
         songToSave.setUrl(fileDownloadUri);
-        songToSave.setUploader(userService.getCurrentUser());
+        UserInfo userInfo = UserInfoJsonStringifier.stringify(userService.getCurrentUser());
+        songToSave.setUploader(userInfo);
         if (albumId != null) {
             Optional<Album> album = this.albumRepository.findById(albumId);
             if (album.isPresent()) {
