@@ -1,5 +1,6 @@
 package com.alpha.config.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,13 +13,14 @@ import org.springframework.security.oauth2.server.resource.web.DefaultBearerToke
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 //    private static final String[] CSRF_IGNORE = {"/api/login", "/api/register"};
 
     private final OpaqueTokenIntrospector opaqueTokenIntrospector;
 
-    public SecurityConfiguration(OpaqueTokenIntrospector opaqueTokenIntrospector) {
+    @Autowired
+    public SecurityConfig(OpaqueTokenIntrospector opaqueTokenIntrospector) {
         this.opaqueTokenIntrospector = opaqueTokenIntrospector;
     }
 
@@ -51,9 +53,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .oauth2ResourceServer(httpSecurityOAuth2ResourceServerConfigurer -> {
                     DefaultBearerTokenResolver bearerTokenResolver = new DefaultBearerTokenResolver();
                     bearerTokenResolver.setAllowUriQueryParameter(true);
-                    httpSecurityOAuth2ResourceServerConfigurer.opaqueToken(opaqueTokenConfigurer -> {
-                        opaqueTokenConfigurer.introspector(opaqueTokenIntrospector);
-                    }).bearerTokenResolver(bearerTokenResolver);
+                    httpSecurityOAuth2ResourceServerConfigurer.opaqueToken(opaqueTokenConfigurer ->
+                            opaqueTokenConfigurer.introspector(opaqueTokenIntrospector)).bearerTokenResolver(bearerTokenResolver);
                 })
                 .headers()
                 .frameOptions().sameOrigin().disable()
