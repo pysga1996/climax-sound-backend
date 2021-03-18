@@ -68,3 +68,10 @@ storage:
     url: ${CLOUDINARY_URL:}
   firebase:
     credentials: ${FIREBASE_CREDENTIALS:}
+custom:
+  http-port: 8085
+  https-port: 8086
+  security-policy: CONFIDENTAL
+  connector-scheme: http
+  trust-store-password: ${SSL_TRUSTSTORE_PASSWORD:}
+  trust-store-type: JKS
