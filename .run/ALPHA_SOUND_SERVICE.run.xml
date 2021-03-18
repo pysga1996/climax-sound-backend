@@ -11,6 +11,7 @@
         <ENTRY IS_ENABLED="true" PARSER="runconfig" />
         <ENTRY IS_ENABLED="true" PARSER="env" PATH="environment/oauth2.env" />
         <ENTRY IS_ENABLED="true" PARSER="env" PATH="environment/storage.env" />
+        <ENTRY IS_ENABLED="true" PARSER="env" PATH="environment/ssl_certification.env" />
       </ENTRIES>
     </extension>
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.alpha.AlphaSoundServiceApplication" />

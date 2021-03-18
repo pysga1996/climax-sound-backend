@@ -1,6 +1,5 @@
 package com.alpha.controller;
 
-import com.alpha.constant.CrossOriginConfig;
 import com.alpha.model.dto.GenreDTO;
 import com.alpha.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Optional;
 
-@CrossOrigin(origins = {CrossOriginConfig.Origins.ALPHA_SOUND, CrossOriginConfig.Origins.LOCAL_HOST},
-        allowCredentials = "true", allowedHeaders = "*", exposedHeaders = {HttpHeaders.SET_COOKIE})@RestController
+@CrossOrigin(originPatterns = "*", allowCredentials = "true", allowedHeaders = "*", exposedHeaders = {HttpHeaders.SET_COOKIE})
+@RestController
 @RequestMapping("/api/genre")
 public class GenreRestController {
     private GenreService genreService;

@@ -1,6 +1,5 @@
 package com.alpha.controller;
 
-import com.alpha.constant.CrossOriginConfig;
 import com.alpha.model.dto.CommentDTO;
 import com.alpha.model.dto.SongDTO;
 import com.alpha.model.dto.SongUploadForm;
@@ -23,8 +22,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 @Log4j2
-@CrossOrigin(origins = {CrossOriginConfig.Origins.ALPHA_SOUND, CrossOriginConfig.Origins.LOCAL_HOST},
-        allowCredentials = "true", allowedHeaders = "*", exposedHeaders = {HttpHeaders.SET_COOKIE})
+@CrossOrigin(originPatterns = "*", allowCredentials = "true", allowedHeaders = "*", exposedHeaders = {HttpHeaders.SET_COOKIE})
 @RestController
 @RequestMapping("/api/song")
 public class SongRestController {

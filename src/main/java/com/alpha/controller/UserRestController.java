@@ -1,6 +1,5 @@
 package com.alpha.controller;
 
-import com.alpha.constant.CrossOriginConfig;
 import com.alpha.model.dto.UserDTO;
 import com.alpha.service.UserService;
 import lombok.extern.log4j.Log4j2;
@@ -15,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Log4j2
-@CrossOrigin(origins = {CrossOriginConfig.Origins.ALPHA_SOUND, CrossOriginConfig.Origins.LOCAL_HOST},
-        allowCredentials = "true", allowedHeaders = "*", exposedHeaders = {HttpHeaders.SET_COOKIE})@RestController
+@CrossOrigin(originPatterns = "*", allowCredentials = "true", allowedHeaders = "*", exposedHeaders = {HttpHeaders.SET_COOKIE})
+@RestController
 @RequestMapping("/api")
 public class UserRestController {
     //    private Environment environment;

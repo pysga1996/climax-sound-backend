@@ -24,7 +24,7 @@ import java.nio.file.StandardCopyOption;
 
 @Log4j2
 @Service
-@Profile({"default"})
+@Profile({"poweredge"})
 public class LocalStorageServiceImpl extends StorageService {
 
     private final Path storageLocation;

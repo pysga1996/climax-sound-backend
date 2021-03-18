@@ -1,7 +1,3 @@
-custom:
-  auth-service: ${AUTH_SERVICE:}
-  client-id: ${CLIENT_ID:}
-  client-secret: ${CLIENT_SECRET:}
 logging:
   level:
     org:
@@ -9,17 +5,27 @@ logging:
         web: DEBUG
   config: classpath:log4j-spring.xml
 server:
+  port: 8086
   servlet:
     context-path: /alpha-sound
     encoding:
       charset: UTF-8
       enabled: true
       force: true
+  ssl:
+    enabled: true
+    enabled-protocols: TLSv1.2
+    key-alias: ${SSL_KEY_ALIAS:}
+    key-password: ${SSL_KEY_PASSWORD:}
+    key-store: classpath:vengeance.jks
+    key-store-password: ${SSL_KEYSTORE_PASSWORD:}
+    key-store-type: JKS
+    protocol: TLS
 spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
   datasource:
-    driver-class-name: org.postgresql.Driver
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER-CLASS-NAME:}
     hikari:
       connectionTimeout: 30000
       idleTimeout: 100000
@@ -28,9 +34,9 @@ spring:
       minimum-idle: 10
     tomcat:
       connection-properties: stringtype=unspecified
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: 123456
+    url: ${SPRING_DATASOURCE_URL:}
+    username: ${SPRING_DATASOURCE_USERNAME:}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
   jackson:
     serialization:
       FAIL_ON_EMPTY_BEANS: false
@@ -69,3 +75,13 @@ storage:
     credentials: ${FIREBASE_CREDENTIALS:}
   local:
     upload-dir: ${UPLOAD_DIR:}
+custom:
+  auth-service: ${AUTH_SERVICE:}
+  client-id: ${CLIENT_ID:}
+  client-secret: ${CLIENT_SECRET:}
+  http-port: 8085
+  https-port: 8086
+  security-policy: CONFIDENTAL
+  connector-scheme: http
+  trust-store-password: ${SSL_TRUSTSTORE_PASSWORD:}
+  trust-store-type: JKS

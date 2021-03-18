@@ -1,6 +1,5 @@
 package com.alpha.controller;
 
-import com.alpha.constant.CrossOriginConfig;
 import com.alpha.model.dto.PlaylistDTO;
 import com.alpha.model.dto.UserDTO;
 import com.alpha.service.PlaylistService;
@@ -18,8 +17,8 @@ import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Optional;
 
-@CrossOrigin(origins = {CrossOriginConfig.Origins.ALPHA_SOUND, CrossOriginConfig.Origins.LOCAL_HOST},
-        allowCredentials = "true", allowedHeaders = "*", exposedHeaders = {HttpHeaders.SET_COOKIE})@RestController
+@CrossOrigin(originPatterns = "*", allowCredentials = "true", allowedHeaders = "*", exposedHeaders = {HttpHeaders.SET_COOKIE})
+@RestController
 @RequestMapping("/api/playlist")
 public class PlaylistRestController {
     private PlaylistService playlistService;

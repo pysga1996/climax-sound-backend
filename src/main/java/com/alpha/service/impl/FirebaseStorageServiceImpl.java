@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Service
-@Profile({"poweredge"})
+@Profile({"default"})
 public class FirebaseStorageServiceImpl extends StorageService {
 
     private final StorageClient storageClient;
