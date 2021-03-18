@@ -1,6 +1,5 @@
 package com.alpha.model.dto;
 
-import com.alpha.model.util.UploadObject;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -20,7 +19,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties(value = {"albums", "songs", "avatarBlobString", "avatarUrl"},
         allowGetters = true, ignoreUnknown = true)
-public class ArtistDTO extends UploadObject {
+public class ArtistDTO extends UploadDTO {
 
     private Long id;
 

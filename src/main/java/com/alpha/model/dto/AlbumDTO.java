@@ -1,6 +1,5 @@
 package com.alpha.model.dto;
 
-import com.alpha.model.util.UploadObject;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class AlbumDTO extends UploadObject {
+public class AlbumDTO extends UploadDTO {
 
     private Long id;
 

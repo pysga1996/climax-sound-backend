@@ -8,5 +8,4 @@ public interface UserService {
 
     UserDTO getCurrentUser();
 
-    Optional<UserDTO> findByUsername(String username);
 }

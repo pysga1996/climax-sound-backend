@@ -1,7 +1,7 @@
 package com.alpha.service;
 
 import com.alpha.error.FileStorageException;
-import com.alpha.model.util.UploadObject;
+import com.alpha.model.dto.UploadDTO;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,9 +21,9 @@ public abstract class StorageService {
                 originalFileName.substring(originalFileName.lastIndexOf(".") + 1) : "";
     }
 
-    public abstract String upload(MultipartFile multipartFile, UploadObject uploadObject) throws IOException;
+    public abstract String upload(MultipartFile multipartFile, UploadDTO uploadDTO) throws IOException;
 
-    public abstract void delete(UploadObject uploadObject);
+    public abstract void delete(UploadDTO uploadDTO);
 
     public Resource loadFileAsResource(String fileName, String folder) {
         return null;

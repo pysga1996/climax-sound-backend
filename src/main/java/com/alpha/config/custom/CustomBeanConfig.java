@@ -16,10 +16,7 @@ import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactor
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -28,17 +25,7 @@ import java.util.List;
 //import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 
 @Configuration
-@SuppressWarnings("deprecation")
 public class CustomBeanConfig {
-
-    @Value("${custom.auth-service}")
-    private String tokenEndpoint;
-
-    @Value("${custom.client-id}")
-    private String clientId;
-
-    @Value("${custom.client-secret}")
-    private String clientSecret;
 
     @Value("${storage.cloudinary.url}")
     private String cloudinaryUrl;
@@ -57,12 +44,6 @@ public class CustomBeanConfig {
 
     @Value("${custom.connector-scheme}")
     private String connectorScheme;
-
-    private final AccessTokenConverter accessTokenConverter;
-
-    public CustomBeanConfig(AccessTokenConverter accessTokenConverter) {
-        this.accessTokenConverter = accessTokenConverter;
-    }
 
 //    @Bean
 //    public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
@@ -104,20 +85,6 @@ public class CustomBeanConfig {
         } catch (IOException ex) {
             throw new FileStorageException("Could not get admin-sdk json file. Please try again!", ex);
         }
-//        catch (JSONException ex) {
-//            throw new JsonIOException("Could not get admin-sdk json file. Please try again!", ex);
-//        }
-    }
-
-    @Primary
-    @Bean
-    public RemoteTokenServices tokenService() {
-        RemoteTokenServices tokenService = new RemoteTokenServices();
-        tokenService.setCheckTokenEndpointUrl(tokenEndpoint);
-        tokenService.setClientId(clientId);
-        tokenService.setClientSecret(clientSecret);
-        tokenService.setAccessTokenConverter(accessTokenConverter);
-        return tokenService;
     }
 
     @Bean

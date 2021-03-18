@@ -1,6 +1,6 @@
 package com.alpha.service.impl;
 
-import com.alpha.model.util.UploadObject;
+import com.alpha.model.dto.UploadDTO;
 import com.alpha.service.StorageService;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -38,13 +38,13 @@ public class CloudinaryStorageServiceImpl extends StorageService {
     }
 
     @Override
-    public String upload(MultipartFile multipartFile, UploadObject uploadObject) throws IOException {
+    public String upload(MultipartFile multipartFile, UploadDTO uploadDTO) throws IOException {
         File tmpDir = new File(servletContext.getRealPath("/") + this.tempFolder);
         if (!tmpDir.exists()) {
             log.info("Created temp folder? {}", tmpDir.mkdir());
         }
         String ext = this.getExtension(multipartFile);
-        String filename = uploadObject.createFileName(ext);
+        String filename = uploadDTO.createFileName(ext);
         File tmpFile = new File(tmpDir, filename);
         if (!tmpFile.exists()) {
             log.info("Created temp file? {}", tmpFile.createNewFile());
@@ -57,7 +57,7 @@ public class CloudinaryStorageServiceImpl extends StorageService {
         accessControl.put(accessType);
         Map<?, ?> params = ObjectUtils.asMap(
                 "use_filename", true,
-                "folder", uploadObject.getFolder(),
+                "folder", uploadDTO.getFolder(),
                 "unique_filename", false,
                 "overwrite", true,
                 "resource_type", "image",
@@ -66,25 +66,25 @@ public class CloudinaryStorageServiceImpl extends StorageService {
         Map<?, ?> uploadResult = this.cloudinary.uploader().upload(tmpFile, params);
         log.info("Delete temp file? {}", tmpFile.delete());
         String publicId = (String) uploadResult.get("public_id");
-        uploadObject.setBlobString(publicId);
+        uploadDTO.setBlobString(publicId);
         return (String) uploadResult.get("secure_url");
     }
 
     @Override
-    public void delete(UploadObject uploadObject) {
+    public void delete(UploadDTO uploadDTO) {
         Map<String, Object> deleteOption = new HashMap<>();
         deleteOption.put("invalidate", true);
         Map<?, ?> deleteResult;
         try {
             deleteResult = this.cloudinary.uploader()
-                    .destroy(uploadObject.getBlobString(), deleteOption);
+                    .destroy(uploadDTO.getBlobString(), deleteOption);
             if (deleteResult.get("result").equals("ok")) {
-                log.info("Delete resource success {}", uploadObject.getBlobString());
+                log.info("Delete resource success {}", uploadDTO.getBlobString());
             } else {
-                log.error("Delete resource failed {}", uploadObject.getBlobString());
+                log.error("Delete resource failed {}", uploadDTO.getBlobString());
             }
         } catch (IOException ex) {
-            log.error("Delete resource failed {} {}", uploadObject.getBlobString(), ex);
+            log.error("Delete resource failed {} {}", uploadDTO.getBlobString(), ex);
         }
 
     }

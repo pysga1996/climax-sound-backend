@@ -1,7 +1,6 @@
 package com.alpha.model.dto;
 
 import com.alpha.model.entity.UserInfo;
-import com.alpha.model.util.UploadObject;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -24,7 +23,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties(value = {"comments", "liked", "albums", "genres", "users",
         "playlists", "theme", "uploader"}, allowGetters = true, ignoreUnknown = true)
-public class SongDTO extends UploadObject {
+public class SongDTO extends UploadDTO {
 
     private Long id;
 

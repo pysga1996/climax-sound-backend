@@ -1,11 +1,10 @@
-package com.alpha.model.util;
+package com.alpha.model.dto;
 
-import com.alpha.model.dto.ArtistDTO;
 import com.alpha.model.entity.Artist;
 
 import java.util.Collection;
 
-public abstract class UploadObject {
+public abstract class UploadDTO {
 
     public abstract String getUrl();
 

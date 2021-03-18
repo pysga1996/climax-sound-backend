@@ -3,7 +3,7 @@ package com.alpha.service.impl;
 import com.alpha.config.properties.StorageProperty;
 import com.alpha.error.FileNotFoundException;
 import com.alpha.error.FileStorageException;
-import com.alpha.model.util.UploadObject;
+import com.alpha.model.dto.UploadDTO;
 import com.alpha.service.StorageService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,10 +47,10 @@ public class LocalStorageServiceImpl extends StorageService {
     }
 
     @Override
-    public String upload(MultipartFile multipartFile, UploadObject uploadObject) {
+    public String upload(MultipartFile multipartFile, UploadDTO uploadDTO) {
         String ext = getExtension(multipartFile);
-        String folder = uploadObject.getFolder();
-        String fileName = uploadObject.createFileName(ext);
+        String folder = uploadDTO.getFolder();
+        String fileName = uploadDTO.createFileName(ext);
         String rootUri = "/api/resource/download";
         this.normalizeFileName(fileName);
         try {
@@ -61,7 +61,7 @@ public class LocalStorageServiceImpl extends StorageService {
             String blobString = folder + "/" + fileName;
             // Copy file to the target location (Replacing existing file with the same title)
             Path targetLocation = this.storageLocation.resolve(blobString);
-            uploadObject.setBlobString(blobString);
+            uploadDTO.setBlobString(blobString);
             Files.copy(multipartFile.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
             return ServletUriComponentsBuilder.fromCurrentContextPath()
                     .path(rootUri)
@@ -75,10 +75,10 @@ public class LocalStorageServiceImpl extends StorageService {
     }
 
     @Override
-    public void delete(UploadObject uploadObject) {
-        Path filePath = storageLocation.resolve(uploadObject.getBlobString()).normalize();
+    public void delete(UploadDTO uploadDTO) {
+        Path filePath = storageLocation.resolve(uploadDTO.getBlobString()).normalize();
         File file = filePath.toFile();
-        log.info("Delete file {} success? {}", uploadObject.getBlobString(), file.delete());
+        log.info("Delete file {} success? {}", uploadDTO.getBlobString(), file.delete());
     }
 
     @Override

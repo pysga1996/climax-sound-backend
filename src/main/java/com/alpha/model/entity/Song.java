@@ -1,7 +1,7 @@
 package com.alpha.model.entity;
 
 import com.alpha.model.dto.UserDTO;
-import com.alpha.model.util.UploadObject;
+import com.alpha.model.dto.UploadDTO;
 import lombok.*;
 import org.hibernate.annotations.*;
 import org.springframework.util.StringUtils;
@@ -21,7 +21,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "song")
-public class Song extends UploadObject {
+public class Song extends UploadDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "song_id_gen")

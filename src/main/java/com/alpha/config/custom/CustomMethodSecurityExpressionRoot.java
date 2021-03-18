@@ -14,20 +14,35 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class CustomMethodSecurityExpressionRoot implements MethodSecurityExpressionOperations {
+
     public final boolean permitAll = true;
+
     public final boolean denyAll = false;
+
     public final String read = "read";
+
     public final String write = "write";
+
     public final String create = "create";
+
     public final String delete = "delete";
+
     public final String admin = "administration";
+
     protected final Authentication authentication;
+
     private AuthenticationTrustResolver trustResolver;
+
     private RoleHierarchy roleHierarchy;
+
     private Set<String> roles;
+
     private String defaultRolePrefix = "ROLE_";
+
     private PermissionEvaluator permissionEvaluator;
+
     private Object filterObject;
+
     private Object returnObject;
 
     CustomMethodSecurityExpressionRoot(Authentication authentication) {
@@ -136,7 +151,7 @@ public class CustomMethodSecurityExpressionRoot implements MethodSecurityExpress
 
     private Set<String> getAuthoritySet() {
         if (roles == null) {
-            roles = new HashSet<String>();
+            roles = new HashSet<>();
             Collection<? extends GrantedAuthority> userAuthorities = authentication.getAuthorities();
 
             if (roleHierarchy != null) {

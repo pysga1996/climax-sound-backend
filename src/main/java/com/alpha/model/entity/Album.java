@@ -1,7 +1,7 @@
 package com.alpha.model.entity;
 
 import com.alpha.model.dto.UserDTO;
-import com.alpha.model.util.UploadObject;
+import com.alpha.model.dto.UploadDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -22,7 +22,7 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class Album extends UploadObject {
+public class Album extends UploadDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "album_id_gen")

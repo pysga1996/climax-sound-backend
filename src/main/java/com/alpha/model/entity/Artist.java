@@ -1,6 +1,6 @@
 package com.alpha.model.entity;
 
-import com.alpha.model.util.UploadObject;
+import com.alpha.model.dto.UploadDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "artist")
-public class Artist extends UploadObject {
+public class Artist extends UploadDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "artist_id_gen")

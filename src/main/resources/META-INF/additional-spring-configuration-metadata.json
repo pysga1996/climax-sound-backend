@@ -1,11 +1,6 @@
 {
   "properties": [
     {
-      "name": "custom.auth-service",
-      "type": "java.lang.String",
-      "description": "Description for custom.auth-service."
-    },
-    {
       "name": "storage.cloudinary.url",
       "type": "java.lang.String",
       "description": "Description for storage.cloudinary.url."
@@ -14,16 +9,6 @@
       "name": "storage.firebase.credentials",
       "type": "java.lang.String",
       "description": "Description for storage.firebase.credentials."
-    },
-    {
-      "name": "custom.client-id",
-      "type": "java.lang.String",
-      "description": "Description for custom.client-id."
-    },
-    {
-      "name": "custom.client-secret",
-      "type": "java.lang.String",
-      "description": "Description for custom.client-secret."
     },
     {
       "name": "storage.temp",

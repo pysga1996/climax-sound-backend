@@ -67,6 +67,13 @@ spring:
       file-size-threshold: 2KB
       max-file-size: 200MB
       max-request-size: 215MB
+  security:
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          introspection-uri: ${AUTH_SERVICE:}
+          client-id: ${CLIENT_ID:}
+          client-secret: ${CLIENT_SECRET:}
 storage:
   temp: ${TEMP_DIR:}
   cloudinary:
@@ -76,9 +83,6 @@ storage:
   local:
     upload-dir: ${UPLOAD_DIR:}
 custom:
-  auth-service: ${AUTH_SERVICE:}
-  client-id: ${CLIENT_ID:}
-  client-secret: ${CLIENT_SECRET:}
   http-port: 8085
   https-port: 8086
   security-policy: CONFIDENTAL
