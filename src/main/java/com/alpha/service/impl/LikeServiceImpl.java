@@ -1,14 +1,14 @@
 package com.alpha.service.impl;
 
-import com.alpha.model.dto.UserDTO;
 import com.alpha.model.entity.Like;
-import com.alpha.model.entity.Song;
 import com.alpha.model.entity.LikeId;
+import com.alpha.model.entity.Song;
 import com.alpha.repositories.LikeRepository;
 import com.alpha.repositories.SongRepository;
 import com.alpha.service.LikeService;
 import com.alpha.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,11 +35,11 @@ public class LikeServiceImpl implements LikeService {
     @Transactional
     public void like(Long id) {
         Optional<Song> song = this.songRepository.findById(id);
-        UserDTO user = userService.getCurrentUser();
+        OAuth2AuthenticatedPrincipal user = userService.getCurrentUser();
         if (song.isPresent()) {
-            Like like = this.likeRepository.findByLikeId_SongIdAndLikeId_UserId(song.get().getId(), user.getId());
+            Like like = this.likeRepository.findByLikeId_SongIdAndLikeId_Username(song.get().getId(), user.getName());
             if (like == null) {
-                like = new Like(new LikeId(song.get().getId(), user.getId()));
+                like = new Like(new LikeId(song.get().getId(), user.getName()));
                 likeRepository.save(like);
             }
         }
@@ -49,9 +49,9 @@ public class LikeServiceImpl implements LikeService {
     @Transactional
     public void unlike(Long id) {
         Optional<Song> song = this.songRepository.findById(id);
-        UserDTO currentUser = userService.getCurrentUser();
+        OAuth2AuthenticatedPrincipal currentUser = userService.getCurrentUser();
         if (song.isPresent()) {
-            Like like = likeRepository.findByLikeId_SongIdAndLikeId_UserId(song.get().getId(), currentUser.getId());
+            Like like = likeRepository.findByLikeId_SongIdAndLikeId_Username(song.get().getId(), currentUser.getName());
             if (like != null) {
                 likeRepository.delete(like);
             }

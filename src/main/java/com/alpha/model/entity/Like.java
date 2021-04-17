@@ -16,7 +16,7 @@ public class Like {
     @EmbeddedId
     @AttributeOverrides({
             @AttributeOverride(name = "songId", column = @Column(name = "song_id")),
-            @AttributeOverride(name = "userId", column = @Column(name = "user_id")),
+            @AttributeOverride(name = "username", column = @Column(name = "username")),
     })
     private LikeId likeId;
 

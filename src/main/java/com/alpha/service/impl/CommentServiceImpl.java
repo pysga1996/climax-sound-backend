@@ -2,7 +2,6 @@ package com.alpha.service.impl;
 
 import com.alpha.mapper.CommentMapper;
 import com.alpha.model.dto.CommentDTO;
-import com.alpha.model.dto.UserDTO;
 import com.alpha.model.entity.Comment;
 import com.alpha.model.entity.Song;
 import com.alpha.repositories.CommentRepository;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -49,11 +49,11 @@ public class CommentServiceImpl implements CommentService {
         Optional<Song> song = this.songRepository.findById(songId);
         if (!song.isPresent()) return false;
         LocalDateTime localDateTime = LocalDateTime.now();
-        UserDTO currentUser = this.userService.getCurrentUser();
+        Map<String, Object> currentUserShortInfo = this.userService.getCurrentUserShortInfo();
         Comment commentToSave = this.commentMapper.dtoToEntity(comment);
         commentToSave.setLocalDateTime(localDateTime);
         commentToSave.setSong(song.get());
-        commentToSave.setUserInfo(UserInfoJsonStringifier.stringify(currentUser));
+        commentToSave.setUserInfo(UserInfoJsonStringifier.stringify(currentUserShortInfo));
         this.commentRepository.save(commentToSave);
         return true;
     }

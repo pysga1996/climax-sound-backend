@@ -1,12 +1,14 @@
 buildscript {
     ext {
         springBootVersion = '2.4.0'
+        springCloudVersion = '2020.0.2'
     }
     repositories {
         mavenCentral()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("io.spring.gradle:dependency-management-plugin:1.0.10.RELEASE")
     }
 }
 
@@ -40,6 +42,9 @@ dependencies {
     implementation ('org.springframework.boot:spring-boot-starter') {
         exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
     }
+    implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap:3.0.1'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:2.2.7.RELEASE'
+    implementation 'org.springframework.cloud:spring-cloud-starter-config:2.2.7.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
 //    implementation 'org.springframework.security:spring-security-data'

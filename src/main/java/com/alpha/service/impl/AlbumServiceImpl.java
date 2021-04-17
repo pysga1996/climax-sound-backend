@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -118,7 +119,8 @@ public class AlbumServiceImpl implements AlbumService {
             String fileName = this.storageService.upload(file, album);
             albumToSave.setCoverUrl(fileName);
         }
-        UserInfo userInfo = UserInfoJsonStringifier.stringify(this.userService.getCurrentUser());
+        Map<String, Object> userShortInfo = this.userService.getCurrentUserShortInfo();
+        UserInfo userInfo = UserInfoJsonStringifier.stringify(userShortInfo);
         albumToSave.setUploader(userInfo);
         this.albumRepository.save(albumToSave);
     }

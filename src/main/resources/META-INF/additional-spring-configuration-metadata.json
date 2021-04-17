@@ -1,21 +1,6 @@
 {
   "properties": [
     {
-      "name": "storage.cloudinary.url",
-      "type": "java.lang.String",
-      "description": "Description for storage.cloudinary.url."
-    },
-    {
-      "name": "storage.firebase.credentials",
-      "type": "java.lang.String",
-      "description": "Description for storage.firebase.credentials."
-    },
-    {
-      "name": "storage.temp",
-      "type": "java.lang.String",
-      "description": "Description for storage.temp."
-    },
-    {
       "name": "custom.trust-store-password",
       "type": "java.lang.String",
       "description": "Description for custom.trust-store-password."

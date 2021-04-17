@@ -3,12 +3,16 @@ package com.alpha.config.custom;
 import com.alpha.model.dto.CheckTokenResponseDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.support.BasicAuthenticationInterceptor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
@@ -18,15 +22,7 @@ import org.springframework.security.oauth2.server.resource.introspection.OAuth2I
 import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestOperations;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import javax.annotation.PostConstruct;
-import java.time.Instant;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Log4j2
 @Component
@@ -36,27 +32,15 @@ public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
     @Value("${spring.security.oauth2.resourceserver.opaquetoken.introspection-uri}")
     private String introspectionUri;
 
-    @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-id}")
-    private String clientId;
-
-    @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-secret}")
-    private String clientSecret;
-
-    private RestOperations restOperations;
+    private final RestOperations restOperations;
 
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public CustomOpaqueTokenIntrospector(ObjectMapper objectMapper) {
+    public CustomOpaqueTokenIntrospector(
+        RestOperations restOperations, ObjectMapper objectMapper) {
+        this.restOperations = restOperations;
         this.objectMapper = objectMapper;
-    }
-
-    @PostConstruct
-    public void setUp() {
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.getInterceptors()
-                .add(new BasicAuthenticationInterceptor(clientId, clientSecret));
-        this.restOperations = restTemplate;
     }
 
     public OAuth2AuthenticatedPrincipal introspect(String token) {

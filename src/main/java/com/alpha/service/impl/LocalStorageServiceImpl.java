@@ -1,12 +1,13 @@
 package com.alpha.service.impl;
 
-import com.alpha.config.properties.StorageProperty;
+import com.alpha.config.properties.LocalStorageProperty;
 import com.alpha.error.FileNotFoundException;
 import com.alpha.error.FileStorageException;
 import com.alpha.model.dto.UploadDTO;
 import com.alpha.service.StorageService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -24,14 +25,14 @@ import java.nio.file.StandardCopyOption;
 
 @Log4j2
 @Service
-@Profile({"poweredge"})
+@ConditionalOnProperty(prefix = "storage", name = "storage-type", havingValue = "local")
 public class LocalStorageServiceImpl extends StorageService {
 
     private final Path storageLocation;
 
     @Autowired
-    public LocalStorageServiceImpl(StorageProperty storageProperty) {
-        this.storageLocation = Paths.get(storageProperty.getUploadDir())
+    public LocalStorageServiceImpl(LocalStorageProperty localStorageProperty) {
+        this.storageLocation = Paths.get(localStorageProperty.getUploadDir())
                 .toAbsolutePath().normalize();
         Path audioPath = storageLocation.resolve("audio");
         Path coverPath = storageLocation.resolve("cover");

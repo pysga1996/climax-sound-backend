@@ -19,9 +19,9 @@ public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
     @NonNull
     Optional<Playlist> findById(@NonNull @Param("id") Long id);
 
-    Iterable<Playlist> findAllByUserIdAndSongsNotContains(Long userId, Song song);
+    Iterable<Playlist> findAllByUsernameAndSongsNotContains(String username, Song song);
 
-    Page<Playlist> findAllByUserId(Long userId, Pageable pageable);
+    Page<Playlist> findAllByUsername(String username, Pageable pageable);
 
     Page<Playlist> findAllByTitleContaining(String title, Pageable pageable);
 }

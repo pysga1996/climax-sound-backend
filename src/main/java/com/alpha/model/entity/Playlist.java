@@ -21,14 +21,16 @@ public class Playlist {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "playlist_id_gen")
     @SequenceGenerator(name = "playlist_id_gen", sequenceName = "playlist_id_seq", allocationSize = 1)
+    @Column(name = "id")
     private Long id;
 
     //    @Column(columnDefinition = "VARCHAR(255) COLLATE utf8mb4_bin")
     @NotBlank
+    @Column(name = "title")
     private String title;
 
-    @Column
-    private Long userId;
+    @Column(name = "username")
+    private String username;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

@@ -6,15 +6,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "storage")
-public class StorageProperty {
+@ConfigurationProperties(prefix = "storage.cloudinary")
+public class CloudinaryStorageProperty {
 
-    enum StorageType {
-        LOCAL, CLOUDINARY, FIREBASE
-    }
-
-
-    private StorageType storageType;
-
-    private String temp;
+    private String url;
 }

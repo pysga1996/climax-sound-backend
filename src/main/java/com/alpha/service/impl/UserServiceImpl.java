@@ -1,44 +1,40 @@
 package com.alpha.service.impl;
 
-import com.alpha.model.dto.SettingDTO;
-import com.alpha.model.dto.UserDTO;
-import com.alpha.model.dto.UserProfileDTO;
 import com.alpha.service.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final ObjectMapper objectMapper;
-
-    @Autowired
-    public UserServiceImpl(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+    @Override
+    public OAuth2AuthenticatedPrincipal getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getPrincipal() instanceof OAuth2AuthenticatedPrincipal) {
+            return (OAuth2AuthenticatedPrincipal) authentication.getPrincipal();
+        }
+        return null;
     }
 
     @Override
-    public UserDTO getCurrentUser() {
+    public Map<String, Object> getCurrentUserShortInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.getPrincipal() instanceof OAuth2AuthenticatedPrincipal) {
-            OAuth2AuthenticatedPrincipal principal = (OAuth2AuthenticatedPrincipal) authentication.getPrincipal();
-            UserDTO userDTO = new UserDTO();
-            userDTO.setId(principal.getAttribute("id"));
-            userDTO.setUsername(principal.getName());
-            userDTO.setAuthorities(new HashSet<>(principal.getAuthorities()));
-            UserProfileDTO userProfile = this.objectMapper
-                    .convertValue(principal.getAttribute("profile"), UserProfileDTO.class);
-            userDTO.setUserProfile(userProfile);
-            SettingDTO setting = this.objectMapper
-                    .convertValue(principal.getAttribute("setting"), SettingDTO.class);
-            userDTO.setSetting(setting);
-            return userDTO;
+            OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal =
+                    (OAuth2AuthenticatedPrincipal) authentication.getPrincipal();
+            Map<String, Object> shortInfo = new HashMap<>();
+            shortInfo.put("username", oAuth2AuthenticatedPrincipal.getName());
+            shortInfo.put("first_name", oAuth2AuthenticatedPrincipal.getAttribute("first_name"));
+            shortInfo.put("last_name", oAuth2AuthenticatedPrincipal.getAttribute("last_name"));
+            shortInfo.put("gender", oAuth2AuthenticatedPrincipal.getAttribute("gender"));
+            shortInfo.put("date_of_birth", oAuth2AuthenticatedPrincipal.getAttribute("date_of_birth"));
+            shortInfo.put("avatar_url", oAuth2AuthenticatedPrincipal.getAttribute("avatar_url"));
+            return shortInfo;
         }
         return null;
     }

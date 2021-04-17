@@ -2,10 +2,7 @@ package com.alpha.service.impl;
 
 import com.alpha.mapper.SongMapper;
 import com.alpha.mapper.TagMapper;
-import com.alpha.model.dto.ArtistDTO;
-import com.alpha.model.dto.SongDTO;
-import com.alpha.model.dto.TagDTO;
-import com.alpha.model.dto.UserDTO;
+import com.alpha.model.dto.*;
 import com.alpha.model.entity.*;
 import com.alpha.repositories.*;
 import com.alpha.service.SongService;
@@ -17,15 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -38,9 +33,9 @@ public class SongServiceImpl implements SongService {
 
     private final LikeRepository likeRepository;
 
-    private final UserService userService;
-
     private final TagRepository tagRepository;
+
+    private final AlbumRepository albumRepository;
 
     private final StorageService storageService;
 
@@ -48,13 +43,14 @@ public class SongServiceImpl implements SongService {
 
     private final TagMapper tagMapper;
 
-    private final AlbumRepository albumRepository;
+    private final UserService userService;
+
 
     @Autowired
     public SongServiceImpl(ArtistRepository artistRepository, SongRepository songRepository,
-                           AlbumRepository albumRepository,
-                           LikeRepository likeRepository, UserService userService,
-                           TagRepository tagRepository, StorageService storageService,
+                           AlbumRepository albumRepository, LikeRepository likeRepository,
+                           UserService userService, TagRepository tagRepository,
+                           StorageService storageService,
                            SongMapper songMapper, TagMapper tagMapper) {
         this.artistRepository = artistRepository;
         this.songRepository = songRepository;
@@ -143,8 +139,9 @@ public class SongServiceImpl implements SongService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<SongDTO> findAllByUploader_Id(Long id, Pageable pageable) {
-        Page<Song> songPage = this.songRepository.findAllByUploader_Id(id, pageable);
+    public Page<SongDTO> findAllByUploader(Pageable pageable) {
+        OAuth2AuthenticatedPrincipal currentUser = this.userService.getCurrentUser();
+        Page<Song> songPage = this.songRepository.findAllByUploader_Username(currentUser.getName(), pageable);
         return new PageImpl<>(songPage.getContent()
                 .stream()
                 .map(this.songMapper::entityToDto)
@@ -209,8 +206,10 @@ public class SongServiceImpl implements SongService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<SongDTO> findAllByUsersContains(UserDTO user, Pageable pageable) {
-        Page<Song> songList = this.songRepository.findAllByUsersContains(user, pageable);
+    public Page<SongDTO> findAllByUsersContains(Pageable pageable) {
+        Map<String, Object> currentUserShortInfo = this.userService.getCurrentUserShortInfo();
+        UserInfo userInfo = UserInfoJsonStringifier.stringify(currentUserShortInfo);
+        Page<Song> songList = this.songRepository.findAllByUsersContains(userInfo, pageable);
         Page<SongDTO> songDTOPage = songList.map(this.songMapper::entityToDto);
         setLike(songDTOPage);
         return songDTOPage;
@@ -299,10 +298,11 @@ public class SongServiceImpl implements SongService {
     @Override
     @Transactional(readOnly = true)
     public boolean hasUserLiked(Long songId) {
-        UserDTO userDTO = this.userService.getCurrentUser();
-        if (userDTO == null) return false;
-        Long userId = userDTO.getId();
-        Like like = this.likeRepository.findByLikeId_SongIdAndLikeId_UserId(songId, userId);
+        OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal =
+                this.userService.getCurrentUser();
+        if (oAuth2AuthenticatedPrincipal == null) return false;
+        String username = oAuth2AuthenticatedPrincipal.getName();
+        Like like = this.likeRepository.findByLikeId_SongIdAndLikeId_Username(songId, username);
         return (like != null);
     }
 
@@ -333,7 +333,8 @@ public class SongServiceImpl implements SongService {
         Song songToSave = this.songRepository.save(this.songMapper.dtoToEntity(songDTO));
         String fileDownloadUri = this.storageService.upload(file, songToSave);
         songToSave.setUrl(fileDownloadUri);
-        UserInfo userInfo = UserInfoJsonStringifier.stringify(userService.getCurrentUser());
+        Map<String, Object> userShortInfo = this.userService.getCurrentUserShortInfo();
+        UserInfo userInfo = UserInfoJsonStringifier.stringify(userShortInfo);
         songToSave.setUploader(userInfo);
         if (albumId != null) {
             Optional<Album> album = this.albumRepository.findById(albumId);

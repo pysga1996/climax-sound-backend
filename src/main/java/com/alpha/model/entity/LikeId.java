@@ -15,5 +15,5 @@ public class LikeId implements Serializable {
 
     private Long songId;
 
-    private Long userId;
+    private String username;
 }

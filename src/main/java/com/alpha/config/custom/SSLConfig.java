@@ -1,20 +1,30 @@
 package com.alpha.config.custom;
 
-import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-
-import javax.annotation.PostConstruct;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManagerFactory;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import lombok.extern.log4j.Log4j2;
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.core.io.Resource;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.client.support.BasicAuthenticationInterceptor;
+import org.springframework.web.client.RestTemplate;
 
 @Log4j2
 @Configuration
@@ -22,13 +32,35 @@ import java.security.cert.CertificateException;
 public class SSLConfig {
 
     @Value("classpath:vengeance.jks")
-    private org.springframework.core.io.Resource trustStore;
+    private Resource trustStore;
 
     @Value("${custom.trust-store-password}")
     private String trustStorePassword;
 
     @Value("${custom.trust-store-type}")
     private String trustStoreType;
+
+    @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-id}")
+    private String clientId;
+
+    @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-secret}")
+    private String clientSecret;
+
+    //    static {
+//        //for localhost testing only
+////        javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(
+////                (hostname, sslSession) -> hostname.equals("localhost");
+//        System.setProperty("https.protocols", "TLSv1.2");
+//        ClassPathResource resource = new ClassPathResource("vengeance.jks");
+//        try {
+//            System.setProperty("javax.net.ssl.trustStore", Paths.get(resource.getURI()).toString());
+//            System.setProperty("javax.net.ssl.trustStorePassword", "1381996");
+//            System.setProperty("javax.net.ssl.trustStoreType", "JKS");
+//        } catch (IOException e) {
+//            log.error(e);
+//            System.exit(1);
+//        }
+//    }
 
 //    @PostConstruct
 //    private void configureSSL() throws IOException {
@@ -39,14 +71,14 @@ public class SSLConfig {
 //        System.setProperty("javax.net.ssl.trustStoreType", Objects.requireNonNull(trustStoreType));
 //    }
 
-    @PostConstruct
-    public void configureSSL() {
+//    @PostConstruct
+    public SSLContext customSSL() {
         try {
             HttpsURLConnection.setDefaultHostnameVerifier((hostname, sslSession) -> hostname.equals("localhost"));
             //Gets the inputstream of a a trust store file under ssl/rpgrenadesClient.jks
             //This path refers to the ssl folder in the jar file, in a jar file in the same directory
             //as this jar file, or a different directory in the same directory as the jar file
-            java.io.InputStream stream = this.trustStore.getInputStream();
+            InputStream stream = this.trustStore.getInputStream();
             //Both trustStores and keyStores are represented by the KeyStore object
             KeyStore trustStore = KeyStore.getInstance(this.trustStoreType.toLowerCase());
             //The password for the trustStore
@@ -60,14 +92,28 @@ public class SSLConfig {
             //Adds the truststore to the factory
             factory.init(trustStore);
             //This is passed to the SSLContext init method
-            javax.net.ssl.TrustManager[] managers = factory.getTrustManagers();
+            TrustManager[] managers = factory.getTrustManagers();
             context.init(null, managers, null);
             //Sets our new SSLContext to be used.
             SSLContext.setDefault(context);
+            return context;
         } catch (KeyStoreException | IOException | NoSuchAlgorithmException
                 | CertificateException | KeyManagementException ex) {
             //Handle error
             log.error(ex);
+            return null;
         }
+    }
+
+    @Bean
+    @LoadBalanced
+    public RestTemplate restTemplate(RestTemplateBuilder rtb) {
+        RestTemplate restTemplate = rtb.build();
+        HttpClient httpClient = HttpClients.custom().setSSLContext(this.customSSL()).build();
+        ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
+        restTemplate.setRequestFactory(requestFactory);
+        restTemplate.getInterceptors()
+            .add(new BasicAuthenticationInterceptor(clientId, clientSecret));
+        return restTemplate;
     }
 }

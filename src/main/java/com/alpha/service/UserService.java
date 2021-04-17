@@ -1,11 +1,13 @@
 package com.alpha.service;
 
-import com.alpha.model.dto.UserDTO;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 
-import java.util.Optional;
+import java.util.Map;
 
 public interface UserService {
 
-    UserDTO getCurrentUser();
+    OAuth2AuthenticatedPrincipal getCurrentUser();
+
+    Map<String, Object> getCurrentUserShortInfo();
 
 }

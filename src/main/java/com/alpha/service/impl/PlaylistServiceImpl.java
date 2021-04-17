@@ -3,7 +3,6 @@ package com.alpha.service.impl;
 import com.alpha.mapper.PlaylistMapper;
 import com.alpha.model.dto.PlaylistDTO;
 import com.alpha.model.dto.SongDTO;
-import com.alpha.model.dto.UserDTO;
 import com.alpha.model.entity.Playlist;
 import com.alpha.model.entity.Song;
 import com.alpha.repositories.PlaylistRepository;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,8 +63,8 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<PlaylistDTO> findAllByUser_Id(Long userId, Pageable pageable) {
-        Page<Playlist> playlistPage = this.playlistRepository.findAllByUserId(userId, pageable);
+    public Page<PlaylistDTO> findAllByUsername(String username, Pageable pageable) {
+        Page<Playlist> playlistPage = this.playlistRepository.findAllByUsername(username, pageable);
         return new PageImpl<>(playlistPage.getContent()
                 .stream()
                 .map(this.playlistMapper::entityToDto)
@@ -129,21 +129,19 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Transactional(readOnly = true)
     public boolean checkPlaylistOwner(Long id) {
         Optional<Playlist> playlist = this.playlistRepository.findById(id);
-        UserDTO currentUser = this.userService.getCurrentUser();
-        if (playlist.isPresent() && currentUser.getId() != null) {
-            return playlist.get().getUserId().equals(currentUser.getId());
-        } else return false;
+        OAuth2AuthenticatedPrincipal currentUser = this.userService.getCurrentUser();
+        return playlist.filter(value -> currentUser.getName().equals(value.getUsername())).isPresent();
     }
 
     @Override
     @Transactional(readOnly = true)
     public Iterable<PlaylistDTO> getPlaylistListToAdd(Long songId) {
-        UserDTO currentUser = this.userService.getCurrentUser();
+        OAuth2AuthenticatedPrincipal currentUser = this.userService.getCurrentUser();
         Optional<Song> song = this.songRepository.findById(songId);
         return song.map(value ->
                 StreamSupport.stream(
                         this.playlistRepository
-                                .findAllByUserIdAndSongsNotContains(currentUser.getId(), value)
+                                .findAllByUsernameAndSongsNotContains(currentUser.getName(), value)
                                 .spliterator(), false
                 ).map(this.playlistMapper::entityToDto).collect(Collectors.toList()))
                 .orElse(null);

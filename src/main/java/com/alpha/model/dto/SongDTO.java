@@ -1,6 +1,5 @@
 package com.alpha.model.dto;
 
-import com.alpha.model.entity.UserInfo;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -64,9 +63,9 @@ public class SongDTO extends UploadDTO {
     private Collection<GenreDTO> genres;
 
     @JsonBackReference(value = "user-favoriteSongs")
-    private Collection<UserDTO> users;
+    private Collection<UserInfoDTO> users;
 
-    private UserInfo uploader;
+    private UserInfoDTO uploader;
 
     @JsonBackReference(value = "playlist-song")
     private Collection<PlaylistDTO> playlists;

@@ -1,15 +1,14 @@
 package com.alpha.model.entity;
 
-import com.alpha.model.dto.UserDTO;
 import com.alpha.model.dto.UploadDTO;
 import lombok.*;
 import org.hibernate.annotations.*;
 import org.springframework.util.StringUtils;
 
-import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
@@ -90,11 +89,18 @@ public class Song extends UploadDTO {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Genre> genres;
 
-    @Transient
-    private Collection<UserDTO> users;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_favorite_songs",
+            joinColumns = @JoinColumn(
+                    name = "song_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "username", referencedColumnName = "username"))
+    @Fetch(value = FetchMode.SUBSELECT)
+    private Collection<UserInfo> users;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "username", referencedColumnName = "username")
     @NotFound(action = NotFoundAction.IGNORE)
     private UserInfo uploader;
 

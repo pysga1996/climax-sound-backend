@@ -9,10 +9,12 @@
       <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
       <ENTRIES>
         <ENTRY IS_ENABLED="true" PARSER="runconfig" />
-        <ENTRY IS_ENABLED="true" PARSER="env" PATH="environment/oauth2.env" />
-        <ENTRY IS_ENABLED="true" PARSER="env" PATH="environment/storage.env" />
-        <ENTRY IS_ENABLED="true" PARSER="env" PATH="environment/ssl_certification.env" />
-        <ENTRY IS_ENABLED="true" PARSER="env" PATH="environment/postgresql.env" />
+        <ENTRY IS_ENABLED="true" PARSER="env" PATH="$PROJECT_DIR$/../../../../CodeGym/Module 4/Project Climax Sound/alpha-sound-service/environment/cloud_config.env" />
+        <ENTRY IS_ENABLED="true" PARSER="env" PATH="$PROJECT_DIR$/../../../../CodeGym/Module 4/Project Climax Sound/alpha-sound-service/environment/microservices.env" />
+        <ENTRY IS_ENABLED="true" PARSER="env" PATH="$PROJECT_DIR$/../../../../CodeGym/Module 4/Project Climax Sound/alpha-sound-service/environment/oauth2.env" />
+        <ENTRY IS_ENABLED="true" PARSER="env" PATH="$PROJECT_DIR$/../../../../CodeGym/Module 4/Project Climax Sound/alpha-sound-service/environment/postgresql.env" />
+        <ENTRY IS_ENABLED="true" PARSER="env" PATH="$PROJECT_DIR$/../../../../CodeGym/Module 4/Project Climax Sound/alpha-sound-service/environment/ssl_certification.env" />
+        <ENTRY IS_ENABLED="true" PARSER="env" PATH="$PROJECT_DIR$/../../../../CodeGym/Module 4/Project Climax Sound/alpha-sound-service/environment/storage.env" />
       </ENTRIES>
     </extension>
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.alpha.AlphaSoundServiceApplication" />

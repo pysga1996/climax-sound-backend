@@ -75,10 +75,13 @@ spring:
           client-id: ${CLIENT_ID:}
           client-secret: ${CLIENT_SECRET:}
 storage:
+  storage-type: local
   temp: ${TEMP_DIR:}
   cloudinary:
     url: ${CLOUDINARY_URL:}
   firebase:
+    database-url: ${FIREBASE_DATABASE_URL:}
+    storage-bucket: ${FIREBASE_STORAGE_BUCKET:}
     credentials: ${FIREBASE_CREDENTIALS:}
   local:
     upload-dir: ${UPLOAD_DIR:}

@@ -43,7 +43,7 @@ public class AlbumDTO extends UploadDTO {
 
     private UserInfoDTO uploader;
 
-    private Collection<UserDTO> users;
+    private Collection<UserInfoDTO> users;
 
     @Override
     public String getUrl() {

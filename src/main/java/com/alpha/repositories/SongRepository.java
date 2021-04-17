@@ -3,6 +3,7 @@ package com.alpha.repositories;
 import com.alpha.model.dto.UserDTO;
 import com.alpha.model.entity.Artist;
 import com.alpha.model.entity.Song;
+import com.alpha.model.entity.UserInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -37,7 +38,7 @@ public interface SongRepository extends JpaRepository<Song, Long> {
     //    @Query(value = "SELECT * FROM song WHERE BINARY title=:title", nativeQuery = true)
     Iterable<Song> findAllByTitle(String title);
 
-    Page<Song> findAllByUploader_Id(Long id, Pageable pageable);
+    Page<Song> findAllByUploader_Username(String username, Pageable pageable);
 
     Iterable<Song> findAllByTitleContainingIgnoreCase(String title);
 
@@ -49,7 +50,7 @@ public interface SongRepository extends JpaRepository<Song, Long> {
 
     Page<Song> findAllByArtistsContains(Artist artist, Pageable pageable);
 
-    Page<Song> findAllByUsersContains(UserDTO user, Pageable pageable);
+    Page<Song> findAllByUsersContains(UserInfo user, Pageable pageable);
 
     @Query("SELECT s FROM Song s JOIN s.albums a WHERE a.id = :id")
     Page<Song> findAllByAlbum_Id(@Param("id") Long id, Pageable pageable);

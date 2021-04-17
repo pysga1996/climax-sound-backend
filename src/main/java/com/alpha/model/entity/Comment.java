@@ -1,6 +1,5 @@
 package com.alpha.model.entity;
 
-import com.alpha.model.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,7 +36,7 @@ public class Comment {
     private Song song;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "username", referencedColumnName = "username")
     @NotFound(action = NotFoundAction.EXCEPTION)
     private UserInfo userInfo;
 

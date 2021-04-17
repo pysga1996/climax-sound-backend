@@ -6,15 +6,12 @@ import org.springframework.context.annotation.Configuration;
 
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "storage")
-public class StorageProperty {
+@ConfigurationProperties(prefix = "storage.firebase")
+public class FirebaseStorageProperty {
 
-    enum StorageType {
-        LOCAL, CLOUDINARY, FIREBASE
-    }
+    private String databaseUrl;
 
+    private String storageBucket;
 
-    private StorageType storageType;
-
-    private String temp;
+    private String credentials;
 }

@@ -3,7 +3,6 @@ package com.alpha.controller;
 import com.alpha.model.dto.CommentDTO;
 import com.alpha.model.dto.SongDTO;
 import com.alpha.model.dto.SongUploadForm;
-import com.alpha.model.dto.UserDTO;
 import com.alpha.service.*;
 import com.alpha.service.impl.FormConvertService;
 import lombok.extern.log4j.Log4j2;
@@ -19,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
 
 @Log4j2
@@ -168,8 +168,9 @@ public class SongRestController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/my-song")
     public ResponseEntity<Page<SongDTO>> mySongList(Pageable pageable) {
+
         Page<SongDTO> mySongList = this.songService
-                .findAllByUsersContains(userService.getCurrentUser(), pageable);
+                .findAllByUsersContains(pageable);
         if (mySongList.getTotalElements() > 0) {
             return new ResponseEntity<>(mySongList, HttpStatus.OK);
         } else return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -192,8 +193,7 @@ public class SongRestController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/uploaded/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<SongDTO>> userSongList(Pageable pageable) {
-        UserDTO currentUser = this.userService.getCurrentUser();
-        Page<SongDTO> userSongList = this.songService.findAllByUploader_Id(currentUser.getId(), pageable);
+        Page<SongDTO> userSongList = this.songService.findAllByUploader(pageable);
         boolean isEmpty = userSongList.getTotalElements() == 0;
         if (isEmpty) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -225,8 +225,8 @@ public class SongRestController {
     @DeleteMapping(params = {"comment", "comment-id"})
     public ResponseEntity<Void> deleteCommentOnSong(@RequestParam("comment-id") Long id) {
         Optional<CommentDTO> comment = this.commentService.findById(id);
-        if (comment.isPresent() && comment.get().getUserInfo().getId()
-                .equals(userService.getCurrentUser().getId())) {
+        if (comment.isPresent() && comment.get().getUserInfo().getUsername()
+                .equals(this.userService.getCurrentUser().getName())) {
             this.commentService.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);

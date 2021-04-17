@@ -2,7 +2,6 @@ package com.alpha.service;
 
 import com.alpha.model.dto.ArtistDTO;
 import com.alpha.model.dto.SongDTO;
-import com.alpha.model.dto.UserDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,13 +20,13 @@ public interface SongService {
 
     Iterable<SongDTO> findAllByTitleContaining(String title);
 
-    Page<SongDTO> findAllByUploader_Id(Long id, Pageable pageable);
+    Page<SongDTO> findAllByUploader(Pageable pageable);
 
     Page<SongDTO> findAllByTitleContaining(String title, Pageable pageable);
 
     Page<SongDTO> findAllByArtistsContains(ArtistDTO artist, Pageable pageable);
 
-    Page<SongDTO> findAllByUsersContains(UserDTO user, Pageable pageable);
+    Page<SongDTO> findAllByUsersContains(Pageable pageable);
 
     Page<SongDTO> findAllByOrderByReleaseDateDesc(Pageable pageable);
 

@@ -9,7 +9,7 @@ import com.alpha.model.dto.PlaylistDTO;
 import com.alpha.model.dto.SongDTO;
 import com.alpha.model.dto.TagDTO;
 import com.alpha.model.dto.ThemeDTO;
-import com.alpha.model.dto.UserDTO;
+import com.alpha.model.dto.UserInfoDTO;
 import com.alpha.model.entity.Album;
 import com.alpha.model.entity.Artist;
 import com.alpha.model.entity.Comment;
@@ -20,6 +20,7 @@ import com.alpha.model.entity.Song;
 import com.alpha.model.entity.Song.SongBuilder;
 import com.alpha.model.entity.Tag;
 import com.alpha.model.entity.Theme;
+import com.alpha.model.entity.UserInfo;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -29,7 +30,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-03-18T14:28:19+0700",
+    date = "2021-03-24T10:29:19+0700",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 1.8.0_261 (Oracle Corporation)"
 )
 @Component
@@ -66,10 +67,7 @@ public class AlbumMapperImpl extends AlbumMapper {
         albumDTO.setTags( tagCollectionToTagDTOCollection( album.getTags() ) );
         albumDTO.setCountry( countryToCountryDTO( album.getCountry() ) );
         albumDTO.setUploader( userInfoMapper.entityToDto( album.getUploader() ) );
-        Collection<UserDTO> collection4 = album.getUsers();
-        if ( collection4 != null ) {
-            albumDTO.setUsers( new ArrayList<UserDTO>( collection4 ) );
-        }
+        albumDTO.setUsers( userInfoCollectionToUserInfoDTOCollection( album.getUsers() ) );
 
         return albumDTO;
     }
@@ -94,10 +92,7 @@ public class AlbumMapperImpl extends AlbumMapper {
         album.setTags( tagDTOCollectionToTagCollection( albums.getTags() ) );
         album.setCountry( countryDTOToCountry( albums.getCountry() ) );
         album.setUploader( userInfoMapper.dtoToEntity( albums.getUploader() ) );
-        Collection<UserDTO> collection4 = albums.getUsers();
-        if ( collection4 != null ) {
-            album.setUsers( new ArrayList<UserDTO>( collection4 ) );
-        }
+        album.setUsers( userInfoDTOCollectionToUserInfoCollection( albums.getUsers() ) );
 
         return album;
     }
@@ -146,10 +141,7 @@ public class AlbumMapperImpl extends AlbumMapper {
         albumDTO.setCoverBlobString( album.getCoverBlobString() );
         albumDTO.setCountry( countryToCountryDTO( album.getCountry() ) );
         albumDTO.setUploader( userInfoMapper.entityToDto( album.getUploader() ) );
-        Collection<UserDTO> collection = album.getUsers();
-        if ( collection != null ) {
-            albumDTO.setUsers( new ArrayList<UserDTO>( collection ) );
-        }
+        albumDTO.setUsers( userInfoCollectionToUserInfoDTOCollection( album.getUsers() ) );
 
         return albumDTO;
     }
@@ -170,10 +162,7 @@ public class AlbumMapperImpl extends AlbumMapper {
         album1.setCoverBlobString( album.getCoverBlobString() );
         album1.setCountry( countryDTOToCountry( album.getCountry() ) );
         album1.setUploader( userInfoMapper.dtoToEntity( album.getUploader() ) );
-        Collection<UserDTO> collection = album.getUsers();
-        if ( collection != null ) {
-            album1.setUsers( new ArrayList<UserDTO>( collection ) );
-        }
+        album1.setUsers( userInfoDTOCollectionToUserInfoCollection( album.getUsers() ) );
 
         return album1;
     }
@@ -382,6 +371,19 @@ public class AlbumMapperImpl extends AlbumMapper {
         return collection1;
     }
 
+    protected Collection<UserInfoDTO> userInfoCollectionToUserInfoDTOCollection(Collection<UserInfo> collection) {
+        if ( collection == null ) {
+            return null;
+        }
+
+        Collection<UserInfoDTO> collection1 = new ArrayList<UserInfoDTO>( collection.size() );
+        for ( UserInfo userInfo : collection ) {
+            collection1.add( userInfoMapper.entityToDto( userInfo ) );
+        }
+
+        return collection1;
+    }
+
     protected AlbumDTO albumToAlbumDTO(Album album) {
         if ( album == null ) {
             return null;
@@ -401,10 +403,7 @@ public class AlbumMapperImpl extends AlbumMapper {
         albumDTO.setTags( tagCollectionToTagDTOCollection1( album.getTags() ) );
         albumDTO.setCountry( countryToCountryDTO( album.getCountry() ) );
         albumDTO.setUploader( userInfoMapper.entityToDto( album.getUploader() ) );
-        Collection<UserDTO> collection4 = album.getUsers();
-        if ( collection4 != null ) {
-            albumDTO.setUsers( new ArrayList<UserDTO>( collection4 ) );
-        }
+        albumDTO.setUsers( userInfoCollectionToUserInfoDTOCollection( album.getUsers() ) );
 
         return albumDTO;
     }
@@ -439,7 +438,7 @@ public class AlbumMapperImpl extends AlbumMapper {
 
         playlistDTO.setId( playlist.getId() );
         playlistDTO.setTitle( playlist.getTitle() );
-        playlistDTO.setUserId( playlist.getUserId() );
+        playlistDTO.setUsername( playlist.getUsername() );
         playlistDTO.setSongs( songCollectionToSongDTOCollection1( playlist.getSongs() ) );
 
         return playlistDTO;
@@ -494,11 +493,8 @@ public class AlbumMapperImpl extends AlbumMapper {
         songDTO.setAlbums( albumCollectionToAlbumDTOCollection( song.getAlbums() ) );
         songDTO.setTags( tagCollectionToTagDTOCollection1( song.getTags() ) );
         songDTO.setGenres( genreCollectionToGenreDTOCollection1( song.getGenres() ) );
-        Collection<UserDTO> collection5 = song.getUsers();
-        if ( collection5 != null ) {
-            songDTO.setUsers( new ArrayList<UserDTO>( collection5 ) );
-        }
-        songDTO.setUploader( song.getUploader() );
+        songDTO.setUsers( userInfoCollectionToUserInfoDTOCollection( song.getUsers() ) );
+        songDTO.setUploader( userInfoMapper.entityToDto( song.getUploader() ) );
         songDTO.setPlaylists( playlistCollectionToPlaylistDTOCollection( song.getPlaylists() ) );
         songDTO.setCountry( countryToCountryDTO( song.getCountry() ) );
         songDTO.setTheme( themeToThemeDTO( song.getTheme() ) );
@@ -698,6 +694,19 @@ public class AlbumMapperImpl extends AlbumMapper {
         return collection1;
     }
 
+    protected Collection<UserInfo> userInfoDTOCollectionToUserInfoCollection(Collection<UserInfoDTO> collection) {
+        if ( collection == null ) {
+            return null;
+        }
+
+        Collection<UserInfo> collection1 = new ArrayList<UserInfo>( collection.size() );
+        for ( UserInfoDTO userInfoDTO : collection ) {
+            collection1.add( userInfoMapper.dtoToEntity( userInfoDTO ) );
+        }
+
+        return collection1;
+    }
+
     protected Album albumDTOToAlbum(AlbumDTO albumDTO) {
         if ( albumDTO == null ) {
             return null;
@@ -717,10 +726,7 @@ public class AlbumMapperImpl extends AlbumMapper {
         album.setTags( tagDTOCollectionToTagCollection1( albumDTO.getTags() ) );
         album.setCountry( countryDTOToCountry( albumDTO.getCountry() ) );
         album.setUploader( userInfoMapper.dtoToEntity( albumDTO.getUploader() ) );
-        Collection<UserDTO> collection4 = albumDTO.getUsers();
-        if ( collection4 != null ) {
-            album.setUsers( new ArrayList<UserDTO>( collection4 ) );
-        }
+        album.setUsers( userInfoDTOCollectionToUserInfoCollection( albumDTO.getUsers() ) );
 
         return album;
     }
@@ -755,7 +761,7 @@ public class AlbumMapperImpl extends AlbumMapper {
 
         playlist.setId( playlistDTO.getId() );
         playlist.setTitle( playlistDTO.getTitle() );
-        playlist.setUserId( playlistDTO.getUserId() );
+        playlist.setUsername( playlistDTO.getUsername() );
         playlist.setSongs( songDTOCollectionToSongCollection1( playlistDTO.getSongs() ) );
 
         return playlist;
@@ -810,11 +816,8 @@ public class AlbumMapperImpl extends AlbumMapper {
         song.albums( albumDTOCollectionToAlbumCollection( songDTO.getAlbums() ) );
         song.tags( tagDTOCollectionToTagCollection1( songDTO.getTags() ) );
         song.genres( genreDTOCollectionToGenreCollection1( songDTO.getGenres() ) );
-        Collection<UserDTO> collection5 = songDTO.getUsers();
-        if ( collection5 != null ) {
-            song.users( new ArrayList<UserDTO>( collection5 ) );
-        }
-        song.uploader( songDTO.getUploader() );
+        song.users( userInfoDTOCollectionToUserInfoCollection( songDTO.getUsers() ) );
+        song.uploader( userInfoMapper.dtoToEntity( songDTO.getUploader() ) );
         song.playlists( playlistDTOCollectionToPlaylistCollection( songDTO.getPlaylists() ) );
         song.country( countryDTOToCountry( songDTO.getCountry() ) );
         song.theme( themeDTOToTheme( songDTO.getTheme() ) );

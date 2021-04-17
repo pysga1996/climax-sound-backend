@@ -1,6 +1,5 @@
 package com.alpha.model.entity;
 
-import com.alpha.model.dto.UserDTO;
 import com.alpha.model.dto.UploadDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -84,12 +83,19 @@ public class Album extends UploadDTO {
     private Country country;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "username", referencedColumnName = "username")
     @NotFound(action = NotFoundAction.IGNORE)
     private UserInfo uploader;
 
-    @Transient
-    private Collection<UserDTO> users;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_favorite_albums",
+            joinColumns = @JoinColumn(
+                    name = "album_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "username", referencedColumnName = "username"))
+    @Fetch(value = FetchMode.SUBSELECT)
+    private Collection<UserInfo> users;
 
     @Override
     public String toString() {

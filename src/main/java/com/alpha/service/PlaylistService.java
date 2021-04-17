@@ -14,7 +14,7 @@ public interface PlaylistService {
 
     Iterable<PlaylistDTO> getPlaylistListToAdd(Long songId);
 
-    Page<PlaylistDTO> findAllByUser_Id(Long userId, Pageable pageable);
+    Page<PlaylistDTO> findAllByUsername(String username, Pageable pageable);
 
     Page<PlaylistDTO> findAllByTitleContaining(String title, Pageable pageable);
 

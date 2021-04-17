@@ -19,7 +19,7 @@ public class PlaylistDTO {
     @NotBlank
     private String title;
 
-    private Long userId;
+    private String username;
 
     private Collection<SongDTO> songs;
 }
