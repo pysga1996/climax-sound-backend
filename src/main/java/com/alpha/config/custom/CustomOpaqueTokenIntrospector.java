@@ -1,11 +1,10 @@
 package com.alpha.config.custom;
 
-import com.alpha.model.dto.CheckTokenResponseDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.extern.log4j.Log4j2;
@@ -29,6 +28,14 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Primary
 public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
 
+    private static final String USERNAME = "user_name";
+
+    private static final String AUTHORITIES = "authorities";
+
+    private static final String ISSUE_AT = "iat";
+
+    private static final String EXPIRATION = "exp";
+
     @Value("${spring.security.oauth2.resourceserver.opaquetoken.introspection-uri}")
     private String introspectionUri;
 
@@ -43,42 +50,46 @@ public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
         this.objectMapper = objectMapper;
     }
 
+    @SuppressWarnings("rawtypes")
     public OAuth2AuthenticatedPrincipal introspect(String token) {
-        ResponseEntity<CheckTokenResponseDTO> responseEntity = this.makeRequest(token);
-        if (responseEntity.getBody() == null || !responseEntity.getBody().getActive()) {
-            log.trace("Did not validate token since it is inactive");
-            throw new BadOpaqueTokenException("Provided token isn't active");
-        } else {
-            String jsonString = null;
-            try {
-                jsonString = this.objectMapper.writerWithDefaultPrettyPrinter()
-                        .writeValueAsString(responseEntity.getBody());
-            } catch (JsonProcessingException e) {
-                log.error("Error print json response", e);
-            }
-            log.info("Check Token Response: \n{}", jsonString);
-            return this.convertClaimsSet(responseEntity.getBody());
-        }
-    }
-
-    private ResponseEntity<CheckTokenResponseDTO> makeRequest(String token) {
         try {
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.introspectionUri)
-                    .queryParam("token", token);
-            return this.restOperations.postForEntity(builder.toUriString(), null, CheckTokenResponseDTO.class);
-        } catch (Exception var3) {
-            throw new OAuth2IntrospectionException(var3.getMessage(), var3);
+            ResponseEntity<Map> responseEntity = this.makeRequest(token);
+            if (responseEntity.getBody() == null || !(responseEntity.getBody().get("active")
+                == Boolean.TRUE)) {
+                log.trace("Did not validate token since it is inactive");
+                throw new BadOpaqueTokenException("Provided token isn't active");
+            } else {
+                String jsonString = this.objectMapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(responseEntity.getBody());
+                log.info("Check Token Response: \n{}", jsonString);
+                return this.convertClaimsSet(responseEntity.getBody());
+            }
+        } catch (RuntimeException | JsonProcessingException ex) {
+            log.error("Error while introspecting token", ex);
+            throw new OAuth2IntrospectionException(ex.getMessage(), ex);
         }
+
     }
 
-    @SuppressWarnings("unchecked")
-    private OAuth2AuthenticatedPrincipal convertClaimsSet(CheckTokenResponseDTO response) {
-        Collection<GrantedAuthority> authorities = Arrays.stream(response.getAuthorities())
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-        Map<String, Object> attributes = this.objectMapper.convertValue(response, Map.class);
-        attributes.replace("exp", Instant.ofEpochMilli(response.getExp()));
-        return new OAuth2IntrospectionAuthenticatedPrincipal(response.getUserName(), attributes, authorities);
+    @SuppressWarnings("rawtypes")
+    private ResponseEntity<Map> makeRequest(String token) {
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.introspectionUri)
+            .queryParam("token", token);
+        return this.restOperations.postForEntity(builder.toUriString(), null, Map.class);
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private OAuth2AuthenticatedPrincipal convertClaimsSet(Map response) {
+        Collection<GrantedAuthority> authorities = ((List<String>) response.get(AUTHORITIES))
+            .stream()
+            .map(SimpleGrantedAuthority::new)
+            .collect(Collectors.toList());
+        Instant iat = Instant.ofEpochSecond((int) response.get(ISSUE_AT));
+        Instant exp = Instant.ofEpochSecond((int) response.get(EXPIRATION));
+        response.replace(ISSUE_AT, iat);
+        response.replace(EXPIRATION, exp);
+        return new OAuth2IntrospectionAuthenticatedPrincipal((String) response.get(USERNAME),
+            response, authorities);
     }
 
 }

@@ -56,8 +56,7 @@ public class Song extends UploadDTO {
     private String blobString;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(schema = "alpha_sound",
-            name = "song_artist",
+    @JoinTable(name = "song_artist",
             joinColumns = @JoinColumn(
                     name = "song_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(

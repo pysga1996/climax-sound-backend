@@ -8,6 +8,7 @@ import com.alpha.service.StorageService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -25,6 +26,7 @@ import java.nio.file.StandardCopyOption;
 
 @Log4j2
 @Service
+@DependsOn("localStorageProperty")
 @ConditionalOnProperty(prefix = "storage", name = "storage-type", havingValue = "local")
 public class LocalStorageServiceImpl extends StorageService {
 

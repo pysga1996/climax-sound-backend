@@ -1,7 +1,10 @@
 package com.alpha.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.cloud.CloudPlatform;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -12,11 +15,18 @@ import org.springframework.security.oauth2.server.resource.web.DefaultBearerToke
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
+    private String jwkSetUri;
+
     private final OpaqueTokenIntrospector opaqueTokenIntrospector;
 
+    private final Environment env;
+
     @Autowired
-    public SecurityConfig(OpaqueTokenIntrospector opaqueTokenIntrospector) {
+    public SecurityConfig(OpaqueTokenIntrospector opaqueTokenIntrospector,
+        Environment env) {
         this.opaqueTokenIntrospector = opaqueTokenIntrospector;
+        this.env = env;
     }
 
     @Override
@@ -36,8 +46,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .oauth2ResourceServer(httpSecurityOAuth2ResourceServerConfigurer -> {
                     DefaultBearerTokenResolver bearerTokenResolver = new DefaultBearerTokenResolver();
                     bearerTokenResolver.setAllowUriQueryParameter(true);
-                    httpSecurityOAuth2ResourceServerConfigurer.opaqueToken(opaqueTokenConfigurer ->
-                            opaqueTokenConfigurer.introspector(opaqueTokenIntrospector)).bearerTokenResolver(bearerTokenResolver);
+                    if (CloudPlatform.HEROKU.isActive(this.env)) {
+                        httpSecurityOAuth2ResourceServerConfigurer.jwt(jwtConfigurer ->
+                            jwtConfigurer.jwkSetUri(this.jwkSetUri));
+                    } else {
+                        httpSecurityOAuth2ResourceServerConfigurer.opaqueToken(opaqueTokenConfigurer ->
+                            opaqueTokenConfigurer.introspector(opaqueTokenIntrospector));
+                    }
+                    httpSecurityOAuth2ResourceServerConfigurer.bearerTokenResolver(bearerTokenResolver);
                 })
                 .headers()
                 .frameOptions().sameOrigin().disable()
