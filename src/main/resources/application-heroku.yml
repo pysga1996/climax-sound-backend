@@ -62,6 +62,8 @@ spring:
           introspection-uri: ${AUTH_SERVICE:}
           client-id: ${CLIENT_ID:}
           client-secret: ${CLIENT_SECRET:}
+        jwt:
+          jwk-set-uri: ${JWKS_ENDPOINT:}
 storage:
   storage-type: cloudinary
   temp: ${TEMP_DIR:}

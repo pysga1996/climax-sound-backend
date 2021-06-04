@@ -1,5 +1,6 @@
 package com.alpha.config.security;
 
+import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.cloud.CloudPlatform;
@@ -46,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .oauth2ResourceServer(httpSecurityOAuth2ResourceServerConfigurer -> {
                     DefaultBearerTokenResolver bearerTokenResolver = new DefaultBearerTokenResolver();
                     bearerTokenResolver.setAllowUriQueryParameter(true);
-                    if (CloudPlatform.HEROKU.isActive(this.env)) {
+                    if (CloudPlatform.HEROKU.isActive(this.env) || Arrays.asList(this.env.getActiveProfiles()).contains("poweredge")) {
                         httpSecurityOAuth2ResourceServerConfigurer.jwt(jwtConfigurer ->
                             jwtConfigurer.jwkSetUri(this.jwkSetUri));
                     } else {
