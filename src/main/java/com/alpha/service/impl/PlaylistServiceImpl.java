@@ -44,8 +44,8 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     @Transactional(readOnly = true)
-    public boolean checkSongExistence(PlaylistDTO playlist, Long songId) {
-        Collection<SongDTO> songList = playlist.getSongs();
+    public boolean checkSongExistence(PlaylistDTO playlistDTO, Long songId) {
+        Collection<SongDTO> songList = playlistDTO.getSongs();
         for (SongDTO song : songList) {
             if (song.getId().equals(songId)) {
                 return true;
@@ -56,9 +56,11 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<PlaylistDTO> findById(Long id) {
-        return this.playlistRepository.findById(id)
-                .map(this.playlistMapper::entityToDto);
+    public PlaylistDTO findById(Long id) {
+        String username = this.userService.getCurrentUsername();
+        return this.playlistRepository.findByIdAndUsername(id, username)
+            .map(this.playlistMapper::entityToDto)
+            .orElseThrow(() -> new EntityNotFoundException("Playlist not found!"));
     }
 
     @Override
@@ -84,8 +86,31 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     @Transactional
-    public void save(PlaylistDTO playlist) {
-        this.playlistRepository.save(this.playlistMapper.dtoToEntity(playlist));
+    public PlaylistDTO create(PlaylistDTO playlistDTO) {
+        String username = this.userService.getCurrentUsername();
+        boolean existsPlaylistByTitleAndUsername = this.playlistRepository
+            .existsPlaylistByTitleAndUsername(playlistDTO.getTitle(), username);
+        if (existsPlaylistByTitleAndUsername) {
+            throw new EntityExistsException("Playlist with that name exist!");
+        }
+        playlistDTO.setUsername(username);
+        Playlist newPlaylist = this.playlistMapper.dtoToEntity(playlistDTO);
+        newPlaylist.setUsername(username);
+        newPlaylist = this.playlistRepository.saveAndFlush(newPlaylist);
+        return this.playlistMapper.entityToDtoPure(newPlaylist);
+    }
+
+    @Override
+    @Transactional
+    public void update(Long id, PlaylistDTO playlistDTO) {
+        String username = this.userService.getCurrentUsername();
+        Optional<Playlist> optionalPlaylist = this.playlistRepository
+            .findByIdAndUsername(id, username);
+        if (optionalPlaylist.isPresent()) {
+            optionalPlaylist.get().setTitle(playlistDTO.getTitle());
+        } else {
+            throw new EntityNotFoundException("Playlist not found");
+        }
     }
 
     @Override
@@ -96,42 +121,28 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     @Transactional
-    public boolean addSongToPlaylist(Long songId, Long playlistId) {
-        Optional<Song> song = this.songRepository.findById(songId);
-        Optional<Playlist> playlist = this.playlistRepository.findById(playlistId);
-        if (song.isPresent() && playlist.isPresent()) {
-            Collection<Song> songList = playlist.get().getSongs();
-            for (Song checkedSong : songList) {
-                if (checkedSong.getId().equals(song.get().getId())) return false;
-            }
-            songList.add(song.get());
-            playlist.get().setSongs(songList);
-            this.playlistRepository.save(playlist.get());
-            return true;
+    public void addSongToPlaylist(Long playlistId, List<Long> songIds) {
+        String username = this.userService.getCurrentUsername();
+        Optional<Playlist> playlist = this.playlistRepository
+            .findByIdAndUsername(playlistId, username);
+        if (playlist.isPresent()) {
+            this.playlistRepository.addToPlayList(username, playlistId, songIds);
+        } else {
+            throw new EntityNotFoundException("Playlist not found!");
         }
-        return false;
-
     }
 
     @Override
     @Transactional
-    public boolean deleteSongFromPlaylist(Long songId, Long playlistId) {
-        Optional<Playlist> playlist = this.playlistRepository.findById(playlistId);
+    public void deleteSongFromPlaylist(Long playlistId, List<Long> songIds) {
+        String username = this.userService.getCurrentUsername();
+        Optional<Playlist> playlist = this.playlistRepository
+            .findByIdAndUsername(playlistId, username);
         if (playlist.isPresent()) {
-            Collection<Song> songList = playlist.get().getSongs();
-            songList.removeIf(song -> (song.getId().equals(songId)));
-            playlist.get().setSongs(songList);
-            this.playlistRepository.save(playlist.get());
-            return true;
-        } else return false;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public boolean checkPlaylistOwner(Long id) {
-        Optional<Playlist> playlist = this.playlistRepository.findById(id);
-        OAuth2AuthenticatedPrincipal currentUser = this.userService.getCurrentUser();
-        return playlist.filter(value -> currentUser.getName().equals(value.getUsername())).isPresent();
+            this.playlistRepository.removeFromPlaylist(username, playlistId, songIds);
+        } else {
+            throw new EntityNotFoundException("Playlist not found!");
+        }
     }
 
     @Override

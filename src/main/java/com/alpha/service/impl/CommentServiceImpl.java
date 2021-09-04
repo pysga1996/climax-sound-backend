@@ -11,8 +11,12 @@ import com.alpha.repositories.CommentRepository;
 import com.alpha.repositories.SongRepository;
 import com.alpha.service.CommentService;
 import com.alpha.service.UserService;
-import com.alpha.util.helper.UserInfoJsonStringifier;
+import java.time.LocalDateTime;
+import java.util.Optional;
+import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,7 +52,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Transactional
-    public boolean save(CommentDTO comment, Long songId) {
+    public CommentDTO save(CommentDTO commentDTO, Long songId) {
         Optional<Song> song = this.songRepository.findById(songId);
         if (!song.isPresent()) {
             throw new EntityNotFoundException("Song not found!");
@@ -59,13 +63,20 @@ public class CommentServiceImpl implements CommentService {
         Comment commentToSave = this.commentMapper.dtoToEntity(commentDTO);
         commentToSave.setLocalDateTime(localDateTime);
         commentToSave.setSong(song.get());
-        commentToSave.setUserInfo(UserInfoJsonStringifier.stringify(currentUserShortInfo));
-        this.commentRepository.save(commentToSave);
-        return true;
+        commentToSave.setUserInfo(userInfo);
+        this.commentRepository.saveAndFlush(commentToSave);
+        return this.commentMapper.entityToDtoPure(commentToSave);
     }
 
     @Transactional
     public void deleteById(Long id) {
-        this.commentRepository.deleteById(id);
+        String username = this.userService.getCurrentUsername();
+        Optional<Comment> comment = this.commentRepository.findById(id);
+        if (comment.isPresent() && comment.get().getUserInfo().getUsername()
+            .equals(username)) {
+            this.commentRepository.deleteById(id);
+        } else {
+            throw new EntityNotFoundException("Comment not found!");
+        }
     }
 }

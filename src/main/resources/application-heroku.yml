@@ -39,6 +39,8 @@ spring:
     open-in-view: false
     properties:
       hibernate:
+        proc:
+          param_null_passing: true
         current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
         dialect: org.hibernate.dialect.PostgreSQL10Dialect
         format_sql: true
@@ -82,7 +84,7 @@ spring:
       group-id: vengeance
       max-poll-records: 100
       enable-auto-commit: false
-      auto-offset-reset: latest
+      auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     jaas:
@@ -107,7 +109,7 @@ storage:
 custom:
   http-port: 8085
   https-port: 8086
-  security-policy: CONFIDENTAL
+  security-policy: CONFIDENTIAL
   connector-scheme: http
   trust-store-password: ${SSL_TRUSTSTORE_PASSWORD:}
   trust-store-type: JKS

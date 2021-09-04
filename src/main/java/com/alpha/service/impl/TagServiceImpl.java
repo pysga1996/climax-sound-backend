@@ -5,15 +5,14 @@ import com.alpha.model.dto.TagDTO;
 import com.alpha.model.entity.Tag;
 import com.alpha.repositories.TagRepository;
 import com.alpha.service.TagService;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class TagServiceImpl implements TagService {
@@ -45,9 +44,9 @@ public class TagServiceImpl implements TagService {
     public Page<TagDTO> findAll(Pageable pageable) {
         Page<Tag> tagPage = this.tagRepository.findAll(pageable);
         return new PageImpl<>(tagPage.getContent()
-                .stream()
-                .map(this.tagMapper::entityToDto)
-                .collect(Collectors.toList()), pageable, tagPage.getTotalElements());
+            .stream()
+            .map(this.tagMapper::entityToDto)
+            .collect(Collectors.toList()), pageable, tagPage.getTotalElements());
     }
 
     @Override
@@ -55,9 +54,9 @@ public class TagServiceImpl implements TagService {
     public Page<TagDTO> findAllByNameContaining(String name, Pageable pageable) {
         Page<Tag> tagPage = this.tagRepository.findAllByNameContaining(name, pageable);
         return new PageImpl<>(tagPage.getContent()
-                .stream()
-                .map(this.tagMapper::entityToDto)
-                .collect(Collectors.toList()), pageable, tagPage.getTotalElements());
+            .stream()
+            .map(this.tagMapper::entityToDto)
+            .collect(Collectors.toList()), pageable, tagPage.getTotalElements());
     }
 
     @Override

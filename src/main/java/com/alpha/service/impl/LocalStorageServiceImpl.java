@@ -69,6 +69,11 @@ public class LocalStorageServiceImpl extends StorageService {
     }
 
     @Override
+    public StorageType getStorageType() {
+        return StorageType.LOCAL;
+    }
+
+    @Override
     public ResourceInfo upload(MultipartFile multipartFile, Media media) {
         ResourceInfo resourceInfo = media.generateResource(multipartFile);
         try {

@@ -4,25 +4,28 @@ import com.alpha.mapper.annotation.FullMapping;
 import com.alpha.mapper.annotation.PureMapping;
 import com.alpha.model.dto.ArtistDTO;
 import com.alpha.model.entity.Artist;
-import org.mapstruct.*;
-
 import java.util.List;
+import org.mapstruct.IterableMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR,
-        typeConversionPolicy = ReportingPolicy.ERROR, uses = {SongMapper.class, AlbumMapper.class})
+    typeConversionPolicy = ReportingPolicy.ERROR, uses = {SongMapper.class, AlbumMapper.class})
 public abstract class ArtistMapper {
 
     @FullMapping
     @Mappings({
-            @Mapping(target = "songs", qualifiedBy = PureMapping.class),
-            @Mapping(target = "albums", qualifiedBy = PureMapping.class)
+        @Mapping(target = "songs", qualifiedBy = PureMapping.class),
+        @Mapping(target = "albums", qualifiedBy = PureMapping.class)
     })
     public abstract ArtistDTO entityToDto(Artist artist);
 
     @FullMapping
     @Mappings({
-            @Mapping(target = "songs", qualifiedBy = PureMapping.class),
-            @Mapping(target = "albums", qualifiedBy = PureMapping.class)
+        @Mapping(target = "songs", qualifiedBy = PureMapping.class),
+        @Mapping(target = "albums", qualifiedBy = PureMapping.class)
     })
     public abstract Artist dtoToEntity(ArtistDTO artistDTO);
 
@@ -36,15 +39,15 @@ public abstract class ArtistMapper {
 
     @PureMapping
     @Mappings({
-            @Mapping(target = "songs", ignore = true),
-            @Mapping(target = "albums", ignore = true)
+        @Mapping(target = "songs", ignore = true),
+        @Mapping(target = "albums", ignore = true)
     })
     public abstract ArtistDTO entityToDtoPure(Artist artist);
 
     @PureMapping
     @Mappings({
-            @Mapping(target = "songs", ignore = true),
-            @Mapping(target = "albums", ignore = true)
+        @Mapping(target = "songs", ignore = true),
+        @Mapping(target = "albums", ignore = true)
     })
     public abstract Artist dtoToEntityPure(ArtistDTO artistDTO);
 

@@ -48,14 +48,19 @@ public class PlaylistRestController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping(value = "/detail", params = "id")
-    public ResponseEntity<PlaylistDTO> playlistDetail(@RequestParam("id") Long id) {
-        Optional<PlaylistDTO> playlist = playlistService.findById(id);
-        if (playlist.isPresent()) {
-            if (playlistService.checkPlaylistOwner(id)) {
-                return new ResponseEntity<>(playlist.get(), HttpStatus.OK);
-            } else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @GetMapping(value = "/list-to-add")
+    public ResponseEntity<Page<PlaylistDTO>> showPlaylistListToAdd(
+        @RequestParam("song-id") Long songId, Pageable pageable) {
+        Page<PlaylistDTO> filteredPlaylistList = this.playlistService
+            .getPlaylistListToAdd(songId, pageable);
+        return new ResponseEntity<>(filteredPlaylistList, HttpStatus.OK);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping(value = "/detail/{id}")
+    public ResponseEntity<PlaylistDTO> playlistDetail(@PathVariable("id") Long id) {
+        PlaylistDTO playlist = playlistService.findById(id);
+        return new ResponseEntity<>(playlist, HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -66,27 +71,18 @@ public class PlaylistRestController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PutMapping(value = "/edit", params = "id")
-    public ResponseEntity<String> editPlaylist(@Valid @RequestBody PlaylistDTO playlist, @RequestParam("id") Long id) {
-        Optional<PlaylistDTO> oldPlaylist = playlistService.findById(id);
-        if (oldPlaylist.isPresent()) {
-            if (playlistService.checkPlaylistOwner(id)) {
-                playlist.setId(id);
-                playlist.setUsername(this.userService.getCurrentUser().getName());
-                playlist.setSongs(oldPlaylist.get().getSongs());
-                this.playlistService.save(playlist);
-                return new ResponseEntity<>(HttpStatus.OK);
-            } else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        } else return new ResponseEntity<>("Playlist not found!", HttpStatus.NOT_FOUND);
+    @PutMapping(value = "/edit/{id}")
+    public ResponseEntity<Void> editPlaylist(@PathVariable("id") Long id,
+        @Valid @RequestBody PlaylistDTO playlist) {
+        this.playlistService.update(id, playlist);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
-    @DeleteMapping(value = "/delete", params = "id")
-    public ResponseEntity<Void> deletePlaylist(@RequestParam Long id) {
-        if (playlistService.checkPlaylistOwner(id)) {
-            playlistService.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    @DeleteMapping(value = "/delete/{id}")
+    public ResponseEntity<Void> deletePlaylist(@PathVariable("id") Long id) {
+        this.playlistService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -98,13 +94,10 @@ public class PlaylistRestController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PutMapping(value = "/remove-song")
-    public ResponseEntity<Void> removeSongFromPlaylist(@RequestParam("song-id") Long songId, @RequestParam("playlist-id") Long playlistId) {
-        if (playlistService.checkPlaylistOwner(playlistId)) {
-            boolean result = playlistService.deleteSongFromPlaylist(songId, playlistId);
-            if (result) {
-                return new ResponseEntity<>(HttpStatus.OK);
-            } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    @PatchMapping(value = "/remove-song/{id}")
+    public ResponseEntity<Void> removeSongFromPlaylist(@PathVariable("id") Long playlistId,
+        @RequestBody List<Long> songIds) {
+        this.playlistService.deleteSongFromPlaylist(playlistId, songIds);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

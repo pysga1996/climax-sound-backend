@@ -1,10 +1,9 @@
 package com.alpha.model.dto;
 
-import lombok.Data;
-import org.springframework.http.HttpStatus;
-
 import java.util.Collections;
 import java.util.List;
+import lombok.Data;
+import org.springframework.http.HttpStatus;
 
 @Data
 public class ApiErrorDTO {

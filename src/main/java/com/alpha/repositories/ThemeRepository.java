@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ThemeRepository extends JpaRepository<Theme, Integer> {
+
     //    @Query(value = "SELECT * FROM theme WHERE BINARY title=:title", nativeQuery = true)
     Theme findByName(String name);
 

@@ -5,16 +5,15 @@ import com.alpha.model.dto.GenreDTO;
 import com.alpha.model.entity.Genre;
 import com.alpha.repositories.GenreRepository;
 import com.alpha.service.GenreService;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class GenreServiceImpl implements GenreService {
@@ -33,7 +32,7 @@ public class GenreServiceImpl implements GenreService {
     @Transactional(readOnly = true)
     public Optional<GenreDTO> findById(Integer id) {
         return this.genreRepository.findById(id)
-                .map(this.genreMapper::entityToDto);
+            .map(this.genreMapper::entityToDto);
     }
 
     @Override
@@ -41,9 +40,9 @@ public class GenreServiceImpl implements GenreService {
     public Page<GenreDTO> findAll(Pageable pageable) {
         Page<Genre> genrePage = this.genreRepository.findAll(pageable);
         return new PageImpl<>(genrePage.getContent()
-                .stream()
-                .map(this.genreMapper::entityToDto)
-                .collect(Collectors.toList()), pageable, genrePage.getTotalElements());
+            .stream()
+            .map(this.genreMapper::entityToDto)
+            .collect(Collectors.toList()), pageable, genrePage.getTotalElements());
     }
 
     @Override
@@ -56,8 +55,8 @@ public class GenreServiceImpl implements GenreService {
     @Transactional(readOnly = true)
     public Iterable<GenreDTO> findAllByNameContaining(String name) {
         return StreamSupport
-                .stream(this.genreRepository.findAllByNameContaining(name).spliterator(), false)
-                .map(this.genreMapper::entityToDto).collect(Collectors.toList());
+            .stream(this.genreRepository.findAllByNameContaining(name).spliterator(), false)
+            .map(this.genreMapper::entityToDto).collect(Collectors.toList());
     }
 
     @Override

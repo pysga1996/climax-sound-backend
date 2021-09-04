@@ -6,12 +6,17 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.StorageClient;
+import java.io.IOException;
+import java.time.Duration;
+import java.util.List;
+import java.util.Objects;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.coyote.http2.Http2Protocol;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
 import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnCloudPlatform;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.cloud.CloudPlatform;
@@ -19,11 +24,12 @@ import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactor
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
+import org.springframework.core.io.Resource;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @Configuration
 public class CommonConfig {
@@ -37,8 +43,6 @@ public class CommonConfig {
     @Value("${storage.firebase.storage-bucket}")
     private String firebaseStorageBucket;
 
-    @Value("${storage.firebase.credentials}")
-    private String firebaseCredentials;
 
     @Value("${custom.http-port}")
     private Integer httpPort;
@@ -51,6 +55,12 @@ public class CommonConfig {
 
     @Value("${custom.connector-scheme}")
     private String connectorScheme;
+
+//    @Value("${storage.firebase.credentials}")
+//    private String firebaseCredentials;
+
+    @Value("classpath:climax-sound-firebase-adminsdk-kwlpu-8b5205c826.json")
+    private Resource firebaseCredFile;
 
     @Bean
     @ConditionalOnProperty(prefix = "storage", name = "storage-type", havingValue = "cloudinary")
@@ -84,7 +94,8 @@ public class CommonConfig {
             }
             return StorageClient.getInstance(Objects.requireNonNull(fireApp));
         } catch (IOException ex) {
-            throw new FileStorageException("Could not get admin-sdk json file. Please try again!", ex);
+            throw new FileStorageException("Could not get admin-sdk json file. Please try again!",
+                ex);
         }
     }
 
@@ -97,7 +108,6 @@ public class CommonConfig {
                 SecurityConstraint securityConstraint = new SecurityConstraint();
                 // set to CONFIDENTIAL to automatically redirect from http to https port
                 securityConstraint.setUserConstraint(securityPolicy);
-//                securityConstraint.setUserConstraint("NONE");
                 SecurityCollection collection = new SecurityCollection();
                 collection.addPattern("/*");
                 securityConstraint.addCollection(collection);

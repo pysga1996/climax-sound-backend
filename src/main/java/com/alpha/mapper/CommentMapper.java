@@ -4,24 +4,27 @@ import com.alpha.mapper.annotation.FullMapping;
 import com.alpha.mapper.annotation.PureMapping;
 import com.alpha.model.dto.CommentDTO;
 import com.alpha.model.entity.Comment;
-import org.mapstruct.*;
-
 import java.util.List;
+import org.mapstruct.IterableMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR,
-        typeConversionPolicy = ReportingPolicy.ERROR, uses = {SongMapper.class,
-        UserInfoMapper.class})
+    typeConversionPolicy = ReportingPolicy.ERROR, uses = {SongMapper.class,
+    UserInfoMapper.class})
 public abstract class CommentMapper {
 
     @FullMapping
     @Mappings({
-            @Mapping(target = "song", qualifiedBy = PureMapping.class)
+        @Mapping(target = "song", qualifiedBy = PureMapping.class)
     })
     public abstract CommentDTO entityToDto(Comment comment);
 
     @FullMapping
     @Mappings({
-            @Mapping(target = "song", qualifiedBy = PureMapping.class)
+        @Mapping(target = "song", qualifiedBy = PureMapping.class)
     })
     public abstract Comment dtoToEntity(CommentDTO comment);
 
@@ -35,13 +38,13 @@ public abstract class CommentMapper {
 
     @PureMapping
     @Mappings({
-            @Mapping(target = "song", ignore = true)
+        @Mapping(target = "song", ignore = true)
     })
     public abstract CommentDTO entityToDtoPure(Comment comment);
 
     @PureMapping
     @Mappings({
-            @Mapping(target = "song", ignore = true)
+        @Mapping(target = "song", ignore = true)
     })
     public abstract Comment dtoToEntityPure(CommentDTO comment);
 

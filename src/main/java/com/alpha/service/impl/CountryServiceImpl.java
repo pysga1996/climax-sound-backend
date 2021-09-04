@@ -5,15 +5,14 @@ import com.alpha.model.dto.CountryDTO;
 import com.alpha.model.entity.Country;
 import com.alpha.repositories.CountryRepository;
 import com.alpha.service.CountryService;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CountryServiceImpl implements CountryService {
@@ -32,7 +31,7 @@ public class CountryServiceImpl implements CountryService {
     @Transactional(readOnly = true)
     public Optional<CountryDTO> findById(Integer id) {
         return this.countryRepository.findById(id)
-                .map(this.countryMapper::entityToDto);
+            .map(this.countryMapper::entityToDto);
     }
 
     @Override
@@ -46,9 +45,9 @@ public class CountryServiceImpl implements CountryService {
     public Page<CountryDTO> findAll(Pageable pageable) {
         Page<Country> countryPage = this.countryRepository.findAll(pageable);
         return new PageImpl<>(countryPage.getContent()
-                .stream()
-                .map(this.countryMapper::entityToDto)
-                .collect(Collectors.toList()), pageable, countryPage.getTotalElements());
+            .stream()
+            .map(this.countryMapper::entityToDto)
+            .collect(Collectors.toList()), pageable, countryPage.getTotalElements());
     }
 
     @Override
@@ -56,9 +55,9 @@ public class CountryServiceImpl implements CountryService {
     public Page<CountryDTO> findAllByNameContaining(String name, Pageable pageable) {
         Page<Country> countryPage = this.countryRepository.findAllByNameContaining(name, pageable);
         return new PageImpl<>(countryPage.getContent()
-                .stream()
-                .map(this.countryMapper::entityToDto)
-                .collect(Collectors.toList()), pageable, countryPage.getTotalElements());
+            .stream()
+            .map(this.countryMapper::entityToDto)
+            .collect(Collectors.toList()), pageable, countryPage.getTotalElements());
     }
 
     @Override

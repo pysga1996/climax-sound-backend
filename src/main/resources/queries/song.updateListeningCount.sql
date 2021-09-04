@@ -1,0 +1,1 @@
+UPDATE song SET listening_frequency = ? WHERE id = ?

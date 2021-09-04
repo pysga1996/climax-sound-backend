@@ -1,129 +1,83 @@
 package com.alpha.controller;
 
 import com.alpha.model.dto.ArtistDTO;
-import com.alpha.model.dto.SongDTO;
+import com.alpha.model.dto.ArtistSearchDTO;
 import com.alpha.service.ArtistService;
-import com.alpha.service.SongService;
-import com.alpha.service.StorageService;
+import java.io.IOException;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Optional;
-
-@CrossOrigin(originPatterns = "*", allowCredentials = "true", allowedHeaders = "*", exposedHeaders = {HttpHeaders.SET_COOKIE})
 @RestController
 @RequestMapping("/api/artist")
 public class ArtistRestController {
 
     private final ArtistService artistService;
 
-    private final SongService songService;
-
-    private final StorageService storageService;
-
     @Autowired
-    public ArtistRestController(ArtistService artistService, SongService songService,
-                                StorageService storageService) {
+    public ArtistRestController(ArtistService artistService) {
         this.artistService = artistService;
-        this.songService = songService;
-        this.storageService = storageService;
     }
 
-
     @PreAuthorize("permitAll()")
-    @GetMapping(value = "/search", params = "name")
-    public ResponseEntity<Iterable<ArtistDTO>> searchArtistByName(@RequestParam("name") String name) {
-        Iterable<ArtistDTO> artistList = this.artistService.findTop10ByNameContaining(name);
-        long size = 0;
-        if (artistList instanceof Collection) {
-            size = ((Collection<ArtistDTO>) artistList).size();
-        }
-        if (size == 0) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else return new ResponseEntity<>(artistList, HttpStatus.OK);
+    @GetMapping(value = "/search")
+    public ResponseEntity<Page<ArtistDTO>> searchArtistByName(Pageable pageable,
+        @ModelAttribute ArtistSearchDTO artistSearchDTO) {
+        Page<ArtistDTO> artistList = this.artistService.findByConditions(pageable, artistSearchDTO);
+        return new ResponseEntity<>(artistList, HttpStatus.OK);
     }
 
     @PreAuthorize("permitAll()")
     @GetMapping(value = "/list")
     public ResponseEntity<Page<ArtistDTO>> getArtistList(Pageable pageable) {
         Page<ArtistDTO> artistList = this.artistService.findAll(pageable);
-        if (artistList.getTotalElements() == 0) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
         return new ResponseEntity<>(artistList, HttpStatus.OK);
     }
 
     @PreAuthorize("permitAll()")
-    @GetMapping(value = "/detail", params = "id")
-    public ResponseEntity<ArtistDTO> artistDetail(@RequestParam("id") Long id) {
+    @GetMapping(value = "/detail/{id}")
+    public ResponseEntity<ArtistDTO> artistDetail(@PathVariable("id") Long id) {
         Optional<ArtistDTO> artist = this.artistService.findById(id);
         return artist.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+            .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ARTIST_OPS')")
     @PostMapping(value = "/create")
     public ResponseEntity<Void> createArtist(@RequestPart("artist") ArtistDTO artist,
-                                             @RequestPart("avatar") MultipartFile multipartFile) {
-        try {
-            artistService.save(artist);
-            String fileDownloadUri = this.storageService.upload(multipartFile, artist);
-            artist.setAvatarUrl(fileDownloadUri);
-            artistService.save(artist);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            artistService.deleteById(artist.getId());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping(value = "/edit", params = "id")
-    public ResponseEntity<Void> updateArtist(@RequestParam("id") Long id,
-                                             @RequestPart("artist") ArtistDTO artist,
-                                             @RequestPart(value = "avatar", required = false)
-                                                     MultipartFile multipartFile) throws IOException {
-        Optional<ArtistDTO> oldArtist = this.artistService.findById(id);
-        if (oldArtist.isPresent()) {
-            if (multipartFile != null) {
-                String fileDownloadUri = this.storageService.upload(multipartFile, oldArtist.get());
-                artist.setAvatarUrl(fileDownloadUri);
-            }
-            this.artistService.setFields(oldArtist.get(), artist);
-            this.artistService.save(oldArtist.get());
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping(value = "/delete", params = "id")
-    public ResponseEntity<Void> deleteArtist(@RequestParam("id") Long id) {
-        this.artistService.deleteById(id);
+        @RequestPart("avatar") MultipartFile multipartFile) {
+        this.artistService.create(artist, multipartFile);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PreAuthorize("permitAll()")
-    @GetMapping(value = "/song-list", params = "artist-id")
-    public ResponseEntity<Page<SongDTO>> getSongListOfArtist(@RequestParam("artist-id") Long id,
-                                                             @PageableDefault(size = 5) Pageable pageable) {
-        Optional<ArtistDTO> artist = this.artistService.findById(id);
-        if (artist.isPresent()) {
-            Page<SongDTO> songList = this.songService.findAllByArtistsContains(artist.get(), pageable);
-            if (songList.getTotalElements() > 0) {
-                this.songService.setLike(songList);
-                return new ResponseEntity<>(songList, HttpStatus.OK);
-            }
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @PreAuthorize("hasAuthority(@Authority.ARTIST_MANAGEMENT)")
+    @PutMapping(value = "/edit/{id}")
+    public ResponseEntity<ArtistDTO> updateArtist(@PathVariable("id") Long id,
+        @RequestPart("artist") ArtistDTO artist,
+        @RequestPart(value = "avatar", required = false) MultipartFile multipartFile)
+        throws IOException {
+        ArtistDTO artistDTO = this.artistService.update(id, artist, multipartFile);
+        return new ResponseEntity<>(artistDTO, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAuthority(@Authority.ARTIST_MANAGEMENT)")
+    @DeleteMapping(value = "/delete/{id}")
+    public ResponseEntity<Void> deleteArtist(@PathVariable("id") Long id) {
+        this.artistService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

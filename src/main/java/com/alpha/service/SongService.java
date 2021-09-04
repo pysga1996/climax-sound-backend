@@ -1,14 +1,13 @@
 package com.alpha.service;
 
-import com.alpha.model.dto.ArtistDTO;
 import com.alpha.model.dto.SongDTO;
+import com.alpha.model.dto.SongSearchDTO;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Optional;
 
 public interface SongService {
 
@@ -16,29 +15,21 @@ public interface SongService {
 
     Page<SongDTO> findAllByConditions(Pageable pageable, SongSearchDTO songSearchDTO);
 
-    Optional<SongDTO> findById(Long id);
+    SongDTO findById(Long id);
 
-    Iterable<SongDTO> findAllByAlbum_Id(Long id);
+    void listenToSong(Long id);
 
-    Page<SongDTO> findAllByTag_Name(String name, Pageable pageable);
+    SongDTO uploadAndSaveSong(MultipartFile file, SongDTO song) throws IOException;
 
-    SongDTO save(SongDTO song);
+    SongDTO create(SongDTO song);
+
+    SongDTO update(Long id, SongDTO song, MultipartFile multipartFile) throws IOException;
 
     void deleteById(Long id);
 
     void deleteAll(Collection<SongDTO> songs);
 
-    void setFields(SongDTO oldSongInfo, SongDTO newSongInfo);
+    Map<Long, Boolean> getUserSongLikeMap(Map<Long, Boolean> songIdMap);
 
-    Page<SongDTO> sortByDate(Pageable pageable);
 
-    boolean hasUserLiked(Long songId);
-
-    void setLike(Page<SongDTO> songList);
-
-    void setLike(Iterable<SongDTO> songList);
-
-    void setLike(SongDTO song);
-
-    void uploadAndSaveSong(MultipartFile file, SongDTO song, Long albumId) throws IOException;
 }

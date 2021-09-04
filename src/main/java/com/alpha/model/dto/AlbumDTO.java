@@ -1,27 +1,28 @@
 package com.alpha.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.util.StringUtils;
-
-import javax.validation.constraints.NotBlank;
+import com.alpha.repositories.BaseRepository.HasArtists;
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
+import javax.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class AlbumDTO extends UploadDTO {
+public class AlbumDTO implements HasArtists {
+
+    private Long rn;
 
     private Long id;
 
     @NotBlank
     private String title;
+
+    private String unaccentTitle;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date releaseDate;
@@ -32,11 +33,10 @@ public class AlbumDTO extends UploadDTO {
 
     private Duration duration;
 
-    private String coverBlobString;
+    private ResourceInfoDTO coverResource;
 
     private Collection<GenreDTO> genres;
 
-    @JsonBackReference("song-album")
     private Collection<SongDTO> songs;
 
     private Collection<ArtistDTO> artists;
@@ -48,32 +48,4 @@ public class AlbumDTO extends UploadDTO {
     private UserInfoDTO uploader;
 
     private Collection<UserInfoDTO> users;
-
-    @Override
-    public String getUrl() {
-        return coverUrl;
-    }
-
-    @Override
-    public String createFileName(String ext) {
-        artists = this.getArtists();
-        String artistsString = this.getArtistDTOString(artists);
-        return StringUtils.cleanPath(this.getId().toString().concat(" - ")
-                .concat(this.getTitle()).concat(artistsString).concat(".").concat(ext));
-    }
-
-    @Override
-    public String getFolder() {
-        return "cover";
-    }
-
-    @Override
-    public String getBlobString() {
-        return coverBlobString;
-    }
-
-    @Override
-    public void setBlobString(String blobString) {
-        this.setCoverBlobString(blobString);
-    }
 }

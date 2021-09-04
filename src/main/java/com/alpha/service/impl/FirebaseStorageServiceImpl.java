@@ -1,23 +1,30 @@
 package com.alpha.service.impl;
 
+import com.alpha.config.properties.StorageProperty.StorageType;
+import com.alpha.constant.Status;
 import com.alpha.error.FileStorageException;
-import com.alpha.model.dto.UploadDTO;
+import com.alpha.model.entity.Media;
+import com.alpha.model.entity.ResourceInfo;
+import com.alpha.repositories.ResourceInfoRepository;
 import com.alpha.service.StorageService;
 import com.google.cloud.storage.Acl;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.Bucket;
 import com.google.firebase.cloud.StorageClient;
+import java.io.IOException;
+import java.io.InputStream;
+import javax.servlet.http.HttpServletRequest;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.InputStream;
-
+@Log4j2
 @Service
 @ConditionalOnBean(StorageClient.class)
 @ConditionalOnProperty(prefix = "storage", name = "storage-type", havingValue = "firebase")
@@ -25,34 +32,60 @@ public class FirebaseStorageServiceImpl extends StorageService {
 
     private final StorageClient storageClient;
 
+    private final ResourceInfoRepository resourceInfoRepository;
+
+    @Getter
+    @Setter
     @Autowired
-    public FirebaseStorageServiceImpl(StorageClient storageClient) {
+    private HttpServletRequest httpServletRequest;
+
+    @Autowired
+    public FirebaseStorageServiceImpl(StorageClient storageClient,
+        ResourceInfoRepository resourceInfoRepository) {
         this.storageClient = storageClient;
+        this.resourceInfoRepository = resourceInfoRepository;
     }
 
     @Override
-    public String upload(MultipartFile multipartFile, UploadDTO uploadDTO) {
-        String ext = this.getExtension(multipartFile);
-        String fileName = uploadDTO.createFileName(ext);
-        this.normalizeFileName(fileName);
+    public StorageType getStorageType() {
+        return StorageType.FIREBASE;
+    }
+
+    @Override
+    public ResourceInfo upload(MultipartFile multipartFile, Media media) {
+        ResourceInfo resourceInfo = media.generateResource(multipartFile);
         Bucket bucket = storageClient.bucket();
         try {
             InputStream fileInputStream = multipartFile.getInputStream();
-            String blobString = uploadDTO.getFolder() + "/" + fileName;
-            Blob blob = bucket.create(blobString, fileInputStream, Bucket.BlobWriteOption.userProject("climax-sound"));
-            bucket.getStorage().updateAcl(blob.getBlobId(), Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER));
+            String blobString = resourceInfo.getFolder() + "/" + resourceInfo.getFileName();
+            Blob blob = bucket.create(blobString, fileInputStream,
+                Bucket.BlobWriteOption.userProject("climax-sound"));
+            bucket.getStorage()
+                .updateAcl(blob.getBlobId(), Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER));
             String blobName = blob.getName();
-            uploadDTO.setBlobString(blobName);
-            return blob.getMediaLink();
+            String mediaLink = blob.getMediaLink();
+            resourceInfo.setStoragePath(blobName);
+            resourceInfo.setUri(mediaLink);
+            resourceInfo.setStorageType(StorageType.FIREBASE);
+            resourceInfo.setStatus(Status.ACTIVE);
+            this.saveResourceInfo(resourceInfo, StorageType.FIREBASE);
+            return resourceInfo;
         } catch (IOException ex) {
-            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
+            throw new FileStorageException(String
+                .format("Could not store file %s. Please try again!",
+                    resourceInfo.getFileName()), ex);
         }
     }
 
     @Override
-    public void delete(UploadDTO uploadDTO) {
-        String blobString = uploadDTO.getBlobString();
-        BlobId blobId = BlobId.of(storageClient.bucket().getName(), blobString);
+    public void delete(ResourceInfo resourceInfo) {
+        String blobName = resourceInfo.getStoragePath();
+        BlobId blobId = BlobId.of(storageClient.bucket().getName(), blobName);
         storageClient.bucket().getStorage().delete(blobId);
+    }
+
+    @Override
+    public ResourceInfoRepository getResourceInfoRepository() {
+        return resourceInfoRepository;
     }
 }

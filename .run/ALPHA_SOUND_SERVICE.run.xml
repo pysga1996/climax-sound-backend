@@ -14,7 +14,9 @@
     </extension>
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.alpha.AlphaSoundServiceApplication" />
     <option name="ACTIVE_PROFILES" value="default" />
+    <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/../../../../CodeGym/Module 4/Project Climax Sound/alpha-sound-service" />
     <option name="ALTERNATIVE_JRE_PATH" />
+    <option name="SHORTEN_COMMAND_LINE" value="MANIFEST" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

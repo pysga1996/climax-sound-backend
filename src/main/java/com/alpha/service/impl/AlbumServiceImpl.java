@@ -3,15 +3,13 @@ package com.alpha.service.impl;
 import com.alpha.constant.MediaRef;
 import com.alpha.constant.Status;
 import com.alpha.mapper.AlbumMapper;
-import com.alpha.mapper.SongMapper;
 import com.alpha.mapper.UserInfoMapper;
 import com.alpha.model.dto.AlbumDTO;
 import com.alpha.model.dto.AlbumSearchDTO;
-import com.alpha.model.dto.SongDTO;
+import com.alpha.model.dto.AlbumUpdateDTO;
 import com.alpha.model.dto.UserInfoDTO;
 import com.alpha.model.entity.Album;
 import com.alpha.model.entity.ResourceInfo;
-import com.alpha.model.entity.Song;
 import com.alpha.model.entity.UserInfo;
 import com.alpha.repositories.AlbumRepository;
 import com.alpha.repositories.ResourceInfoRepository;
@@ -20,8 +18,6 @@ import com.alpha.service.StorageService;
 import com.alpha.service.UserService;
 import com.alpha.util.formatter.StringAccentRemover;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
@@ -37,6 +33,8 @@ public class AlbumServiceImpl implements AlbumService {
 
     private final AlbumRepository albumRepository;
 
+    private final ResourceInfoRepository resourceInfoRepository;
+
     private final AlbumMapper albumMapper;
 
     private final UserInfoMapper userInfoMapper;
@@ -47,12 +45,10 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Autowired
     public AlbumServiceImpl(AlbumRepository albumRepository,
-        SongMapper songMapper,
         ResourceInfoRepository resourceInfoRepository,
         AlbumMapper albumMapper, UserInfoMapper userInfoMapper,
         UserService userService, StorageService storageService) {
         this.albumRepository = albumRepository;
-        this.songMapper = songMapper;
         this.resourceInfoRepository = resourceInfoRepository;
         this.albumMapper = albumMapper;
         this.userInfoMapper = userInfoMapper;
@@ -80,10 +76,7 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     @Transactional(readOnly = true)
     public Page<AlbumDTO> findAll(Pageable pageable) {
-        Page<Album> albumPage = this.albumRepository.findAll(pageable);
-        return new PageImpl<>(albumPage.get()
-                .map(this.albumMapper::entityToDto)
-                .collect(Collectors.toList()), pageable, albumPage.getTotalElements());
+        return this.albumRepository.findAllByConditions(pageable, new AlbumSearchDTO());
     }
 
     @Override
@@ -94,36 +87,15 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public Page<AlbumDTO> findAllByArtist_Name(String title, Pageable pageable) {
-        Page<Album> albumPage = this.albumRepository.findAllByArtist_Name(title, pageable);
-        return new PageImpl<>(albumPage.get()
-                .map(this.albumMapper::entityToDto)
-                .collect(Collectors.toList()), pageable, albumPage.getTotalElements());
-    }
-
-    public void patchFields(Album oldAlbumInfo, Album newAlbumInfo) {
-        oldAlbumInfo.setTitle(newAlbumInfo.getTitle());
-        oldAlbumInfo.setArtists(newAlbumInfo.getArtists());
-        oldAlbumInfo.setGenres(newAlbumInfo.getGenres());
-        oldAlbumInfo.setCountry(newAlbumInfo.getCountry());
-        oldAlbumInfo.setReleaseDate(newAlbumInfo.getReleaseDate());
-        oldAlbumInfo.setTags(newAlbumInfo.getTags());
-        if (newAlbumInfo.getCoverUrl() != null) {
-            oldAlbumInfo.setCoverUrl(newAlbumInfo.getCoverUrl());
-        }
-    }
-
-    @Override
     @Transactional
-    public void save(AlbumDTO album) {
+    public void create(AlbumDTO album) {
         this.albumRepository.saveAndFlush(this.albumMapper.dtoToEntity(album));
     }
 
     @Override
     @Transactional
     public void deleteById(Long id) {
-        albumRepository.deleteById(id);
+        this.albumRepository.deleteByIdProc(id);
     }
 
     @Override
@@ -144,9 +116,9 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     @Transactional
-    public void updateSongList(Long albumId, List<SongDTO> songDTOList) {
+    public void updateSongList(Long albumId, List<AlbumUpdateDTO> songDTOList) {
         Optional<Album> album = this.albumRepository.findById(albumId);
-        album.ifPresent(value -> value.setSongs(this.songMapper.dtoToEntityListPure(songDTOList)));
+        album.ifPresent(value -> this.albumRepository.updateSongList(albumId, songDTOList));
     }
 
     @Override
@@ -178,5 +150,14 @@ public class AlbumServiceImpl implements AlbumService {
         } else {
             throw new EntityNotFoundException("Album not found");
         }
+    }
+
+    @Override
+    public AlbumDTO listenToAlbum(Long albumId) {
+        // TODO add listening queue
+//        Optional<AlbumDTO> optionalAlbumDTO = this.albumRepository.findMediaListNative(albumId);
+//        return optionalAlbumDTO
+//            .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy album"));
+        return null;
     }
 }

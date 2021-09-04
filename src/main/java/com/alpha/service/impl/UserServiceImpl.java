@@ -26,6 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private final ObjectMapper objectMapper;
+
     private final UserInfoMapper userInfoMapper;
 
     private final UserInfoRepository userInfoRepository;

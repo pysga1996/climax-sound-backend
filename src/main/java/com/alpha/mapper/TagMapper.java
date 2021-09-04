@@ -4,27 +4,29 @@ import com.alpha.mapper.annotation.FullMapping;
 import com.alpha.mapper.annotation.PureMapping;
 import com.alpha.model.dto.TagDTO;
 import com.alpha.model.entity.Tag;
-import com.alpha.model.entity.Theme;
-import org.mapstruct.*;
-
 import java.util.List;
+import org.mapstruct.IterableMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR,
-        typeConversionPolicy = ReportingPolicy.ERROR, uses = {SongMapper.class,
-        AlbumMapper.class})
+    typeConversionPolicy = ReportingPolicy.ERROR, uses = {SongMapper.class,
+    AlbumMapper.class})
 public abstract class TagMapper {
 
     @FullMapping
     @Mappings({
-            @Mapping(target = "songs", qualifiedBy = PureMapping.class),
-            @Mapping(target = "albums", qualifiedBy = PureMapping.class)
+        @Mapping(target = "songs", qualifiedBy = PureMapping.class),
+        @Mapping(target = "albums", qualifiedBy = PureMapping.class)
     })
     public abstract TagDTO entityToDto(Tag tag);
 
     @FullMapping
     @Mappings({
-            @Mapping(target = "songs", qualifiedBy = PureMapping.class),
-            @Mapping(target = "albums", qualifiedBy = PureMapping.class)
+        @Mapping(target = "songs", qualifiedBy = PureMapping.class),
+        @Mapping(target = "albums", qualifiedBy = PureMapping.class)
     })
     public abstract Tag dtoToEntity(TagDTO tag);
 
@@ -38,15 +40,15 @@ public abstract class TagMapper {
 
     @PureMapping
     @Mappings({
-            @Mapping(target = "songs", ignore = true),
-            @Mapping(target = "albums", ignore = true)
+        @Mapping(target = "songs", ignore = true),
+        @Mapping(target = "albums", ignore = true)
     })
     public abstract TagDTO entityToDtoPure(Tag tag);
 
     @PureMapping
     @Mappings({
-            @Mapping(target = "songs", ignore = true),
-            @Mapping(target = "albums", ignore = true)
+        @Mapping(target = "songs", ignore = true),
+        @Mapping(target = "albums", ignore = true)
     })
     public abstract Tag dtoToEntityPure(TagDTO tag);
 

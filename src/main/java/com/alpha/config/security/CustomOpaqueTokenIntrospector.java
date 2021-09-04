@@ -21,6 +21,7 @@ import org.springframework.security.oauth2.server.resource.introspection.OAuth2I
 import org.springframework.security.oauth2.server.resource.introspection.OAuth2IntrospectionException;
 import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -54,19 +55,21 @@ public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
             ResponseEntity<Map> responseEntity = this.makeRequest(token);
             if (responseEntity.getBody() == null || !(responseEntity.getBody().get("active")
                 == Boolean.TRUE)) {
-                log.trace("Did not validate token since it is inactive");
+                log.debug("Did not validate token since it is inactive");
                 throw new BadOpaqueTokenException("Provided token isn't active");
             } else {
                 String jsonString = this.objectMapper.writerWithDefaultPrettyPrinter()
                     .writeValueAsString(responseEntity.getBody());
-                log.info("Check Token Response: \n{}", jsonString);
+                log.debug("Check Token Response: \n{}", jsonString);
                 return this.convertClaimsSet(responseEntity.getBody());
             }
-        } catch (RuntimeException | JsonProcessingException ex) {
+        } catch (JsonProcessingException ex) {
             log.error("Error while introspecting token", ex);
             throw new OAuth2IntrospectionException(ex.getMessage(), ex);
+        } catch (HttpClientErrorException ex) {
+            log.error("Error while introspecting token", ex);
+            throw new OAuth2IntrospectionException(ex.getResponseBodyAsString(), ex);
         }
-
     }
 
     @SuppressWarnings("rawtypes")

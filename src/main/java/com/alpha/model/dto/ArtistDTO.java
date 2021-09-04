@@ -3,23 +3,26 @@ package com.alpha.model.dto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.Collection;
+import java.util.Date;
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotBlank;
-import java.util.Collection;
-import java.util.Date;
-
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-@JsonIgnoreProperties(value = {"albums", "songs", "avatarBlobString", "avatarUrl"},
-        allowGetters = true, ignoreUnknown = true)
-public class ArtistDTO extends UploadDTO {
+@EqualsAndHashCode()
+@JsonIgnoreProperties(value = {"albums", "songs", "avatarResource", "avatarUrl"},
+    allowGetters = true, ignoreUnknown = true)
+public class ArtistDTO {
+
+    private Long rn;
 
     private Long id;
 
@@ -34,7 +37,7 @@ public class ArtistDTO extends UploadDTO {
 
     private String avatarUrl;
 
-    private String avatarBlobString;
+    private ResourceInfoDTO avatarResource;
 
     private String biography;
 
@@ -43,29 +46,4 @@ public class ArtistDTO extends UploadDTO {
 
     @JsonBackReference(value = "album-artist")
     private Collection<AlbumDTO> albums;
-
-    @Override
-    public String getUrl() {
-        return avatarUrl;
-    }
-
-    @Override
-    public String createFileName(String ext) {
-        return null;
-    }
-
-    @Override
-    public String getFolder() {
-        return null;
-    }
-
-    @Override
-    public String getBlobString() {
-        return avatarBlobString;
-    }
-
-    @Override
-    public void setBlobString(String blobString) {
-        this.setAvatarBlobString(blobString);
-    }
 }

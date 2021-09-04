@@ -1,7 +1,14 @@
 package com.alpha.service;
 
-import com.alpha.error.FileStorageException;
-import com.alpha.model.dto.UploadDTO;
+import com.alpha.config.properties.StorageProperty.StorageType;
+import com.alpha.constant.Status;
+import com.alpha.model.dto.ResourceInfoDTO;
+import com.alpha.model.entity.Media;
+import com.alpha.model.entity.ResourceInfo;
+import com.alpha.repositories.ResourceInfoRepository;
+import java.io.IOException;
+import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,11 +40,33 @@ public abstract class StorageService {
         repository.saveAndFlush(resourceInfo);
     }
 
-    public abstract String upload(MultipartFile multipartFile, UploadDTO uploadDTO) throws IOException;
+    public void deleteResourceInfo(ResourceInfo resourceInfo) {
+        this.delete(resourceInfo);
+        resourceInfo.setStatus(Status.REMOVED);
+//        this.getResourceInfoRepository().delete(resourceInfo);
+    }
 
-    public abstract void delete(UploadDTO uploadDTO);
+    public abstract void delete(ResourceInfo resourceInfo);
 
     public Resource loadFileAsResource(String fileName, String folder) {
         return null;
     }
+
+    public abstract HttpServletRequest getHttpServletRequest();
+
+    public abstract StorageType getStorageType();
+
+    public String getBaseUrl() {
+        return this.getStorageType() == StorageType.LOCAL ? this.getHttpServletRequest()
+            .getHeader("base-url") : "";
+    }
+
+    public String getFullUrl(ResourceInfo resourceInfo) {
+        return this.getBaseUrl() + resourceInfo.getUri();
+    }
+
+    public String getFullUrl(ResourceInfoDTO resourceInfoDTO) {
+        return this.getBaseUrl() + resourceInfoDTO.getUri();
+    }
+
 }

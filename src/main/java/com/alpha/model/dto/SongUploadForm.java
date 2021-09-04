@@ -1,22 +1,22 @@
 package com.alpha.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.time.Duration;
+import java.util.Collection;
+import java.util.Date;
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotBlank;
-import java.time.Duration;
-import java.util.Collection;
-import java.util.Date;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class SongUploadForm {
+
     private Long id;
 
     @NotBlank
@@ -54,9 +54,9 @@ public class SongUploadForm {
 
     private Collection<GenreDTO> genres;
 
-    private Collection<UserDTO> users;
+    private Collection<UserInfoDTO> users;
 
-    private UserDTO uploader;
+    private UserInfoDTO uploader;
 
     private Collection<PlaylistDTO> playlists;
 

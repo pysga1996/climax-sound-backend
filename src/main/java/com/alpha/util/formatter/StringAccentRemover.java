@@ -1,6 +1,7 @@
 package com.alpha.util.formatter;
 
 public class StringAccentRemover {
+
     public static String removeStringAccent(String str) {
         String newString = String.valueOf(str);
         newString = newString.replaceAll("à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ", "a");

@@ -4,23 +4,26 @@ import com.alpha.mapper.annotation.FullMapping;
 import com.alpha.mapper.annotation.PureMapping;
 import com.alpha.model.dto.PlaylistDTO;
 import com.alpha.model.entity.Playlist;
-import org.mapstruct.*;
-
 import java.util.List;
+import org.mapstruct.IterableMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR,
-        typeConversionPolicy = ReportingPolicy.ERROR, uses = {SongMapper.class})
+    typeConversionPolicy = ReportingPolicy.ERROR, uses = {SongMapper.class})
 public abstract class PlaylistMapper {
 
     @FullMapping
     @Mappings({
-            @Mapping(target = "songs", qualifiedBy = PureMapping.class)
+        @Mapping(target = "songs", qualifiedBy = PureMapping.class)
     })
     public abstract PlaylistDTO entityToDto(Playlist playlist);
 
     @FullMapping
     @Mappings({
-            @Mapping(target = "songs", qualifiedBy = PureMapping.class)
+        @Mapping(target = "songs", qualifiedBy = PureMapping.class)
     })
     public abstract Playlist dtoToEntity(PlaylistDTO playlist);
 
@@ -34,13 +37,13 @@ public abstract class PlaylistMapper {
 
     @PureMapping
     @Mappings({
-            @Mapping(target = "songs", ignore = true)
+        @Mapping(target = "songs", ignore = true)
     })
     public abstract PlaylistDTO entityToDtoPure(Playlist playlist);
 
     @PureMapping
     @Mappings({
-            @Mapping(target = "songs", ignore = true)
+        @Mapping(target = "songs", ignore = true)
     })
     public abstract Playlist dtoToEntityPure(PlaylistDTO playlist);
 

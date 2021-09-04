@@ -1,25 +1,25 @@
 package com.alpha.filter;
 
-import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.util.WebUtils;
-
+import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.WebUtils;
 
-@Component
+//@Component
 public class CustomCsrfFilter extends OncePerRequestFilter {
 
     public static final String CSRF_COOKIE_NAME = "XSRF-TOKEN";
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+        FilterChain filterChain)
+        throws ServletException, IOException {
 
         CsrfToken csrf = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
 

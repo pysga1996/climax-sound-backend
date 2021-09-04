@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GenreRepository extends JpaRepository<Genre, Integer> {
+
     //    @Query(value = "SELECT * FROM genre WHERE BINARY title=:title", nativeQuery = true)
     Genre findByName(String name);
 

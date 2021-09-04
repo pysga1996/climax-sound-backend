@@ -48,11 +48,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
+@Log4j2
 @Service
 public class SongServiceImpl implements SongService {
 
@@ -78,6 +74,8 @@ public class SongServiceImpl implements SongService {
 
     private final UserService userService;
 
+    private final LikeService likeService;
+
     @Value("${storage.storage-type}")
     private StorageType storageType;
 
@@ -95,6 +93,7 @@ public class SongServiceImpl implements SongService {
         this.resourceInfoRepository = resourceInfoRepository;
         this.storageService = storageService;
         this.songMapper = songMapper;
+        this.artistMapper = artistMapper;
         this.tagMapper = tagMapper;
         this.albumRepository = albumRepository;
         this.userInfoMapper = userInfoMapper;
@@ -138,37 +137,14 @@ public class SongServiceImpl implements SongService {
 
     @Override
     @Transactional(readOnly = true)
-    public Iterable<SongDTO> findAllByTitle(String title) {
-        Spliterator<Song> songSpliterator = this.songRepository.findAllByTitle(title).spliterator();
-        return StreamSupport.stream(songSpliterator, false)
-                .map(this.songMapper::entityToDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Iterable<SongDTO> findAllByTitleContaining(String name) {
-        Spliterator<Song> songSpliterator;
-        if (name.equals(StringAccentRemover.removeStringAccent(name))) {
-            songSpliterator = this.songRepository
-                    .findAllByUnaccentTitleContainingIgnoreCase(name).spliterator();
+    public void listenToSong(Long id) {
+        if (this.userService.isAuthenticated()) {
+            this.likeService
+                .listen(id, ListeningConfig.SONG, this.userService.getCurrentUsername());
         } else {
-            songSpliterator = this.songRepository
-                    .findAllByTitleContainingIgnoreCase(name).spliterator();
+            this.likeService.listen(id, ListeningConfig.SONG, null);
         }
-        return StreamSupport.stream(songSpliterator, false)
-                .map(this.songMapper::entityToDto)
-                .collect(Collectors.toList());
-    }
 
-    @Override
-    @Transactional(readOnly = true)
-    public Page<SongDTO> findAllByTitleContaining(String name, Pageable pageable) {
-        Page<Song> songPage = this.songRepository.findAllByTitleContaining(name, pageable);
-        return new PageImpl<>(songPage.getContent()
-                .stream()
-                .map(this.songMapper::entityToDto)
-                .collect(Collectors.toList()), pageable, songPage.getTotalElements());
     }
 
     @Override
@@ -205,7 +181,7 @@ public class SongServiceImpl implements SongService {
 
     @Override
     @Transactional
-    public SongDTO save(SongDTO song) {
+    public SongDTO create(SongDTO song) {
         if (song.getTags() != null) {
             Collection<TagDTO> tags = song.getTags();
             for (TagDTO tag : tags) {
@@ -220,6 +196,37 @@ public class SongServiceImpl implements SongService {
         this.songRepository.saveAndFlush(songEntity);
         song.setId(songEntity.getId());
         return song;
+    }
+
+    @Override
+    @Transactional
+    public SongDTO update(Long id, SongDTO songDTO, MultipartFile multipartFile)
+        throws IOException {
+        boolean isAdmin = this.userService.hasAuthority(CommonConstants.SONG_MANAGEMENT);
+        Optional<Song> oldSong;
+        if (isAdmin) {
+            oldSong = this.songRepository.findById(id);
+        } else {
+            String username = this.userService.getCurrentUsername();
+            oldSong = this.songRepository.findByIdAndUploader_Username(id, username);
+        }
+        if (oldSong.isPresent()) {
+            if (multipartFile != null) {
+                ResourceInfo resourceInfo = this.storageService
+                    .upload(multipartFile, oldSong.get(), oldSong.get().getAudioResource());
+                oldSong.get().setAudioResource(resourceInfo);
+                songDTO.setUrl(this.storageService.getFullUrl(resourceInfo));
+            }
+            oldSong.get().setTitle(songDTO.getTitle());
+            oldSong.get()
+                .setUnaccentTitle(StringAccentRemover.removeStringAccent(songDTO.getTitle()));
+            oldSong.get().setReleaseDate(songDTO.getReleaseDate());
+            oldSong.get().setArtists(this.artistMapper.dtoToEntityListPure(
+                new ArrayList<>(songDTO.getArtists())));
+            return songDTO;
+        } else {
+            throw new EntityNotFoundException("Song does not existed or user is not the uploader");
+        }
     }
 
     @Override
@@ -243,79 +250,64 @@ public class SongServiceImpl implements SongService {
             .collect(Collectors.toList()));
     }
 
-    @Override
-    public void setFields(SongDTO oldSongInfo, SongDTO newSongInfo) {
-        oldSongInfo.setTitle(newSongInfo.getTitle());
-        oldSongInfo.setArtists(newSongInfo.getArtists());
-        oldSongInfo.setGenres(newSongInfo.getGenres());
-        oldSongInfo.setCountry(newSongInfo.getCountry());
-        oldSongInfo.setReleaseDate(newSongInfo.getReleaseDate());
-        oldSongInfo.setTags(newSongInfo.getTags());
-        oldSongInfo.setTheme(newSongInfo.getTheme());
-        if (newSongInfo.getUrl() != null) {
-            oldSongInfo.setUrl(newSongInfo.getUrl());
+    private void setLike(Optional<SongDTO> optionalSongDTO) {
+        if (!optionalSongDTO.isPresent()) {
+            return;
         }
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<SongDTO> sortByDate(Pageable pageable) {
-        return null;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public boolean hasUserLiked(Long songId) {
-        OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal =
-                this.userService.getCurrentUser();
-        if (oAuth2AuthenticatedPrincipal == null) return false;
-        String username = oAuth2AuthenticatedPrincipal.getName();
-        Like like = this.likeRepository.findByLikeId_SongIdAndLikeId_Username(songId, username);
-        return (like != null);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public void setLike(SongDTO song) {
-        song.setLiked(hasUserLiked(song.getId()));
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public void setLike(Page<SongDTO> songList) {
-        for (SongDTO song : songList) {
-            song.setLiked(hasUserLiked(song.getId()));
-        }
-    }
-
-    @Override
-    public void setLike(Iterable<SongDTO> songList) {
-        for (SongDTO song : songList) {
-            song.setLiked(hasUserLiked(song.getId()));
-        }
-    }
-
-    @Override
-    @Transactional
-    public void uploadAndSaveSong(MultipartFile file, SongDTO songDTO, Long albumId) throws IOException {
-        Song songToSave = this.songRepository.save(this.songMapper.dtoToEntity(songDTO));
-        String fileDownloadUri = this.storageService.upload(file, songToSave);
-        songToSave.setUrl(fileDownloadUri);
-        Map<String, Object> userShortInfo = this.userService.getCurrentUserShortInfo();
-        UserInfo userInfo = UserInfoJsonStringifier.stringify(userShortInfo);
-        songToSave.setUploader(userInfo);
-        if (albumId != null) {
-            Optional<Album> album = this.albumRepository.findById(albumId);
-            if (album.isPresent()) {
-                Collection<Song> songList = album.get().getSongs();
-                if (songList == null) {
-                    songList = new ArrayList<>();
-                }
-                songList.add(songToSave);
-                album.get().setSongs(songList);
-                this.albumRepository.save(album.get());
+        String currentUsername = this.userService.getCurrentUsername();
+        AtomicLong noCachedId = new AtomicLong(-1);
+        Long songId = optionalSongDTO.get().getId();
+        boolean isLiked = this.likeRepository
+            .getUserSongLikeFromCache(currentUsername, songId, noCachedId);
+        if (noCachedId.get() >= 0) {
+            UserFavoriteSong userFavoriteSong = this.likeRepository
+                .getUserSongLike(currentUsername, songId);
+            if (userFavoriteSong != null) {
+                isLiked = this.likeRepository
+                    .setUserSongLikeToCache(currentUsername, songId, userFavoriteSong.isLiked());
             }
         }
-        this.songRepository.save(songToSave);
+        optionalSongDTO.get().setLiked(isLiked);
+    }
+
+    private void setLikes(Page<SongDTO> songDTOPage) {
+        Map<Long, SongDTO> songDTOMap = songDTOPage
+            .stream()
+            .collect(Collectors.toMap(SongDTO::getId, e -> e));
+        String currentUsername = this.userService.getCurrentUsername();
+        List<Long> noCachedSongIds = new ArrayList<>();
+        for (Entry<Long, SongDTO> entry : songDTOMap.entrySet()) {
+            boolean isLiked = this.likeRepository
+                .getUserSongLikeFromCache(currentUsername, entry.getKey(), noCachedSongIds);
+            entry.getValue().setLiked(isLiked);
+        }
+        if (noCachedSongIds.size() > 0) {
+            boolean isLiked;
+            Long songId;
+            List<UserFavoriteSong> userFavoriteSongList = this.likeRepository
+                .getUserSongLikeMap(currentUsername, noCachedSongIds);
+            for (UserFavoriteSong userFavoriteSong : userFavoriteSongList) {
+                songId = userFavoriteSong.getUserFavoriteSongId().getSongId();
+                isLiked = this.likeRepository
+                    .setUserSongLikeToCache(currentUsername, songId, userFavoriteSong.isLiked());
+                songDTOMap.get(songId).setLiked(isLiked);
+            }
+        }
+    }
+
+    public Map<Long, Boolean> getUserSongLikeMap(Map<Long, Boolean> songIdMap) {
+        String currentUsername = this.userService.getCurrentUsername();
+        List<Long> songIds = new ArrayList<>(songIdMap.keySet());
+        List<Long> noCachedSongIds = new ArrayList<>();
+        for (Long songId : songIds) {
+            boolean isLiked = this.likeRepository
+                .getUserSongLikeFromCache(currentUsername, songId, noCachedSongIds);
+            songIdMap.replace(songId, isLiked);
+        }
+        List<UserFavoriteSong> userFavoriteSongList = this.likeRepository
+            .getUserSongLikeMap(currentUsername, noCachedSongIds);
+        userFavoriteSongList
+            .forEach(e -> songIdMap.replace(e.getUserFavoriteSongId().getSongId(), e.isLiked()));
+        return songIdMap;
     }
 }

@@ -2,17 +2,21 @@ package com.alpha.controller;
 
 import com.alpha.model.dto.TagDTO;
 import com.alpha.service.TagService;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-
-@CrossOrigin(originPatterns = "*", allowCredentials = "true", allowedHeaders = "*", exposedHeaders = {HttpHeaders.SET_COOKIE})
 @RestController
 @RequestMapping("/api/tag")
 public class TagRestController {
@@ -30,7 +34,9 @@ public class TagRestController {
         boolean isEmpty = tagList.getTotalElements() == 0;
         if (isEmpty) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else return new ResponseEntity<>(tagList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(tagList, HttpStatus.OK);
+        }
     }
 
     @GetMapping(params = "action=search")
@@ -39,14 +45,17 @@ public class TagRestController {
         boolean isEmpty = filteredTagList.getTotalElements() == 0;
         if (isEmpty) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else return new ResponseEntity<>(filteredTagList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(filteredTagList, HttpStatus.OK);
+        }
     }
 
     @PostMapping(params = "action=create")
     public ResponseEntity<String> createTag(@Valid @RequestBody TagDTO tag) {
         TagDTO checkedTag = this.tagService.findByName(tag.getName());
         if (checkedTag != null) {
-            return new ResponseEntity<>("Tag title has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>("Tag title has already existed in database!",
+                HttpStatus.UNPROCESSABLE_ENTITY);
         } else {
             this.tagService.save(tag);
             return new ResponseEntity<>("Tag title created in database!", HttpStatus.CREATED);
@@ -57,7 +66,8 @@ public class TagRestController {
     public ResponseEntity<String> editTag(@Valid @RequestBody TagDTO tag, @RequestParam Long id) {
         TagDTO checkedTag = this.tagService.findByName(tag.getName());
         if (checkedTag != null) {
-            return new ResponseEntity<>("Tag title has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>("Tag title has already existed in database!",
+                HttpStatus.UNPROCESSABLE_ENTITY);
         } else {
             tag.setId(id);
             this.tagService.save(tag);

@@ -5,6 +5,8 @@ import lombok.Getter;
 
 public interface LikeService {
 
+    String QUEUE_BASE_DIR = "./queues";
+
     void like(Long id, LikeConfig likeConfig, boolean isLiked);
 
     void listen(Long id, ListeningConfig listeningConfig, String username);

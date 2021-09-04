@@ -1,7 +1,10 @@
 package com.alpha.climaxsound.repositories_test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.alpha.model.entity.Artist;
 import com.alpha.repositories.ArtistRepository;
+import java.util.Iterator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +15,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Iterator;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ArtistRepositoryTest {
+
     private final Pageable pageable = PageRequest.of(0, 10);
     @Autowired
     ArtistRepository artistRepository;

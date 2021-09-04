@@ -9,12 +9,11 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "storage")
 public class StorageProperty {
 
-    enum StorageType {
-        LOCAL, CLOUDINARY, FIREBASE
-    }
-
-
     private StorageType storageType;
 
     private String temp;
+
+    public enum StorageType {
+        LOCAL, CLOUDINARY, FIREBASE, EXTERNAL
+    }
 }

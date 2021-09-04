@@ -20,6 +20,7 @@ public class HerokuNotIdle {
     public void herokuNotIdle() {
         log.debug("Heroku not idle execution");
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.getForObject(environment.getProperty("BACKEND_HOST") + "/alpha-sound/api/test", String.class);
+        restTemplate.getForObject(environment.getProperty("BACKEND_HOST") + "/alpha-sound/api/test",
+            String.class);
     }
 }

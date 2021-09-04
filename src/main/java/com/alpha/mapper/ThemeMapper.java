@@ -4,23 +4,26 @@ import com.alpha.mapper.annotation.FullMapping;
 import com.alpha.mapper.annotation.PureMapping;
 import com.alpha.model.dto.ThemeDTO;
 import com.alpha.model.entity.Theme;
-import org.mapstruct.*;
-
 import java.util.List;
+import org.mapstruct.IterableMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR,
-        typeConversionPolicy = ReportingPolicy.ERROR, uses = {SongMapper.class})
+    typeConversionPolicy = ReportingPolicy.ERROR, uses = {SongMapper.class})
 public abstract class ThemeMapper {
 
     @FullMapping
     @Mappings({
-            @Mapping(target = "songs", qualifiedBy = PureMapping.class)
+        @Mapping(target = "songs", qualifiedBy = PureMapping.class)
     })
     public abstract ThemeDTO entityToDto(Theme theme);
 
     @FullMapping
     @Mappings({
-            @Mapping(target = "songs", qualifiedBy = PureMapping.class)
+        @Mapping(target = "songs", qualifiedBy = PureMapping.class)
     })
     public abstract Theme dtoToEntity(ThemeDTO themeDTO);
 
@@ -34,13 +37,13 @@ public abstract class ThemeMapper {
 
     @PureMapping
     @Mappings({
-            @Mapping(target = "songs", ignore = true)
+        @Mapping(target = "songs", ignore = true)
     })
     public abstract ThemeDTO entityToDtoPure(Theme theme);
 
     @PureMapping
     @Mappings({
-            @Mapping(target = "songs", ignore = true)
+        @Mapping(target = "songs", ignore = true)
     })
     public abstract Theme dtoToEntityPure(ThemeDTO theme);
 

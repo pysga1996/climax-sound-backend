@@ -2,21 +2,26 @@ package com.alpha.controller;
 
 import com.alpha.model.dto.ThemeDTO;
 import com.alpha.service.ThemeService;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-
-@CrossOrigin(originPatterns = "*", allowCredentials = "true", allowedHeaders = "*", exposedHeaders = {HttpHeaders.SET_COOKIE})
 @RestController
 @RequestMapping("/api/activity")
 public class ThemeRestController {
+
     private ThemeService themeService;
 
     @Autowired
@@ -30,22 +35,28 @@ public class ThemeRestController {
         boolean isEmpty = activityList.getTotalElements() == 0;
         if (isEmpty) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else return new ResponseEntity<>(activityList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(activityList, HttpStatus.OK);
+        }
     }
 
     @GetMapping(params = "action=search", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<ThemeDTO>> activitySearch(@RequestParam String name, Pageable pageable) {
+    public ResponseEntity<Page<ThemeDTO>> activitySearch(@RequestParam String name,
+        Pageable pageable) {
         Page<ThemeDTO> filteredActivityList = themeService.findAllByNameContaining(name, pageable);
         boolean isEmpty = filteredActivityList.getTotalElements() == 0;
         if (isEmpty) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else return new ResponseEntity<>(filteredActivityList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(filteredActivityList, HttpStatus.OK);
+        }
     }
 
     @PostMapping(params = "action=create", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createActivity(@Valid @RequestBody ThemeDTO mood) {
         if (mood == null) {
-            return new ResponseEntity<>("Theme title has already existed in database!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Theme title has already existed in database!",
+                HttpStatus.BAD_REQUEST);
         } else {
             themeService.save(mood);
             return new ResponseEntity<>("Theme created successfully!", HttpStatus.CREATED);
@@ -53,10 +64,12 @@ public class ThemeRestController {
     }
 
     @PutMapping(params = {"action=edit", "id"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> editActivity(@Valid @RequestBody ThemeDTO theme, @RequestParam Integer id) {
+    public ResponseEntity<String> editActivity(@Valid @RequestBody ThemeDTO theme,
+        @RequestParam Integer id) {
         ThemeDTO checkedTheme = themeService.findByName(theme.getName());
         if (checkedTheme != null) {
-            return new ResponseEntity<>("Theme title has already existed in database!", HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>("Theme title has already existed in database!",
+                HttpStatus.UNPROCESSABLE_ENTITY);
         } else {
             theme.setId(id);
             themeService.save(theme);

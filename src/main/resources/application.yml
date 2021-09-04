@@ -52,6 +52,8 @@ spring:
     properties:
       hibernate:
         current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+        proc:
+          param_null_passing: true
         dialect: org.hibernate.dialect.PostgreSQL10Dialect
         format_sql: true
         default_schema: alpha_sound
@@ -97,7 +99,7 @@ spring:
       group-id: vengeance
       max-poll-records: 100
       enable-auto-commit: false
-      auto-offset-reset: latest
+      auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 storage:
@@ -112,11 +114,10 @@ storage:
   local:
     upload-root-uri: ${UPLOAD_ROOT_URI}
     upload-dir: ${UPLOAD_DIR:}
-
 custom:
   http-port: 8085
   https-port: 8086
-  security-policy: CONFIDENTAL
-  connector-scheme: http
+  security-policy: CONFIDENTIAL
+  connector-scheme: HTTP
   trust-store-password: ${SSL_TRUSTSTORE_PASSWORD:}
   trust-store-type: JKS

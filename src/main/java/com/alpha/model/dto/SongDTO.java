@@ -1,28 +1,29 @@
 package com.alpha.model.dto;
 
+import com.alpha.repositories.BaseRepository.HasArtists;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import java.time.Duration;
+import java.util.Collection;
+import java.util.Date;
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.util.StringUtils;
-
-import javax.validation.constraints.NotBlank;
-import java.time.Duration;
-import java.util.Collection;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode()
 @JsonIgnoreProperties(value = {"comments", "liked", "albums", "genres", "users",
-        "playlists", "theme", "uploader"}, allowGetters = true, ignoreUnknown = true)
-public class SongDTO extends UploadDTO {
+    "playlists", "theme", "uploader"}, allowGetters = true, ignoreUnknown = true)
+public class SongDTO implements HasArtists {
+
+    private Long rn;
 
     private Long id;
 
@@ -37,6 +38,8 @@ public class SongDTO extends UploadDTO {
 
     private String url;
 
+    private ResourceInfoDTO audioResource;
+
     @JsonManagedReference(value = "song-comment")
     private Collection<CommentDTO> comments;
 
@@ -47,8 +50,6 @@ public class SongDTO extends UploadDTO {
     private Boolean liked;
 
     private String lyric;
-
-    private String blobString;
 
     @JsonManagedReference(value = "song-artist")
     private Collection<ArtistDTO> artists;
@@ -80,16 +81,5 @@ public class SongDTO extends UploadDTO {
 
     private Duration duration;
 
-    @Override
-    public String createFileName(String ext) {
-        artists = this.getArtists();
-        String artistsString = this.getArtistDTOString(artists);
-        return StringUtils.cleanPath(this.getId().toString().concat(" - ")
-                .concat(this.getTitle()).concat(artistsString).concat(".").concat(ext));
-    }
-
-    @Override
-    public String getFolder() {
-        return "audio";
-    }
+    private Long likeCount;
 }
