@@ -17,7 +17,7 @@ public interface AlbumService {
 
     Page<AlbumDTO> findAll(Pageable pageable);
 
-    Page<AlbumDTO> findAllByTitleContaining(String name, Pageable pageable);
+    Page<AlbumDTO> findAllByConditions(Pageable pageable, AlbumSearchDTO albumSearchDTO);
 
     Page<AlbumDTO> findAllByArtist_Name(String name, Pageable pageable);
 

@@ -12,31 +12,9 @@ import java.util.Optional;
 
 public interface SongService {
 
-    Iterable<SongDTO> findAll();
+    Page<SongDTO> findAll(Pageable pageable);
 
-    Page<SongDTO> findAll(Pageable pageable, String sort);
-
-    Iterable<SongDTO> findAllByTitle(String title);
-
-    Iterable<SongDTO> findAllByTitleContaining(String title);
-
-    Page<SongDTO> findAllByUploader(Pageable pageable);
-
-    Page<SongDTO> findAllByTitleContaining(String title, Pageable pageable);
-
-    Page<SongDTO> findAllByArtistsContains(ArtistDTO artist, Pageable pageable);
-
-    Page<SongDTO> findAllByUsersContains(Pageable pageable);
-
-    Page<SongDTO> findAllByOrderByReleaseDateDesc(Pageable pageable);
-
-    Page<SongDTO> findAllByOrderByListeningFrequencyDesc(Pageable pageable);
-
-    Page<SongDTO> findAllByOrderByDisplayRatingDesc(Pageable pageable);
-
-    Iterable<SongDTO> findTop10By(String sort);
-
-    Page<SongDTO> findAllByLikesCount(Pageable pageable);
+    Page<SongDTO> findAllByConditions(Pageable pageable, SongSearchDTO songSearchDTO);
 
     Optional<SongDTO> findById(Long id);
 

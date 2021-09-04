@@ -26,7 +26,11 @@ public class AlbumDTO extends UploadDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date releaseDate;
 
+    private Long listeningFrequency = 0L;
+
     private String coverUrl;
+
+    private Duration duration;
 
     private String coverBlobString;
 

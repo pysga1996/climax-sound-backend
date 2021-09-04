@@ -20,11 +20,6 @@ public interface AlbumRepository extends JpaRepository<Album, Long> {
     @NonNull
     Page<Album> findAll(@NonNull Pageable pageable);
 
-    //    @Query(value = "SELECT * FROM album WHERE BINARY title=:title", nativeQuery = true)
-    Iterable<Album> findAllByTitle(String title);
-
-    Page<Album> findAllByTitleContaining(String title, Pageable pageable);
-
     @Query("SELECT a FROM Album a JOIN a.artists b WHERE b.name=:name")
     Page<Album> findAllByArtist_Name(@Param("name") String name, Pageable pageable);
 }

@@ -9,18 +9,18 @@ import com.alpha.repositories.PlaylistRepository;
 import com.alpha.repositories.SongRepository;
 import com.alpha.service.PlaylistService;
 import com.alpha.service.UserService;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collection;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class PlaylistServiceImpl implements PlaylistService {
@@ -35,7 +35,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Autowired
     public PlaylistServiceImpl(PlaylistRepository playlistRepository, SongRepository songRepository,
-                               UserService userService, PlaylistMapper playlistMapper) {
+        UserService userService, PlaylistMapper playlistMapper) {
         this.playlistRepository = playlistRepository;
         this.songRepository = songRepository;
         this.userService = userService;
@@ -66,19 +66,20 @@ public class PlaylistServiceImpl implements PlaylistService {
     public Page<PlaylistDTO> findAllByUsername(String username, Pageable pageable) {
         Page<Playlist> playlistPage = this.playlistRepository.findAllByUsername(username, pageable);
         return new PageImpl<>(playlistPage.getContent()
-                .stream()
-                .map(this.playlistMapper::entityToDto)
-                .collect(Collectors.toList()), pageable, playlistPage.getTotalElements());
+            .stream()
+            .map(this.playlistMapper::entityToDto)
+            .collect(Collectors.toList()), pageable, playlistPage.getTotalElements());
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<PlaylistDTO> findAllByTitleContaining(String title, Pageable pageable) {
-        Page<Playlist> playlistPage = this.playlistRepository.findAllByTitleContaining(title, pageable);
+        Page<Playlist> playlistPage = this.playlistRepository
+            .findAllByTitleContaining(title, pageable);
         return new PageImpl<>(playlistPage.getContent()
-                .stream()
-                .map(this.playlistMapper::entityToDto)
-                .collect(Collectors.toList()), pageable, playlistPage.getTotalElements());
+            .stream()
+            .map(this.playlistMapper::entityToDto)
+            .collect(Collectors.toList()), pageable, playlistPage.getTotalElements());
     }
 
     @Override
@@ -135,15 +136,13 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     @Transactional(readOnly = true)
-    public Iterable<PlaylistDTO> getPlaylistListToAdd(Long songId) {
-        OAuth2AuthenticatedPrincipal currentUser = this.userService.getCurrentUser();
+    public Page<PlaylistDTO> getPlaylistListToAdd(Long songId,
+        Pageable pageable) {
+        String username = this.userService.getCurrentUsername();
         Optional<Song> song = this.songRepository.findById(songId);
-        return song.map(value ->
-                StreamSupport.stream(
-                        this.playlistRepository
-                                .findAllByUsernameAndSongsNotContains(currentUser.getName(), value)
-                                .spliterator(), false
-                ).map(this.playlistMapper::entityToDto).collect(Collectors.toList()))
-                .orElse(null);
+        return song.map(value -> this.playlistRepository
+            .findAllByUsernameAndSongsNotContains(username, value, pageable)
+            .map(this.playlistMapper::entityToDto))
+            .orElseGet(Page::empty);
     }
 }

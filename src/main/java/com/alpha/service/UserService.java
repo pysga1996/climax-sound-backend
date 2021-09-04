@@ -1,13 +1,24 @@
 package com.alpha.service;
 
-import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
-
+import com.alpha.model.dto.UserInfoDTO;
+import com.alpha.model.entity.UserInfo;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.Map;
 
 public interface UserService {
 
-    OAuth2AuthenticatedPrincipal getCurrentUser();
+    String getCurrentUsername();
 
-    Map<String, Object> getCurrentUserShortInfo();
+    boolean isAnonymous();
+
+    boolean isAuthenticated();
+
+    boolean hasAuthority(String authority);
+
+    UserInfoDTO getCurrentProfile();
+
+    UserInfoDTO getUserInfo(String username);
+
+    void applySetting(Map<String, Object> setting) throws JsonProcessingException;
 
 }

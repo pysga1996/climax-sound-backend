@@ -34,11 +34,14 @@ public class Album extends UploadDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date releaseDate;
 
+    @ColumnDefault("0")
+    private Long listeningFrequency = 0L;
+
     private String coverUrl;
 
     private String coverBlobString;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "album_genre",
             joinColumns = @JoinColumn(
@@ -46,6 +49,7 @@ public class Album extends UploadDTO {
             inverseJoinColumns = @JoinColumn(
                     name = "genre_id", referencedColumnName = "id"))
     @Fetch(value = FetchMode.SUBSELECT)
+    @NotFound(action = NotFoundAction.IGNORE)
     private Collection<Genre> genres;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -56,6 +60,7 @@ public class Album extends UploadDTO {
             inverseJoinColumns = @JoinColumn(
                     name = "song_id", referencedColumnName = "id"))
     @Fetch(value = FetchMode.SUBSELECT)
+    @NotFound(action = NotFoundAction.IGNORE)
     private Collection<Song> songs;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -66,6 +71,7 @@ public class Album extends UploadDTO {
             inverseJoinColumns = @JoinColumn(
                     name = "artist_id", referencedColumnName = "id"))
     @Fetch(value = FetchMode.SUBSELECT)
+    @NotFound(action = NotFoundAction.IGNORE)
     private Collection<Artist> artists;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -76,10 +82,12 @@ public class Album extends UploadDTO {
             inverseJoinColumns = @JoinColumn(
                     name = "tag_id", referencedColumnName = "id"))
     @Fetch(value = FetchMode.SUBSELECT)
+    @NotFound(action = NotFoundAction.IGNORE)
     private Collection<Tag> tags;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "country_id")
+    @NotFound(action = NotFoundAction.IGNORE)
     private Country country;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})

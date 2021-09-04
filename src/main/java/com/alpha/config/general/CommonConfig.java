@@ -1,4 +1,4 @@
-package com.alpha.config.custom;
+package com.alpha.config.general;
 
 import com.alpha.error.FileStorageException;
 import com.cloudinary.Cloudinary;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Configuration
-public class CustomBeanConfig {
+public class CommonConfig {
 
     @Value("${storage.cloudinary.url}")
     private String cloudinaryUrl;
@@ -62,22 +62,26 @@ public class CustomBeanConfig {
     @ConditionalOnProperty(prefix = "storage", name = "storage-type", havingValue = "firebase")
     public StorageClient firebaseStorage() {
         try {
-            GoogleCredentials credentials = GoogleCredentials.fromStream(new ByteArrayInputStream(this.firebaseCredentials.getBytes()));
+//            GoogleCredentials credentials = GoogleCredentials.fromStream(new ByteArrayInputStream(this.firebaseCredentials.getBytes()));
+            GoogleCredentials credentials = GoogleCredentials
+                .fromStream(this.firebaseCredFile.getInputStream());
             FirebaseOptions options = FirebaseOptions.builder()
-                    .setCredentials(credentials)
-                    .setDatabaseUrl(this.firebaseDatabaseUrl)
-                    .setStorageBucket(this.firebaseStorageBucket)
-                    .build();
+                .setCredentials(credentials)
+                .setDatabaseUrl(this.firebaseDatabaseUrl)
+                .setStorageBucket(this.firebaseStorageBucket)
+                .build();
 
             FirebaseApp fireApp = null;
             List<FirebaseApp> firebaseApps = FirebaseApp.getApps();
             if (firebaseApps != null && !firebaseApps.isEmpty()) {
                 for (FirebaseApp app : firebaseApps) {
-                    if (app.getName().equals(FirebaseApp.DEFAULT_APP_NAME))
+                    if (app.getName().equals(FirebaseApp.DEFAULT_APP_NAME)) {
                         fireApp = app;
+                    }
                 }
-            } else
+            } else {
                 fireApp = FirebaseApp.initializeApp(options);
+            }
             return StorageClient.getInstance(Objects.requireNonNull(fireApp));
         } catch (IOException ex) {
             throw new FileStorageException("Could not get admin-sdk json file. Please try again!", ex);
@@ -112,5 +116,26 @@ public class CustomBeanConfig {
         connector.setRedirectPort(httpsPort);
         connector.addUpgradeProtocol(new Http2Protocol());
         return connector;
+    }
+
+    @Bean
+    public RedisCacheConfiguration cacheConfiguration() {
+        return RedisCacheConfiguration.defaultCacheConfig()
+            .entryTtl(Duration.ZERO)
+            .disableCachingNullValues()
+            .serializeValuesWith(
+                SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
+    }
+
+    @Bean
+    public RedisCacheManagerBuilderCustomizer redisCacheManagerBuilderCustomizer() {
+        return (builder) -> builder
+            .withCacheConfiguration("songLikeCache",
+                RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ZERO));
+    }
+
+    @Bean(name = "threadPoolTaskExecutor")
+    public TaskExecutor threadPoolTaskExecutor() {
+        return new ThreadPoolTaskExecutor();
     }
 }

@@ -78,6 +78,14 @@ public class AlbumRestController {
     }
 
     @PreAuthorize("isAuthenticated()")
+    @PatchMapping(value = "/update-song-list/{albumId}")
+    public ResponseEntity<AlbumDTO> createAlbum(@Valid @RequestBody List<SongDTO> songDTOList,
+            @PathVariable("albumId") Long albumId) {
+        this.albumService.updateSongList(albumId, songDTOList);
+        return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @PutMapping(value = "/edit", params = "id")
     public ResponseEntity<Void> editAlbum(@Valid @RequestPart("album") AlbumDTO album,
                                           @RequestPart(value = "cover", required = false)

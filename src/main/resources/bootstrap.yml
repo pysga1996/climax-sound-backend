@@ -3,7 +3,7 @@ spring:
     name: alpha-sound-service
   cloud:
     config:
-#      uri: ${CONFIG_URI:}
+      #      uri: ${CONFIG_URI:}
       discovery:
         service-id: phi-config-service
         enabled: true

@@ -1,9 +1,19 @@
 package com.alpha.service.impl;
 
-import com.alpha.model.dto.*;
-import com.alpha.service.*;
-import org.springframework.stereotype.Service;
-
+import com.alpha.model.dto.ArtistDTO;
+import com.alpha.model.dto.CountryDTO;
+import com.alpha.model.dto.GenreDTO;
+import com.alpha.model.dto.SongDTO;
+import com.alpha.model.dto.SongUploadForm;
+import com.alpha.model.dto.TagDTO;
+import com.alpha.model.dto.ThemeDTO;
+import com.alpha.service.ArtistService;
+import com.alpha.service.CountryService;
+import com.alpha.service.GenreService;
+import com.alpha.service.TagService;
+import com.alpha.service.ThemeService;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -22,7 +32,8 @@ public class FormConvertService {
 
     private final ThemeService themeService;
 
-    public FormConvertService(ArtistService artistService, GenreService genreService, TagService tagService, CountryService countryService, ThemeService themeService) {
+    public FormConvertService(ArtistService artistService, GenreService genreService,
+        TagService tagService, CountryService countryService, ThemeService themeService) {
         this.artistService = artistService;
         this.genreService = genreService;
         this.tagService = tagService;
@@ -30,7 +41,7 @@ public class FormConvertService {
         this.themeService = themeService;
     }
 
-    public Collection<ArtistDTO> convertStringToArtistList(String string) {
+    public Collection<ArtistDTO> convertStringToArtistList(String string) throws IOException {
         String[] artistsString = string.split(",");
         Collection<ArtistDTO> artistList = new HashSet<>();
         for (String artistString : artistsString) {
@@ -39,14 +50,16 @@ public class FormConvertService {
                 if (checkedArtist == null) {
                     ArtistDTO artist = new ArtistDTO();
                     artist.setName(artistString.trim());
-                    artistService.save(artist);
+                    artistService.create(artist, null);
                     artistList.add(artist);
                 } else {
                     artistList.add(checkedArtist);
                 }
             }
         }
-        if (artistList.isEmpty()) return null;
+        if (artistList.isEmpty()) {
+            return null;
+        }
         return artistList;
     }
 
@@ -66,7 +79,9 @@ public class FormConvertService {
                 }
             }
         }
-        if (genreList.isEmpty()) return null;
+        if (genreList.isEmpty()) {
+            return null;
+        }
         return genreList;
     }
 
@@ -86,7 +101,9 @@ public class FormConvertService {
                 }
             }
         }
-        if (tagList.isEmpty()) return null;
+        if (tagList.isEmpty()) {
+            return null;
+        }
         return tagList;
     }
 
@@ -121,15 +138,14 @@ public class FormConvertService {
         song.setLyric(songUploadForm.getLyric());
         song.setReleaseDate(songUploadForm.getReleaseDate());
         song.setGenres(songUploadForm.getGenres());
+        song.setTags(new ArrayList<>());
         if (songUploadForm.getTags() != null && !songUploadForm.getTags().trim().isEmpty()) {
             String[] tagsString = songUploadForm.getTags().split(",");
-            List<TagDTO> tagList = new LinkedList<>();
             for (String tagString : tagsString) {
                 TagDTO tagDTO = new TagDTO();
                 tagDTO.setName(tagString.trim().toLowerCase());
-                tagList.add(tagDTO);
+                song.getTags().add(tagDTO);
             }
-            song.setTags(tagList);
         }
         return song;
     }

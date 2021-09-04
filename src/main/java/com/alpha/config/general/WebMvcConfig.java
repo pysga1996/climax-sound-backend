@@ -2,6 +2,7 @@ package com.alpha.config.general;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -11,16 +12,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
-import java.util.List;
-
 @Configuration
-public class AppConfig implements WebMvcConfigurer {
+public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         for (HttpMessageConverter<?> converter : converters) {
             if (converter instanceof MappingJackson2HttpMessageConverter) {
-                ObjectMapper mapper = ((MappingJackson2HttpMessageConverter) converter).getObjectMapper();
+                ObjectMapper mapper = ((MappingJackson2HttpMessageConverter) converter)
+                    .getObjectMapper();
                 mapper.registerModule(new Hibernate5Module());
             }
         }
@@ -37,10 +37,14 @@ public class AppConfig implements WebMvcConfigurer {
     }
 
 //    @Bean
-//    CorsConfigurationSource corsConfigurationSource() {
+//    @Primary
+//    public CorsConfigurationSource corsConfigurationSource() {
 //        CorsConfiguration configuration = new CorsConfiguration();
-//        configuration.setAllowedOrigins(Arrays.asList("https://alpha-sound.netlify.com", "http://localhost:4200"));
-//        configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
+//        configuration.setAllowCredentials(true);
+////        configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
+//        configuration.setAllowedOrigins(CrossOriginConfig.allowedOrigins);
+//        configuration.setAllowedMethods(Collections.singletonList("*"));
+//        configuration.setAllowedHeaders(Collections.singletonList("*"));
 //        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 //        source.registerCorsConfiguration("/**", configuration);
 //        return source;

@@ -1,8 +1,13 @@
 logging:
   level:
+    ROOT:
+      INFO
+    #    org:
+    #      springframework:
+    #        web: DEBUG
     org:
-      springframework:
-        web: DEBUG
+      hibernate:
+        SQL_SLOW: INFO
   config: classpath:log4j-spring.xml
 server:
   servlet:
@@ -64,6 +69,29 @@ spring:
           client-secret: ${CLIENT_SECRET:}
         jwt:
           jwk-set-uri: ${JWKS_ENDPOINT:}
+  cache:
+    type: redis
+  redis:
+    url: ${REDIS_URL:}
+  kafka:
+    bootstrap-servers: ${CLOUDKARAFKA_BROKERS:}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: vengeance
+      max-poll-records: 100
+      enable-auto-commit: false
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    jaas:
+      enabled: true
+      control-flag: required
+      options:
+        username: ${CLOUDKARAFKA_USERNAME:}
+        password: ${CLOUDKARAFKA_PASSWORD:}
+        topic-prefix: ${CLOUDKARAFKA_TOPIC_PREFIX:}
 storage:
   storage-type: cloudinary
   temp: ${TEMP_DIR:}
@@ -74,6 +102,7 @@ storage:
     storage-bucket: ${FIREBASE_STORAGE_BUCKET:}
     credentials: ${FIREBASE_CREDENTIALS:}
   local:
+    upload-root-uri: ${UPLOAD_ROOT_URI}
     upload-dir: ${UPLOAD_DIR:}
 custom:
   http-port: 8085

@@ -1,5 +1,9 @@
-package com.alpha.config.custom;
+package com.alpha.config.security;
 
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
@@ -7,11 +11,6 @@ import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 public class CustomMethodSecurityExpressionRoot implements MethodSecurityExpressionOperations {
 
@@ -67,7 +66,7 @@ public class CustomMethodSecurityExpressionRoot implements MethodSecurityExpress
 
     @Override
     public final boolean hasAuthority(String authority) {
-        throw new RuntimeException("method hasAuthority() not allowed");
+        return this.getAuthoritySet().contains(authority);
     }
 
     @Override
@@ -130,7 +129,8 @@ public class CustomMethodSecurityExpressionRoot implements MethodSecurityExpress
 
     @Override
     public final boolean isFullyAuthenticated() {
-        return !trustResolver.isAnonymous(authentication) && !trustResolver.isRememberMe(authentication);
+        return !trustResolver.isAnonymous(authentication) && !trustResolver
+            .isRememberMe(authentication);
     }
 
     public Object getPrincipal() {
@@ -152,7 +152,8 @@ public class CustomMethodSecurityExpressionRoot implements MethodSecurityExpress
     private Set<String> getAuthoritySet() {
         if (roles == null) {
             roles = new HashSet<>();
-            Collection<? extends GrantedAuthority> userAuthorities = authentication.getAuthorities();
+            Collection<? extends GrantedAuthority> userAuthorities = authentication
+                .getAuthorities();
 
             if (roleHierarchy != null) {
                 userAuthorities = roleHierarchy.getReachableGrantedAuthorities(userAuthorities);
@@ -171,7 +172,8 @@ public class CustomMethodSecurityExpressionRoot implements MethodSecurityExpress
 
     @Override
     public boolean hasPermission(Object targetId, String targetType, Object permission) {
-        return permissionEvaluator.hasPermission(authentication, (Serializable) targetId, targetType, permission);
+        return permissionEvaluator
+            .hasPermission(authentication, (Serializable) targetId, targetType, permission);
     }
 
     public void setPermissionEvaluator(PermissionEvaluator permissionEvaluator) {

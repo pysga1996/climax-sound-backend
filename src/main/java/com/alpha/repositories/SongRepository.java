@@ -12,10 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
-@Repository
-public interface SongRepository extends JpaRepository<Song, Long> {
+public interface SongRepository extends JpaRepository<Song, Long>, SongRepositoryCustom {
 
     @NonNull
     Page<Song> findAll(@NonNull Pageable pageable);

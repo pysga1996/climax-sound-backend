@@ -5,20 +5,32 @@ import com.alpha.model.dto.UploadDTO;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 public abstract class StorageService {
 
-    protected void normalizeFileName(String fileName) {
-        if (fileName.contains("..")) {
-            throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
+    protected abstract ResourceInfoRepository getResourceInfoRepository();
+
+    public abstract ResourceInfo upload(MultipartFile multipartFile, Media media)
+        throws IOException;
+
+    public ResourceInfo upload(MultipartFile multipartFile, Media media,
+        ResourceInfo oldResourceInfo)
+        throws IOException {
+        ResourceInfo newResourceInfo = this.upload(multipartFile, media);
+        if (oldResourceInfo != null) {
+            this.delete(oldResourceInfo);
+            oldResourceInfo.setStatus(Status.REMOVED);
+            this.getResourceInfoRepository().save(oldResourceInfo);
         }
+        return newResourceInfo;
     }
 
-    protected String getExtension(MultipartFile file) {
-        String originalFileName = file.getOriginalFilename();
-        return originalFileName != null ?
-                originalFileName.substring(originalFileName.lastIndexOf(".") + 1) : "";
+    public void saveResourceInfo(ResourceInfo resourceInfo, StorageType storageType) {
+        ResourceInfoRepository repository = this.getResourceInfoRepository();
+        Optional<ResourceInfo> resourceInfoOptional = repository
+            .findByMediaIdAndStorageTypeAndMediaRefAndStatus(resourceInfo.getMediaId(), storageType,
+                resourceInfo.getMediaRef(), Status.ACTIVE);
+        resourceInfoOptional.ifPresent(info -> resourceInfo.setId(info.getId()));
+        repository.saveAndFlush(resourceInfo);
     }
 
     public abstract String upload(MultipartFile multipartFile, UploadDTO uploadDTO) throws IOException;

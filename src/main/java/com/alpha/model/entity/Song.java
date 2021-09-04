@@ -49,6 +49,10 @@ public class Song extends UploadDTO {
     @Transient
     private Boolean liked;
 
+    @Builder.Default
+    @ColumnDefault("0")
+    private Long likeCount = 0L;
+
     //    @Column(columnDefinition = "LONGTEXT")
     @Column(columnDefinition = "TEXT")
     private String lyric;
@@ -115,6 +119,7 @@ public class Song extends UploadDTO {
     @JoinColumn(name = "theme_id")
     private Theme theme;
 
+//    @Convert(converter = DurationConverter.class)
     private Duration duration;
 
     @Override

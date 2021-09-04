@@ -1,9 +1,10 @@
-package com.alpha.config.custom;
+package com.alpha.config.security;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Instant;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,13 +36,10 @@ public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
     private static final String ISSUE_AT = "iat";
 
     private static final String EXPIRATION = "exp";
-
+    private final RestOperations restOperations;
+    private final ObjectMapper objectMapper;
     @Value("${spring.security.oauth2.resourceserver.opaquetoken.introspection-uri}")
     private String introspectionUri;
-
-    private final RestOperations restOperations;
-
-    private final ObjectMapper objectMapper;
 
     @Autowired
     public CustomOpaqueTokenIntrospector(
@@ -75,7 +73,7 @@ public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
     private ResponseEntity<Map> makeRequest(String token) {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(this.introspectionUri)
             .queryParam("token", token);
-        return this.restOperations.postForEntity(builder.toUriString(), null, Map.class);
+        return this.restOperations.postForEntity(builder.toUriString(), new HashMap<>(), Map.class);
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

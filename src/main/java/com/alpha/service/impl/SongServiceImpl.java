@@ -1,20 +1,49 @@
 package com.alpha.service.impl;
 
+import com.alpha.config.properties.StorageProperty.StorageType;
+import com.alpha.constant.CommonConstants;
+import com.alpha.constant.MediaRef;
+import com.alpha.constant.Status;
+import com.alpha.mapper.ArtistMapper;
 import com.alpha.mapper.SongMapper;
 import com.alpha.mapper.TagMapper;
-import com.alpha.model.dto.*;
-import com.alpha.model.entity.*;
-import com.alpha.repositories.*;
+import com.alpha.mapper.UserInfoMapper;
+import com.alpha.model.dto.SongDTO;
+import com.alpha.model.dto.SongSearchDTO;
+import com.alpha.model.dto.TagDTO;
+import com.alpha.model.dto.UserInfoDTO;
+import com.alpha.model.entity.Album;
+import com.alpha.model.entity.ResourceInfo;
+import com.alpha.model.entity.Song;
+import com.alpha.model.entity.Tag;
+import com.alpha.model.entity.UserFavoriteSong;
+import com.alpha.model.entity.UserInfo;
+import com.alpha.repositories.AlbumRepository;
+import com.alpha.repositories.LikeRepository;
+import com.alpha.repositories.ResourceInfoRepository;
+import com.alpha.repositories.SongRepository;
+import com.alpha.repositories.TagRepository;
+import com.alpha.service.LikeService;
+import com.alpha.service.LikeService.ListeningConfig;
 import com.alpha.service.SongService;
 import com.alpha.service.StorageService;
 import com.alpha.service.UserService;
 import com.alpha.util.formatter.StringAccentRemover;
-import com.alpha.util.helper.UserInfoJsonStringifier;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,8 +56,6 @@ import java.util.stream.StreamSupport;
 @Service
 public class SongServiceImpl implements SongService {
 
-    private final ArtistRepository artistRepository;
-
     private final SongRepository songRepository;
 
     private final LikeRepository likeRepository;
@@ -37,121 +64,76 @@ public class SongServiceImpl implements SongService {
 
     private final AlbumRepository albumRepository;
 
+    private final ResourceInfoRepository resourceInfoRepository;
+
     private final StorageService storageService;
 
     private final SongMapper songMapper;
 
+    private final ArtistMapper artistMapper;
+
     private final TagMapper tagMapper;
+
+    private final UserInfoMapper userInfoMapper;
 
     private final UserService userService;
 
+    @Value("${storage.storage-type}")
+    private StorageType storageType;
 
     @Autowired
-    public SongServiceImpl(ArtistRepository artistRepository, SongRepository songRepository,
-                           AlbumRepository albumRepository, LikeRepository likeRepository,
-                           UserService userService, TagRepository tagRepository,
-                           StorageService storageService,
-                           SongMapper songMapper, TagMapper tagMapper) {
-        this.artistRepository = artistRepository;
+    public SongServiceImpl(SongRepository songRepository, AlbumRepository albumRepository,
+        LikeRepository likeRepository, UserService userService,
+        TagRepository tagRepository, ResourceInfoRepository resourceInfoRepository,
+        StorageService storageService, SongMapper songMapper,
+        ArtistMapper artistMapper, TagMapper tagMapper,
+        UserInfoMapper userInfoMapper, LikeService likeService) {
         this.songRepository = songRepository;
         this.likeRepository = likeRepository;
         this.userService = userService;
         this.tagRepository = tagRepository;
+        this.resourceInfoRepository = resourceInfoRepository;
         this.storageService = storageService;
         this.songMapper = songMapper;
         this.tagMapper = tagMapper;
         this.albumRepository = albumRepository;
+        this.userInfoMapper = userInfoMapper;
+        this.likeService = likeService;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<SongDTO> findAll(Pageable pageable, String sort) {
-        Page<Song> songPage;
-        if (sort != null && sort.equals("releaseDate")) {
-            songPage = this.songRepository.findAllByOrderByReleaseDateDesc(pageable);
-        } else if (sort != null && sort.equals("listeningFrequency")) {
-            songPage = this.songRepository.findAllByOrderByListeningFrequencyDesc(pageable);
-        } else if (sort != null && sort.equals("likesCount")) {
-//            return songRepository.findAllByOrderByUsers_Size(pageable);
-            songPage = new PageImpl<>(new ArrayList<>());
+    public Page<SongDTO> findAll(Pageable pageable) {
+        Page<SongDTO> songDTOPage = this.songRepository
+            .findAllConditions(pageable, new SongSearchDTO());
+        this.setLikes(songDTOPage);
+        return songDTOPage;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<SongDTO> findAllByConditions(Pageable pageable, SongSearchDTO songSearchDTO) {
+        Page<SongDTO> songDTOPage = this.songRepository
+            .findAllConditions(pageable, songSearchDTO);
+        this.setLikes(songDTOPage);
+        return songDTOPage;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public SongDTO findById(Long id) {
+        Optional<Song> optionalSong = this.songRepository.findById(id);
+        if (optionalSong.isPresent()) {
+            Optional<ResourceInfo> optionalResourceInfo = this.resourceInfoRepository
+                .findByMediaIdAndStorageTypeAndMediaRefAndStatus(id, this.storageType, MediaRef.SONG_AUDIO, Status.ACTIVE);
+            SongDTO songDTO = this.songMapper.entityToDto(optionalSong.get());
+            this.setLike(Optional.of(songDTO));
+            optionalResourceInfo.ifPresent(
+                resourceInfo -> songDTO.setUrl(this.storageService.getFullUrl(resourceInfo)));
+            return songDTO;
         } else {
-            songPage = this.songRepository.findAll(pageable);
+            throw new EntityNotFoundException("Không tìm thấy bài hát");
         }
-        return new PageImpl<>(songPage.getContent()
-                .stream()
-                .map(this.songMapper::entityToDto)
-                .collect(Collectors.toList()), pageable, songPage.getTotalElements());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Iterable<SongDTO> findAll() {
-        return this.songRepository.findAll().stream()
-                .map(this.songMapper::entityToDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Iterable<SongDTO> findTop10By(String sort) {
-        return StreamSupport.stream(
-                this.songRepository.findFirst10ByOrderByListeningFrequencyDesc().spliterator(), false)
-                .map(this.songMapper::entityToDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<SongDTO> findAllByOrderByReleaseDateDesc(Pageable pageable) {
-        Page<Song> songPage = this.songRepository.findAllByOrderByReleaseDateDesc(pageable);
-        return new PageImpl<>(songPage.getContent()
-                .stream()
-                .map(this.songMapper::entityToDto)
-                .collect(Collectors.toList()), pageable, songPage.getTotalElements());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<SongDTO> findAllByOrderByDisplayRatingDesc(Pageable pageable) {
-        Page<Song> songPage = this.songRepository.findAllByOrderByDisplayRatingDesc(pageable);
-        return new PageImpl<>(songPage.getContent()
-                .stream()
-                .map(this.songMapper::entityToDto)
-                .collect(Collectors.toList()), pageable, songPage.getTotalElements());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<SongDTO> findAllByOrderByListeningFrequencyDesc(Pageable pageable) {
-        Page<Song> songPage = this.songRepository.findAllByOrderByListeningFrequencyDesc(pageable);
-        return new PageImpl<>(songPage.getContent()
-                .stream()
-                .map(this.songMapper::entityToDto)
-                .collect(Collectors.toList()), pageable, songPage.getTotalElements());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<SongDTO> findAllByLikesCount(Pageable pageable) {
-//        return songRepository.findAllByOrderByUsers_Size(pageable);
-        return null;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<SongDTO> findAllByUploader(Pageable pageable) {
-        OAuth2AuthenticatedPrincipal currentUser = this.userService.getCurrentUser();
-        Page<Song> songPage = this.songRepository.findAllByUploader_Username(currentUser.getName(), pageable);
-        return new PageImpl<>(songPage.getContent()
-                .stream()
-                .map(this.songMapper::entityToDto)
-                .collect(Collectors.toList()), pageable, songPage.getTotalElements());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<SongDTO> findById(Long id) {
-        return this.songRepository.findById(id).map(this.songMapper::entityToDto);
     }
 
     @Override
@@ -190,49 +172,35 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public Page<SongDTO> findAllByArtistsContains(ArtistDTO artist, Pageable pageable) {
-        Optional<Artist> artistOptional = this.artistRepository.findById(artist.getId());
-        if (artistOptional.isPresent()) {
-            Page<Song> songPage = this.songRepository
-                    .findAllByArtistsContains(artistOptional.get(), pageable);
-            return new PageImpl<>(songPage.getContent()
-                    .stream()
-                    .map(this.songMapper::entityToDto)
-                    .collect(Collectors.toList()), pageable, songPage.getTotalElements());
-        } else return new PageImpl<>(new ArrayList<>());
-
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<SongDTO> findAllByUsersContains(Pageable pageable) {
-        Map<String, Object> currentUserShortInfo = this.userService.getCurrentUserShortInfo();
-        UserInfo userInfo = UserInfoJsonStringifier.stringify(currentUserShortInfo);
-        Page<Song> songList = this.songRepository.findAllByUsersContains(userInfo, pageable);
-        Page<SongDTO> songDTOPage = songList.map(this.songMapper::entityToDto);
-        setLike(songDTOPage);
-        return songDTOPage;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<SongDTO> findAllByTag_Name(String name, Pageable pageable) {
-        Page<Song> songPage = this.songRepository.findAllByTag_Name(name, pageable);
-        return new PageImpl<>(songPage.getContent()
-                .stream()
-                .map(this.songMapper::entityToDto)
-                .collect(Collectors.toList()), pageable, songPage.getTotalElements());
-
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Iterable<SongDTO> findAllByAlbum_Id(Long id) {
-        Spliterator<Song> songSpliterator = this.songRepository.findAllByAlbum_Id(id).spliterator();
-        return StreamSupport.stream(songSpliterator, false)
-                .map(this.songMapper::entityToDto)
-                .collect(Collectors.toList());
+    @Transactional
+    public SongDTO uploadAndSaveSong(MultipartFile file, SongDTO songDTO)
+        throws IOException {
+        UserInfoDTO userInfoDTO = this.userService.getCurrentProfile();
+        UserInfo userInfo = this.userInfoMapper.dtoToEntity(userInfoDTO);
+        Song songToSave = this.songMapper.dtoToEntity(songDTO);
+        songToSave.setUploader(userInfo);
+        List<String> tagNames = songToSave.getTags()
+            .stream()
+            .map(Tag::getName)
+            .collect(Collectors.toList());
+        List<Tag> existedTagList = this.tagRepository.findAllByNameIn(tagNames);
+        List<String> existedTagNames = existedTagList
+            .stream()
+            .map(Tag::getName)
+            .collect(Collectors.toList());
+        List<Tag> nonExistedTagList = songToSave.getTags()
+            .stream()
+            .filter(e -> !existedTagNames.contains(e.getName()))
+            .collect(Collectors.toList());
+        this.tagRepository.saveAll(nonExistedTagList);
+        List<Tag> mergedTagList = new ArrayList<>(existedTagList);
+        mergedTagList.addAll(nonExistedTagList);
+        songToSave.setTags(mergedTagList);
+        this.songRepository.saveAndFlush(songToSave);
+        ResourceInfo resourceInfo = this.storageService.upload(file, songToSave);
+        songDTO.setUrl(this.storageService.getFullUrl(resourceInfo));
+        songDTO.setId(songToSave.getId());
+        return songDTO;
     }
 
     @Override
@@ -260,19 +228,19 @@ public class SongServiceImpl implements SongService {
         Optional<Song> song = songRepository.findById(id);
         if (song.isPresent()) {
             this.songRepository.deleteById(id);
-//            String fileUrl = song.get().getUrl();
-//            String filename = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
-//            return audioStorageService.deleteLocalStorageFile(audioStorageService.audioStorageLocation, filename);
-            this.storageService.delete(song.get());
+            Optional<ResourceInfo> resourceInfoOptional = this.resourceInfoRepository
+                .findByMediaIdAndStorageTypeAndMediaRefAndStatus(song.get().getId(), this.storageType,
+                    MediaRef.SONG_AUDIO, Status.ACTIVE);
+            resourceInfoOptional.ifPresent(this.storageService::delete);
         }
     }
 
     @Override
     @Transactional
     public void deleteAll(Collection<SongDTO> songs) {
-        this.songRepository.deleteAll(songs.stream()
-                .map(this.songMapper::dtoToEntity)
-                .collect(Collectors.toList()));
+        this.songRepository.deleteInBatch(songs.stream()
+            .map(this.songMapper::dtoToEntity)
+            .collect(Collectors.toList()));
     }
 
     @Override

@@ -76,6 +76,25 @@ spring:
           client-secret: ${CLIENT_SECRET:}
         jwt:
           jwk-set-uri: ${JWKS_ENDPOINT:}
+  cache:
+    type: redis
+  redis:
+    host: ${REDIS_HOST:}
+    port: ${REDIS_PORT:}
+    database: ${REDIS_DB:}
+    password: ${REDIS_PASSWORD:}
+  kafka:
+    bootstrap-servers: 'vengeance-kafka-1:9092,vengeance-kafka-2:9093,vengeance-kafka-3:9094'
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: vengeance
+      max-poll-records: 100
+      enable-auto-commit: false
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 storage:
   storage-type: local
   temp: ${TEMP_DIR:}
