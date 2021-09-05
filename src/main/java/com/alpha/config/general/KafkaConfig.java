@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.ProducerFactory;
 
 /**
  * @author thanhvt
@@ -33,10 +35,7 @@ public class KafkaConfig {
     @Value(value = "${spring.kafka.jaas.options.topic-prefix:}")
     private String topicPrefix;
 
-    @Bean
-    @Profile({"heroku"})
-    public ConsumerFactory<String, String> consumerFactory(KafkaProperties kafkaProperties) {
-        Map<String, String> props = kafkaProperties.getProperties();
+    private void buildCloudKarafkaProps(Map<String, String> props) {
         String jaasTemplate = "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"%s\" password=\"%s\";";
         String jaasCfg = String.format(jaasTemplate, username, password);
 
@@ -56,7 +55,22 @@ public class KafkaConfig {
         props.put("security.protocol", "SASL_SSL");
         props.put("sasl.mechanism", "SCRAM-SHA-256");
         props.put("sasl.jaas.config", jaasCfg);
+    }
+
+    @Bean
+    @Profile({"heroku"})
+    public ConsumerFactory<String, String> consumerFactory(KafkaProperties kafkaProperties) {
+        Map<String, String> props = kafkaProperties.getProperties();
+        this.buildCloudKarafkaProps(props);
         return new DefaultKafkaConsumerFactory<>(kafkaProperties.buildConsumerProperties());
+    }
+
+    @Bean
+    @Profile({"heroku"})
+    public ProducerFactory<String, String> producerFactory(KafkaProperties kafkaProperties) {
+        Map<String, String> props = kafkaProperties.getProperties();
+        this.buildCloudKarafkaProps(props);
+        return new DefaultKafkaProducerFactory<>(kafkaProperties.buildProducerProperties());
     }
 
     @Bean
