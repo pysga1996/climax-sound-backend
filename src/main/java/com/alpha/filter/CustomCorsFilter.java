@@ -32,7 +32,7 @@ public class CustomCorsFilter implements Filter {
 
         String[] methodsAllowed = {HttpMethod.POST.name(), HttpMethod.GET.name(),
             HttpMethod.OPTIONS.name(), HttpMethod.PUT.name(), HttpMethod.TRACE.name(),
-            HttpMethod.PATCH.name(), HttpMethod.DELETE.name()};
+            HttpMethod.PATCH.name(), HttpMethod.DELETE.name(), HttpMethod.HEAD.name()};
         String origin = request.getHeader("Origin");
         if (origin == null) {
             origin = request.getHeader("Referer");
