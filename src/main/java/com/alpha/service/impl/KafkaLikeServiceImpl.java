@@ -83,12 +83,16 @@ public class KafkaLikeServiceImpl implements LikeService {
     public void writeLikesToQueue(String username, Long id,
         boolean isLiked, LikeConfig likeConfig) {
         String record = String.format("%s_%d_%b", username, id, isLiked);
-        this.kafkaTemplate.send(this.topicPrefix + likeConfig.getTable(), record);
+        String topic = this.topicPrefix + likeConfig.getTable();
+        log.info("Send like to topic {}: {}", topic, record);
+        this.kafkaTemplate.send(topic, record);
     }
 
     @Override
     public void writeListenToQueue(String username, Long id, ListeningConfig listeningConfig) {
         String record = String.format("%s_%d", username, id);
+        String topic = this.topicPrefix + listeningConfig.getTable();
+        log.info("Send listening to topic {}: {}", topic, record);
         this.kafkaTemplate.send(this.topicPrefix + listeningConfig.getTable(), record);
     }
 
@@ -96,8 +100,9 @@ public class KafkaLikeServiceImpl implements LikeService {
     public void insertLikesToDb(LikeConfig likeConfig,
         int batchSize) {
         try {
-            log.debug("Start insert {} to database...", likeConfig.getTable());
-            this.consumer.subscribe(Collections.singletonList(this.topicPrefix + likeConfig.getTable()));
+            String topic = this.topicPrefix + likeConfig.getTable();
+            log.info("Start insert {} to database...", topic);
+            this.consumer.subscribe(Collections.singletonList(topic));
             ConsumerRecords<String, String> records = this.consumer
                 .poll(Duration.of(10, ChronoUnit.SECONDS));
             List<String> buffer = new ArrayList<>();
@@ -137,8 +142,9 @@ public class KafkaLikeServiceImpl implements LikeService {
     @Override
     public void updateListeningToDb(ListeningConfig listeningConfig, int batchSize) {
         try {
-            log.debug("Start insert {} to database...", listeningConfig.getTable());
-            this.consumer.subscribe(Collections.singletonList(this.topicPrefix + listeningConfig.getTable()));
+            String topic = this.topicPrefix + listeningConfig.getTable();
+            log.info("Start insert {} to database...", topic);
+            this.consumer.subscribe(Collections.singletonList(topic));
             ConsumerRecords<String, String> records = this.consumer
                 .poll(Duration.of(10, ChronoUnit.SECONDS));
             List<String> buffer = new ArrayList<>();
@@ -171,7 +177,7 @@ public class KafkaLikeServiceImpl implements LikeService {
 
     @Override
     public void updateListeningCountToDb(ListeningConfig listeningConfig, int batchSize) {
-        log.debug("Start synchronize listening count to database...");
+        log.info("Start synchronize listening count to database...");
         Set<String> queues = this.redisTemplate.opsForSet().members("song_listening_queue");
         if (queues != null && !queues.isEmpty()) {
             Map<String, String> idListeningCountMap = queues.stream().collect(Collectors
