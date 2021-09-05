@@ -118,13 +118,13 @@ public class KafkaLikeServiceImpl implements LikeService {
         this.insertLikesToDb(LikeConfig.SONG, 20);
     }
 
-    @Scheduled(fixedDelay = 300000)
+//    @Scheduled(fixedDelay = 300000)
     @Override
     public void insertAlbumLikesToDb() {
         this.insertLikesToDb(LikeConfig.ALBUM, 20);
     }
 
-    @Scheduled(fixedDelay = 300000)
+//    @Scheduled(fixedDelay = 300000)
     @Override
     public void insertArtistLikesToDb() {
         this.insertLikesToDb(LikeConfig.ARTIST, 20);
@@ -153,13 +153,13 @@ public class KafkaLikeServiceImpl implements LikeService {
         }
     }
 
-    @Scheduled(fixedDelay = 300000)
+//    @Scheduled(fixedDelay = 300000)
     @Override
     public void updateSongListeningToDb() {
         this.updateListeningToDb(ListeningConfig.SONG, 20);
     }
 
-    @Scheduled(fixedDelay = 300000)
+//    @Scheduled(fixedDelay = 300000)
     @Override
     public void updateAlbumListeningToDb() {
         this.updateListeningToDb(ListeningConfig.ALBUM, 20);
@@ -178,13 +178,13 @@ public class KafkaLikeServiceImpl implements LikeService {
         }
     }
 
-    @Scheduled(fixedDelay = 300000) // 5 min
+//    @Scheduled(fixedDelay = 300000) // 5 min
     @Override
     public void updateSongListeningCountToDb() {
         this.updateListeningCountToDb(ListeningConfig.SONG, 20);
     }
 
-    @Scheduled(fixedDelay = 300000)
+//    @Scheduled(fixedDelay = 300000)
     @Override
     public void updateAlbumListeningCountToDb() {
         this.updateListeningCountToDb(ListeningConfig.ALBUM, 20);
