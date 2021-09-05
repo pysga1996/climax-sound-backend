@@ -20,6 +20,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.kafka.core.ConsumerFactory;
@@ -48,6 +49,9 @@ public class KafkaLikeServiceImpl implements LikeService {
     private final Consumer<String, String> consumer;
 
     private final RedisTemplate<String, String> redisTemplate;
+
+    @Value(value = "${spring.kafka.jaas.options.topic-prefix:}")
+    private String topicPrefix;
 
     @Autowired
     public KafkaLikeServiceImpl(LikeRepository likeRepository,
@@ -79,13 +83,13 @@ public class KafkaLikeServiceImpl implements LikeService {
     public void writeLikesToQueue(String username, Long id,
         boolean isLiked, LikeConfig likeConfig) {
         String record = String.format("%s_%d_%b", username, id, isLiked);
-        this.kafkaTemplate.send(likeConfig.getTable(), record);
+        this.kafkaTemplate.send(this.topicPrefix + likeConfig.getTable(), record);
     }
 
     @Override
     public void writeListenToQueue(String username, Long id, ListeningConfig listeningConfig) {
         String record = String.format("%s_%d", username, id);
-        this.kafkaTemplate.send(listeningConfig.getTable(), record);
+        this.kafkaTemplate.send(this.topicPrefix + listeningConfig.getTable(), record);
     }
 
     @Override
@@ -93,7 +97,7 @@ public class KafkaLikeServiceImpl implements LikeService {
         int batchSize) {
         try {
             log.debug("Start insert {} to database...", likeConfig.getTable());
-            this.consumer.subscribe(Collections.singletonList(likeConfig.getTable()));
+            this.consumer.subscribe(Collections.singletonList(this.topicPrefix + likeConfig.getTable()));
             ConsumerRecords<String, String> records = this.consumer
                 .poll(Duration.of(10, ChronoUnit.SECONDS));
             List<String> buffer = new ArrayList<>();
@@ -134,7 +138,7 @@ public class KafkaLikeServiceImpl implements LikeService {
     public void updateListeningToDb(ListeningConfig listeningConfig, int batchSize) {
         try {
             log.debug("Start insert {} to database...", listeningConfig.getTable());
-            this.consumer.subscribe(Collections.singletonList(listeningConfig.getTable()));
+            this.consumer.subscribe(Collections.singletonList(this.topicPrefix + listeningConfig.getTable()));
             ConsumerRecords<String, String> records = this.consumer
                 .poll(Duration.of(10, ChronoUnit.SECONDS));
             List<String> buffer = new ArrayList<>();

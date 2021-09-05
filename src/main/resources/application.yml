@@ -102,6 +102,10 @@ spring:
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    jaas:
+      enabled: false
+      options:
+        topic-prefix: ""
 storage:
   storage-type: firebase
   temp: ${TEMP_DIR:}
