@@ -67,7 +67,7 @@ public class KafkaConfig {
 
     @Bean
     @Profile({"heroku"})
-    public ProducerFactory<String, String> producerFactory(KafkaProperties kafkaProperties) {
+    public ProducerFactory<Object, Object> producerFactory(KafkaProperties kafkaProperties) {
         Map<String, String> props = kafkaProperties.getProperties();
         this.buildCloudKarafkaProps(props);
         return new DefaultKafkaProducerFactory<>(kafkaProperties.buildProducerProperties());
