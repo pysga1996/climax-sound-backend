@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT $JAVA_OPTS -Dspring.profiles.active=heroku -jar build/libs/alpha-sound-service-0.0.1-SNAPSHOT.jar --spring.config.name=application-heroku
+web: java -Xmx512m -Dserver.port=$PORT $JAVA_OPTS -Dspring.profiles.active=heroku -jar build/libs/alpha-sound-service-0.0.1-SNAPSHOT.jar --spring.config.name=application-heroku
