@@ -101,7 +101,7 @@ public class KafkaLikeServiceImpl implements LikeService {
         int batchSize) {
         try {
             String topic = this.topicPrefix + likeConfig.getTable();
-            log.info("Start insert {} to database...", topic);
+            log.info("Start insert likes from topic {} to database...", topic);
             this.consumer.subscribe(Collections.singletonList(topic));
             ConsumerRecords<String, String> records = this.consumer
                 .poll(Duration.of(10, ChronoUnit.SECONDS));
@@ -143,7 +143,7 @@ public class KafkaLikeServiceImpl implements LikeService {
     public void updateListeningToDb(ListeningConfig listeningConfig, int batchSize) {
         try {
             String topic = this.topicPrefix + listeningConfig.getTable();
-            log.info("Start insert {} to database...", topic);
+            log.info("Start insert listening from topic {} to database...", topic);
             this.consumer.subscribe(Collections.singletonList(topic));
             ConsumerRecords<String, String> records = this.consumer
                 .poll(Duration.of(10, ChronoUnit.SECONDS));
