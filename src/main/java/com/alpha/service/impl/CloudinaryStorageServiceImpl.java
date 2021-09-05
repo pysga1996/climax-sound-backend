@@ -82,7 +82,7 @@ public class CloudinaryStorageServiceImpl extends StorageService {
             "folder", resourceInfo.getFolder(),
             "unique_filename", false,
             "overwrite", true,
-            "resource_type", "image",
+            "resource_type", "auto",
             "access_control", accessControl
         );
         Map<?, ?> uploadResult = this.cloudinary.uploader().upload(tmpFile, params);
