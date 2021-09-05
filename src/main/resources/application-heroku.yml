@@ -29,7 +29,7 @@ spring:
       minimum-idle: 10
     tomcat:
       connection-properties: stringtype=unspecified
-    url: jdbc:${DATABASE_URL:}
+    url: ${DATABASE_URL:}
   jackson:
     serialization:
       FAIL_ON_EMPTY_BEANS: false
