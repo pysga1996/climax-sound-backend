@@ -1,6 +1,7 @@
 package com.alpha.config.properties;
 
 import lombok.Data;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @RefreshScope
 @Configuration
 @ConfigurationProperties(prefix = "storage.local")
+@ConditionalOnProperty(prefix = "storage", name = "storage-type", havingValue = "local")
 public class LocalStorageProperty {
 
     private String uploadRootUri;

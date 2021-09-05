@@ -21,15 +21,15 @@ import org.cloudinary.json.JSONArray;
 import org.cloudinary.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Log4j2
 @Service
-@ConditionalOnBean(Cloudinary.class)
+@DependsOn("cloudinary")
 @ConditionalOnProperty(prefix = "storage", name = "storage-type", havingValue = "cloudinary")
 public class CloudinaryStorageServiceImpl extends StorageService {
 

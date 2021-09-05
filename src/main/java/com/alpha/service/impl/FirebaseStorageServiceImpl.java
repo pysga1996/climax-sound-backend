@@ -19,14 +19,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Log4j2
 @Service
-@ConditionalOnBean(StorageClient.class)
+@DependsOn("firebaseStorage")
 @ConditionalOnProperty(prefix = "storage", name = "storage-type", havingValue = "firebase")
 public class FirebaseStorageServiceImpl extends StorageService {
 
