@@ -60,18 +60,18 @@ public class KafkaLikeServiceImpl implements LikeService {
         this.kafkaTemplate = kafkaTemplate;
         this.consumer = consumerFactory.createConsumer();
         this.redisTemplate = redisTemplate;
-        this.consumer.subscribe(Arrays.stream(LikeConfig.values())
-            .map(LikeConfig::getTable).collect(
-                Collectors.toList()));
-        ConsumerRecords<String, String> records = this.consumer
-            .poll(Duration.of(10, ChronoUnit.SECONDS));
-        for (TopicPartition partition : records.partitions()) {
-            List<ConsumerRecord<String, String>> partitionRecords = records.records(partition);
-            long firstOffset = partitionRecords.get(0).offset();
-            consumer.commitSync(Collections.singletonMap(partition,
-                new OffsetAndMetadata(firstOffset > 0 ? firstOffset - 1 : 0)));
-        }
-        this.consumer.unsubscribe();
+//        this.consumer.subscribe(Arrays.stream(LikeConfig.values())
+//            .map(LikeConfig::getTable).collect(
+//                Collectors.toList()));
+//        ConsumerRecords<String, String> records = this.consumer
+//            .poll(Duration.of(10, ChronoUnit.SECONDS));
+//        for (TopicPartition partition : records.partitions()) {
+//            List<ConsumerRecord<String, String>> partitionRecords = records.records(partition);
+//            long firstOffset = partitionRecords.get(0).offset();
+//            consumer.commitSync(Collections.singletonMap(partition,
+//                new OffsetAndMetadata(firstOffset > 0 ? firstOffset - 1 : 0)));
+//        }
+//        this.consumer.unsubscribe();
     }
 
     @Async
