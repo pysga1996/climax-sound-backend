@@ -26,7 +26,7 @@ import org.springframework.kafka.core.ProducerFactory;
 @Profile({"heroku", "poweredge"})
 public class KafkaConfig {
 
-    @Value(value = "${spring.kafka.jaas.options.username}")
+    @Value(value = "${spring.kafka.jaas.options.username:}")
     private String username;
 
     @Value(value = "${spring.kafka.jaas.options.password}")
