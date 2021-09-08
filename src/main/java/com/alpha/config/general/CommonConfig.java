@@ -6,6 +6,7 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.StorageClient;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
@@ -24,7 +25,6 @@ import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactor
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.Resource;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
@@ -56,11 +56,8 @@ public class CommonConfig {
     @Value("${custom.connector-scheme}")
     private String connectorScheme;
 
-//    @Value("${storage.firebase.credentials}")
-//    private String firebaseCredentials;
-
-    @Value("classpath:climax-sound-firebase-adminsdk-kwlpu-8b5205c826.json")
-    private Resource firebaseCredFile;
+    @Value("${storage.firebase.credentials}")
+    private String firebaseCredentials;
 
     @Bean
     @ConditionalOnProperty(prefix = "storage", name = "storage-type", havingValue = "cloudinary")
@@ -72,9 +69,9 @@ public class CommonConfig {
     @ConditionalOnProperty(prefix = "storage", name = "storage-type", havingValue = "firebase")
     public StorageClient firebaseStorage() {
         try {
-//            GoogleCredentials credentials = GoogleCredentials.fromStream(new ByteArrayInputStream(this.firebaseCredentials.getBytes()));
-            GoogleCredentials credentials = GoogleCredentials
-                .fromStream(this.firebaseCredFile.getInputStream());
+            GoogleCredentials credentials = GoogleCredentials.fromStream(new ByteArrayInputStream(this.firebaseCredentials.getBytes()));
+//            GoogleCredentials credentials = GoogleCredentials
+//                .fromStream(this.firebaseCredFile.getInputStream());
             FirebaseOptions options = FirebaseOptions.builder()
                 .setCredentials(credentials)
                 .setDatabaseUrl(this.firebaseDatabaseUrl)
