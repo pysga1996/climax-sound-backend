@@ -16,6 +16,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.cloudinary.json.JSONArray;
 import org.cloudinary.json.JSONObject;
@@ -61,40 +62,47 @@ public class CloudinaryStorageServiceImpl extends StorageService {
 
     @Override
     @Transactional
-    public ResourceInfo upload(MultipartFile multipartFile, Media media) throws IOException {
+    @SneakyThrows
+    public ResourceInfo upload(MultipartFile multipartFile, Media media) {
         ResourceInfo resourceInfo = media.generateResource(multipartFile);
-        File tmpDir = new File(servletContext.getRealPath("/") + this.tempFolder);
-        if (!tmpDir.exists()) {
-            log.info("Created temp folder? {}", tmpDir.mkdir());
+        try {
+            File tmpDir = new File(servletContext.getRealPath("/") + this.tempFolder);
+            if (!tmpDir.exists()) {
+                log.info("Created temp folder? {}", tmpDir.mkdir());
+            }
+            File tmpFile = new File(tmpDir, resourceInfo.getFileName());
+            if (!tmpFile.exists()) {
+                log.info("Created temp file? {}", tmpFile.createNewFile());
+            }
+            log.info("Path: {}", tmpFile.getCanonicalPath());
+            multipartFile.transferTo(tmpFile);
+            JSONArray accessControl = new JSONArray();
+            JSONObject accessType = new JSONObject();
+            accessType.put("access_type", "anonymous");
+            accessControl.put(accessType);
+            Map<?, ?> params = ObjectUtils.asMap(
+                "use_filename", true,
+                "folder", resourceInfo.getFolder(),
+                "unique_filename", false,
+                "overwrite", true,
+                "resource_type", "auto",
+                "access_control", accessControl
+            );
+            Map<?, ?> uploadResult = this.cloudinary.uploader().upload(tmpFile, params);
+            log.info("Delete temp file? {}", tmpFile.delete());
+            String publicId = (String) uploadResult.get("public_id");
+            resourceInfo.setStoragePath(publicId);
+            String mediaUrl = (String) uploadResult.get("secure_url");
+            resourceInfo.setUri(mediaUrl);
+            resourceInfo.setStorageType(StorageType.CLOUDINARY);
+            resourceInfo.setStatus(Status.ACTIVE);
+            this.saveResourceInfo(resourceInfo, StorageType.CLOUDINARY);
+            return resourceInfo;
+        } catch (IOException ex) {
+            log.error("Could not store file {}. Please try again!",
+                resourceInfo.getFileName(), ex);
+            throw ex;
         }
-        File tmpFile = new File(tmpDir, resourceInfo.getFileName());
-        if (!tmpFile.exists()) {
-            log.info("Created temp file? {}", tmpFile.createNewFile());
-        }
-        log.info("Path: {}", tmpFile.getCanonicalPath());
-        multipartFile.transferTo(tmpFile);
-        JSONArray accessControl = new JSONArray();
-        JSONObject accessType = new JSONObject();
-        accessType.put("access_type", "anonymous");
-        accessControl.put(accessType);
-        Map<?, ?> params = ObjectUtils.asMap(
-            "use_filename", true,
-            "folder", resourceInfo.getFolder(),
-            "unique_filename", false,
-            "overwrite", true,
-            "resource_type", "auto",
-            "access_control", accessControl
-        );
-        Map<?, ?> uploadResult = this.cloudinary.uploader().upload(tmpFile, params);
-        log.info("Delete temp file? {}", tmpFile.delete());
-        String publicId = (String) uploadResult.get("public_id");
-        resourceInfo.setStoragePath(publicId);
-        String mediaUrl = (String) uploadResult.get("secure_url");
-        resourceInfo.setUri(mediaUrl);
-        resourceInfo.setStorageType(StorageType.CLOUDINARY);
-        resourceInfo.setStatus(Status.ACTIVE);
-        this.saveResourceInfo(resourceInfo, StorageType.CLOUDINARY);
-        return resourceInfo;
     }
 
     @Override

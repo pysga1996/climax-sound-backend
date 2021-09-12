@@ -1,11 +1,10 @@
 package com.alpha.repositories.impl;
 
+import com.alpha.constant.SchedulerConstants.LikeConfig;
+import com.alpha.constant.SchedulerConstants.ListeningConfig;
 import com.alpha.model.entity.UserFavoriteSong;
 import com.alpha.repositories.BaseRepository;
 import com.alpha.repositories.LikeRepository;
-import com.alpha.service.LikeService.LikeConfig;
-import com.alpha.service.LikeService.ListeningConfig;
-import com.alpha.util.helper.SqlUtilService;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,6 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
@@ -34,13 +32,6 @@ public class LikeRepositoryImpl extends BaseRepository implements LikeRepository
 
     @PersistenceContext
     private EntityManager entityManager;
-
-    private final SqlUtilService sqlUtilService;
-
-    @Autowired
-    public LikeRepositoryImpl(SqlUtilService sqlUtilService) {
-        this.sqlUtilService = sqlUtilService;
-    }
 
     @Override
     @Cacheable(cacheNames = "songLikes", key = "#username + '_' + #id")
@@ -63,41 +54,43 @@ public class LikeRepositoryImpl extends BaseRepository implements LikeRepository
     }
 
     public void updateLikesInBatch(List<String> records, LikeConfig likeConfig) {
-        String sql = this.sqlUtilService.readSqlResourceFile(likeConfig.getSqlFile());
-        int upsertCount = this.batchInsertUpdateDelete(sql, records, (statement, record, i) -> {
-            String[] lineArr = record.split("_");
-            log.debug("Line {}: {}", i, record);
-            statement.setString(1, lineArr[0]);
-            statement.setLong(2, Long.parseLong(lineArr[1]));
-            statement.setBoolean(3, Boolean.parseBoolean(lineArr[2]));
-            statement.setBoolean(4, Boolean.parseBoolean(lineArr[2]));
-            statement.setString(5, lineArr[0]);
-            statement.setLong(6, Long.parseLong(lineArr[1]));
-        });
+        int upsertCount = this
+            .batchInsertUpdateDelete(likeConfig.getSql(), records, (statement, record, i) -> {
+                String[] lineArr = record.split("_");
+                log.debug("Line {}: {}", i, record);
+                statement.setString(1, lineArr[0]);
+                statement.setLong(2, Long.parseLong(lineArr[1]));
+                statement.setBoolean(3, Boolean.parseBoolean(lineArr[2]));
+                statement.setBoolean(4, Boolean.parseBoolean(lineArr[2]));
+                statement.setString(5, lineArr[0]);
+                statement.setLong(6, Long.parseLong(lineArr[1]));
+            });
         log.info("Upsert likes of {} count: {}", likeConfig.getTable(), upsertCount);
     }
 
     @Override
     public void updateListeningInBatch(List<String> records, ListeningConfig listeningConfig) {
-        String sql = this.sqlUtilService.readSqlResourceFile(listeningConfig.getListeningSqlFile());
-        int upsertCount = this.batchInsertUpdateDelete(sql, records, (statement, record, i) -> {
-            String[] lineArr = record.split("_");
-            log.debug("Line {}: {}", i, record);
-            statement.setString(1, lineArr[0]);
-            statement.setLong(2, Long.parseLong(lineArr[1]));
-        });
+        int upsertCount = this.batchInsertUpdateDelete(listeningConfig.getListeningSql(), records,
+            (statement, record, i) -> {
+                String[] lineArr = record.split("_");
+                log.debug("Line {}: {}", i, record);
+                statement.setString(1, lineArr[0]);
+                statement.setLong(2, Long.parseLong(lineArr[1]));
+            });
         log.info("Upsert listening of {} count: {}", listeningConfig.getTable(), upsertCount);
     }
 
     @Override
     public void updateListeningCountInBatch(Map<String, String> listeningCountMap,
         ListeningConfig listeningConfig) {
-        String sql = this.sqlUtilService.readSqlResourceFile(listeningConfig.getListeningCountSqlFile());
-        int updateCount = this.batchInsertUpdateDelete(sql, listeningCountMap.entrySet(), (statement, record, i) -> {
-            log.debug("Listening update line {}: id {} - count {}", i, record.getKey(), record.getValue());
-            statement.setLong(1, Long.parseLong(record.getValue()));
-            statement.setLong(2, Long.parseLong(record.getKey()));
-        });
+        int updateCount = this
+            .batchInsertUpdateDelete(listeningConfig.getListeningCountSql(),
+                listeningCountMap.entrySet(), (statement, record, i) -> {
+                    log.debug("Listening update line {}: id {} - count {}", i, record.getKey(),
+                        record.getValue());
+                    statement.setLong(1, Long.parseLong(record.getValue()));
+                    statement.setLong(2, Long.parseLong(record.getKey()));
+                });
         log.info("Update listening count of {} count: {}", listeningConfig.getTable(), updateCount);
     }
 

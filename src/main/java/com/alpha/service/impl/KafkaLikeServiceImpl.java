@@ -1,13 +1,14 @@
 package com.alpha.service.impl;
 
 import com.alpha.config.general.KafkaConfig;
+import com.alpha.constant.SchedulerConstants.LikeConfig;
+import com.alpha.constant.SchedulerConstants.ListeningConfig;
 import com.alpha.repositories.LikeRepository;
 import com.alpha.service.LikeService;
 import com.alpha.service.UserService;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +18,6 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.OffsetAndMetadata;
-import org.apache.kafka.common.TopicPartition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -26,7 +25,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 /**
@@ -97,8 +95,7 @@ public class KafkaLikeServiceImpl implements LikeService {
     }
 
     @Override
-    public void insertLikesToDb(LikeConfig likeConfig,
-        int batchSize) {
+    public void insertLikesToDb(LikeConfig likeConfig) {
         try {
             String topic = this.topicPrefix + likeConfig.getTable();
             log.info("Start insert likes from topic {} to database...", topic);
@@ -121,26 +118,8 @@ public class KafkaLikeServiceImpl implements LikeService {
         }
     }
 
-    @Scheduled(fixedDelay = 300000) // 5 min
     @Override
-    public void insertSongLikesToDb() {
-        this.insertLikesToDb(LikeConfig.SONG, 20);
-    }
-
-//    @Scheduled(fixedDelay = 300000)
-    @Override
-    public void insertAlbumLikesToDb() {
-        this.insertLikesToDb(LikeConfig.ALBUM, 20);
-    }
-
-//    @Scheduled(fixedDelay = 300000)
-    @Override
-    public void insertArtistLikesToDb() {
-        this.insertLikesToDb(LikeConfig.ARTIST, 20);
-    }
-
-    @Override
-    public void updateListeningToDb(ListeningConfig listeningConfig, int batchSize) {
+    public void updateListeningToDb(ListeningConfig listeningConfig) {
         try {
             String topic = this.topicPrefix + listeningConfig.getTable();
             log.info("Start insert listening from topic {} to database...", topic);
@@ -163,20 +142,8 @@ public class KafkaLikeServiceImpl implements LikeService {
         }
     }
 
-//    @Scheduled(fixedDelay = 300000)
     @Override
-    public void updateSongListeningToDb() {
-        this.updateListeningToDb(ListeningConfig.SONG, 20);
-    }
-
-//    @Scheduled(fixedDelay = 300000)
-    @Override
-    public void updateAlbumListeningToDb() {
-        this.updateListeningToDb(ListeningConfig.ALBUM, 20);
-    }
-
-    @Override
-    public void updateListeningCountToDb(ListeningConfig listeningConfig, int batchSize) {
+    public void updateListeningCountToDb(ListeningConfig listeningConfig) {
         log.info("Start synchronize listening count to database...");
         Set<String> queues = this.redisTemplate.opsForSet().members("song_listening_queue");
         if (queues != null && !queues.isEmpty()) {
@@ -186,18 +153,6 @@ public class KafkaLikeServiceImpl implements LikeService {
             this.likeRepository.updateListeningCountInBatch(idListeningCountMap, listeningConfig);
             this.redisTemplate.opsForSet().remove("song_listening_queue", queues.toArray());
         }
-    }
-
-//    @Scheduled(fixedDelay = 300000) // 5 min
-    @Override
-    public void updateSongListeningCountToDb() {
-        this.updateListeningCountToDb(ListeningConfig.SONG, 20);
-    }
-
-//    @Scheduled(fixedDelay = 300000)
-    @Override
-    public void updateAlbumListeningCountToDb() {
-        this.updateListeningCountToDb(ListeningConfig.ALBUM, 20);
     }
 
     @Override

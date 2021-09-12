@@ -1,8 +1,8 @@
 package com.alpha.repositories;
 
+import com.alpha.constant.SchedulerConstants.LikeConfig;
+import com.alpha.constant.SchedulerConstants.ListeningConfig;
 import com.alpha.model.entity.UserFavoriteSong;
-import com.alpha.service.LikeService.LikeConfig;
-import com.alpha.service.LikeService.ListeningConfig;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;

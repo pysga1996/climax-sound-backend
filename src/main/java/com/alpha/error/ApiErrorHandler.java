@@ -1,10 +1,21 @@
 package com.alpha.error;
 
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ConstraintViolationException;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +24,6 @@ import org.springframework.web.context.request.WebRequest;
 
 @Log4j2
 @RestControllerAdvice(annotations = {RestController.class})
-@SuppressWarnings("deprecation")
 public class ApiErrorHandler {
 
     @ExceptionHandler(Exception.class)
@@ -44,13 +54,6 @@ public class ApiErrorHandler {
         return new ApiError(2500, ex.getLocalizedMessage());
     }
 
-//    @ExceptionHandler(InvalidTokenException.class)
-//    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-//    public ApiError handleInvalidTokenException(InvalidTokenException ex, WebRequest request) {
-//        log.error("Exception: {}, user: {}", ex, request.getRemoteUser());
-//        return new ApiError(2000, ex.getLocalizedMessage());
-//    }
-
     @ExceptionHandler(InvalidBearerTokenException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ApiError handleInvalidTokenException(InvalidBearerTokenException ex,
@@ -59,11 +62,37 @@ public class ApiErrorHandler {
         return new ApiError(2000, ex.getLocalizedMessage());
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
-    public ApiError handleUserNotFoundException(UserNotFoundException ex, WebRequest request) {
-        log.error("Exception: ", ex);
-        return new ApiError(1500, ex.getLocalizedMessage());
+    @NonNull
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+        MethodArgumentNotValidException ex,
+        @NonNull HttpHeaders headers,
+        HttpStatus status,
+        @NonNull WebRequest request) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", new Date());
+        body.put("status", status.value());
+
+        //Get all errors
+        List<String> errors = ex.getBindingResult()
+            .getFieldErrors()
+            .stream()
+            .map(DefaultMessageSourceResolvable::getDefaultMessage)
+            .collect(Collectors.toList());
+
+        body.put("errors", errors);
+
+        return new ResponseEntity<>(body, headers, status);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, Object> constraintViolationException(ConstraintViolationException ex) {
+        log.error(ex);
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", new Date());
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        return body;
     }
 
 }

@@ -8,7 +8,6 @@ import com.alpha.repositories.AlbumRepositoryCustom;
 import com.alpha.repositories.BaseRepository;
 import com.alpha.service.StorageService;
 import com.alpha.util.helper.DataTypeComparer;
-import com.alpha.util.helper.SqlUtilService;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -44,13 +43,9 @@ public class AlbumRepositoryImpl extends BaseRepository implements AlbumReposito
 
     private final StorageService storageService;
 
-    private final SqlUtilService sqlUtilService;
-
     @Autowired
-    public AlbumRepositoryImpl(StorageService storageService,
-        SqlUtilService sqlUtilService) {
+    public AlbumRepositoryImpl(StorageService storageService) {
         this.storageService = storageService;
-        this.sqlUtilService = sqlUtilService;
     }
 
     public Page<AlbumDTO> extractResult(ResultSet rs, Pageable pageable) throws SQLException {
@@ -146,23 +141,25 @@ public class AlbumRepositoryImpl extends BaseRepository implements AlbumReposito
 
     @Override
     public void updateSongList(Long albumId, List<AlbumUpdateDTO> albumUpdateDTOList) {
-        List<AlbumUpdateDTO> insertRelList = albumUpdateDTOList.stream().filter(e -> e.getMode() == UpdateMode.CREATE).collect(
-            Collectors.toList());
-        List<AlbumUpdateDTO> deleteRelList = albumUpdateDTOList.stream().filter(e -> e.getMode() == UpdateMode.DELETE).collect(
-            Collectors.toList());
+        List<AlbumUpdateDTO> insertRelList = albumUpdateDTOList.stream()
+            .filter(e -> e.getMode() == UpdateMode.CREATE).collect(
+                Collectors.toList());
+        List<AlbumUpdateDTO> deleteRelList = albumUpdateDTOList.stream()
+            .filter(e -> e.getMode() == UpdateMode.DELETE).collect(
+                Collectors.toList());
         String sqlInsert = "INSERT INTO album_song (album_id, song_id, \"order\")\n"
             + "VALUES (?, ?, ?)\n"
             + "    ON CONFLICT ON CONSTRAINT album_song_pk\n"
             + "    DO NOTHING";
         this.batchInsertUpdateDelete(sqlInsert, insertRelList, ((statement, element, index) -> {
-            statement.setLong(1 , albumId);
-            statement.setLong(2 , element.getSongId());
-            statement.setLong(3 , element.getOrder());
+            statement.setLong(1, albumId);
+            statement.setLong(2, element.getSongId());
+            statement.setLong(3, element.getOrder());
         }));
         String sqlDelete = "DELETE FROM album_song WHERE album_id = ? AND song_id = ?";
         this.batchInsertUpdateDelete(sqlDelete, deleteRelList, ((statement, element, index) -> {
-            statement.setLong(1 , albumId);
-            statement.setLong(2 , element.getSongId());
+            statement.setLong(1, albumId);
+            statement.setLong(2, element.getSongId());
         }));
     }
 

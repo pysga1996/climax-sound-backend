@@ -1,6 +1,8 @@
 package com.alpha.service.impl;
 
 import com.alpha.config.general.KafkaConfig;
+import com.alpha.constant.SchedulerConstants.LikeConfig;
+import com.alpha.constant.SchedulerConstants.ListeningConfig;
 import com.alpha.repositories.LikeRepository;
 import com.alpha.service.LikeService;
 import com.alpha.service.UserService;
@@ -26,7 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -80,9 +81,9 @@ public class FileLikeServiceImpl implements LikeService {
             ListeningConfig.class);
         for (ListeningConfig listeningConfig : ListeningConfig.values()) {
             Path dir = Paths.get(listeningConfig.getDir());
-            Path filePath = dir.resolve(listeningConfig.getLikesQueueFile());
+            Path filePath = dir.resolve(listeningConfig.getListeningQueueFile());
             if (!Files.exists(filePath)) {
-                Files.createDirectories(dir).resolve(listeningConfig.getLikesQueueFile());
+                Files.createDirectories(dir).resolve(listeningConfig.getListeningQueueFile());
                 Files.createFile(filePath);
             }
             try {
@@ -138,7 +139,7 @@ public class FileLikeServiceImpl implements LikeService {
 
     @Override
     @Transactional
-    public void insertLikesToDb(LikeConfig likeConfig, int batchSize) {
+    public void insertLikesToDb(LikeConfig likeConfig) {
         log.debug("Start synchronize likes record to database...");
         Path dir = Paths.get(likeConfig.getDir());
         Path filePath = dir.resolve(likeConfig.getLikesQueueFile());
@@ -155,30 +156,12 @@ public class FileLikeServiceImpl implements LikeService {
         }
     }
 
-    @Scheduled(fixedDelay = 300000) // 5 min
-    @Override
-    public void insertSongLikesToDb() {
-        this.insertLikesToDb(LikeConfig.SONG, 20);
-    }
-
-    @Scheduled(fixedDelay = 300000)
-    @Override
-    public void insertAlbumLikesToDb() {
-        this.insertLikesToDb(LikeConfig.ALBUM, 20);
-    }
-
-    @Scheduled(fixedDelay = 300000)
-    @Override
-    public void insertArtistLikesToDb() {
-        this.insertLikesToDb(LikeConfig.ARTIST, 20);
-    }
-
     @Override
     @Transactional
-    public void updateListeningToDb(ListeningConfig listeningConfig, int batchSize) {
+    public void updateListeningToDb(ListeningConfig listeningConfig) {
         log.debug("Start synchronize listening record to database...");
         Path dir = Paths.get(listeningConfig.getDir());
-        Path filePath = dir.resolve(listeningConfig.getLikesQueueFile());
+        Path filePath = dir.resolve(listeningConfig.getListeningQueueFile());
         try (Stream<String> lines = Files.lines(filePath)) {
             this.likeRepository
                 .updateListeningInBatch(lines.collect(Collectors.toList()), listeningConfig);
@@ -193,21 +176,9 @@ public class FileLikeServiceImpl implements LikeService {
         }
     }
 
-    @Scheduled(fixedDelay = 300000) // 5 min
-    @Override
-    public void updateSongListeningToDb() {
-        this.updateListeningToDb(ListeningConfig.SONG, 20);
-    }
-
-    @Scheduled(fixedDelay = 300000)
-    @Override
-    public void updateAlbumListeningToDb() {
-        this.updateListeningToDb(ListeningConfig.ALBUM, 20);
-    }
-
     @Override
     @Transactional
-    public void updateListeningCountToDb(ListeningConfig listeningConfig, int batchSize) {
+    public void updateListeningCountToDb(ListeningConfig listeningConfig) {
         log.debug("Start synchronize listening count to database...");
         Set<String> queues = this.redisTemplate.opsForSet().members("song_listening_queue");
         if (queues != null && !queues.isEmpty()) {
@@ -217,18 +188,6 @@ public class FileLikeServiceImpl implements LikeService {
             this.likeRepository.updateListeningCountInBatch(idListeningCountMap, listeningConfig);
             this.redisTemplate.opsForSet().remove("song_listening_queue", queues.toArray());
         }
-    }
-
-    @Scheduled(fixedDelay = 300000) // 5 min
-    @Override
-    public void updateSongListeningCountToDb() {
-        this.updateListeningCountToDb(ListeningConfig.SONG, 20);
-    }
-
-    @Scheduled(fixedDelay = 300000)
-    @Override
-    public void updateAlbumListeningCountToDb() {
-        this.updateListeningCountToDb(ListeningConfig.ALBUM, 20);
     }
 
     @Override

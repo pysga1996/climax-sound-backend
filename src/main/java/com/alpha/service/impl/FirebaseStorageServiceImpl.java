@@ -2,7 +2,6 @@ package com.alpha.service.impl;
 
 import com.alpha.config.properties.StorageProperty.StorageType;
 import com.alpha.constant.Status;
-import com.alpha.error.FileStorageException;
 import com.alpha.model.entity.Media;
 import com.alpha.model.entity.ResourceInfo;
 import com.alpha.repositories.ResourceInfoRepository;
@@ -17,6 +16,7 @@ import java.io.InputStream;
 import javax.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -52,6 +52,7 @@ public class FirebaseStorageServiceImpl extends StorageService {
     }
 
     @Override
+    @SneakyThrows
     public ResourceInfo upload(MultipartFile multipartFile, Media media) {
         ResourceInfo resourceInfo = media.generateResource(multipartFile);
         Bucket bucket = storageClient.bucket();
@@ -71,9 +72,9 @@ public class FirebaseStorageServiceImpl extends StorageService {
             this.saveResourceInfo(resourceInfo, StorageType.FIREBASE);
             return resourceInfo;
         } catch (IOException ex) {
-            throw new FileStorageException(String
-                .format("Could not store file %s. Please try again!",
-                    resourceInfo.getFileName()), ex);
+            log.error("Could not store file {}. Please try again!",
+                resourceInfo.getFileName(), ex);
+            throw ex;
         }
     }
 

@@ -1,7 +1,5 @@
 package com.alpha;
 
-import com.alpha.event.DataSeedingListener;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -20,13 +18,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableJpaRepositories(basePackages = {"com.alpha.repositories"})
 public class AlphaSoundServiceApplication extends SpringBootServletInitializer {
 
-    private final DataSeedingListener dataSeedingListener;
-
-    @Autowired
-    public AlphaSoundServiceApplication(DataSeedingListener dataSeedingListener) {
-        this.dataSeedingListener = dataSeedingListener;
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(AlphaSoundServiceApplication.class, args);
     }
@@ -38,7 +29,6 @@ public class AlphaSoundServiceApplication extends SpringBootServletInitializer {
 
     @EventListener(ContextRefreshedEvent.class)
     public void dataSeeding() {
-        dataSeedingListener.onApplicationEvent();
     }
 
 }

@@ -16,8 +16,7 @@ public abstract class StorageService {
 
     protected abstract ResourceInfoRepository getResourceInfoRepository();
 
-    public abstract ResourceInfo upload(MultipartFile multipartFile, Media media)
-        throws IOException;
+    public abstract ResourceInfo upload(MultipartFile multipartFile, Media media);
 
     public ResourceInfo upload(MultipartFile multipartFile, Media media,
         ResourceInfo oldResourceInfo)

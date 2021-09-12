@@ -92,7 +92,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AccessDecisionManager accessDecisionManager() {
-        java.util.List<AccessDecisionVoter<? extends Object>> decisionVoters
+        java.util.List<AccessDecisionVoter<?>> decisionVoters
             = Arrays.asList(
             new WebExpressionVoter(),
             // You can add or remove the Role voters as per need

@@ -1,9 +1,8 @@
 package com.alpha.config.general;
 
-import com.alpha.service.LikeService.LikeConfig;
+import com.alpha.constant.SchedulerConstants.LikeConfig;
 import java.util.Map;
 import org.apache.kafka.clients.admin.NewTopic;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,7 +40,7 @@ public class KafkaConfig {
 
         String serializer = StringSerializer.class.getName();
         String deserializer = StringDeserializer.class.getName();
-        props.put(ConsumerConfig.FETCH_MAX_BYTES_CONFIG, "5242880");
+//        props.put(ConsumerConfig.FETCH_MAX_BYTES_CONFIG, "5242880");
 //        props.put("bootstrap.servers", brokers);
 //        props.put("group.id", "newer");
 //        props.put("enable.auto.commit", "true");

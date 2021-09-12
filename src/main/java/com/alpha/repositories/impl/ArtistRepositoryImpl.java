@@ -5,7 +5,6 @@ import com.alpha.model.dto.ArtistSearchDTO;
 import com.alpha.repositories.ArtistRepositoryCustom;
 import com.alpha.repositories.BaseRepository;
 import com.alpha.service.StorageService;
-import com.alpha.util.helper.SqlUtilService;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,13 +38,9 @@ public class ArtistRepositoryImpl extends BaseRepository implements ArtistReposi
 
     private final StorageService storageService;
 
-    private final SqlUtilService sqlUtilService;
-
     @Autowired
-    public ArtistRepositoryImpl(StorageService storageService,
-        SqlUtilService sqlUtilService) {
+    public ArtistRepositoryImpl(StorageService storageService) {
         this.storageService = storageService;
-        this.sqlUtilService = sqlUtilService;
     }
 
     private Page<ArtistDTO> extractResult(ResultSet rs, Pageable pageable) throws SQLException {

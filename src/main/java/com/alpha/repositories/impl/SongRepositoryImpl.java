@@ -6,7 +6,6 @@ import com.alpha.repositories.BaseRepository;
 import com.alpha.repositories.SongRepositoryCustom;
 import com.alpha.service.StorageService;
 import com.alpha.util.helper.DataTypeComparer;
-import com.alpha.util.helper.SqlUtilService;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,13 +40,9 @@ public class SongRepositoryImpl extends BaseRepository implements SongRepository
 
     private final StorageService storageService;
 
-    private final SqlUtilService sqlUtilService;
-
     @Autowired
-    public SongRepositoryImpl(StorageService storageService,
-        SqlUtilService sqlUtilService) {
+    public SongRepositoryImpl(StorageService storageService) {
         this.storageService = storageService;
-        this.sqlUtilService = sqlUtilService;
     }
 
     public Page<SongDTO> extractResult(ResultSet rs, Pageable pageable) throws SQLException {

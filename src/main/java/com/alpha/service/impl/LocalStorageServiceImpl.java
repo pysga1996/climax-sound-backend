@@ -3,8 +3,6 @@ package com.alpha.service.impl;
 import com.alpha.config.properties.LocalStorageProperty;
 import com.alpha.config.properties.StorageProperty.StorageType;
 import com.alpha.constant.Status;
-import com.alpha.error.FileNotFoundException;
-import com.alpha.error.FileStorageException;
 import com.alpha.model.entity.Media;
 import com.alpha.model.entity.ResourceInfo;
 import com.alpha.repositories.ResourceInfoRepository;
@@ -16,9 +14,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,6 +49,7 @@ public class LocalStorageServiceImpl extends StorageService {
     private HttpServletRequest httpServletRequest;
 
     @Autowired
+    @SneakyThrows
     public LocalStorageServiceImpl(LocalStorageProperty localStorageProperty,
         ResourceInfoRepository resourceInfoRepository) {
         this.storageLocation = Paths.get(localStorageProperty.getUploadDir())
@@ -62,9 +63,10 @@ public class LocalStorageServiceImpl extends StorageService {
             Files.createDirectories(audioPath);
             Files.createDirectories(coverPath);
             Files.createDirectories(avatarPath);
-        } catch (Exception ex) {
-            throw new FileStorageException(
-                "Could not create the directory where the uploaded files will be stored.", ex);
+        } catch (IOException ex) {
+            log.error("Could not create the directory where the uploaded files will be stored: ",
+                ex);
+            throw ex;
         }
     }
 
@@ -96,9 +98,8 @@ public class LocalStorageServiceImpl extends StorageService {
             this.saveResourceInfo(resourceInfo, StorageType.LOCAL);
             return resourceInfo;
         } catch (IOException ex) {
-            throw new FileStorageException(String
-                .format("Could not store file %s. Please try again!",
-                    resourceInfo.getFileName()), ex);
+            log.error("Could not store file {}. Please try again!", resourceInfo.getFileName(), ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -117,10 +118,11 @@ public class LocalStorageServiceImpl extends StorageService {
             if (resource.exists()) {
                 return resource;
             } else {
-                throw new FileNotFoundException("File not found " + folder + "/" + fileName);
+                throw new EntityNotFoundException("File not found " + folder + "/" + fileName);
             }
         } catch (MalformedURLException ex) {
-            throw new FileNotFoundException("File not found " + folder + "/" + fileName, ex);
+            log.error("Invalid uri: ", ex);
+            throw new EntityNotFoundException("File not found " + folder + "/" + fileName);
         }
     }
 

@@ -3,6 +3,7 @@ package com.alpha.service.impl;
 import com.alpha.config.properties.StorageProperty.StorageType;
 import com.alpha.constant.CommonConstants;
 import com.alpha.constant.MediaRef;
+import com.alpha.constant.SchedulerConstants.ListeningConfig;
 import com.alpha.constant.Status;
 import com.alpha.mapper.ArtistMapper;
 import com.alpha.mapper.SongMapper;
@@ -12,19 +13,16 @@ import com.alpha.model.dto.SongDTO;
 import com.alpha.model.dto.SongSearchDTO;
 import com.alpha.model.dto.TagDTO;
 import com.alpha.model.dto.UserInfoDTO;
-import com.alpha.model.entity.Album;
 import com.alpha.model.entity.ResourceInfo;
 import com.alpha.model.entity.Song;
 import com.alpha.model.entity.Tag;
 import com.alpha.model.entity.UserFavoriteSong;
 import com.alpha.model.entity.UserInfo;
-import com.alpha.repositories.AlbumRepository;
 import com.alpha.repositories.LikeRepository;
 import com.alpha.repositories.ResourceInfoRepository;
 import com.alpha.repositories.SongRepository;
 import com.alpha.repositories.TagRepository;
 import com.alpha.service.LikeService;
-import com.alpha.service.LikeService.ListeningConfig;
 import com.alpha.service.SongService;
 import com.alpha.service.StorageService;
 import com.alpha.service.UserService;
@@ -58,8 +56,6 @@ public class SongServiceImpl implements SongService {
 
     private final TagRepository tagRepository;
 
-    private final AlbumRepository albumRepository;
-
     private final ResourceInfoRepository resourceInfoRepository;
 
     private final StorageService storageService;
@@ -80,7 +76,7 @@ public class SongServiceImpl implements SongService {
     private StorageType storageType;
 
     @Autowired
-    public SongServiceImpl(SongRepository songRepository, AlbumRepository albumRepository,
+    public SongServiceImpl(SongRepository songRepository,
         LikeRepository likeRepository, UserService userService,
         TagRepository tagRepository, ResourceInfoRepository resourceInfoRepository,
         StorageService storageService, SongMapper songMapper,
@@ -95,7 +91,6 @@ public class SongServiceImpl implements SongService {
         this.songMapper = songMapper;
         this.artistMapper = artistMapper;
         this.tagMapper = tagMapper;
-        this.albumRepository = albumRepository;
         this.userInfoMapper = userInfoMapper;
         this.likeService = likeService;
     }
@@ -124,7 +119,8 @@ public class SongServiceImpl implements SongService {
         Optional<Song> optionalSong = this.songRepository.findById(id);
         if (optionalSong.isPresent()) {
             Optional<ResourceInfo> optionalResourceInfo = this.resourceInfoRepository
-                .findByMediaIdAndStorageTypeAndMediaRefAndStatus(id, this.storageType, MediaRef.SONG_AUDIO, Status.ACTIVE);
+                .findByMediaIdAndStorageTypeAndMediaRefAndStatus(id, this.storageType,
+                    MediaRef.SONG_AUDIO, Status.ACTIVE);
             SongDTO songDTO = this.songMapper.entityToDto(optionalSong.get());
             this.setLike(Optional.of(songDTO));
             optionalResourceInfo.ifPresent(
@@ -236,7 +232,8 @@ public class SongServiceImpl implements SongService {
         if (song.isPresent()) {
             this.songRepository.deleteById(id);
             Optional<ResourceInfo> resourceInfoOptional = this.resourceInfoRepository
-                .findByMediaIdAndStorageTypeAndMediaRefAndStatus(song.get().getId(), this.storageType,
+                .findByMediaIdAndStorageTypeAndMediaRefAndStatus(song.get().getId(),
+                    this.storageType,
                     MediaRef.SONG_AUDIO, Status.ACTIVE);
             resourceInfoOptional.ifPresent(this.storageService::delete);
         }

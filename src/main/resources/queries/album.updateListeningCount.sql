@@ -1,1 +1,0 @@
-UPDATE album SET listening_frequency = ? WHERE id = ?

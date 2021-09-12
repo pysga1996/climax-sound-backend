@@ -1,6 +1,5 @@
 package com.alpha.config.general;
 
-import com.alpha.error.FileStorageException;
 import com.cloudinary.Cloudinary;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
@@ -11,6 +10,8 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
+import lombok.SneakyThrows;
+import lombok.extern.log4j.Log4j2;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.coyote.http2.Http2Protocol;
@@ -31,6 +32,7 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+@Log4j2
 @Configuration
 public class CommonConfig {
 
@@ -42,7 +44,6 @@ public class CommonConfig {
 
     @Value("${storage.firebase.storage-bucket}")
     private String firebaseStorageBucket;
-
 
     @Value("${custom.http-port}")
     private Integer httpPort;
@@ -67,9 +68,11 @@ public class CommonConfig {
 
     @Bean
     @ConditionalOnProperty(prefix = "storage", name = "storage-type", havingValue = "firebase")
+    @SneakyThrows
     public StorageClient firebaseStorage() {
         try {
-            GoogleCredentials credentials = GoogleCredentials.fromStream(new ByteArrayInputStream(this.firebaseCredentials.getBytes()));
+            GoogleCredentials credentials = GoogleCredentials
+                .fromStream(new ByteArrayInputStream(this.firebaseCredentials.getBytes()));
 //            GoogleCredentials credentials = GoogleCredentials
 //                .fromStream(this.firebaseCredFile.getInputStream());
             FirebaseOptions options = FirebaseOptions.builder()
@@ -91,8 +94,8 @@ public class CommonConfig {
             }
             return StorageClient.getInstance(Objects.requireNonNull(fireApp));
         } catch (IOException ex) {
-            throw new FileStorageException("Could not get admin-sdk json file. Please try again!",
-                ex);
+            log.error("Could not get admin-sdk json file. Please try again!", ex);
+            throw ex;
         }
     }
 

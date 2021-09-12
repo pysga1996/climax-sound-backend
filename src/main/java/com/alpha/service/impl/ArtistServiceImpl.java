@@ -4,10 +4,8 @@ import com.alpha.config.properties.StorageProperty.StorageType;
 import com.alpha.constant.MediaRef;
 import com.alpha.constant.Status;
 import com.alpha.mapper.ArtistMapper;
-import com.alpha.mapper.ResourceInfoMapper;
 import com.alpha.model.dto.ArtistDTO;
 import com.alpha.model.dto.ArtistSearchDTO;
-import com.alpha.model.dto.ResourceInfoDTO;
 import com.alpha.model.entity.Artist;
 import com.alpha.model.entity.ResourceInfo;
 import com.alpha.repositories.ArtistRepository;
@@ -39,19 +37,15 @@ public class ArtistServiceImpl implements ArtistService {
 
     private final ArtistMapper artistMapper;
 
-    private final ResourceInfoMapper resourceInfoMapper;
-
     private final StorageService storageService;
 
     @Autowired
     public ArtistServiceImpl(ArtistRepository artistRepository,
         ResourceInfoRepository resourceInfoRepository,
-        ArtistMapper artistMapper,
-        ResourceInfoMapper resourceInfoMapper, StorageService storageService) {
+        ArtistMapper artistMapper, StorageService storageService) {
         this.artistRepository = artistRepository;
         this.resourceInfoRepository = resourceInfoRepository;
         this.artistMapper = artistMapper;
-        this.resourceInfoMapper = resourceInfoMapper;
         this.storageService = storageService;
     }
 
@@ -83,22 +77,16 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     @Transactional
-    public ArtistDTO create(ArtistDTO artist,
-        MultipartFile multipartFile) {
-        try {
-            String unaccentName = StringAccentRemover.removeStringAccent(artist.getName());
-            Artist artistToSave = this.artistMapper.dtoToEntity(artist);
-            this.artistRepository.saveAndFlush(artistToSave);
-            ResourceInfo resourceInfo = this.storageService.upload(multipartFile, artistToSave);
-            artist.setId(artistToSave.getId());
-            artist.setName(artistToSave.getName());
-            artist.setUnaccentName(unaccentName.toLowerCase());
-            artist.setAvatarUrl(this.storageService.getFullUrl(resourceInfo));
-            return artist;
-        } catch (IOException ex) {
-            log.error(ex);
-            throw new RuntimeException(ex);
-        }
+    public ArtistDTO create(ArtistDTO artist, MultipartFile multipartFile) {
+        String unaccentName = StringAccentRemover.removeStringAccent(artist.getName());
+        Artist artistToSave = this.artistMapper.dtoToEntity(artist);
+        this.artistRepository.saveAndFlush(artistToSave);
+        ResourceInfo resourceInfo = this.storageService.upload(multipartFile, artistToSave);
+        artist.setId(artistToSave.getId());
+        artist.setName(artistToSave.getName());
+        artist.setUnaccentName(unaccentName.toLowerCase());
+        artist.setAvatarUrl(this.storageService.getFullUrl(resourceInfo));
+        return artist;
     }
 
     @Override

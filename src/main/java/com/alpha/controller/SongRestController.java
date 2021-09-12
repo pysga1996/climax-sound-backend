@@ -1,5 +1,6 @@
 package com.alpha.controller;
 
+import com.alpha.constant.SchedulerConstants.LikeConfig;
 import com.alpha.model.dto.CommentDTO;
 import com.alpha.model.dto.LikeSongDTO;
 import com.alpha.model.dto.SongDTO;
@@ -7,7 +8,6 @@ import com.alpha.model.dto.SongSearchDTO;
 import com.alpha.model.dto.SongUploadForm;
 import com.alpha.service.CommentService;
 import com.alpha.service.LikeService;
-import com.alpha.service.LikeService.LikeConfig;
 import com.alpha.service.SongService;
 import com.alpha.service.impl.FormConvertService;
 import java.io.IOException;

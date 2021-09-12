@@ -48,6 +48,7 @@ spring:
         format_sql: true
         default_schema: alpha_sound
         jdbc:
+          batch_size: 20
           lob:
             non_contextual_creation: true
     hibernate:
