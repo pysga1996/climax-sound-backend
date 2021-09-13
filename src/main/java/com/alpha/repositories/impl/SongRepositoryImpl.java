@@ -1,5 +1,6 @@
 package com.alpha.repositories.impl;
 
+import com.alpha.model.dto.CountryDTO;
 import com.alpha.model.dto.SongDTO;
 import com.alpha.model.dto.SongSearchDTO;
 import com.alpha.repositories.BaseRepository;
@@ -73,6 +74,9 @@ public class SongRepositoryImpl extends BaseRepository implements SongRepository
                 song.setReleaseDate(rs.getDate("release_date"));
                 song.setUrl(rs.getString("url"));
                 song.setArtists(new ArrayList<>());
+                CountryDTO countryDTO = new CountryDTO();
+                countryDTO.setId(rs.getInt("country_id"));
+                song.setCountry(countryDTO);
                 artistId = this
                     .addArtist(artistId, currentArtistId, false, song, rs);
                 songList.add(song);
