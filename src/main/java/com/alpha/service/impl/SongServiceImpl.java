@@ -147,7 +147,7 @@ public class SongServiceImpl implements SongService {
     @Transactional
     public SongDTO uploadAndSaveSong(MultipartFile file, SongDTO songDTO)
         throws IOException {
-        UserInfoDTO userInfoDTO = this.userService.getCurrentProfile();
+        UserInfoDTO userInfoDTO = this.userService.getCurrentUserInfo();
         UserInfo userInfo = this.userInfoMapper.dtoToEntity(userInfoDTO);
         Song songToSave = this.songMapper.dtoToEntity(songDTO);
         songToSave.setUploader(userInfo);

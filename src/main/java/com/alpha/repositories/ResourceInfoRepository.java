@@ -21,4 +21,9 @@ public interface ResourceInfoRepository extends JpaRepository<ResourceInfo, Long
         StorageType storageType,
         MediaRef mediaRef,
         Status status);
+
+    Optional<ResourceInfo> findByUsernameAndStorageTypeAndMediaRefAndStatus(String username,
+        StorageType storageType,
+        MediaRef mediaRef,
+        Status status);
 }

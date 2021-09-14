@@ -27,6 +27,8 @@ public class ResourceInfoDTO {
 
     private Long mediaId;
 
+    private String username;
+
     private String uri;
 
     private StorageType storageType;

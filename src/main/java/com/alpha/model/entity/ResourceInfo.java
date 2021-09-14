@@ -48,6 +48,10 @@ public class ResourceInfo {
     @ToString.Include
     private Long mediaId;
 
+    @Column(name = "username")
+    @ToString.Include
+    private String username;
+
     @Column(name = "uri")
     @ToString.Include
     private String uri;

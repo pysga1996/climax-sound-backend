@@ -102,7 +102,7 @@ public class AlbumServiceImpl implements AlbumService {
     @Transactional
     public AlbumDTO uploadAndSaveAlbum(MultipartFile file, AlbumDTO album) throws IOException {
         Album albumToSave = this.albumMapper.dtoToEntity(album);
-        UserInfoDTO userInfoDTO = this.userService.getCurrentProfile();
+        UserInfoDTO userInfoDTO = this.userService.getCurrentUserInfo();
         UserInfo userInfo = this.userInfoMapper.dtoToEntity(userInfoDTO);
         albumToSave.setUploader(userInfo);
         this.albumRepository.saveAndFlush(albumToSave);

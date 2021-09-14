@@ -15,8 +15,6 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,7 +56,7 @@ public class CommentServiceImpl implements CommentService {
             throw new EntityNotFoundException("Song not found!");
         }
         LocalDateTime localDateTime = LocalDateTime.now();
-        UserInfoDTO userInfoDTO = this.userService.getCurrentProfile();
+        UserInfoDTO userInfoDTO = this.userService.getCurrentUserInfo();
         UserInfo userInfo = this.userInfoMapper.dtoToEntity(userInfoDTO);
         Comment commentToSave = this.commentMapper.dtoToEntity(commentDTO);
         commentToSave.setLocalDateTime(localDateTime);

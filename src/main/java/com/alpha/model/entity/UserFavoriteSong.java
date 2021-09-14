@@ -9,6 +9,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,7 @@ public class UserFavoriteSong {
     @Getter
     @Setter
     @ToString
+    @EqualsAndHashCode(of = {"username", "songId"})
     @RequiredArgsConstructor
     @AllArgsConstructor
     @Embeddable

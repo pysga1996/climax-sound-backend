@@ -1,23 +1,30 @@
 package com.alpha.model.entity;
 
+import com.alpha.constant.Folder;
+import com.alpha.constant.MediaRef;
+import com.alpha.constant.MediaType;
+import com.alpha.constant.Status;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(onlyExplicitlyIncluded = true)
 @Builder
 @Entity
 @Table(name = "user_info")
-public class UserInfo {
+public class UserInfo extends Media {
 
     @Id
     @Column(name = "username")
@@ -31,4 +38,23 @@ public class UserInfo {
     @Column(name = "setting")
     @ToString.Include
     private String setting;
+
+    @Override
+    public ResourceInfo generateResource(MultipartFile file) {
+        if (username == null) {
+            throw new RuntimeException("Media host username is null!!");
+        }
+        String ext = this.getExtension(file);
+        String fileName = MediaRef.USER_AVATAR.name() + " - " + username + "." + ext;
+        fileName = this.normalizeFileName(fileName);
+        return ResourceInfo.builder()
+            .username(username)
+            .extension(ext)
+            .folder(Folder.AVATAR)
+            .fileName(fileName)
+            .status(Status.INACTIVE)
+            .mediaType(MediaType.IMAGE)
+            .mediaRef(MediaRef.USER_AVATAR)
+            .build();
+    }
 }

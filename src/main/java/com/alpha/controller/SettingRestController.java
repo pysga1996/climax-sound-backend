@@ -34,7 +34,7 @@ public class SettingRestController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getSetting() {
-        UserInfoDTO userInfoDTO = this.userService.getCurrentProfile();
+        UserInfoDTO userInfoDTO = this.userService.getCurrentUserInfo();
         return ResponseEntity.ok(userInfoDTO.getSetting());
     }
 

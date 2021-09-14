@@ -7,5 +7,5 @@ package com.alpha.constant;
  * @since 1.0
  **/
 public enum MediaRef {
-    SONG_AUDIO, ALBUM_COVER, ARTIST_AVATAR
+    SONG_AUDIO, ALBUM_COVER, ARTIST_AVATAR, USER_AVATAR
 }
