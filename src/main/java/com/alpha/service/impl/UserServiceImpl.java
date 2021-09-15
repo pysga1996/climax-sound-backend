@@ -120,8 +120,8 @@ public class UserServiceImpl implements UserService {
             UserInfo userInfo = UserInfo
                 .builder()
                 .username(username)
-                .profile("{}")
-                .setting("{}")
+                .profile("{\"username\": \"" + username + "\"}")
+                .setting("{\"darkMode\": false}")
                 .build();
             this.userInfoRepository.save(userInfo);
             return this.userInfoMapper.entityToDto(userInfo);
@@ -145,7 +145,8 @@ public class UserServiceImpl implements UserService {
         String username = this.getCurrentUsername();
         Optional<UserInfo> userInfoOptional = this.userInfoRepository.findByUsername(username);
         if (userInfoOptional.isPresent()) {
-            Map<String, Object> profileJson = this.objectMapper.readValue(userInfoOptional.get().getProfile(), Map.class);
+            Map<String, Object> profileJson = this.objectMapper
+                .readValue(userInfoOptional.get().getProfile(), Map.class);
             Optional<ResourceInfo> optionalResourceInfo = this.resourceInfoRepository
                 .findByUsernameAndStorageTypeAndMediaRefAndStatus(username,
                     this.storageService.getStorageType(), MediaRef.USER_AVATAR, Status.ACTIVE);
@@ -172,7 +173,8 @@ public class UserServiceImpl implements UserService {
                 .findByUsernameAndStorageTypeAndMediaRefAndStatus(username,
                     this.storageService.getStorageType(), MediaRef.USER_AVATAR, Status.ACTIVE)
                 .orElse(null);
-            ResourceInfo newResourceInfo = this.storageService.upload(avatar, userInfoOptional.get(), oldResourceInfo);
+            ResourceInfo newResourceInfo = this.storageService
+                .upload(avatar, userInfoOptional.get(), oldResourceInfo);
             profileJson.put("avatar_url", this.storageService.getFullUrl(newResourceInfo));
             return profileJson;
         } else {
