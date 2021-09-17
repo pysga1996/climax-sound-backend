@@ -1,7 +1,7 @@
 package com.alpha.service.impl;
 
 import com.alpha.config.properties.StorageProperty.StorageType;
-import com.alpha.constant.CommonConstants;
+import com.alpha.constant.RoleConstants;
 import com.alpha.constant.MediaRef;
 import com.alpha.constant.SchedulerConstants.ListeningConfig;
 import com.alpha.constant.Status;
@@ -198,7 +198,7 @@ public class SongServiceImpl implements SongService {
     @Transactional
     public SongDTO update(Long id, SongDTO songDTO, MultipartFile multipartFile)
         throws IOException {
-        boolean isAdmin = this.userService.hasAuthority(CommonConstants.SONG_MANAGEMENT);
+        boolean isAdmin = this.userService.hasAuthority(RoleConstants.SONG_MANAGEMENT);
         Optional<Song> oldSong;
         if (isAdmin) {
             oldSong = this.songRepository.findById(id);

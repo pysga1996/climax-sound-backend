@@ -1,6 +1,6 @@
 package com.alpha.service.impl;
 
-import com.alpha.constant.CommonConstants;
+import com.alpha.constant.RoleConstants;
 import com.alpha.constant.MediaRef;
 import com.alpha.constant.Status;
 import com.alpha.mapper.UserInfoMapper;
@@ -63,9 +63,9 @@ public class UserServiceImpl implements UserService {
         Object principal = authentication.getPrincipal();
         if (principal instanceof OAuth2AuthenticatedPrincipal) {
             username = ((OAuth2AuthenticatedPrincipal) principal)
-                .getAttribute(CommonConstants.USERNAME);
+                .getAttribute(RoleConstants.USERNAME);
         } else if (principal instanceof Jwt) {
-            username = ((Jwt) principal).getClaim(CommonConstants.USERNAME);
+            username = ((Jwt) principal).getClaim(RoleConstants.USERNAME);
         } else {
             username = authentication.getName();
         }

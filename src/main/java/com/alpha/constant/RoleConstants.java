@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @since 1.0
  **/
 @Component("Authority")
-public final class CommonConstants {
+public final class RoleConstants {
 
     public static final String USERNAME = "user_name";
 

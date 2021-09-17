@@ -56,7 +56,7 @@ public class ArtistRestController {
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
-    @PreAuthorize("hasAuthority('ARTIST_OPS')")
+    @PreAuthorize("hasAuthority(@Authority.ARTIST_MANAGEMENT)")
     @PostMapping(value = "/create")
     public ResponseEntity<Void> createArtist(@RequestPart("artist") ArtistDTO artist,
         @RequestPart("avatar") MultipartFile multipartFile) {
