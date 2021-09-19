@@ -8,8 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,57 +30,37 @@ public class TagRestController {
         this.tagService = tagService;
     }
 
-    @GetMapping(params = "action=list")
+    @GetMapping(value = "/list")
     public ResponseEntity<Page<TagDTO>> tagList(Pageable pageable) {
         Page<TagDTO> tagList = this.tagService.findAll(pageable);
-        boolean isEmpty = tagList.getTotalElements() == 0;
-        if (isEmpty) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(tagList, HttpStatus.OK);
-        }
+        return ResponseEntity.ok(tagList);
     }
 
-    @GetMapping(params = "action=search")
+    @GetMapping(value = "/search")
     public ResponseEntity<Page<TagDTO>> tagSearch(@RequestParam String name, Pageable pageable) {
         Page<TagDTO> filteredTagList = this.tagService.findAllByNameContaining(name, pageable);
-        boolean isEmpty = filteredTagList.getTotalElements() == 0;
-        if (isEmpty) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(filteredTagList, HttpStatus.OK);
-        }
+        return ResponseEntity.ok(filteredTagList);
     }
 
-    @PostMapping(params = "action=create")
-    public ResponseEntity<String> createTag(@Valid @RequestBody TagDTO tag) {
-        TagDTO checkedTag = this.tagService.findByName(tag.getName());
-        if (checkedTag != null) {
-            return new ResponseEntity<>("Tag title has already existed in database!",
-                HttpStatus.UNPROCESSABLE_ENTITY);
-        } else {
-            this.tagService.save(tag);
-            return new ResponseEntity<>("Tag title created in database!", HttpStatus.CREATED);
-        }
+    @PreAuthorize("hasAuthority(@Authority.TAG_MANAGEMENT)")
+    @PostMapping(value = "/create")
+    public ResponseEntity<TagDTO> createTag(@Valid @RequestBody TagDTO tagDTO) {
+        TagDTO createTag = this.tagService.create(tagDTO);
+        return ResponseEntity.ok(createTag);
     }
 
-    @PutMapping(params = {"action=edit", "id"})
-    public ResponseEntity<String> editTag(@Valid @RequestBody TagDTO tag, @RequestParam Long id) {
-        TagDTO checkedTag = this.tagService.findByName(tag.getName());
-        if (checkedTag != null) {
-            return new ResponseEntity<>("Tag title has already existed in database!",
-                HttpStatus.UNPROCESSABLE_ENTITY);
-        } else {
-            tag.setId(id);
-            this.tagService.save(tag);
-            return new ResponseEntity<>("Tag title updated in database!", HttpStatus.OK);
-        }
+    @PreAuthorize("hasAuthority(@Authority.TAG_MANAGEMENT)")
+    @PutMapping(value = "/update/{id}")
+    public ResponseEntity<TagDTO> editTag(@Valid @RequestBody TagDTO tagDTO, @PathVariable("id") Long id) {
+        TagDTO updatedTag = this.tagService.update(id, tagDTO);
+        return ResponseEntity.ok(updatedTag);
     }
 
-    @DeleteMapping(params = {"action=delete", "id"})
-    public ResponseEntity<String> deleteTag(@RequestParam Long id) {
+    @PreAuthorize("hasAuthority(@Authority.TAG_MANAGEMENT)")
+    @DeleteMapping(value = "/delete/{id}")
+    public ResponseEntity<Void> deleteTag(@PathVariable Long id) {
         this.tagService.deleteById(id);
-        return new ResponseEntity<>("Tag title removed in database!", HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
 

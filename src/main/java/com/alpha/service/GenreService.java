@@ -1,7 +1,6 @@
 package com.alpha.service;
 
 import com.alpha.model.dto.GenreDTO;
-import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -9,15 +8,17 @@ import org.springframework.stereotype.Service;
 @Service
 public interface GenreService {
 
-    Optional<GenreDTO> findById(Integer id);
+    GenreDTO findById(Integer id);
 
     Page<GenreDTO> findAll(Pageable pageable);
 
+    Page<GenreDTO> findAllByNameContaining(String name, Pageable pageable);
+
     GenreDTO findByName(String name);
 
-    Iterable<GenreDTO> findAllByNameContaining(String name);
+    GenreDTO create(GenreDTO genre);
 
-    void save(GenreDTO genre);
+    GenreDTO update(Integer id, GenreDTO genre);
 
-    void deleteById(Integer id);
+    void delete(Integer id);
 }

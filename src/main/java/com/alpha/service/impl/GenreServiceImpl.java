@@ -5,12 +5,12 @@ import com.alpha.model.dto.GenreDTO;
 import com.alpha.model.entity.Genre;
 import com.alpha.repositories.GenreRepository;
 import com.alpha.service.GenreService;
+import java.util.Date;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,44 +30,70 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<GenreDTO> findById(Integer id) {
+    public GenreDTO findById(Integer id) {
         return this.genreRepository.findById(id)
-            .map(this.genreMapper::entityToDto);
+            .map(this.genreMapper::entityToDto)
+            .orElseThrow(() -> new EntityNotFoundException("Genre not found!"));
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<GenreDTO> findAll(Pageable pageable) {
-        Page<Genre> genrePage = this.genreRepository.findAll(pageable);
-        return new PageImpl<>(genrePage.getContent()
-            .stream()
-            .map(this.genreMapper::entityToDto)
-            .collect(Collectors.toList()), pageable, genrePage.getTotalElements());
+        return this.genreRepository.findAllByOrderByUpdateTimeDescCreateTimeDesc(pageable)
+            .map(this.genreMapper::entityToDto);
     }
 
     @Override
     @Transactional(readOnly = true)
     public GenreDTO findByName(String name) {
-        return this.genreMapper.entityToDto(genreRepository.findByName(name));
+        return this.genreRepository.findByName(name).map(this.genreMapper::entityToDto)
+            .orElseThrow(() -> new EntityNotFoundException("Genre not found!"));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Iterable<GenreDTO> findAllByNameContaining(String name) {
-        return StreamSupport
-            .stream(this.genreRepository.findAllByNameContaining(name).spliterator(), false)
-            .map(this.genreMapper::entityToDto).collect(Collectors.toList());
+    public Page<GenreDTO> findAllByNameContaining(String name,
+        Pageable pageable) {
+        return this.genreRepository.findAllByNameContaining(name, pageable)
+            .map(this.genreMapper::entityToDto);
     }
 
     @Override
     @Transactional
-    public void save(GenreDTO genre) {
-        this.genreRepository.save(this.genreMapper.dtoToEntity(genre));
+    public GenreDTO create(GenreDTO genreDTO) {
+        Optional<Genre> exitedGenreOptional = this.genreRepository.findByName(genreDTO.getName());
+        if (exitedGenreOptional.isPresent()) {
+            throw new EntityExistsException("Genre existed");
+        }
+        Genre createGenre = this.genreMapper.dtoToEntity(genreDTO);
+        createGenre.setCreateTime(new Date());
+        createGenre.setStatus(1);
+        createGenre = this.genreRepository.saveAndFlush(createGenre);
+        return this.genreMapper.entityToDto(createGenre);
     }
 
     @Override
     @Transactional
-    public void deleteById(Integer id) {
+    public GenreDTO update(Integer id, GenreDTO genreDTO) {
+        Genre updatedGenre;
+        Optional<Genre> exitedGenreOptional = this.genreRepository.findByName(genreDTO.getName());
+        if (exitedGenreOptional.isPresent()) {
+            updatedGenre = exitedGenreOptional.get();
+            if (!updatedGenre.getId().equals(id)) {
+                throw new EntityExistsException("Genre existed");
+            }
+            updatedGenre.setName(genreDTO.getName());
+            updatedGenre.setUpdateTime(new Date());
+            updatedGenre = this.genreRepository.save(updatedGenre);
+            return this.genreMapper.entityToDto(updatedGenre);
+        } else {
+            throw new EntityNotFoundException("Genre not found!");
+        }
+    }
+
+    @Override
+    @Transactional
+    public void delete(Integer id) {
         this.genreRepository.deleteById(id);
     }
 }

@@ -3,6 +3,7 @@ package com.alpha.mapper;
 import com.alpha.mapper.annotation.FullMapping;
 import com.alpha.mapper.annotation.PureMapping;
 import com.alpha.model.dto.SongDTO;
+import com.alpha.model.dto.SongDTO.SongAdditionalInfoDTO;
 import com.alpha.model.entity.Song;
 import java.util.List;
 import org.mapstruct.IterableMapping;
@@ -85,4 +86,14 @@ public abstract class SongMapper {
     @PureMapping
     @IterableMapping(qualifiedBy = PureMapping.class)
     public abstract List<Song> dtoToEntityListPure(List<SongDTO> songs);
+
+    @Mappings({
+        @Mapping(source = "lyric", target = "lyric"),
+        @Mapping(source = "genres", target = "genres"),
+        @Mapping(source = "tags", target = "tags"),
+        @Mapping(source = "country", target = "country"),
+        @Mapping(source = "theme", target = "theme")
+    })
+    @PureMapping
+    public abstract Song dtoToEntityAdditional(SongAdditionalInfoDTO songAdditionalInfoDTO);
 }

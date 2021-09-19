@@ -3,6 +3,7 @@ package com.alpha.model.dto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Collection;
+import java.util.Date;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,4 +25,10 @@ public class TagDTO {
 
     @JsonBackReference(value = "album-tag")
     private Collection<AlbumDTO> albums;
+
+    private Date createTime;
+
+    private Date updateTime;
+
+    private Integer status;
 }

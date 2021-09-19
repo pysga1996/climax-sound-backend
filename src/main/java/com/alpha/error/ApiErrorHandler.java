@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,6 +32,13 @@ public class ApiErrorHandler {
     public ApiError handleAllException(Exception ex, WebRequest request) {
         log.error("Exception: ", ex);
         return new ApiError(9999, ex.getLocalizedMessage());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
+    public ApiError handleAllException(AccessDeniedException ex, WebRequest request) {
+        log.error("Exception: ", ex);
+        return new ApiError(3500, ex.getLocalizedMessage());
     }
 
     @ExceptionHandler(BusinessException.class)

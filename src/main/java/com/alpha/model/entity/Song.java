@@ -8,7 +8,6 @@ import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -156,7 +155,7 @@ public class Song extends Media {
     @JoinColumn(name = "theme_id")
     private Theme theme;
 
-//    @Convert(converter = DurationConverter.class)
+    //    @Convert(converter = DurationConverter.class)
     private Duration duration;
 
     @Override

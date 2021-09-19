@@ -4,12 +4,11 @@ import com.alpha.constant.SchedulerConstants.LikeConfig;
 import com.alpha.model.dto.CommentDTO;
 import com.alpha.model.dto.LikeSongDTO;
 import com.alpha.model.dto.SongDTO;
+import com.alpha.model.dto.SongDTO.SongAdditionalInfoDTO;
 import com.alpha.model.dto.SongSearchDTO;
-import com.alpha.model.dto.SongUploadForm;
 import com.alpha.service.CommentService;
 import com.alpha.service.LikeService;
 import com.alpha.service.SongService;
-import com.alpha.service.impl.FormConvertService;
 import java.io.IOException;
 import java.util.Map;
 import javax.validation.Valid;
@@ -46,27 +45,22 @@ public class SongRestController {
 
     private final CommentService commentService;
 
-    private final FormConvertService formConvertService;
-
     @Autowired
     public SongRestController(SongService songService, LikeService likeService,
-        CommentService commentService,
-        FormConvertService formConvertService) {
+        CommentService commentService) {
         this.songService = songService;
         this.likeService = likeService;
         this.commentService = commentService;
-        this.formConvertService = formConvertService;
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/upload")
     public ResponseEntity<SongDTO> uploadSong(
-        @Valid @RequestPart("song") SongUploadForm songUploadForm,
-        @RequestPart("audio") MultipartFile file) throws IOException {
-        SongDTO song = formConvertService.convertSongUploadFormToSong(songUploadForm);
-        song = this.songService.uploadAndSaveSong(file, song);
+        @Valid @RequestPart("song") SongDTO songDTO,
+        @RequestPart("audio") MultipartFile file) {
+        SongDTO createdSongDTO = this.songService.uploadAndSaveSong(file, songDTO);
         log.info("Upload song successfully!");
-        return new ResponseEntity<>(song, HttpStatus.OK);
+        return new ResponseEntity<>(createdSongDTO, HttpStatus.OK);
     }
 
     @PreAuthorize("permitAll()")
@@ -91,13 +85,20 @@ public class SongRestController {
         return new ResponseEntity<>(song, HttpStatus.OK);
     }
 
+    @PreAuthorize("permitAll()")
+    @GetMapping(value = "/additional-info/{id}")
+    public ResponseEntity<SongAdditionalInfoDTO> songAdditionalInfo(@PathVariable("id") Long id) {
+        SongAdditionalInfoDTO song = this.songService.findAdditionalInfoById(id);
+        return new ResponseEntity<>(song, HttpStatus.OK);
+    }
+
     @PreAuthorize("isAuthenticated()")
     @PutMapping(value = "/edit/{id}")
     public ResponseEntity<SongDTO> editSong(@PathVariable("id") Long id,
-        @RequestPart("song") SongDTO song,
+        @RequestPart("song") SongDTO songDTO,
         @RequestPart(value = "audio", required = false)
             MultipartFile multipartFile) throws IOException {
-        SongDTO updatedSong = this.songService.update(id, song, multipartFile);
+        SongDTO updatedSong = this.songService.update(id, songDTO, multipartFile);
         return new ResponseEntity<>(updatedSong, HttpStatus.OK);
     }
 

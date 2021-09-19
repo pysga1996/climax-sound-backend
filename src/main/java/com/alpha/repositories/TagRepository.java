@@ -2,6 +2,8 @@ package com.alpha.repositories;
 
 import com.alpha.model.entity.Tag;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,11 +13,11 @@ import org.springframework.stereotype.Repository;
 public interface TagRepository extends JpaRepository<Tag, Long> {
 
     //    @Query(value = "SELECT * FROM tag WHERE BINARY title=:title", nativeQuery = true)
-    Tag findByName(String name);
+    Optional<Tag> findByName(String name);
 
-    List<Tag> findAllByNameIn(List<String> tagNames);
+    List<Tag> findAllByNameIn(Set<String> tagNames);
 
-    Page<Tag> findAll(Pageable pageable);
+    Page<Tag> findAllByOrderByUpdateTimeDescCreateTimeDesc(Pageable pageable);
 
     Page<Tag> findAllByNameContaining(String name, Pageable pageable);
 }

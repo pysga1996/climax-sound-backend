@@ -1,6 +1,7 @@
 package com.alpha.repositories;
 
 import com.alpha.model.dto.SongDTO;
+import com.alpha.model.dto.SongDTO.SongAdditionalInfoDTO;
 import com.alpha.model.dto.SongSearchDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,4 +15,6 @@ import org.springframework.data.domain.Pageable;
 public interface SongRepositoryCustom {
 
     Page<SongDTO> findAllConditions(Pageable pageable, SongSearchDTO songSearchDTO);
+
+    SongAdditionalInfoDTO findAdditionalInfo(Long id);
 }

@@ -15,7 +15,9 @@ public interface TagService {
 
     Page<TagDTO> findAllByNameContaining(String name, Pageable pageable);
 
-    void save(TagDTO tag);
+    TagDTO create(TagDTO tagDTO);
+
+    TagDTO update(Long id, TagDTO tagDTO);
 
     void deleteById(Long id);
 }

@@ -15,7 +15,9 @@ public interface ThemeService {
 
     Page<ThemeDTO> findAllByNameContaining(String name, Pageable pageable);
 
-    void save(ThemeDTO mood);
+    ThemeDTO create(ThemeDTO mood);
 
-    void deleteById(Integer id);
+    ThemeDTO update(Integer id, ThemeDTO mood);
+
+    void delete(Integer id);
 }

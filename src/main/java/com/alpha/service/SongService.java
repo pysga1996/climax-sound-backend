@@ -1,6 +1,7 @@
 package com.alpha.service;
 
 import com.alpha.model.dto.SongDTO;
+import com.alpha.model.dto.SongDTO.SongAdditionalInfoDTO;
 import com.alpha.model.dto.SongSearchDTO;
 import java.io.IOException;
 import java.util.Collection;
@@ -17,19 +18,18 @@ public interface SongService {
 
     SongDTO findById(Long id);
 
+    SongAdditionalInfoDTO findAdditionalInfoById(Long id);
+
     void listenToSong(Long id);
 
-    SongDTO uploadAndSaveSong(MultipartFile file, SongDTO song) throws IOException;
+    SongDTO uploadAndSaveSong(MultipartFile file, SongDTO songDTO);
 
-    SongDTO create(SongDTO song);
-
-    SongDTO update(Long id, SongDTO song, MultipartFile multipartFile) throws IOException;
+    SongDTO update(Long id, SongDTO songDTO, MultipartFile multipartFile) throws IOException;
 
     void deleteById(Long id);
 
     void deleteAll(Collection<SongDTO> songs);
 
     Map<Long, Boolean> getUserSongLikeMap(Map<Long, Boolean> songIdMap);
-
 
 }

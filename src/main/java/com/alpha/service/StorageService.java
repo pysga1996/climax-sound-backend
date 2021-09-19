@@ -6,7 +6,6 @@ import com.alpha.model.dto.ResourceInfoDTO;
 import com.alpha.model.entity.Media;
 import com.alpha.model.entity.ResourceInfo;
 import com.alpha.repositories.ResourceInfoRepository;
-import java.io.IOException;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.core.io.Resource;
@@ -19,8 +18,7 @@ public abstract class StorageService {
     public abstract ResourceInfo upload(MultipartFile multipartFile, Media media);
 
     public ResourceInfo upload(MultipartFile multipartFile, Media media,
-        ResourceInfo oldResourceInfo)
-        throws IOException {
+        ResourceInfo oldResourceInfo) {
         ResourceInfo newResourceInfo = this.upload(multipartFile, media);
         if (oldResourceInfo != null) {
             this.delete(oldResourceInfo);

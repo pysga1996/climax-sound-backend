@@ -5,22 +5,23 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode()
-@JsonIgnoreProperties(value = {"comments", "liked", "albums", "genres", "users",
-    "playlists", "theme", "uploader"}, allowGetters = true, ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"comments", "albums", "users",
+    "playlists", "uploader"}, allowGetters = true, ignoreUnknown = true)
 public class SongDTO implements HasArtists {
 
     private Long rn;
@@ -72,14 +73,32 @@ public class SongDTO implements HasArtists {
     private Collection<PlaylistDTO> playlists;
 
     @JsonManagedReference("song-country")
-//    @JsonBackReference("song-country")
     private CountryDTO country;
 
     @JsonManagedReference("song-theme")
-    @JsonBackReference("theme-song")
     private ThemeDTO theme;
 
     private Duration duration;
 
     private Long likeCount;
+
+    @JsonProperty(access = Access.WRITE_ONLY)
+    private SongAdditionalInfoDTO additionalInfo;
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class SongAdditionalInfoDTO {
+
+        private String lyric;
+
+        private Collection<TagDTO> tags;
+
+        private Collection<GenreDTO> genres;
+
+        private CountryDTO country;
+
+        private ThemeDTO theme;
+    }
 }

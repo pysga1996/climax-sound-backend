@@ -1,18 +1,19 @@
 package com.alpha.service.impl;
 
 import com.alpha.config.properties.StorageProperty.StorageType;
-import com.alpha.constant.RoleConstants;
 import com.alpha.constant.MediaRef;
+import com.alpha.constant.RoleConstants;
 import com.alpha.constant.SchedulerConstants.ListeningConfig;
 import com.alpha.constant.Status;
 import com.alpha.mapper.ArtistMapper;
 import com.alpha.mapper.SongMapper;
-import com.alpha.mapper.TagMapper;
 import com.alpha.mapper.UserInfoMapper;
 import com.alpha.model.dto.SongDTO;
+import com.alpha.model.dto.SongDTO.SongAdditionalInfoDTO;
 import com.alpha.model.dto.SongSearchDTO;
 import com.alpha.model.dto.TagDTO;
 import com.alpha.model.dto.UserInfoDTO;
+import com.alpha.model.entity.Artist;
 import com.alpha.model.entity.ResourceInfo;
 import com.alpha.model.entity.Song;
 import com.alpha.model.entity.Tag;
@@ -27,13 +28,13 @@ import com.alpha.service.SongService;
 import com.alpha.service.StorageService;
 import com.alpha.service.UserService;
 import com.alpha.util.formatter.StringAccentRemover;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
@@ -64,8 +65,6 @@ public class SongServiceImpl implements SongService {
 
     private final ArtistMapper artistMapper;
 
-    private final TagMapper tagMapper;
-
     private final UserInfoMapper userInfoMapper;
 
     private final UserService userService;
@@ -80,8 +79,8 @@ public class SongServiceImpl implements SongService {
         LikeRepository likeRepository, UserService userService,
         TagRepository tagRepository, ResourceInfoRepository resourceInfoRepository,
         StorageService storageService, SongMapper songMapper,
-        ArtistMapper artistMapper, TagMapper tagMapper,
-        UserInfoMapper userInfoMapper, LikeService likeService) {
+        ArtistMapper artistMapper, UserInfoMapper userInfoMapper,
+        LikeService likeService) {
         this.songRepository = songRepository;
         this.likeRepository = likeRepository;
         this.userService = userService;
@@ -90,7 +89,6 @@ public class SongServiceImpl implements SongService {
         this.storageService = storageService;
         this.songMapper = songMapper;
         this.artistMapper = artistMapper;
-        this.tagMapper = tagMapper;
         this.userInfoMapper = userInfoMapper;
         this.likeService = likeService;
     }
@@ -133,6 +131,12 @@ public class SongServiceImpl implements SongService {
 
     @Override
     @Transactional(readOnly = true)
+    public SongAdditionalInfoDTO findAdditionalInfoById(Long id) {
+        return this.songRepository.findAdditionalInfo(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public void listenToSong(Long id) {
         if (this.userService.isAuthenticated()) {
             this.likeService
@@ -140,64 +144,26 @@ public class SongServiceImpl implements SongService {
         } else {
             this.likeService.listen(id, ListeningConfig.SONG, null);
         }
-
     }
 
     @Override
     @Transactional
-    public SongDTO uploadAndSaveSong(MultipartFile file, SongDTO songDTO)
-        throws IOException {
+    public SongDTO uploadAndSaveSong(MultipartFile file, SongDTO songDTO) {
+        Song song = new Song();
+        this.patchSongUploadToEntity(songDTO, song);
         UserInfoDTO userInfoDTO = this.userService.getCurrentUserInfo();
         UserInfo userInfo = this.userInfoMapper.dtoToEntity(userInfoDTO);
-        Song songToSave = this.songMapper.dtoToEntity(songDTO);
-        songToSave.setUploader(userInfo);
-        List<String> tagNames = songToSave.getTags()
-            .stream()
-            .map(Tag::getName)
-            .collect(Collectors.toList());
-        List<Tag> existedTagList = this.tagRepository.findAllByNameIn(tagNames);
-        List<String> existedTagNames = existedTagList
-            .stream()
-            .map(Tag::getName)
-            .collect(Collectors.toList());
-        List<Tag> nonExistedTagList = songToSave.getTags()
-            .stream()
-            .filter(e -> !existedTagNames.contains(e.getName()))
-            .collect(Collectors.toList());
-        this.tagRepository.saveAll(nonExistedTagList);
-        List<Tag> mergedTagList = new ArrayList<>(existedTagList);
-        mergedTagList.addAll(nonExistedTagList);
-        songToSave.setTags(mergedTagList);
-        this.songRepository.saveAndFlush(songToSave);
-        ResourceInfo resourceInfo = this.storageService.upload(file, songToSave);
+        song.setUploader(userInfo);
+        this.songRepository.saveAndFlush(song);
+        ResourceInfo resourceInfo = this.storageService.upload(file, song);
         songDTO.setUrl(this.storageService.getFullUrl(resourceInfo));
-        songDTO.setId(songToSave.getId());
+        songDTO.setId(song.getId());
         return songDTO;
     }
 
     @Override
     @Transactional
-    public SongDTO create(SongDTO song) {
-        if (song.getTags() != null) {
-            Collection<TagDTO> tags = song.getTags();
-            for (TagDTO tag : tags) {
-                if (tagRepository.findByName("tag") == null) {
-                    this.tagRepository.saveAndFlush(this.tagMapper.dtoToEntity(tag));
-                }
-            }
-        }
-        String unaccentTitle = StringAccentRemover.removeStringAccent(song.getTitle());
-        song.setUnaccentTitle(unaccentTitle.toLowerCase());
-        Song songEntity = this.songMapper.dtoToEntity(song);
-        this.songRepository.saveAndFlush(songEntity);
-        song.setId(songEntity.getId());
-        return song;
-    }
-
-    @Override
-    @Transactional
-    public SongDTO update(Long id, SongDTO songDTO, MultipartFile multipartFile)
-        throws IOException {
+    public SongDTO update(Long id, SongDTO songDTO, MultipartFile multipartFile) {
         boolean isAdmin = this.userService.hasAuthority(RoleConstants.SONG_MANAGEMENT);
         Optional<Song> oldSong;
         if (isAdmin) {
@@ -207,18 +173,15 @@ public class SongServiceImpl implements SongService {
             oldSong = this.songRepository.findByIdAndUploader_Username(id, username);
         }
         if (oldSong.isPresent()) {
+            Song song = oldSong.get();
             if (multipartFile != null) {
                 ResourceInfo resourceInfo = this.storageService
-                    .upload(multipartFile, oldSong.get(), oldSong.get().getAudioResource());
+                    .upload(multipartFile, song, song.getAudioResource());
                 oldSong.get().setAudioResource(resourceInfo);
                 songDTO.setUrl(this.storageService.getFullUrl(resourceInfo));
             }
-            oldSong.get().setTitle(songDTO.getTitle());
-            oldSong.get()
-                .setUnaccentTitle(StringAccentRemover.removeStringAccent(songDTO.getTitle()));
-            oldSong.get().setReleaseDate(songDTO.getReleaseDate());
-            oldSong.get().setArtists(this.artistMapper.dtoToEntityListPure(
-                new ArrayList<>(songDTO.getArtists())));
+            song = this.patchSongUploadToEntity(songDTO, oldSong.get());
+            this.songRepository.save(song);
             return songDTO;
         } else {
             throw new EntityNotFoundException("Song does not existed or user is not the uploader");
@@ -306,5 +269,41 @@ public class SongServiceImpl implements SongService {
         userFavoriteSongList
             .forEach(e -> songIdMap.replace(e.getUserFavoriteSongId().getSongId(), e.isLiked()));
         return songIdMap;
+    }
+
+    private Song patchSongUploadToEntity(SongDTO songDTO, Song song) {
+        song.setId(songDTO.getId());
+        song.setTitle(songDTO.getTitle());
+        song.setUnaccentTitle(StringAccentRemover.removeStringAccent(songDTO.getTitle()));
+        song.setReleaseDate(songDTO.getReleaseDate());
+        song.setDuration(songDTO.getDuration());
+        List<Artist> artistList = this.artistMapper
+            .dtoToEntityListPure(new ArrayList<>(songDTO.getArtists()));
+        song.setArtists(artistList);
+        SongAdditionalInfoDTO songAdditionalInfoDTO = songDTO.getAdditionalInfo();
+        if (songAdditionalInfoDTO != null) {
+            Song additionalInfoSong = this.songMapper.dtoToEntityAdditional(songAdditionalInfoDTO);
+            song.setCountry(additionalInfoSong.getCountry());
+            song.setLyric(additionalInfoSong.getLyric());
+            song.setGenres(additionalInfoSong.getGenres());
+            Map<String, Boolean> tagMap = songAdditionalInfoDTO.getTags()
+                .stream()
+                .collect(Collectors.toMap(TagDTO::getName, e -> false));
+            Set<String> tagNames = tagMap.keySet();
+            List<Tag> existedTagList = this.tagRepository.findAllByNameIn(tagNames);
+            existedTagList.forEach(tag -> tagMap.put(tag.getName(), true));
+            List<Tag> nonExistedTagList = tagMap
+                .entrySet()
+                .stream()
+                .filter(e -> !e.getValue())
+                .map(e -> Tag.builder().name(e.getKey()).build())
+                .collect(Collectors.toList());
+            this.tagRepository.saveAll(nonExistedTagList);
+            List<Tag> mergedTagList = new ArrayList<>(existedTagList);
+            mergedTagList.addAll(nonExistedTagList);
+            song.setTags(mergedTagList);
+            song.setTheme(additionalInfoSong.getTheme());
+        }
+        return song;
     }
 }

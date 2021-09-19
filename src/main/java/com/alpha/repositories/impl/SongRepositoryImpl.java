@@ -1,8 +1,12 @@
 package com.alpha.repositories.impl;
 
 import com.alpha.model.dto.CountryDTO;
+import com.alpha.model.dto.GenreDTO;
 import com.alpha.model.dto.SongDTO;
+import com.alpha.model.dto.SongDTO.SongAdditionalInfoDTO;
 import com.alpha.model.dto.SongSearchDTO;
+import com.alpha.model.dto.TagDTO;
+import com.alpha.model.dto.ThemeDTO;
 import com.alpha.model.dto.UserInfoDTO;
 import com.alpha.repositories.BaseRepository;
 import com.alpha.repositories.SongRepositoryCustom;
@@ -75,9 +79,6 @@ public class SongRepositoryImpl extends BaseRepository implements SongRepository
                 song.setReleaseDate(rs.getDate("release_date"));
                 song.setUrl(rs.getString("url"));
                 song.setArtists(new ArrayList<>());
-                CountryDTO countryDTO = new CountryDTO();
-                countryDTO.setId(rs.getInt("country_id"));
-                song.setCountry(countryDTO);
                 song.setUploader(UserInfoDTO.builder().username(rs.getString("username")).build());
                 artistId = this
                     .addArtist(artistId, currentArtistId, false, song, rs);
@@ -88,6 +89,45 @@ public class SongRepositoryImpl extends BaseRepository implements SongRepository
             }
         }
         return new PageImpl<>(songList, pageable, total);
+    }
+
+    private SongAdditionalInfoDTO extractResult(ResultSet rs) throws SQLException {
+        SongAdditionalInfoDTO songAdditionalInfoDTO = new SongAdditionalInfoDTO();
+        songAdditionalInfoDTO.setGenres(new ArrayList<>());
+        songAdditionalInfoDTO.setTags(new ArrayList<>());
+        String type;
+        int rowCount = 0;
+        while (rs.next()) {
+            rowCount++;
+            type = rs.getString("type");
+            switch (type) {
+                case "1_song":
+                    CountryDTO countryDTO = new CountryDTO();
+                    countryDTO.setId(rs.getInt("country_id"));
+                    countryDTO.setName(rs.getString("country_name"));
+                    songAdditionalInfoDTO.setCountry(countryDTO);
+                    ThemeDTO themeDTO = new ThemeDTO();
+                    themeDTO.setId(rs.getInt("theme_id"));
+                    themeDTO.setName(rs.getString("theme_name"));
+                    songAdditionalInfoDTO.setTheme(themeDTO);
+                    songAdditionalInfoDTO.setLyric(rs.getString("lyric"));
+                    break;
+                case "2_genre":
+                    GenreDTO genreDTO = new GenreDTO();
+                    genreDTO.setId(rs.getInt("id"));
+                    genreDTO.setName(rs.getString("title"));
+                    songAdditionalInfoDTO.getGenres().add(genreDTO);
+                    break;
+                case "3_tag":
+                    TagDTO tagDTO = new TagDTO();
+                    tagDTO.setId(rs.getLong("id"));
+                    tagDTO.setName(rs.getString("title"));
+                    songAdditionalInfoDTO.getTags().add(tagDTO);
+                    break;
+            }
+        }
+        if (rowCount == 0) return null;
+        return songAdditionalInfoDTO;
     }
 
     @Override
@@ -152,4 +192,24 @@ public class SongRepositoryImpl extends BaseRepository implements SongRepository
         }
     }
 
+    @Override
+    public SongAdditionalInfoDTO findAdditionalInfo(Long id) {
+        Session session = entityManager.unwrap(Session.class);
+        ResultSet rs = session.doReturningWork(connection -> {
+            try (CallableStatement function = connection
+                .prepareCall(
+                    "{ ? = call find_song_additional_info(?) }")) {
+                function.registerOutParameter(1, Types.REF_CURSOR);
+                function.setLong(2, id); // p_song_id
+                function.execute();
+                return function.getObject(1, ResultSet.class);
+            }
+        });
+        try {
+            return this.extractResult(rs);
+        } catch (SQLException throwable) {
+            log.error(throwable);
+            throw new RuntimeException(throwable);
+        }
+    }
 }

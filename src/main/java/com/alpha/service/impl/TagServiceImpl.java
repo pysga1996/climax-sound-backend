@@ -5,11 +5,12 @@ import com.alpha.model.dto.TagDTO;
 import com.alpha.model.entity.Tag;
 import com.alpha.repositories.TagRepository;
 import com.alpha.service.TagService;
+import java.util.Date;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,33 +37,55 @@ public class TagServiceImpl implements TagService {
     @Override
     @Transactional(readOnly = true)
     public TagDTO findByName(String name) {
-        return this.tagMapper.entityToDto(this.tagRepository.findByName(name));
+        return this.tagRepository.findByName(name).map(this.tagMapper::entityToDto)
+            .orElseThrow(() -> new EntityNotFoundException("Tag not found"));
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<TagDTO> findAll(Pageable pageable) {
-        Page<Tag> tagPage = this.tagRepository.findAll(pageable);
-        return new PageImpl<>(tagPage.getContent()
-            .stream()
-            .map(this.tagMapper::entityToDto)
-            .collect(Collectors.toList()), pageable, tagPage.getTotalElements());
+        return this.tagRepository.findAllByOrderByUpdateTimeDescCreateTimeDesc(pageable)
+            .map(this.tagMapper::entityToDto);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<TagDTO> findAllByNameContaining(String name, Pageable pageable) {
-        Page<Tag> tagPage = this.tagRepository.findAllByNameContaining(name, pageable);
-        return new PageImpl<>(tagPage.getContent()
-            .stream()
-            .map(this.tagMapper::entityToDto)
-            .collect(Collectors.toList()), pageable, tagPage.getTotalElements());
+        return this.tagRepository.findAllByNameContaining(name, pageable)
+            .map(this.tagMapper::entityToDto);
     }
 
     @Override
     @Transactional
-    public void save(TagDTO tag) {
-        this.tagRepository.save(this.tagMapper.dtoToEntity(tag));
+    public TagDTO create(TagDTO tagDTO) {
+        Optional<Tag> exitedGenreOptional = this.tagRepository.findByName(tagDTO.getName());
+        if (exitedGenreOptional.isPresent()) {
+            throw new EntityExistsException("Tag existed");
+        }
+        Tag createdTag = this.tagMapper.dtoToEntity(tagDTO);
+        createdTag.setCreateTime(new Date());
+        createdTag.setStatus(1);
+        createdTag = this.tagRepository.saveAndFlush(createdTag);
+        return this.tagMapper.entityToDto(createdTag);
+    }
+
+    @Override
+    @Transactional
+    public TagDTO update(Long id, TagDTO tagDTO) {
+        Optional<Tag> exitedGenreOptional = this.tagRepository.findByName(tagDTO.getName());
+        if (exitedGenreOptional.isPresent()) {
+            Tag updatedTag = exitedGenreOptional.get();
+            if (!updatedTag.getId().equals(id)) {
+                throw new EntityExistsException("Tag existed");
+            }
+            updatedTag.setName(tagDTO.getName());
+            updatedTag.setUpdateTime(new Date());
+            updatedTag = this.tagRepository.save(updatedTag);
+            return this.tagMapper.entityToDto(updatedTag);
+        } else {
+            throw new EntityNotFoundException("Tag not found");
+        }
+
     }
 
     @Override

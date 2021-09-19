@@ -5,11 +5,11 @@ import com.alpha.model.dto.ThemeDTO;
 import com.alpha.model.entity.Theme;
 import com.alpha.repositories.ThemeRepository;
 import com.alpha.service.ThemeService;
+import java.util.Date;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import javax.persistence.EntityExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,38 +36,60 @@ public class ThemeServiceImpl implements ThemeService {
     @Override
     @Transactional(readOnly = true)
     public ThemeDTO findByName(String name) {
-        return this.themeMapper.entityToDto(themeRepository.findByName(name));
+        return this.themeRepository.findByName(name).map(this.themeMapper::entityToDto)
+            .orElse(null);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<ThemeDTO> findAll(Pageable pageable) {
-        Page<Theme> themePage = this.themeRepository.findAll(pageable);
-        return new PageImpl<>(themePage.getContent()
-            .stream()
-            .map(this.themeMapper::entityToDto)
-            .collect(Collectors.toList()), pageable, themePage.getTotalElements());
+        return this.themeRepository.findAllByOrderByUpdateTimeDescCreateTimeDesc(pageable)
+            .map(this.themeMapper::entityToDto);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<ThemeDTO> findAllByNameContaining(String name, Pageable pageable) {
-        Page<Theme> themePage = this.themeRepository.findAllByNameContaining(name, pageable);
-        return new PageImpl<>(themePage.getContent()
-            .stream()
-            .map(this.themeMapper::entityToDto)
-            .collect(Collectors.toList()), pageable, themePage.getTotalElements());
+        return this.themeRepository.findAllByNameContaining(name, pageable)
+            .map(this.themeMapper::entityToDto);
     }
 
     @Override
     @Transactional
-    public void save(ThemeDTO theme) {
-        this.themeRepository.saveAndFlush(this.themeMapper.dtoToEntity(theme));
+    public ThemeDTO create(ThemeDTO themeDTO) {
+        Optional<Theme> existedThemeOptional = this.themeRepository.findByName(themeDTO.getName());
+        if (existedThemeOptional.isPresent()) {
+            throw new EntityExistsException("Theme existed!");
+        }
+        Theme theme = this.themeMapper.dtoToEntity(themeDTO);
+        theme.setCreateTime(new Date());
+        theme.setStatus(1);
+        this.themeRepository.saveAndFlush(theme);
+        return this.themeMapper.entityToDto(theme);
     }
 
     @Override
     @Transactional
-    public void deleteById(Integer id) {
+    public ThemeDTO update(Integer id, ThemeDTO themeDTO) {
+        Optional<Theme> existedThemeOptional = this.themeRepository.findByName(themeDTO.getName());
+        Theme theme;
+        if (existedThemeOptional.isPresent()) {
+            theme = existedThemeOptional.get();
+            if (!theme.getId().equals(id)) {
+                throw new EntityExistsException("Theme existed!");
+            }
+            theme.setName(themeDTO.getName());
+        } else {
+            theme = this.themeMapper.dtoToEntity(themeDTO);
+        }
+        theme.setUpdateTime(new Date());
+        this.themeRepository.saveAndFlush(theme);
+        return this.themeMapper.entityToDto(theme);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Integer id) {
         this.themeRepository.deleteById(id);
     }
 }
