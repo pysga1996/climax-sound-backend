@@ -25,7 +25,7 @@ public class CountryRepositoryTest {
     private Country UK;
 
     @BeforeAll
-    public void SetUp() {
+    public void setUp() {
         UK = new Country();
         UK.setName("UK");
         countryRepository.save(UK);
@@ -45,8 +45,8 @@ public class CountryRepositoryTest {
 
     @Test
     public void whenFindByName_thenReturnCountry() {
-        Country UK = countryRepository.findByName("UK");
-        assertThat(UK).isNotNull();
+        Optional<Country> UK = countryRepository.findByName("UK");
+        assertThat(UK.isPresent()).isNotNull();
     }
 
     @Test
@@ -54,14 +54,14 @@ public class CountryRepositoryTest {
         Country HK = new Country();
         HK.setName("Hong Kong");
         countryRepository.save(HK);
-        Country found = countryRepository.findByName("Hong Kong");
-        assertThat(found).isNotNull();
+        Optional<Country> found = countryRepository.findByName("Hong Kong");
+        assertThat(found.isPresent()).isTrue();
     }
 
     @Test
     public void whenDelete_thenNotFoundInDB() {
         countryRepository.deleteById(UK.getId());
-        Country found = countryRepository.findByName("UK");
-        assertThat(found).isNull();
+        Optional<Country> found = countryRepository.findByName("UK");
+        assertThat(found.isPresent()).isNull();
     }
 }
