@@ -3,6 +3,7 @@ package com.alpha.mapper;
 import com.alpha.mapper.annotation.FullMapping;
 import com.alpha.mapper.annotation.PureMapping;
 import com.alpha.model.dto.AlbumDTO;
+import com.alpha.model.dto.AlbumDTO.AlbumAdditionalInfoDTO;
 import com.alpha.model.entity.Album;
 import java.util.List;
 import org.mapstruct.IterableMapping;
@@ -47,7 +48,9 @@ public abstract class AlbumMapper {
         @Mapping(target = "genres", ignore = true),
         @Mapping(target = "songs", ignore = true),
         @Mapping(target = "artists", ignore = true),
-        @Mapping(target = "tags", ignore = true)
+        @Mapping(target = "tags", ignore = true),
+        @Mapping(target = "country", ignore = true),
+        @Mapping(target = "theme", ignore = true)
     })
     public abstract AlbumDTO entityToDtoPure(Album album);
 
@@ -56,7 +59,9 @@ public abstract class AlbumMapper {
         @Mapping(target = "genres", ignore = true),
         @Mapping(target = "songs", ignore = true),
         @Mapping(target = "artists", ignore = true),
-        @Mapping(target = "tags", ignore = true)
+        @Mapping(target = "tags", ignore = true),
+        @Mapping(target = "country", ignore = true),
+        @Mapping(target = "theme", ignore = true)
     })
     public abstract Album dtoToEntityPure(AlbumDTO album);
 
@@ -67,4 +72,14 @@ public abstract class AlbumMapper {
     @PureMapping
     @IterableMapping(qualifiedBy = PureMapping.class)
     public abstract List<Album> dtoToEntityListPure(List<AlbumDTO> albums);
+
+    @Mappings({
+        @Mapping(source = "description", target = "description"),
+        @Mapping(source = "genres", target = "genres"),
+        @Mapping(source = "tags", target = "tags"),
+        @Mapping(source = "country", target = "country"),
+        @Mapping(source = "theme", target = "theme")
+    })
+    @PureMapping
+    public abstract Album dtoToEntityAdditional(AlbumAdditionalInfoDTO songAdditionalInfoDTO);
 }

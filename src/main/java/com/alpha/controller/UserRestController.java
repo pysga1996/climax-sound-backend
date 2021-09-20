@@ -50,6 +50,12 @@ public class UserRestController {
         return new ResponseEntity<>(newProfile, HttpStatus.OK);
     }
 
+    @GetMapping("/is-admin")
+    public ResponseEntity<Boolean> checkIsAdmin() {
+        boolean isAdmin = this.userService.isAdmin();
+        return new ResponseEntity<>(isAdmin, HttpStatus.OK);
+    }
+
     @GetMapping("/is-anonymous")
     public ResponseEntity<Boolean> checkIsAnonymous() {
         boolean isAnonymous = this.userService.isAnonymous();

@@ -7,7 +7,7 @@ import com.alpha.constant.Status;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -73,6 +73,9 @@ public class Album extends Media {
 
     private Duration duration;
 
+    @Column(name = "description")
+    private String description;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "album_genre",
@@ -82,10 +85,9 @@ public class Album extends Media {
             name = "genre_id", referencedColumnName = "id"),
         uniqueConstraints = @UniqueConstraint(columnNames = {"album_id", "genre_id"}))
     @Fetch(value = FetchMode.SUBSELECT)
-    @NotFound(action = NotFoundAction.IGNORE)
     private Collection<Genre> genres;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "album_song",
         joinColumns = @JoinColumn(
@@ -94,10 +96,9 @@ public class Album extends Media {
             name = "song_id", referencedColumnName = "id"),
         uniqueConstraints = @UniqueConstraint(columnNames = {"song_id", "song_id"}))
     @Fetch(value = FetchMode.SUBSELECT)
-    @NotFound(action = NotFoundAction.IGNORE)
     private Collection<Song> songs;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "album_artist",
         joinColumns = @JoinColumn(
@@ -106,7 +107,6 @@ public class Album extends Media {
             name = "artist_id", referencedColumnName = "id"),
         uniqueConstraints = @UniqueConstraint(columnNames = {"album_id", "artist_id"}))
     @Fetch(value = FetchMode.SUBSELECT)
-    @NotFound(action = NotFoundAction.IGNORE)
     private Collection<Artist> artists;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -118,13 +118,15 @@ public class Album extends Media {
             name = "tag_id", referencedColumnName = "id"),
         uniqueConstraints = @UniqueConstraint(columnNames = {"album_id", "tag_id"}))
     @Fetch(value = FetchMode.SUBSELECT)
-    @NotFound(action = NotFoundAction.IGNORE)
     private Collection<Tag> tags;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "country_id")
-    @NotFound(action = NotFoundAction.IGNORE)
     private Country country;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "theme_id")
+    private Theme theme;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "username", referencedColumnName = "username")
@@ -148,7 +150,8 @@ public class Album extends Media {
             throw new RuntimeException("Media host id is null!!");
         }
         String ext = this.getExtension(file);
-        String fileName = MediaRef.ALBUM_COVER.name() + " - " + id + " - " + this.createFilenameFromArtists(id, title, artists, ext);
+        String fileName = MediaRef.ALBUM_COVER.name() + " - " + id + " - " + this
+            .createFilenameFromArtists(id, title, artists, ext);
         fileName = this.normalizeFileName(fileName);
         return ResourceInfo.builder()
             .mediaId(id)

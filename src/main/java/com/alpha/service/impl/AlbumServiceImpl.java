@@ -1,25 +1,35 @@
 package com.alpha.service.impl;
 
 import com.alpha.constant.MediaRef;
+import com.alpha.constant.RoleConstants;
 import com.alpha.constant.Status;
 import com.alpha.mapper.AlbumMapper;
+import com.alpha.mapper.ArtistMapper;
 import com.alpha.mapper.UserInfoMapper;
 import com.alpha.model.dto.AlbumDTO;
+import com.alpha.model.dto.AlbumDTO.AlbumAdditionalInfoDTO;
 import com.alpha.model.dto.AlbumSearchDTO;
 import com.alpha.model.dto.AlbumUpdateDTO;
+import com.alpha.model.dto.TagDTO;
 import com.alpha.model.dto.UserInfoDTO;
 import com.alpha.model.entity.Album;
+import com.alpha.model.entity.Artist;
 import com.alpha.model.entity.ResourceInfo;
+import com.alpha.model.entity.Tag;
 import com.alpha.model.entity.UserInfo;
 import com.alpha.repositories.AlbumRepository;
 import com.alpha.repositories.ResourceInfoRepository;
+import com.alpha.repositories.TagRepository;
 import com.alpha.service.AlbumService;
 import com.alpha.service.StorageService;
 import com.alpha.service.UserService;
 import com.alpha.util.formatter.StringAccentRemover;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,7 +45,11 @@ public class AlbumServiceImpl implements AlbumService {
 
     private final ResourceInfoRepository resourceInfoRepository;
 
+    private final TagRepository tagRepository;
+
     private final AlbumMapper albumMapper;
+
+    private final ArtistMapper artistMapper;
 
     private final UserInfoMapper userInfoMapper;
 
@@ -46,11 +60,14 @@ public class AlbumServiceImpl implements AlbumService {
     @Autowired
     public AlbumServiceImpl(AlbumRepository albumRepository,
         ResourceInfoRepository resourceInfoRepository,
-        AlbumMapper albumMapper, UserInfoMapper userInfoMapper,
+        TagRepository tagRepository, AlbumMapper albumMapper,
+        ArtistMapper artistMapper, UserInfoMapper userInfoMapper,
         UserService userService, StorageService storageService) {
         this.albumRepository = albumRepository;
         this.resourceInfoRepository = resourceInfoRepository;
+        this.tagRepository = tagRepository;
         this.albumMapper = albumMapper;
+        this.artistMapper = artistMapper;
         this.userInfoMapper = userInfoMapper;
         this.userService = userService;
         this.storageService = storageService;
@@ -64,13 +81,19 @@ public class AlbumServiceImpl implements AlbumService {
             Optional<ResourceInfo> oldResourceInfo = this.resourceInfoRepository
                 .findByMediaIdAndStorageTypeAndMediaRefAndStatus(id,
                     this.storageService.getStorageType(), MediaRef.ALBUM_COVER, Status.ACTIVE);
-            AlbumDTO albumDTO = this.albumMapper.entityToDto(albumOptional.get());
+            AlbumDTO albumDTO = this.albumMapper.entityToDtoPure(albumOptional.get());
             oldResourceInfo.ifPresent(
                 resourceInfo -> albumDTO.setCoverUrl(this.storageService.getFullUrl(resourceInfo)));
             return albumDTO;
         } else {
             throw new EntityNotFoundException("Album not found");
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public AlbumAdditionalInfoDTO findAdditionalInfoById(Long id) {
+        return this.albumRepository.findAdditionalInfo(id);
     }
 
     @Override
@@ -100,18 +123,19 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     @Transactional
-    public AlbumDTO uploadAndSaveAlbum(MultipartFile file, AlbumDTO album) throws IOException {
-        Album albumToSave = this.albumMapper.dtoToEntity(album);
+    public AlbumDTO uploadAndSaveAlbum(MultipartFile file, AlbumDTO albumDTO) {
+        Album album = new Album();
+        this.patchAlbumUploadToEntity(albumDTO, album);
         UserInfoDTO userInfoDTO = this.userService.getCurrentUserInfo();
         UserInfo userInfo = this.userInfoMapper.dtoToEntity(userInfoDTO);
-        albumToSave.setUploader(userInfo);
-        this.albumRepository.saveAndFlush(albumToSave);
-        album.setId(albumToSave.getId());
+        album.setUploader(userInfo);
+        this.albumRepository.saveAndFlush(album);
+        albumDTO.setId(album.getId());
         if (file != null) {
-            ResourceInfo resourceInfo = this.storageService.upload(file, albumToSave);
-            album.setCoverUrl(this.storageService.getFullUrl(resourceInfo));
+            ResourceInfo resourceInfo = this.storageService.upload(file, album);
+            albumDTO.setCoverUrl(this.storageService.getFullUrl(resourceInfo));
         }
-        return album;
+        return albumDTO;
     }
 
     @Override
@@ -123,32 +147,32 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     @Transactional
-    public AlbumDTO edit(MultipartFile file, AlbumDTO albumDTO, Long id) throws IOException {
-        Optional<Album> oldAlbum = this.albumRepository.findById(id);
+    public AlbumDTO update(MultipartFile file, AlbumDTO albumDTO, Long id) {
+        boolean isAdmin = this.userService.hasAuthority(RoleConstants.SONG_MANAGEMENT);
+        Optional<Album> oldAlbum;
+        if (isAdmin) {
+            oldAlbum = this.albumRepository.findById(id);
+        } else {
+            String username = this.userService.getCurrentUsername();
+            oldAlbum = this.albumRepository.findByIdAndUploader_Username(id, username);
+        }
         if (oldAlbum.isPresent()) {
+            Album album = oldAlbum.get();
             if (file != null) {
                 ResourceInfo oldResourceInfo = this.resourceInfoRepository
-                    .findByMediaIdAndStorageTypeAndMediaRefAndStatus(oldAlbum.get().getId(),
+                    .findByMediaIdAndStorageTypeAndMediaRefAndStatus(album.getId(),
                         this.storageService.getStorageType(), MediaRef.ALBUM_COVER, Status.ACTIVE)
                     .orElse(null);
                 ResourceInfo resourceInfo = this.storageService
-                    .upload(file, oldAlbum.get(), oldResourceInfo);
-                oldAlbum.get().setCoverResource(resourceInfo);
+                    .upload(file, album, oldResourceInfo);
+                album.setCoverResource(resourceInfo);
                 albumDTO.setCoverUrl(this.storageService.getFullUrl(resourceInfo));
             }
-            albumDTO.setId(id);
-            Album albumToSave = this.albumMapper.dtoToEntity(albumDTO);
-            oldAlbum.get().setCountry(albumToSave.getCountry());
-            oldAlbum.get().setArtists(albumToSave.getArtists());
-            oldAlbum.get().setGenres(albumToSave.getGenres());
-            oldAlbum.get().setReleaseDate(albumToSave.getReleaseDate());
-            oldAlbum.get().setTags(albumToSave.getTags());
-            oldAlbum.get().setTitle(albumToSave.getTitle());
-            oldAlbum.get()
-                .setUnaccentTitle(StringAccentRemover.removeStringAccent(albumToSave.getTitle()));
+            this.patchAlbumUploadToEntity(albumDTO, album);
+            this.albumRepository.save(album);
             return albumDTO;
         } else {
-            throw new EntityNotFoundException("Album not found");
+            throw new EntityNotFoundException("Album not existed or user is not the owner");
         }
     }
 
@@ -159,5 +183,41 @@ public class AlbumServiceImpl implements AlbumService {
 //        return optionalAlbumDTO
 //            .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy album"));
         return null;
+    }
+
+    private void patchAlbumUploadToEntity(AlbumDTO albumDTO, Album album) {
+        album.setId(albumDTO.getId());
+        album.setTitle(albumDTO.getTitle());
+        album.setUnaccentTitle(StringAccentRemover.removeStringAccent(albumDTO.getTitle()));
+        album.setReleaseDate(albumDTO.getReleaseDate());
+        album.setDuration(albumDTO.getDuration());
+        List<Artist> artistList = this.artistMapper
+            .dtoToEntityListPure(new ArrayList<>(albumDTO.getArtists()));
+        album.setArtists(artistList);
+        AlbumAdditionalInfoDTO adlbumAdditionalInfoDTO = albumDTO.getAdditionalInfo();
+        if (adlbumAdditionalInfoDTO != null) {
+            Album additionalInfoAlbum = this.albumMapper
+                .dtoToEntityAdditional(adlbumAdditionalInfoDTO);
+            album.setCountry(additionalInfoAlbum.getCountry());
+            album.setDescription(additionalInfoAlbum.getDescription());
+            album.setGenres(additionalInfoAlbum.getGenres());
+            Map<String, Boolean> tagMap = adlbumAdditionalInfoDTO.getTags()
+                .stream()
+                .collect(Collectors.toMap(TagDTO::getName, e -> false));
+            Set<String> tagNames = tagMap.keySet();
+            List<Tag> existedTagList = this.tagRepository.findAllByNameIn(tagNames);
+            existedTagList.forEach(tag -> tagMap.put(tag.getName(), true));
+            List<Tag> nonExistedTagList = tagMap
+                .entrySet()
+                .stream()
+                .filter(e -> !e.getValue())
+                .map(e -> Tag.builder().name(e.getKey()).build())
+                .collect(Collectors.toList());
+            this.tagRepository.saveAll(nonExistedTagList);
+            List<Tag> mergedTagList = new ArrayList<>(existedTagList);
+            mergedTagList.addAll(nonExistedTagList);
+            album.setTags(mergedTagList);
+            album.setTheme(additionalInfoAlbum.getTheme());
+        }
     }
 }

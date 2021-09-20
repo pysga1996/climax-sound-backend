@@ -1,7 +1,7 @@
 package com.alpha.service.impl;
 
-import com.alpha.constant.RoleConstants;
 import com.alpha.constant.MediaRef;
+import com.alpha.constant.RoleConstants;
 import com.alpha.constant.Status;
 import com.alpha.mapper.UserInfoMapper;
 import com.alpha.model.dto.UserInfoDTO;
@@ -13,6 +13,7 @@ import com.alpha.service.StorageService;
 import com.alpha.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -78,6 +79,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean isAdmin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && authentication.getAuthorities().stream().map(
+            GrantedAuthority::getAuthority).anyMatch(
+            RoleConstants.ADMIN_DASHBOARD::equals);
+    }
+
+    @Override
     public boolean isAnonymous() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication == null || authentication instanceof AnonymousAuthenticationToken;
@@ -120,8 +129,10 @@ public class UserServiceImpl implements UserService {
             UserInfo userInfo = UserInfo
                 .builder()
                 .username(username)
-                .profile("{\"username\": \"" + username + "\"}")
+                .profile("{\"user_name\": \"" + username + "\"}")
                 .setting("{\"darkMode\": false}")
+                .createTime(new Date())
+                .status(1)
                 .build();
             this.userInfoRepository.save(userInfo);
             return this.userInfoMapper.entityToDto(userInfo);
@@ -167,15 +178,21 @@ public class UserServiceImpl implements UserService {
         String username = this.getCurrentUsername();
         Optional<UserInfo> userInfoOptional = this.userInfoRepository.findByUsername(username);
         if (userInfoOptional.isPresent()) {
-            Map<String, Object> profileJson = this.objectMapper.readValue(profile, Map.class);
-            userInfoOptional.get().setProfile(profile);
+            UserInfo userInfo = userInfoOptional.get();
+            Map<String, Object> profileJson = this.objectMapper.readValue(userInfo.getProfile(), Map.class);
+            Map<String, Object> updatedProfileJson = this.objectMapper.readValue(profile, Map.class);
+            profileJson.putAll(updatedProfileJson);
             ResourceInfo oldResourceInfo = this.resourceInfoRepository
                 .findByUsernameAndStorageTypeAndMediaRefAndStatus(username,
                     this.storageService.getStorageType(), MediaRef.USER_AVATAR, Status.ACTIVE)
                 .orElse(null);
             ResourceInfo newResourceInfo = this.storageService
-                .upload(avatar, userInfoOptional.get(), oldResourceInfo);
+                .upload(avatar, userInfo, oldResourceInfo);
             profileJson.put("avatar_url", this.storageService.getFullUrl(newResourceInfo));
+            String mergedUserProfile = this.objectMapper.writeValueAsString(profileJson);
+            userInfo.setProfile(mergedUserProfile);
+            userInfo.setUpdateTime(new Date());
+            this.userInfoRepository.save(userInfo);
             return profileJson;
         } else {
             throw new EntityNotFoundException("User not found");

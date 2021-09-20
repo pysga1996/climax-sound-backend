@@ -8,6 +8,7 @@ import com.alpha.service.ThemeService;
 import java.util.Date;
 import java.util.Optional;
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -59,7 +60,7 @@ public class ThemeServiceImpl implements ThemeService {
     public ThemeDTO create(ThemeDTO themeDTO) {
         Optional<Theme> existedThemeOptional = this.themeRepository.findByName(themeDTO.getName());
         if (existedThemeOptional.isPresent()) {
-            throw new EntityExistsException("Theme existed!");
+            throw new EntityExistsException("Theme with the a name existed!");
         }
         Theme theme = this.themeMapper.dtoToEntity(themeDTO);
         theme.setCreateTime(new Date());
@@ -71,20 +72,19 @@ public class ThemeServiceImpl implements ThemeService {
     @Override
     @Transactional
     public ThemeDTO update(Integer id, ThemeDTO themeDTO) {
-        Optional<Theme> existedThemeOptional = this.themeRepository.findByName(themeDTO.getName());
-        Theme theme;
-        if (existedThemeOptional.isPresent()) {
-            theme = existedThemeOptional.get();
-            if (!theme.getId().equals(id)) {
-                throw new EntityExistsException("Theme existed!");
-            }
-            theme.setName(themeDTO.getName());
-        } else {
-            theme = this.themeMapper.dtoToEntity(themeDTO);
+        boolean existed = this.themeRepository.existsByIdAndName(id, themeDTO.getName());
+        if (existed) {
+            throw new EntityExistsException("Theme with the a name existed");
         }
-        theme.setUpdateTime(new Date());
-        this.themeRepository.saveAndFlush(theme);
-        return this.themeMapper.entityToDto(theme);
+        Optional<Theme> existedThemeOptional = this.themeRepository.findById(id);
+        if (existedThemeOptional.isPresent()) {
+            existedThemeOptional.get().setName(themeDTO.getName());
+            existedThemeOptional.get().setUpdateTime(new Date());
+            this.themeRepository.save(existedThemeOptional.get());
+            return this.themeMapper.entityToDto(existedThemeOptional.get());
+        } else {
+            throw new EntityNotFoundException("Theme not found");
+        }
     }
 
     @Override

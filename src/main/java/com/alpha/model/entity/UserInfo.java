@@ -4,6 +4,7 @@ import com.alpha.constant.Folder;
 import com.alpha.constant.MediaRef;
 import com.alpha.constant.MediaType;
 import com.alpha.constant.Status;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -38,6 +39,15 @@ public class UserInfo extends Media {
     @Column(name = "setting")
     @ToString.Include
     private String setting;
+
+    @Column(name = "create_time")
+    private Date createTime;
+
+    @Column(name = "update_time")
+    private Date updateTime;
+
+    @Column(name = "status")
+    private Integer status;
 
     @Override
     public ResourceInfo generateResource(MultipartFile file) {

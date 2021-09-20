@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,49 +34,34 @@ public class CountryRestController {
     @PreAuthorize("hasAuthority(@Authority.COUNTRY_MANAGEMENT)")
     @GetMapping("/list")
     public ResponseEntity<Page<CountryDTO>> songList(Pageable pageable) {
-        Page<CountryDTO> songList = countryService.findAll(pageable);
-        if (songList.getTotalElements() > 0) {
-            return new ResponseEntity<>(songList, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
+        return ResponseEntity.ok(this.countryService.findAll(pageable));
     }
 
     @PreAuthorize("hasAuthority(@Authority.COUNTRY_MANAGEMENT)")
-    @GetMapping(value = "/detail", params = "id")
-    public ResponseEntity<CountryDTO> songDetail(Integer id) {
-        Optional<CountryDTO> country = countryService.findById(id);
-        return country.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-            .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    @GetMapping(value = "/detail/{id}")
+    public ResponseEntity<CountryDTO> songDetail(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(this.countryService.findById(id));
     }
 
     @PreAuthorize("hasAuthority(@Authority.COUNTRY_MANAGEMENT)")
     @PostMapping(value = "/create")
-    public ResponseEntity<Void> createCountry(@Valid @RequestBody CountryDTO country) {
-        try {
-            countryService.save(country);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-        }
+    public ResponseEntity<CountryDTO> createCountry(@Valid @RequestBody CountryDTO country) {
+        CountryDTO createdCountryDTO = this.countryService.create(country);
+        return ResponseEntity.ok(createdCountryDTO);
     }
 
     @PreAuthorize("hasAuthority(@Authority.COUNTRY_MANAGEMENT)")
-    @PutMapping(value = "/edit")
-    public ResponseEntity<Void> editCountry(@Valid @RequestBody CountryDTO country) {
-        try {
-            countryService.save(country);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @PutMapping(value = "/update/{id}")
+    public ResponseEntity<CountryDTO> editCountry(@PathVariable("id") Integer id, @Valid @RequestBody CountryDTO country) {
+        CountryDTO updatedCountryDTO = this.countryService.update(id, country);
+        return ResponseEntity.ok(updatedCountryDTO);
     }
 
     @PreAuthorize("hasAuthority(@Authority.COUNTRY_MANAGEMENT)")
-    @DeleteMapping(value = "/delete", params = "id")
-    public ResponseEntity<Void> deleteCountry(@Valid @RequestParam Integer id) {
+    @DeleteMapping(value = "/delete/{id}")
+    public ResponseEntity<Void> deleteCountry(@PathVariable("id") Integer id) {
         try {
-            countryService.deleteById(id);
+            this.countryService.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

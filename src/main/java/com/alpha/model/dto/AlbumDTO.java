@@ -1,11 +1,14 @@
 package com.alpha.model.dto;
 
 import com.alpha.repositories.BaseRepository.HasArtists;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,6 +36,8 @@ public class AlbumDTO implements HasArtists {
 
     private Duration duration;
 
+    private String description;
+
     private ResourceInfoDTO coverResource;
 
     private Collection<GenreDTO> genres;
@@ -45,7 +50,29 @@ public class AlbumDTO implements HasArtists {
 
     private CountryDTO country;
 
+    private ThemeDTO theme;
+
     private UserInfoDTO uploader;
 
     private Collection<UserInfoDTO> users;
+
+    @JsonProperty(access = Access.WRITE_ONLY)
+    private AlbumAdditionalInfoDTO additionalInfo;
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class AlbumAdditionalInfoDTO {
+
+        private String description;
+
+        private Collection<TagDTO> tags;
+
+        private Collection<GenreDTO> genres;
+
+        private CountryDTO country;
+
+        private ThemeDTO theme;
+    }
 }

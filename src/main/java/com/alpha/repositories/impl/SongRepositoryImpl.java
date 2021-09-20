@@ -22,6 +22,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,27 +103,40 @@ public class SongRepositoryImpl extends BaseRepository implements SongRepository
             type = rs.getString("type");
             switch (type) {
                 case "1_song":
+                    int countryId = rs.getInt("country_id");
+                    if (countryId == 0) {
+                        return null;
+                    }
                     CountryDTO countryDTO = new CountryDTO();
-                    countryDTO.setId(rs.getInt("country_id"));
+                    countryDTO.setId(countryId);
                     countryDTO.setName(rs.getString("country_name"));
                     songAdditionalInfoDTO.setCountry(countryDTO);
-                    ThemeDTO themeDTO = new ThemeDTO();
-                    themeDTO.setId(rs.getInt("theme_id"));
-                    themeDTO.setName(rs.getString("theme_name"));
-                    songAdditionalInfoDTO.setTheme(themeDTO);
+                    int themeId = rs.getInt("theme_id");
+                    if (themeId != 0) {
+                        ThemeDTO themeDTO = new ThemeDTO();
+                        themeDTO.setId(themeId);
+                        themeDTO.setName(rs.getString("theme_name"));
+                        songAdditionalInfoDTO.setTheme(themeDTO);
+                    }
                     songAdditionalInfoDTO.setLyric(rs.getString("lyric"));
                     break;
                 case "2_genre":
-                    GenreDTO genreDTO = new GenreDTO();
-                    genreDTO.setId(rs.getInt("id"));
-                    genreDTO.setName(rs.getString("title"));
-                    songAdditionalInfoDTO.getGenres().add(genreDTO);
+                    int genreId = rs.getInt("id");
+                    if (genreId != 0) {
+                        GenreDTO genreDTO = new GenreDTO();
+                        genreDTO.setId(genreId);
+                        genreDTO.setName(rs.getString("title"));
+                        songAdditionalInfoDTO.getGenres().add(genreDTO);
+                    }
                     break;
                 case "3_tag":
-                    TagDTO tagDTO = new TagDTO();
-                    tagDTO.setId(rs.getLong("id"));
-                    tagDTO.setName(rs.getString("title"));
-                    songAdditionalInfoDTO.getTags().add(tagDTO);
+                    long tagId= rs.getLong("id");
+                    if (tagId != 0) {
+                        TagDTO tagDTO = new TagDTO();
+                        tagDTO.setId(tagId);
+                        tagDTO.setName(rs.getString("title"));
+                        songAdditionalInfoDTO.getTags().add(tagDTO);
+                    }
                     break;
             }
         }
@@ -131,6 +145,7 @@ public class SongRepositoryImpl extends BaseRepository implements SongRepository
     }
 
     @Override
+    @SneakyThrows
     public Page<SongDTO> findAllConditions(Pageable pageable, SongSearchDTO songSearchDTO) {
         Session session = entityManager.unwrap(Session.class);
         ResultSet rs = session.doReturningWork(connection -> {
@@ -184,12 +199,7 @@ public class SongRepositoryImpl extends BaseRepository implements SongRepository
                 return function.getObject(1, ResultSet.class);
             }
         });
-        try {
-            return this.extractResult(rs, pageable);
-        } catch (SQLException throwable) {
-            log.error(throwable);
-            throw new RuntimeException(throwable);
-        }
+        return this.extractResult(rs, pageable);
     }
 
     @Override

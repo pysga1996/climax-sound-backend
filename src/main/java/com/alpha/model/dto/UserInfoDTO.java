@@ -1,6 +1,7 @@
 package com.alpha.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonRawValue;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,4 +23,10 @@ public class UserInfoDTO {
 
     @JsonRawValue
     private String setting;
+
+    private Date createTime;
+
+    private Date updateTime;
+
+    private Integer status;
 }

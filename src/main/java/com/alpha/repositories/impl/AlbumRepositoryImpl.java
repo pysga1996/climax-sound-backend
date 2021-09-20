@@ -1,9 +1,14 @@
 package com.alpha.repositories.impl;
 
 import com.alpha.model.dto.AlbumDTO;
+import com.alpha.model.dto.AlbumDTO.AlbumAdditionalInfoDTO;
 import com.alpha.model.dto.AlbumSearchDTO;
 import com.alpha.model.dto.AlbumUpdateDTO;
 import com.alpha.model.dto.AlbumUpdateDTO.UpdateMode;
+import com.alpha.model.dto.CountryDTO;
+import com.alpha.model.dto.GenreDTO;
+import com.alpha.model.dto.TagDTO;
+import com.alpha.model.dto.ThemeDTO;
 import com.alpha.repositories.AlbumRepositoryCustom;
 import com.alpha.repositories.BaseRepository;
 import com.alpha.service.StorageService;
@@ -19,6 +24,7 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +87,60 @@ public class AlbumRepositoryImpl extends BaseRepository implements AlbumReposito
         return new PageImpl<>(albumList, pageable, total);
     }
 
+    private AlbumAdditionalInfoDTO extractResult(ResultSet rs) throws SQLException {
+        AlbumAdditionalInfoDTO albumAdditionalInfoDTO = new AlbumAdditionalInfoDTO();
+        albumAdditionalInfoDTO.setGenres(new ArrayList<>());
+        albumAdditionalInfoDTO.setTags(new ArrayList<>());
+        String type;
+        int rowCount = 0;
+        while (rs.next()) {
+            rowCount++;
+            type = rs.getString("type");
+            switch (type) {
+                case "1_album":
+                    int countryId = rs.getInt("country_id");
+                    if (countryId == 0) {
+                        return null;
+                    }
+                    CountryDTO countryDTO = new CountryDTO();
+                    countryDTO.setId(countryId);
+                    countryDTO.setName(rs.getString("country_name"));
+                    albumAdditionalInfoDTO.setCountry(countryDTO);
+                    int themeId = rs.getInt("theme_id");
+                    if (themeId != 0) {
+                        ThemeDTO themeDTO = new ThemeDTO();
+                        themeDTO.setId(themeId);
+                        themeDTO.setName(rs.getString("theme_name"));
+                        albumAdditionalInfoDTO.setTheme(themeDTO);
+                    }
+                    albumAdditionalInfoDTO.setDescription(rs.getString("description"));
+                    break;
+                case "2_genre":
+                    int genreId = rs.getInt("id");
+                    if (genreId != 0) {
+                        GenreDTO genreDTO = new GenreDTO();
+                        genreDTO.setId(genreId);
+                        genreDTO.setName(rs.getString("title"));
+                        albumAdditionalInfoDTO.getGenres().add(genreDTO);
+                    }
+                    break;
+                case "3_tag":
+                    long tagId= rs.getLong("id");
+                    if (tagId != 0) {
+                        TagDTO tagDTO = new TagDTO();
+                        tagDTO.setId(tagId);
+                        tagDTO.setName(rs.getString("title"));
+                        albumAdditionalInfoDTO.getTags().add(tagDTO);
+                    }
+                    break;
+            }
+        }
+        if (rowCount == 0) {
+            return null;
+        }
+        return albumAdditionalInfoDTO;
+    }
+
     @Override
     public Page<AlbumDTO> findAllByConditions(Pageable pageable,
         AlbumSearchDTO albumSearchDTO) {
@@ -137,6 +197,23 @@ public class AlbumRepositoryImpl extends BaseRepository implements AlbumReposito
             log.error(throwable);
             throw new RuntimeException(throwable);
         }
+    }
+    
+    @Override
+    @SneakyThrows
+    public AlbumAdditionalInfoDTO findAdditionalInfo(Long id) {
+        Session session = entityManager.unwrap(Session.class);
+        ResultSet rs = session.doReturningWork(connection -> {
+            try (CallableStatement function = connection
+                .prepareCall(
+                    "{ ? = call find_album_additional_info(?) }")) {
+                function.registerOutParameter(1, Types.REF_CURSOR);
+                function.setLong(2, id); // p_song_id
+                function.execute();
+                return function.getObject(1, ResultSet.class);
+            }
+        });
+        return this.extractResult(rs);
     }
 
     @Override

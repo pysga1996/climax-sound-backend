@@ -10,6 +10,8 @@ public interface UserService {
 
     String getCurrentUsername();
 
+    boolean isAdmin();
+
     boolean isAnonymous();
 
     boolean isAuthenticated();

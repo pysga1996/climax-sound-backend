@@ -1,13 +1,12 @@
 package com.alpha.service;
 
 import com.alpha.model.dto.CountryDTO;
-import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface CountryService {
 
-    Optional<CountryDTO> findById(Integer id);
+    CountryDTO findById(Integer id);
 
     CountryDTO findByName(String name);
 
@@ -15,7 +14,9 @@ public interface CountryService {
 
     Page<CountryDTO> findAllByNameContaining(String name, Pageable pageable);
 
-    void save(CountryDTO country);
+    CountryDTO create(CountryDTO countryDTO);
+
+    CountryDTO update(Integer id, CountryDTO countryDTO);
 
     void deleteById(Integer id);
 }

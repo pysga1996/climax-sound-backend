@@ -15,9 +15,12 @@ public interface AlbumRepository extends JpaRepository<Album, Long>, AlbumReposi
     @NonNull
     Optional<Album> findById(@NonNull @Param("id") Long id);
 
+    Optional<Album> findByIdAndUploader_Username(Long id, String username);
+
     @NonNull
     Page<Album> findAll(@NonNull Pageable pageable);
 
     @Procedure(procedureName = "DELETE_ALBUM")
     void deleteByIdProc(@Param("p_id") Long id);
+
 }

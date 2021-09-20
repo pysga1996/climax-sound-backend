@@ -153,6 +153,7 @@ public class Song extends Media {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "theme_id")
+    @NotFound(action = NotFoundAction.IGNORE)
     private Theme theme;
 
     //    @Convert(converter = DurationConverter.class)

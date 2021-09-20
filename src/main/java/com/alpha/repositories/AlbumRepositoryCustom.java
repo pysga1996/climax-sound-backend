@@ -1,10 +1,10 @@
 package com.alpha.repositories;
 
 import com.alpha.model.dto.AlbumDTO;
+import com.alpha.model.dto.AlbumDTO.AlbumAdditionalInfoDTO;
 import com.alpha.model.dto.AlbumSearchDTO;
 import com.alpha.model.dto.AlbumUpdateDTO;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 public interface AlbumRepositoryCustom {
 
     Page<AlbumDTO> findAllByConditions(Pageable pageable, AlbumSearchDTO albumSearchDTO);
+
+    AlbumAdditionalInfoDTO findAdditionalInfo(Long id);
 
     void updateSongList(Long albumId, List<AlbumUpdateDTO> albumUpdateDTOList);
 

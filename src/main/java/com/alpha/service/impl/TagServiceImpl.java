@@ -60,7 +60,7 @@ public class TagServiceImpl implements TagService {
     public TagDTO create(TagDTO tagDTO) {
         Optional<Tag> exitedGenreOptional = this.tagRepository.findByName(tagDTO.getName());
         if (exitedGenreOptional.isPresent()) {
-            throw new EntityExistsException("Tag existed");
+            throw new EntityExistsException("Tag with the a name existed");
         }
         Tag createdTag = this.tagMapper.dtoToEntity(tagDTO);
         createdTag.setCreateTime(new Date());
@@ -72,20 +72,19 @@ public class TagServiceImpl implements TagService {
     @Override
     @Transactional
     public TagDTO update(Long id, TagDTO tagDTO) {
-        Optional<Tag> exitedGenreOptional = this.tagRepository.findByName(tagDTO.getName());
-        if (exitedGenreOptional.isPresent()) {
-            Tag updatedTag = exitedGenreOptional.get();
-            if (!updatedTag.getId().equals(id)) {
-                throw new EntityExistsException("Tag existed");
-            }
-            updatedTag.setName(tagDTO.getName());
-            updatedTag.setUpdateTime(new Date());
-            updatedTag = this.tagRepository.save(updatedTag);
-            return this.tagMapper.entityToDto(updatedTag);
+        boolean existed = this.tagRepository.existsByIdAndName(id, tagDTO.getName());
+        if (existed) {
+            throw new EntityExistsException("Tag with the a name existed");
+        }
+        Optional<Tag> existedTagOptional = this.tagRepository.findById(id);
+        if (existedTagOptional.isPresent()) {
+            existedTagOptional.get().setName(tagDTO.getName());
+            existedTagOptional.get().setUpdateTime(new Date());
+            this.tagRepository.save(existedTagOptional.get());
+            return this.tagMapper.entityToDto(existedTagOptional.get());
         } else {
             throw new EntityNotFoundException("Tag not found");
         }
-
     }
 
     @Override

@@ -5,8 +5,11 @@ import com.alpha.model.dto.CountryDTO;
 import com.alpha.model.entity.Country;
 import com.alpha.repositories.CountryRepository;
 import com.alpha.service.CountryService;
+import java.util.Date;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -29,15 +32,17 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<CountryDTO> findById(Integer id) {
+    public CountryDTO findById(Integer id) {
         return this.countryRepository.findById(id)
-            .map(this.countryMapper::entityToDto);
+            .map(this.countryMapper::entityToDto)
+            .orElseThrow(() -> new EntityNotFoundException("Country not found!"));
     }
 
     @Override
     @Transactional(readOnly = true)
     public CountryDTO findByName(String name) {
-        return this.countryMapper.entityToDto(this.countryRepository.findByName(name));
+        return this.countryRepository.findByName(name).map(this.countryMapper::entityToDto)
+            .orElseThrow(() -> new EntityNotFoundException("Country not found"));
     }
 
     @Override
@@ -62,13 +67,40 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     @Transactional
-    public void save(CountryDTO country) {
-        countryRepository.saveAndFlush(this.countryMapper.dtoToEntity(country));
+    public CountryDTO create(CountryDTO countryDTO) {
+        Optional<Country> exitedCountryOptional = this.countryRepository
+            .findByName(countryDTO.getName());
+        if (exitedCountryOptional.isPresent()) {
+            throw new EntityExistsException("Country with the a name existed");
+        }
+        Country createCountry = this.countryMapper.dtoToEntity(countryDTO);
+        createCountry.setCreateTime(new Date());
+        createCountry.setStatus(1);
+        createCountry = this.countryRepository.saveAndFlush(createCountry);
+        return this.countryMapper.entityToDto(createCountry);
+    }
+
+    @Override
+    @Transactional
+    public CountryDTO update(Integer id, CountryDTO countryDTO) {
+        boolean existed = this.countryRepository.existsByIdAndName(id, countryDTO.getName());
+        if (existed) {
+            throw new EntityExistsException("Country with the a name existed");
+        }
+        Optional<Country> existedCountryOptional = this.countryRepository.findById(id);
+        if (existedCountryOptional.isPresent()) {
+            existedCountryOptional.get().setName(countryDTO.getName());
+            existedCountryOptional.get().setUpdateTime(new Date());
+            this.countryRepository.save(existedCountryOptional.get());
+            return this.countryMapper.entityToDto(existedCountryOptional.get());
+        } else {
+            throw new EntityNotFoundException("Country not found");
+        }
     }
 
     @Override
     @Transactional
     public void deleteById(Integer id) {
-        countryRepository.deleteById(id);
+        this.countryRepository.deleteById(id);
     }
 }

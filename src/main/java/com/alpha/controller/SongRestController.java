@@ -88,8 +88,8 @@ public class SongRestController {
     @PreAuthorize("permitAll()")
     @GetMapping(value = "/additional-info/{id}")
     public ResponseEntity<SongAdditionalInfoDTO> songAdditionalInfo(@PathVariable("id") Long id) {
-        SongAdditionalInfoDTO song = this.songService.findAdditionalInfoById(id);
-        return new ResponseEntity<>(song, HttpStatus.OK);
+        SongAdditionalInfoDTO additionalInfoDTO = this.songService.findAdditionalInfoById(id);
+        return new ResponseEntity<>(additionalInfoDTO, HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")

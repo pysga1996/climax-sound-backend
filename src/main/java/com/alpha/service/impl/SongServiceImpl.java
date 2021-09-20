@@ -163,7 +163,7 @@ public class SongServiceImpl implements SongService {
 
     @Override
     @Transactional
-    public SongDTO update(Long id, SongDTO songDTO, MultipartFile multipartFile) {
+    public SongDTO update(Long id, SongDTO songDTO, MultipartFile file) {
         boolean isAdmin = this.userService.hasAuthority(RoleConstants.SONG_MANAGEMENT);
         Optional<Song> oldSong;
         if (isAdmin) {
@@ -174,17 +174,21 @@ public class SongServiceImpl implements SongService {
         }
         if (oldSong.isPresent()) {
             Song song = oldSong.get();
-            if (multipartFile != null) {
+            if (file != null) {
+                ResourceInfo oldResourceInfo = this.resourceInfoRepository
+                    .findByMediaIdAndStorageTypeAndMediaRefAndStatus(song.getId(),
+                        this.storageService.getStorageType(), MediaRef.SONG_AUDIO, Status.ACTIVE)
+                    .orElse(null);
                 ResourceInfo resourceInfo = this.storageService
-                    .upload(multipartFile, song, song.getAudioResource());
-                oldSong.get().setAudioResource(resourceInfo);
+                    .upload(file, song, oldResourceInfo);
+                song.setAudioResource(resourceInfo);
                 songDTO.setUrl(this.storageService.getFullUrl(resourceInfo));
             }
-            song = this.patchSongUploadToEntity(songDTO, oldSong.get());
+            this.patchSongUploadToEntity(songDTO, song);
             this.songRepository.save(song);
             return songDTO;
         } else {
-            throw new EntityNotFoundException("Song does not existed or user is not the uploader");
+            throw new EntityNotFoundException("Song does not existed or user is not the owner");
         }
     }
 
@@ -271,7 +275,7 @@ public class SongServiceImpl implements SongService {
         return songIdMap;
     }
 
-    private Song patchSongUploadToEntity(SongDTO songDTO, Song song) {
+    private void patchSongUploadToEntity(SongDTO songDTO, Song song) {
         song.setId(songDTO.getId());
         song.setTitle(songDTO.getTitle());
         song.setUnaccentTitle(StringAccentRemover.removeStringAccent(songDTO.getTitle()));
@@ -304,6 +308,5 @@ public class SongServiceImpl implements SongService {
             song.setTags(mergedTagList);
             song.setTheme(additionalInfoSong.getTheme());
         }
-        return song;
     }
 }

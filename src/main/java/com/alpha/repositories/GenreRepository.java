@@ -13,6 +13,8 @@ public interface GenreRepository extends JpaRepository<Genre, Integer> {
     //    @Query(value = "SELECT * FROM genre WHERE BINARY title=:title", nativeQuery = true)
     Optional<Genre> findByName(String name);
 
+    boolean existsByIdAndName(Integer id,String name);
+
     Page<Genre> findAllByOrderByUpdateTimeDescCreateTimeDesc(Pageable pageable);
 
     Page<Genre> findAllByNameContaining(String name, Pageable pageable);

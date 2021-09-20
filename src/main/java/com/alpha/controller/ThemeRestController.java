@@ -59,7 +59,7 @@ public class ThemeRestController {
 
     @PreAuthorize("hasAuthority(@Authority.THEME_MANAGEMENT)")
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> deleteActivity(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> deleteTheme(@PathVariable("id") Integer id) {
         this.themeService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

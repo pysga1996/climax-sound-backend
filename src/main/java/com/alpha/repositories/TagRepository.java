@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
 
+    boolean existsByIdAndName(Long id, String name);
     //    @Query(value = "SELECT * FROM tag WHERE BINARY title=:title", nativeQuery = true)
     Optional<Tag> findByName(String name);
 

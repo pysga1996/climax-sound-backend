@@ -52,14 +52,14 @@ public class ApiErrorHandler {
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ApiError handleEntityNotFoundException(EntityNotFoundException ex, WebRequest request) {
         log.error("Entity not found: ", ex);
-        return new ApiError(3000, ex.getLocalizedMessage());
+        return new ApiError(3000, ex.getMessage());
     }
 
     @ExceptionHandler(EntityExistsException.class)
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
     public ApiError handleEntityExistedException(EntityExistsException ex, WebRequest request) {
         log.error("Entity existed: ", ex);
-        return new ApiError(2500, ex.getLocalizedMessage());
+        return new ApiError(2500, ex.getMessage());
     }
 
     @ExceptionHandler(InvalidBearerTokenException.class)

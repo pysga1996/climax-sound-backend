@@ -63,7 +63,7 @@ public class GenreServiceImpl implements GenreService {
     public GenreDTO create(GenreDTO genreDTO) {
         Optional<Genre> exitedGenreOptional = this.genreRepository.findByName(genreDTO.getName());
         if (exitedGenreOptional.isPresent()) {
-            throw new EntityExistsException("Genre existed");
+            throw new EntityExistsException("Genre with the a name existed");
         }
         Genre createGenre = this.genreMapper.dtoToEntity(genreDTO);
         createGenre.setCreateTime(new Date());
@@ -75,19 +75,18 @@ public class GenreServiceImpl implements GenreService {
     @Override
     @Transactional
     public GenreDTO update(Integer id, GenreDTO genreDTO) {
-        Genre updatedGenre;
-        Optional<Genre> exitedGenreOptional = this.genreRepository.findByName(genreDTO.getName());
-        if (exitedGenreOptional.isPresent()) {
-            updatedGenre = exitedGenreOptional.get();
-            if (!updatedGenre.getId().equals(id)) {
-                throw new EntityExistsException("Genre existed");
-            }
-            updatedGenre.setName(genreDTO.getName());
-            updatedGenre.setUpdateTime(new Date());
-            updatedGenre = this.genreRepository.save(updatedGenre);
-            return this.genreMapper.entityToDto(updatedGenre);
+        boolean existed = this.genreRepository.existsByIdAndName(id, genreDTO.getName());
+        if (existed) {
+            throw new EntityExistsException("Genre with the a name existed");
+        }
+        Optional<Genre> existedGenreOptional = this.genreRepository.findById(id);
+        if (existedGenreOptional.isPresent()) {
+            existedGenreOptional.get().setName(genreDTO.getName());
+            existedGenreOptional.get().setUpdateTime(new Date());
+            this.genreRepository.save(existedGenreOptional.get());
+            return this.genreMapper.entityToDto(existedGenreOptional.get());
         } else {
-            throw new EntityNotFoundException("Genre not found!");
+            throw new EntityNotFoundException("Genre not found");
         }
     }
 

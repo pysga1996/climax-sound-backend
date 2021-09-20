@@ -13,6 +13,8 @@ public final class RoleConstants {
 
     public static final String USERNAME = "user_name";
 
+    public static final String ADMIN_DASHBOARD = "dashboard";
+
     public static final String SONG_MANAGEMENT = "song-management";
 
     public static final String ARTIST_MANAGEMENT = "artist-management";

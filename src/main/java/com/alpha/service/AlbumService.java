@@ -1,9 +1,9 @@
 package com.alpha.service;
 
 import com.alpha.model.dto.AlbumDTO;
+import com.alpha.model.dto.AlbumDTO.AlbumAdditionalInfoDTO;
 import com.alpha.model.dto.AlbumSearchDTO;
 import com.alpha.model.dto.AlbumUpdateDTO;
-import java.io.IOException;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +13,8 @@ public interface AlbumService {
 
     AlbumDTO detail(Long id, Pageable pageable);
 
+    AlbumAdditionalInfoDTO findAdditionalInfoById(Long id);
+
     Page<AlbumDTO> findAll(Pageable pageable);
 
     Page<AlbumDTO> findAllByConditions(Pageable pageable, AlbumSearchDTO albumSearchDTO);
@@ -21,11 +23,11 @@ public interface AlbumService {
 
     void deleteById(Long id);
 
-    AlbumDTO uploadAndSaveAlbum(MultipartFile file, AlbumDTO album) throws IOException;
+    AlbumDTO uploadAndSaveAlbum(MultipartFile file, AlbumDTO album);
 
     void updateSongList(Long albumId, List<AlbumUpdateDTO> songDTOList);
 
-    AlbumDTO edit(MultipartFile file, AlbumDTO album, Long id) throws IOException;
+    AlbumDTO update(MultipartFile file, AlbumDTO album, Long id);
 
     AlbumDTO listenToAlbum(Long albumId);
 }

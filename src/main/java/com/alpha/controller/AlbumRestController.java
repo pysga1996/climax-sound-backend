@@ -1,6 +1,7 @@
 package com.alpha.controller;
 
 import com.alpha.model.dto.AlbumDTO;
+import com.alpha.model.dto.AlbumDTO.AlbumAdditionalInfoDTO;
 import com.alpha.model.dto.AlbumSearchDTO;
 import com.alpha.model.dto.AlbumUpdateDTO;
 import com.alpha.service.AlbumService;
@@ -48,6 +49,13 @@ public class AlbumRestController {
         return new ResponseEntity<>(albumDTO, HttpStatus.OK);
     }
 
+    @PreAuthorize("permitAll()")
+    @GetMapping(value = "/additional-info/{id}")
+    public ResponseEntity<AlbumAdditionalInfoDTO> albumAdditionalInfo(@PathVariable("id") Long id) {
+        AlbumAdditionalInfoDTO albumAdditionalInfoDTO = this.albumService.findAdditionalInfoById(id);
+        return new ResponseEntity<>(albumAdditionalInfoDTO, HttpStatus.OK);
+    }
+
     @GetMapping(value = "/search")
     public ResponseEntity<Page<AlbumDTO>> albumSearch(@ModelAttribute AlbumSearchDTO albumSearchDTO,
         Pageable pageable) {
@@ -86,8 +94,8 @@ public class AlbumRestController {
     public ResponseEntity<AlbumDTO> editAlbum(@Valid @RequestPart("album") AlbumDTO album,
         @RequestPart(value = "cover", required = false)
             MultipartFile file,
-        @PathVariable("id") Long id) throws IOException {
-        AlbumDTO albumDTO = this.albumService.edit(file, album, id);
+        @PathVariable("id") Long id) {
+        AlbumDTO albumDTO = this.albumService.update(file, album, id);
         return new ResponseEntity<>(albumDTO, HttpStatus.OK);
     }
 
