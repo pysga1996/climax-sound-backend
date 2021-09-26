@@ -151,7 +151,7 @@ public class SongServiceImpl implements SongService {
     public SongDTO uploadAndSaveSong(MultipartFile file, SongDTO songDTO) {
         Song song = new Song();
         this.patchSongUploadToEntity(songDTO, song);
-        UserInfoDTO userInfoDTO = this.userService.getCurrentUserInfo();
+        UserInfoDTO userInfoDTO = this.userService.getCurrentUserInfoDTO();
         UserInfo userInfo = this.userInfoMapper.dtoToEntity(userInfoDTO);
         song.setUploader(userInfo);
         this.songRepository.saveAndFlush(song);

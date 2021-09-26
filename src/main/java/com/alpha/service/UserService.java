@@ -18,7 +18,9 @@ public interface UserService {
 
     boolean hasAuthority(String authority);
 
-    UserInfoDTO getCurrentUserInfo();
+    UserInfo getCurrentUserInfo();
+
+    UserInfoDTO getCurrentUserInfoDTO();
 
     UserInfoDTO getUserInfo(String username);
 

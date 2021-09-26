@@ -126,7 +126,7 @@ public class AlbumServiceImpl implements AlbumService {
     public AlbumDTO uploadAndSaveAlbum(MultipartFile file, AlbumDTO albumDTO) {
         Album album = new Album();
         this.patchAlbumUploadToEntity(albumDTO, album);
-        UserInfoDTO userInfoDTO = this.userService.getCurrentUserInfo();
+        UserInfoDTO userInfoDTO = this.userService.getCurrentUserInfoDTO();
         UserInfo userInfo = this.userInfoMapper.dtoToEntity(userInfoDTO);
         album.setUploader(userInfo);
         this.albumRepository.saveAndFlush(album);

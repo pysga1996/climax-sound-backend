@@ -7,8 +7,6 @@ import com.alpha.model.entity.Comment;
 import java.util.List;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR,
@@ -17,15 +15,9 @@ import org.mapstruct.ReportingPolicy;
 public abstract class CommentMapper {
 
     @FullMapping
-    @Mappings({
-        @Mapping(target = "song", qualifiedBy = PureMapping.class)
-    })
     public abstract CommentDTO entityToDto(Comment comment);
 
     @FullMapping
-    @Mappings({
-        @Mapping(target = "song", qualifiedBy = PureMapping.class)
-    })
     public abstract Comment dtoToEntity(CommentDTO comment);
 
     @FullMapping
@@ -37,15 +29,9 @@ public abstract class CommentMapper {
     public abstract List<Comment> dtoToEntityList(List<CommentDTO> comments);
 
     @PureMapping
-    @Mappings({
-        @Mapping(target = "song", ignore = true)
-    })
     public abstract CommentDTO entityToDtoPure(Comment comment);
 
     @PureMapping
-    @Mappings({
-        @Mapping(target = "song", ignore = true)
-    })
     public abstract Comment dtoToEntityPure(CommentDTO comment);
 
     @PureMapping

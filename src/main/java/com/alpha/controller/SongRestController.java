@@ -129,19 +129,4 @@ public class SongRestController {
         this.songService.listenToSong(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping(params = {"comment", "song-id"})
-    public ResponseEntity<CommentDTO> commentOnSong(@Valid @RequestBody CommentDTO comment,
-        @RequestParam("song-id") Long songId) {
-        CommentDTO songDTO = this.commentService.save(comment, songId);
-        return new ResponseEntity<>(songDTO, HttpStatus.OK);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @DeleteMapping(params = {"comment", "comment-id"})
-    public ResponseEntity<Void> deleteCommentOnSong(@RequestParam("comment-id") Long id) {
-        this.commentService.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 }

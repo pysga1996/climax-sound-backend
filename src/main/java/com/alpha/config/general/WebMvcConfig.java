@@ -1,10 +1,13 @@
 package com.alpha.config.general;
 
+import com.alpha.constant.CommentType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -36,6 +39,17 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return new BCryptPasswordEncoder();
     }
 
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(new StringToCommentTypeConverter());
+    }
+
+    public static class StringToCommentTypeConverter implements Converter<String, CommentType> {
+        @Override
+        public CommentType convert(String source) {
+            return CommentType.fromValue(source.toUpperCase());
+        }
+    }
 //    @Bean
 //    @Primary
 //    public CorsConfigurationSource corsConfigurationSource() {

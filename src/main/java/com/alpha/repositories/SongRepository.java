@@ -14,7 +14,6 @@ public interface SongRepository extends JpaRepository<Song, Long>, SongRepositor
     @NonNull
     Page<Song> findAll(@NonNull Pageable pageable);
 
-    @Query("SELECT s from Song s LEFT JOIN FETCH s.comments c WHERE s.id=:id")
     @NonNull
     Optional<Song> findById(@NonNull @Param("id") Long id);
 

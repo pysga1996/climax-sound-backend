@@ -28,7 +28,7 @@ public class KafkaConfig {
     @Value(value = "${spring.kafka.jaas.options.username:}")
     private String username;
 
-    @Value(value = "${spring.kafka.jaas.options.password}")
+    @Value(value = "${spring.kafka.jaas.options.password:}")
     private String password;
 
     @Value(value = "${spring.kafka.jaas.options.topic-prefix:}")

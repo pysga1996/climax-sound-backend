@@ -105,8 +105,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
-    public UserInfoDTO getCurrentUserInfo() {
+    public UserInfo getCurrentUserInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username;
         if (authentication instanceof JwtAuthenticationToken) {
@@ -124,7 +123,7 @@ public class UserServiceImpl implements UserService {
         }
         Optional<UserInfo> userInfoOptional = this.userInfoRepository.findByUsername(username);
         if (userInfoOptional.isPresent()) {
-            return this.userInfoMapper.entityToDto(userInfoOptional.get());
+            return userInfoOptional.get();
         } else {
             UserInfo userInfo = UserInfo
                 .builder()
@@ -135,8 +134,14 @@ public class UserServiceImpl implements UserService {
                 .status(1)
                 .build();
             this.userInfoRepository.save(userInfo);
-            return this.userInfoMapper.entityToDto(userInfo);
+            return userInfo;
         }
+    }
+
+    @Override
+    @Transactional
+    public UserInfoDTO getCurrentUserInfoDTO() {
+        return this.userInfoMapper.entityToDto(this.getCurrentUserInfo());
     }
 
     @Override

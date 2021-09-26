@@ -10,9 +10,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
@@ -70,27 +68,17 @@ public class ApiErrorHandler {
         return new ApiError(2000, ex.getLocalizedMessage());
     }
 
-    @NonNull
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(
-        MethodArgumentNotValidException ex,
-        @NonNull HttpHeaders headers,
-        HttpStatus status,
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ApiError handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
         @NonNull WebRequest request) {
-
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", new Date());
-        body.put("status", status.value());
-
         //Get all errors
         List<String> errors = ex.getBindingResult()
             .getFieldErrors()
             .stream()
             .map(DefaultMessageSourceResolvable::getDefaultMessage)
             .collect(Collectors.toList());
-
-        body.put("errors", errors);
-
-        return new ResponseEntity<>(body, headers, status);
+        return new ApiError(2000, String.join("\n", errors));
     }
 
     @ExceptionHandler(ConstraintViolationException.class)

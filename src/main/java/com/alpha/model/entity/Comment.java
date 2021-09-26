@@ -1,10 +1,12 @@
 package com.alpha.model.entity;
 
-import java.time.LocalDateTime;
+import com.alpha.constant.CommentType;
+import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,6 +21,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Length;
 
 
@@ -28,6 +31,7 @@ import org.hibernate.validator.constraints.Length;
 @ToString(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "comment")
+@Where(clause = "status=1")
 public class Comment {
 
     @Id
@@ -43,14 +47,25 @@ public class Comment {
     @ToString.Include
     private String content;
 
-    @ToString.Include
-    private LocalDateTime localDateTime;
+    @Column(name = "comment_type")
+    @Enumerated(EnumType.STRING)
+    private CommentType commentType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Song song;
+    @Column(name = "entity_id")
+    private Long entityId;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "username", referencedColumnName = "username")
     @NotFound(action = NotFoundAction.EXCEPTION)
     private UserInfo userInfo;
+
+    @ToString.Include
+    @Column(name = "create_time")
+    private Date createTime;
+
+    @Column(name = "update_time")
+    private Date updateTime;
+
+    @Column(name = "status")
+    private Integer status;
 }
