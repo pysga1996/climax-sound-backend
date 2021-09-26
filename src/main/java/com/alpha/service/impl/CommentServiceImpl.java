@@ -1,6 +1,6 @@
 package com.alpha.service.impl;
 
-import com.alpha.constant.CommentType;
+import com.alpha.constant.EntityType;
 import com.alpha.mapper.CommentMapper;
 import com.alpha.model.dto.CommentDTO;
 import com.alpha.model.entity.Album;
@@ -51,10 +51,10 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Page<CommentDTO> commentList(CommentType type,
+    public Page<CommentDTO> commentList(EntityType type,
         Long entityId, Pageable pageable) {
         return this.commentRepository
-            .findAllByCommentTypeAndEntityIdOrderByCreateTimeDesc(type, entityId, pageable)
+            .findAllByEntityTypeAndEntityIdOrderByCreateTimeDesc(type, entityId, pageable)
             .map(this.commentMapper::entityToDto);
     }
 
@@ -68,7 +68,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public CommentDTO create(CommentDTO commentDTO) {
-        switch (commentDTO.getCommentType()) {
+        switch (commentDTO.getEntityType()) {
             case SONG:
                 Optional<Song> optionalSong = this.songRepository
                     .findById(commentDTO.getEntityId());
@@ -118,10 +118,10 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Transactional
-    public void deleteById(Long id, CommentType type) {
+    public void deleteById(Long id, EntityType type) {
         UserInfo currentUserInfo = this.userService.getCurrentUserInfo();
         Optional<Comment> optionalComment = this.commentRepository
-            .findByIdAndCommentTypeAndUserInfo(id, type, currentUserInfo);
+            .findByIdAndEntityTypeAndUserInfo(id, type, currentUserInfo);
         if (optionalComment.isPresent()) {
             Comment comment = optionalComment.get();
             comment.setStatus(0);

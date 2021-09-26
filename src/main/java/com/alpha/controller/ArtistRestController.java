@@ -51,9 +51,8 @@ public class ArtistRestController {
     @PreAuthorize("permitAll()")
     @GetMapping(value = "/detail/{id}")
     public ResponseEntity<ArtistDTO> artistDetail(@PathVariable("id") Long id) {
-        Optional<ArtistDTO> artist = this.artistService.findById(id);
-        return artist.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-            .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+        ArtistDTO artist = this.artistService.findById(id);
+        return ResponseEntity.ok(artist);
     }
 
     @PreAuthorize("hasAuthority(@Authority.ARTIST_MANAGEMENT)")

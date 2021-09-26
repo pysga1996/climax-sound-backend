@@ -1,6 +1,6 @@
 package com.alpha.controller;
 
-import com.alpha.constant.CommentType;
+import com.alpha.constant.EntityType;
 import com.alpha.model.dto.CommentDTO;
 import com.alpha.service.CommentService;
 import javax.validation.Valid;
@@ -38,7 +38,7 @@ public class CommentRestController {
     }
 
     @GetMapping(value = "/{type}")
-    public ResponseEntity<Page<CommentDTO>> commentList(@PathVariable("type") CommentType type,
+    public ResponseEntity<Page<CommentDTO>> commentList(@PathVariable("type") EntityType type,
         @RequestParam("id") Long entityId,
         Pageable pageable) {
         Page<CommentDTO> commentDTOPage = this.commentService.commentList(type, entityId, pageable);
@@ -62,7 +62,7 @@ public class CommentRestController {
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping
     public ResponseEntity<Void> deleteCommentOnSong(@RequestParam("comment-id") Long id,
-        @RequestParam("type") CommentType type) {
+        @RequestParam("type") EntityType type) {
         this.commentService.deleteById(id, type);
         return new ResponseEntity<>(HttpStatus.OK);
     }

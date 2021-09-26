@@ -9,15 +9,15 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * @project vengeance
  * @since 1.0
  **/
-public enum CommentType {
+public enum EntityType {
 
     SONG,
     ALBUM,
     ARTIST;
 
     @JsonCreator
-    public static CommentType fromValue(String val) {
-        return CommentType.valueOf(val);
+    public static EntityType fromValue(String val) {
+        return EntityType.valueOf(val);
     }
 
     @JsonValue

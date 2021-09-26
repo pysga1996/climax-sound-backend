@@ -1,8 +1,5 @@
 package com.alpha.constant;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 /**
  * @author thanhvt
  * @created 13/09/2021 - 2:03 SA
@@ -11,78 +8,47 @@ import lombok.Getter;
  **/
 public class SchedulerConstants {
 
-    private static final String QUEUE_BASE_DIR = "./queues";
+    public static final String LIKES_TOPIC = "likes";
 
-    private static final String ALBUM_INSERT_LISTENING =
-        "INSERT INTO user_favorite_albums (username, album_id, liked)\n"
-            + "VALUES (?, ?, false)\n"
-            + "    ON CONFLICT ON CONSTRAINT user_favorite_albums_pk\n"
+    public static final String LISTENING_TOPIC = "listening";
+
+    public static final String LIKES_CACHE = "likes_cache";
+
+    public static final String LISTENING_CACHE = "listening_cache";
+
+    public static final String QUEUE_BASE_DIR = "./queues";
+
+    public static final String LIKES_QUEUE_FILE = "likes.txt";
+
+    public static final String LISTENING_QUEUE_FILE = "listening.txt";
+
+    public static final String UPSERT_LIKES_SQL =
+        "INSERT INTO user_favorites (username, entity_id, liked, type)\n"
+            + "VALUES (?, ?, ?, ?)\n"
+            + "ON CONFLICT ON CONSTRAINT favorites_pk\n"
+            + "    DO UPDATE SET liked = ?\n"
+            + "WHERE user_favorites.username = ?\n"
+            + "  AND user_favorites.entity_id = ?\n"
+            + "  AND user_favorites.type = ?\n";
+
+    public static final String INSERT_LISTENING_SQL =
+        "INSERT INTO user_favorites (username, entity_id, liked, type)\n"
+            + "VALUES (?, ?, false, ?)\n"
+            + "    ON CONFLICT ON CONSTRAINT favorites_pk\n"
             + "    DO NOTHING";
 
-    private static final String ALBUM_UPDATE_LISTENING_COUNT = "UPDATE album SET listening_frequency = ? WHERE id = ?";
+    public static final String ALBUM_UPDATE_LISTENING_COUNT = "UPDATE album SET listening_frequency = ? WHERE id = ?";
 
-    private static final String ALBUM_UPSERT_LIKES =
-        "INSERT INTO user_favorite_albums (username, album_id, liked)\n"
-            + "VALUES (?, ?, ?)\n"
-            + "ON CONFLICT ON CONSTRAINT user_favorite_albums_pk\n"
-            + "    DO UPDATE SET liked = ?\n"
-            + "WHERE user_favorite_albums.username = ?\n"
-            + "  AND user_favorite_albums.album_id = ?";
+    public static final String SONG_UPDATE_LISTENING_COUNT = "UPDATE song SET listening_frequency = ? WHERE id = ?";
 
-    private static final String ARTIST_UPSERT_LIKES =
-        "INSERT INTO user_favorite_artists (username, artist_id, liked)\n"
-            + "VALUES (?, ?, ?)\n"
-            + "ON CONFLICT ON CONSTRAINT user_favorite_artists_pk\n"
-            + "    DO UPDATE SET liked = ?\n"
-            + "WHERE user_favorite_artists.username = ?\n"
-            + "  AND user_favorite_artists.artist_id = ?";
+    public static final String ALBUM_UPDATE_LIKES_COUNT = "UPDATE album SET like_count = ? WHERE id = ?";
 
-    private static final String SONG_INSERT_LISTENING =
-        "INSERT INTO user_favorite_songs (username, song_id, liked)\n"
-            + "VALUES (?, ?, false)\n"
-            + "ON CONFLICT ON CONSTRAINT user_favorite_songs_pk\n"
-            + "    DO NOTHING";
+    public static final String SONG_UPDATE_LIKES_COUNT = "UPDATE song SET like_count = ? WHERE id = ?";
 
-    private static final String SONG_UPDATE_LISTENING_COUNT = "UPDATE song SET listening_frequency = ? WHERE id = ?";
-
-    private static final String SONG_UPSERT_LIKES =
-        "INSERT INTO user_favorite_songs (username, song_id, liked)\n"
-            + "VALUES (?, ?, ?)\n"
-            + "ON CONFLICT ON CONSTRAINT user_favorite_songs_pk\n"
-            + "    DO UPDATE SET liked = ?\n"
-            + "WHERE user_favorite_songs.username = ?\n"
-            + "  AND user_favorite_songs.song_id = ?";
-
-    @Getter
-    @AllArgsConstructor
-    public enum LikeConfig {
-        SONG(QUEUE_BASE_DIR, "song_likes.txt", "user_favorite_songs", SONG_UPSERT_LIKES),
-        ALBUM(QUEUE_BASE_DIR, "album_likes.txt", "user_favorite_albums", ALBUM_UPSERT_LIKES),
-        ARTIST(QUEUE_BASE_DIR, "artist_likes.txt", "user_favorite_artists", ARTIST_UPSERT_LIKES);
-        private final String dir;
-
-        private final String likesQueueFile;
-
-        private final String table;
-
-        private final String sql;
-    }
-
-    @Getter
-    @AllArgsConstructor
-    public enum ListeningConfig {
-        SONG(QUEUE_BASE_DIR, "song_listening.txt", "user_favorite_songs",
-            SONG_INSERT_LISTENING, SONG_UPDATE_LISTENING_COUNT),
-        ALBUM(QUEUE_BASE_DIR, "album_listening.txt", "user_favorite_albums",
-            ALBUM_INSERT_LISTENING, ALBUM_UPDATE_LISTENING_COUNT);
-        private final String dir;
-
-        private final String listeningQueueFile;
-
-        private final String table;
-
-        private final String listeningSql;
-
-        private final String listeningCountSql;
+    public static class CacheQueue {
+        public static final String SONG_LISTENING_CACHE_QUEUE = "song_listening_cache_queue";
+        public static final String ALBUM_LISTENING_CACHE_QUEUE = "album_listening_cache_queue";
+        public static final String SONG_LIKES_CACHE_QUEUE = "song_likes_cache_queue";
+        public static final String ALBUM_LIKES_CACHE_QUEUE = "album_likes_cache_queue";
     }
 }

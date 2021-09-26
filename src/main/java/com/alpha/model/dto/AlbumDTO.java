@@ -1,6 +1,6 @@
 package com.alpha.model.dto;
 
-import com.alpha.repositories.BaseRepository.HasArtists;
+import com.alpha.constant.EntityType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import java.time.Duration;
@@ -16,7 +16,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AlbumDTO implements HasArtists {
+public class AlbumDTO implements MediaDTO {
 
     private Long rn;
 
@@ -31,6 +31,10 @@ public class AlbumDTO implements HasArtists {
     private Date releaseDate;
 
     private Long listeningFrequency = 0L;
+
+    private Long likeCount = 0L;
+
+    private Boolean liked;
 
     private String coverUrl;
 
@@ -54,8 +58,6 @@ public class AlbumDTO implements HasArtists {
 
     private UserInfoDTO uploader;
 
-    private Collection<UserInfoDTO> users;
-
     @JsonProperty(access = Access.WRITE_ONLY)
     private AlbumAdditionalInfoDTO additionalInfo;
 
@@ -74,5 +76,10 @@ public class AlbumDTO implements HasArtists {
         private CountryDTO country;
 
         private ThemeDTO theme;
+    }
+
+    @Override
+    public EntityType getType() {
+        return EntityType.ALBUM;
     }
 }

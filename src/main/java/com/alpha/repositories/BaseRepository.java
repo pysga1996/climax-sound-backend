@@ -1,6 +1,7 @@
 package com.alpha.repositories;
 
 import com.alpha.model.dto.ArtistDTO;
+import com.alpha.model.dto.MediaDTO;
 import com.alpha.util.helper.DataTypeComparer;
 import java.math.BigInteger;
 import java.sql.PreparedStatement;
@@ -26,7 +27,7 @@ public abstract class BaseRepository {
 
     private final int batchSize = 20;
 
-    protected <E extends HasArtists> BigInteger addArtist(BigInteger artistId,
+    protected <E extends MediaDTO> BigInteger addArtist(BigInteger artistId,
         BigInteger currentArtistId,
         boolean isSameSong, E entity,
         Tuple row) {
@@ -45,7 +46,7 @@ public abstract class BaseRepository {
         return artistId;
     }
 
-    protected <E extends HasArtists> Long addArtist(Long artistId,
+    protected <E extends MediaDTO> Long addArtist(Long artistId,
         Long currentArtistId,
         boolean isSameSong, E entity,
         ResultSet rs) throws SQLException {
@@ -106,10 +107,5 @@ public abstract class BaseRepository {
     public interface StatementParamsSetupCallback<S, E, X extends Throwable> {
 
         void accept(S statement, E element, int index) throws X;
-    }
-
-    public interface HasArtists {
-
-        Collection<ArtistDTO> getArtists();
     }
 }

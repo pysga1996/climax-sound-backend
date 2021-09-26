@@ -1,6 +1,6 @@
 package com.alpha.repositories;
 
-import com.alpha.constant.CommentType;
+import com.alpha.constant.EntityType;
 import com.alpha.model.entity.Comment;
 import com.alpha.model.entity.UserInfo;
 import java.util.Optional;
@@ -12,10 +12,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    Page<Comment> findAllByCommentTypeAndEntityIdOrderByCreateTimeDesc(CommentType commentType, Long id,
+    Page<Comment> findAllByEntityTypeAndEntityIdOrderByCreateTimeDesc(EntityType entityType, Long id,
         Pageable pageable);
 
-    void deleteByIdAndCommentTypeAndUserInfo(Long id, CommentType type, UserInfo userInfo);
+    void deleteByIdAndEntityTypeAndUserInfo(Long id, EntityType type, UserInfo userInfo);
 
-    Optional<Comment> findByIdAndCommentTypeAndUserInfo(Long id, CommentType type, UserInfo userInfo);
+    Optional<Comment> findByIdAndEntityTypeAndUserInfo(Long id, EntityType type, UserInfo userInfo);
 }

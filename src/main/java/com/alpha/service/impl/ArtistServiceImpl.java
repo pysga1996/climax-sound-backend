@@ -1,6 +1,7 @@
 package com.alpha.service.impl;
 
 import com.alpha.config.properties.StorageProperty.StorageType;
+import com.alpha.constant.EntityType;
 import com.alpha.constant.MediaRef;
 import com.alpha.constant.Status;
 import com.alpha.mapper.ArtistMapper;
@@ -8,13 +9,18 @@ import com.alpha.model.dto.ArtistDTO;
 import com.alpha.model.dto.ArtistSearchDTO;
 import com.alpha.model.entity.Artist;
 import com.alpha.model.entity.ResourceInfo;
+import com.alpha.model.entity.UserInfo;
 import com.alpha.repositories.ArtistRepository;
 import com.alpha.repositories.ResourceInfoRepository;
 import com.alpha.service.ArtistService;
+import com.alpha.service.FavoritesService;
 import com.alpha.service.StorageService;
+import com.alpha.service.UserService;
 import com.alpha.util.formatter.StringAccentRemover;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Optional;
+import javax.persistence.EntityNotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,28 +45,40 @@ public class ArtistServiceImpl implements ArtistService {
 
     private final StorageService storageService;
 
+    private final UserService userService;
+
+    private final FavoritesService favoritesService;
+
     @Autowired
     public ArtistServiceImpl(ArtistRepository artistRepository,
         ResourceInfoRepository resourceInfoRepository,
-        ArtistMapper artistMapper, StorageService storageService) {
+        ArtistMapper artistMapper, StorageService storageService,
+        UserService userService, FavoritesService favoritesService) {
         this.artistRepository = artistRepository;
         this.resourceInfoRepository = resourceInfoRepository;
         this.artistMapper = artistMapper;
         this.storageService = storageService;
+        this.userService = userService;
+        this.favoritesService = favoritesService;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<ArtistDTO> findById(Long id) {
+    public ArtistDTO findById(Long id) {
         Optional<Artist> optionalArtist = this.artistRepository.findById(id);
-        return optionalArtist.map(artist -> {
+        if (optionalArtist.isPresent()) {
+            Artist artist = optionalArtist.get();
+            ArtistDTO artistDTO = this.artistMapper.entityToDto(artist);
             Optional<ResourceInfo> optionalResourceInfo = this.resourceInfoRepository
                 .findByMediaIdAndStorageTypeAndMediaRefAndStatus(artist.getId(), this.storageType,
                     MediaRef.ARTIST_AVATAR, Status.ACTIVE);
             optionalResourceInfo.ifPresent(
-                resourceInfo -> artist.setAvatarUrl(this.storageService.getFullUrl(resourceInfo)));
-            return this.artistMapper.entityToDto(artist);
-        });
+                resourceInfo -> artistDTO.setAvatarUrl(this.storageService.getFullUrl(resourceInfo)));
+            this.favoritesService.setLike(artistDTO, EntityType.ARTIST);
+            return artistDTO;
+        } else {
+            throw new EntityNotFoundException("Artist not found!");
+        }
     }
 
     @Override
@@ -78,8 +96,11 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     @Transactional
     public ArtistDTO create(ArtistDTO artist, MultipartFile multipartFile) {
+        UserInfo currentUser = this.userService.getCurrentUserInfo();
         String unaccentName = StringAccentRemover.removeStringAccent(artist.getName());
         Artist artistToSave = this.artistMapper.dtoToEntity(artist);
+        artistToSave.setLikeCount(0L);
+        artistToSave.setUploader(currentUser);
         this.artistRepository.saveAndFlush(artistToSave);
         ResourceInfo resourceInfo = this.storageService.upload(multipartFile, artistToSave);
         artist.setId(artistToSave.getId());
@@ -123,5 +144,10 @@ public class ArtistServiceImpl implements ArtistService {
     @Transactional
     public void deleteById(Long id) {
         artistRepository.deleteById(id);
+    }
+
+    @Override
+    public Map<Long, Boolean> getUserArtistLikeMap(Map<Long, Boolean> artistIdMap) {
+        return null;
     }
 }

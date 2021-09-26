@@ -1,5 +1,6 @@
 package com.alpha.model.dto;
 
+import com.alpha.constant.EntityType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -20,7 +21,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @EqualsAndHashCode()
 @JsonIgnoreProperties(value = {"albums", "songs", "avatarResource", "avatarUrl"},
     allowGetters = true, ignoreUnknown = true)
-public class ArtistDTO {
+public class ArtistDTO implements MediaDTO {
 
     private Long rn;
 
@@ -41,9 +42,25 @@ public class ArtistDTO {
 
     private String biography;
 
+    private Long likeCount = 0L;
+
+    private Boolean liked;
+
+    private UserInfoDTO uploader;
+
     @JsonBackReference(value = "song-artist")
     private Collection<SongDTO> songs;
 
     @JsonBackReference(value = "album-artist")
     private Collection<AlbumDTO> albums;
+
+    @Override
+    public Collection<ArtistDTO> getArtists() {
+        return null;
+    }
+
+    @Override
+    public EntityType getType() {
+        return EntityType.ARTIST;
+    }
 }

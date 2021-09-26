@@ -76,6 +76,7 @@ public class Song extends Media {
     private Long displayRating = 0L;
 
     @Builder.Default
+    @Column(name = "listening_frequency")
     @ColumnDefault("0")
     private Long listeningFrequency = 0L;
 
@@ -83,6 +84,7 @@ public class Song extends Media {
     private Boolean liked;
 
     @Builder.Default
+    @Column(name = "like_count")
     @ColumnDefault("0")
     private Long likeCount = 0L;
 
@@ -125,17 +127,6 @@ public class Song extends Media {
         uniqueConstraints = @UniqueConstraint(columnNames = {"song_id", "genre_id"}))
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Genre> genres;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "user_favorite_songs",
-        joinColumns = @JoinColumn(
-            name = "song_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(
-            name = "username", referencedColumnName = "username"),
-        uniqueConstraints = @UniqueConstraint(columnNames = {"song_id", "username"}))
-    @Fetch(value = FetchMode.SUBSELECT)
-    private Collection<UserInfo> users;
 
     @ManyToOne
     @JoinColumn(name = "username", referencedColumnName = "username")

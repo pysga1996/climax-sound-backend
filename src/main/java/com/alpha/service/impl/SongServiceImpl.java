@@ -1,9 +1,9 @@
 package com.alpha.service.impl;
 
 import com.alpha.config.properties.StorageProperty.StorageType;
+import com.alpha.constant.EntityType;
 import com.alpha.constant.MediaRef;
 import com.alpha.constant.RoleConstants;
-import com.alpha.constant.SchedulerConstants.ListeningConfig;
 import com.alpha.constant.Status;
 import com.alpha.mapper.ArtistMapper;
 import com.alpha.mapper.SongMapper;
@@ -17,13 +17,11 @@ import com.alpha.model.entity.Artist;
 import com.alpha.model.entity.ResourceInfo;
 import com.alpha.model.entity.Song;
 import com.alpha.model.entity.Tag;
-import com.alpha.model.entity.UserFavoriteSong;
 import com.alpha.model.entity.UserInfo;
-import com.alpha.repositories.LikeRepository;
 import com.alpha.repositories.ResourceInfoRepository;
 import com.alpha.repositories.SongRepository;
 import com.alpha.repositories.TagRepository;
-import com.alpha.service.LikeService;
+import com.alpha.service.FavoritesService;
 import com.alpha.service.SongService;
 import com.alpha.service.StorageService;
 import com.alpha.service.UserService;
@@ -32,10 +30,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 import lombok.extern.log4j.Log4j2;
@@ -53,8 +49,6 @@ public class SongServiceImpl implements SongService {
 
     private final SongRepository songRepository;
 
-    private final LikeRepository likeRepository;
-
     private final TagRepository tagRepository;
 
     private final ResourceInfoRepository resourceInfoRepository;
@@ -69,20 +63,18 @@ public class SongServiceImpl implements SongService {
 
     private final UserService userService;
 
-    private final LikeService likeService;
+    private final FavoritesService favoritesService;
 
     @Value("${storage.storage-type}")
     private StorageType storageType;
 
     @Autowired
-    public SongServiceImpl(SongRepository songRepository,
-        LikeRepository likeRepository, UserService userService,
+    public SongServiceImpl(SongRepository songRepository, UserService userService,
         TagRepository tagRepository, ResourceInfoRepository resourceInfoRepository,
         StorageService storageService, SongMapper songMapper,
         ArtistMapper artistMapper, UserInfoMapper userInfoMapper,
-        LikeService likeService) {
+        FavoritesService favoritesService) {
         this.songRepository = songRepository;
-        this.likeRepository = likeRepository;
         this.userService = userService;
         this.tagRepository = tagRepository;
         this.resourceInfoRepository = resourceInfoRepository;
@@ -90,7 +82,7 @@ public class SongServiceImpl implements SongService {
         this.songMapper = songMapper;
         this.artistMapper = artistMapper;
         this.userInfoMapper = userInfoMapper;
-        this.likeService = likeService;
+        this.favoritesService = favoritesService;
     }
 
     @Override
@@ -98,7 +90,7 @@ public class SongServiceImpl implements SongService {
     public Page<SongDTO> findAll(Pageable pageable) {
         Page<SongDTO> songDTOPage = this.songRepository
             .findAllConditions(pageable, new SongSearchDTO());
-        this.setLikes(songDTOPage);
+        this.favoritesService.setLikes(songDTOPage, EntityType.SONG);
         return songDTOPage;
     }
 
@@ -107,7 +99,7 @@ public class SongServiceImpl implements SongService {
     public Page<SongDTO> findAllByConditions(Pageable pageable, SongSearchDTO songSearchDTO) {
         Page<SongDTO> songDTOPage = this.songRepository
             .findAllConditions(pageable, songSearchDTO);
-        this.setLikes(songDTOPage);
+        this.favoritesService.setLikes(songDTOPage, EntityType.SONG);
         return songDTOPage;
     }
 
@@ -120,7 +112,7 @@ public class SongServiceImpl implements SongService {
                 .findByMediaIdAndStorageTypeAndMediaRefAndStatus(id, this.storageType,
                     MediaRef.SONG_AUDIO, Status.ACTIVE);
             SongDTO songDTO = this.songMapper.entityToDto(optionalSong.get());
-            this.setLike(Optional.of(songDTO));
+            this.favoritesService.setLike(songDTO, EntityType.SONG);
             optionalResourceInfo.ifPresent(
                 resourceInfo -> songDTO.setUrl(this.storageService.getFullUrl(resourceInfo)));
             return songDTO;
@@ -136,20 +128,11 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public void listenToSong(Long id) {
-        if (this.userService.isAuthenticated()) {
-            this.likeService
-                .listen(id, ListeningConfig.SONG, this.userService.getCurrentUsername());
-        } else {
-            this.likeService.listen(id, ListeningConfig.SONG, null);
-        }
-    }
-
-    @Override
     @Transactional
     public SongDTO uploadAndSaveSong(MultipartFile file, SongDTO songDTO) {
         Song song = new Song();
+        song.setListeningFrequency(0L);
+        song.setLikeCount(0L);
         this.patchSongUploadToEntity(songDTO, song);
         UserInfoDTO userInfoDTO = this.userService.getCurrentUserInfoDTO();
         UserInfo userInfo = this.userInfoMapper.dtoToEntity(userInfoDTO);
@@ -212,67 +195,6 @@ public class SongServiceImpl implements SongService {
         this.songRepository.deleteInBatch(songs.stream()
             .map(this.songMapper::dtoToEntity)
             .collect(Collectors.toList()));
-    }
-
-    private void setLike(Optional<SongDTO> optionalSongDTO) {
-        if (!optionalSongDTO.isPresent()) {
-            return;
-        }
-        String currentUsername = this.userService.getCurrentUsername();
-        AtomicLong noCachedId = new AtomicLong(-1);
-        Long songId = optionalSongDTO.get().getId();
-        boolean isLiked = this.likeRepository
-            .getUserSongLikeFromCache(currentUsername, songId, noCachedId);
-        if (noCachedId.get() >= 0) {
-            UserFavoriteSong userFavoriteSong = this.likeRepository
-                .getUserSongLike(currentUsername, songId);
-            if (userFavoriteSong != null) {
-                isLiked = this.likeRepository
-                    .setUserSongLikeToCache(currentUsername, songId, userFavoriteSong.isLiked());
-            }
-        }
-        optionalSongDTO.get().setLiked(isLiked);
-    }
-
-    private void setLikes(Page<SongDTO> songDTOPage) {
-        Map<Long, SongDTO> songDTOMap = songDTOPage
-            .stream()
-            .collect(Collectors.toMap(SongDTO::getId, e -> e));
-        String currentUsername = this.userService.getCurrentUsername();
-        List<Long> noCachedSongIds = new ArrayList<>();
-        for (Entry<Long, SongDTO> entry : songDTOMap.entrySet()) {
-            boolean isLiked = this.likeRepository
-                .getUserSongLikeFromCache(currentUsername, entry.getKey(), noCachedSongIds);
-            entry.getValue().setLiked(isLiked);
-        }
-        if (noCachedSongIds.size() > 0) {
-            boolean isLiked;
-            Long songId;
-            List<UserFavoriteSong> userFavoriteSongList = this.likeRepository
-                .getUserSongLikeMap(currentUsername, noCachedSongIds);
-            for (UserFavoriteSong userFavoriteSong : userFavoriteSongList) {
-                songId = userFavoriteSong.getUserFavoriteSongId().getSongId();
-                isLiked = this.likeRepository
-                    .setUserSongLikeToCache(currentUsername, songId, userFavoriteSong.isLiked());
-                songDTOMap.get(songId).setLiked(isLiked);
-            }
-        }
-    }
-
-    public Map<Long, Boolean> getUserSongLikeMap(Map<Long, Boolean> songIdMap) {
-        String currentUsername = this.userService.getCurrentUsername();
-        List<Long> songIds = new ArrayList<>(songIdMap.keySet());
-        List<Long> noCachedSongIds = new ArrayList<>();
-        for (Long songId : songIds) {
-            boolean isLiked = this.likeRepository
-                .getUserSongLikeFromCache(currentUsername, songId, noCachedSongIds);
-            songIdMap.replace(songId, isLiked);
-        }
-        List<UserFavoriteSong> userFavoriteSongList = this.likeRepository
-            .getUserSongLikeMap(currentUsername, noCachedSongIds);
-        userFavoriteSongList
-            .forEach(e -> songIdMap.replace(e.getUserFavoriteSongId().getSongId(), e.isLiked()));
-        return songIdMap;
     }
 
     private void patchSongUploadToEntity(SongDTO songDTO, Song song) {

@@ -1,6 +1,6 @@
 package com.alpha.model.dto;
 
-import com.alpha.constant.CommentType;
+import com.alpha.constant.EntityType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Date;
 import javax.validation.constraints.NotBlank;
@@ -21,7 +21,7 @@ public class CommentDTO {
     @NotBlank
     private String content;
 
-    private CommentType commentType;
+    private EntityType entityType;
 
     private Long entityId;
 

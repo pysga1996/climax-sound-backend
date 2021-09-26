@@ -1,7 +1,7 @@
 package com.alpha.scheduler;
 
-import com.alpha.constant.SchedulerConstants.ListeningConfig;
-import com.alpha.service.LikeService;
+import com.alpha.constant.EntityType;
+import com.alpha.service.FavoritesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -15,30 +15,35 @@ import org.springframework.stereotype.Component;
 @Component
 public class ListeningScheduler {
 
-    private final LikeService likeService;
+    private final FavoritesService favoritesService;
 
     @Autowired
-    public ListeningScheduler(LikeService likeService) {
-        this.likeService = likeService;
+    public ListeningScheduler(FavoritesService favoritesService) {
+        this.favoritesService = favoritesService;
     }
 
     @Scheduled(fixedDelay = 300000) // 5 min
     public void updateSongListeningToDb() {
-        this.likeService.updateListeningToDb(ListeningConfig.SONG);
+        this.favoritesService.updateListeningToDb();
+    }
+
+    @Scheduled(fixedDelay = 300000) // 5 min
+    public void updateSongLikesCountToDb() {
+        this.favoritesService.updateLikesCountToDb(EntityType.SONG);
     }
 
     @Scheduled(fixedDelay = 300000)
-    public void updateAlbumListeningToDb() {
-        this.likeService.updateListeningToDb(ListeningConfig.ALBUM);
+    public void updateAlbumLikesCountToDb() {
+        this.favoritesService.updateLikesCountToDb(EntityType.ALBUM);
     }
 
     @Scheduled(fixedDelay = 300000) // 5 min
     public void updateSongListeningCountToDb() {
-        this.likeService.updateListeningCountToDb(ListeningConfig.SONG);
+        this.favoritesService.updateListeningCountToDb(EntityType.SONG);
     }
 
     @Scheduled(fixedDelay = 300000)
     public void updateAlbumListeningCountToDb() {
-        this.likeService.updateListeningCountToDb(ListeningConfig.ALBUM);
+        this.favoritesService.updateListeningCountToDb(EntityType.ALBUM);
     }
 }

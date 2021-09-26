@@ -1,6 +1,6 @@
 package com.alpha.model.entity;
 
-import com.alpha.constant.CommentType;
+import com.alpha.constant.EntityType;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -47,9 +47,9 @@ public class Comment {
     @ToString.Include
     private String content;
 
-    @Column(name = "comment_type")
+    @Column(name = "entity_type")
     @Enumerated(EnumType.STRING)
-    private CommentType commentType;
+    private EntityType entityType;
 
     @Column(name = "entity_id")
     private Long entityId;

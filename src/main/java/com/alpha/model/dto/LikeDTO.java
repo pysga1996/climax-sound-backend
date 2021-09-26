@@ -1,5 +1,7 @@
 package com.alpha.model.dto;
 
+import com.alpha.constant.EntityType;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -9,9 +11,13 @@ import lombok.Data;
  * @since 1.0
  **/
 @Data
-public class LikeSongDTO {
+public class LikeDTO {
 
-    private Long songId;
+    @NotNull
+    private Long id;
 
     private Boolean isLiked;
+
+    @NotNull
+    private EntityType type;
 }

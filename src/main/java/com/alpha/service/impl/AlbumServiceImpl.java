@@ -1,5 +1,6 @@
 package com.alpha.service.impl;
 
+import com.alpha.constant.EntityType;
 import com.alpha.constant.MediaRef;
 import com.alpha.constant.RoleConstants;
 import com.alpha.constant.Status;
@@ -21,6 +22,7 @@ import com.alpha.repositories.AlbumRepository;
 import com.alpha.repositories.ResourceInfoRepository;
 import com.alpha.repositories.TagRepository;
 import com.alpha.service.AlbumService;
+import com.alpha.service.FavoritesService;
 import com.alpha.service.StorageService;
 import com.alpha.service.UserService;
 import com.alpha.util.formatter.StringAccentRemover;
@@ -57,12 +59,15 @@ public class AlbumServiceImpl implements AlbumService {
 
     private final StorageService storageService;
 
+    private final FavoritesService favoritesService;
+
     @Autowired
     public AlbumServiceImpl(AlbumRepository albumRepository,
         ResourceInfoRepository resourceInfoRepository,
         TagRepository tagRepository, AlbumMapper albumMapper,
         ArtistMapper artistMapper, UserInfoMapper userInfoMapper,
-        UserService userService, StorageService storageService) {
+        UserService userService, StorageService storageService,
+        FavoritesService favoritesService) {
         this.albumRepository = albumRepository;
         this.resourceInfoRepository = resourceInfoRepository;
         this.tagRepository = tagRepository;
@@ -71,6 +76,7 @@ public class AlbumServiceImpl implements AlbumService {
         this.userInfoMapper = userInfoMapper;
         this.userService = userService;
         this.storageService = storageService;
+        this.favoritesService = favoritesService;
     }
 
     @Override
@@ -84,6 +90,7 @@ public class AlbumServiceImpl implements AlbumService {
             AlbumDTO albumDTO = this.albumMapper.entityToDtoPure(albumOptional.get());
             oldResourceInfo.ifPresent(
                 resourceInfo -> albumDTO.setCoverUrl(this.storageService.getFullUrl(resourceInfo)));
+            this.favoritesService.setLike(albumDTO, EntityType.ALBUM);
             return albumDTO;
         } else {
             throw new EntityNotFoundException("Album not found");
@@ -125,6 +132,8 @@ public class AlbumServiceImpl implements AlbumService {
     @Transactional
     public AlbumDTO uploadAndSaveAlbum(MultipartFile file, AlbumDTO albumDTO) {
         Album album = new Album();
+        album.setListeningFrequency(0L);
+        album.setLikeCount(0L);
         this.patchAlbumUploadToEntity(albumDTO, album);
         UserInfoDTO userInfoDTO = this.userService.getCurrentUserInfoDTO();
         UserInfo userInfo = this.userInfoMapper.dtoToEntity(userInfoDTO);

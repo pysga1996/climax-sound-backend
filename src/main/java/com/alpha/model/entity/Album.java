@@ -62,8 +62,13 @@ public class Album extends Media {
     @ToString.Include
     private Date releaseDate;
 
+    @Column(name = "listening_frequency")
     @ColumnDefault("0")
     private Long listeningFrequency = 0L;
+
+    @Column(name = "like_count")
+    @ColumnDefault("0")
+    private Long likeCount = 0L;
 
     @Transient
     private String coverUrl;
@@ -132,17 +137,6 @@ public class Album extends Media {
     @JoinColumn(name = "username", referencedColumnName = "username")
     @NotFound(action = NotFoundAction.IGNORE)
     private UserInfo uploader;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "user_favorite_albums",
-        joinColumns = @JoinColumn(
-            name = "album_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(
-            name = "username", referencedColumnName = "username"),
-        uniqueConstraints = @UniqueConstraint(columnNames = {"album_id", "username"}))
-    @Fetch(value = FetchMode.SUBSELECT)
-    private Collection<UserInfo> users;
 
     @Override
     public ResourceInfo generateResource(MultipartFile file) {

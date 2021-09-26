@@ -20,8 +20,6 @@ public interface SongService {
 
     SongAdditionalInfoDTO findAdditionalInfoById(Long id);
 
-    void listenToSong(Long id);
-
     SongDTO uploadAndSaveSong(MultipartFile file, SongDTO songDTO);
 
     SongDTO update(Long id, SongDTO songDTO, MultipartFile multipartFile) throws IOException;
@@ -29,7 +27,5 @@ public interface SongService {
     void deleteById(Long id);
 
     void deleteAll(Collection<SongDTO> songs);
-
-    Map<Long, Boolean> getUserSongLikeMap(Map<Long, Boolean> songIdMap);
 
 }

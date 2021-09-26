@@ -1,7 +1,6 @@
 package com.alpha.scheduler;
 
-import com.alpha.constant.SchedulerConstants.LikeConfig;
-import com.alpha.service.LikeService;
+import com.alpha.service.FavoritesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -15,25 +14,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class LikeScheduler {
 
-    private final LikeService likeService;
+    private final FavoritesService favoritesService;
 
     @Autowired
-    public LikeScheduler(LikeService likeService) {
-        this.likeService = likeService;
+    public LikeScheduler(FavoritesService favoritesService) {
+        this.favoritesService = favoritesService;
     }
 
     @Scheduled(fixedDelay = 300000) // 5 min
     public void insertSongLikesToDb() {
-        this.likeService.insertLikesToDb(LikeConfig.SONG);
-    }
-
-    @Scheduled(fixedDelay = 300000)
-    public void insertAlbumLikesToDb() {
-        this.likeService.insertLikesToDb(LikeConfig.ALBUM);
-    }
-
-    @Scheduled(fixedDelay = 300000)
-    public void insertArtistLikesToDb() {
-        this.likeService.insertLikesToDb(LikeConfig.ARTIST);
+        this.favoritesService.insertLikesToDb();
     }
 }

@@ -5,7 +5,6 @@ import com.alpha.model.dto.AlbumDTO.AlbumAdditionalInfoDTO;
 import com.alpha.model.dto.AlbumSearchDTO;
 import com.alpha.model.dto.AlbumUpdateDTO;
 import com.alpha.service.AlbumService;
-import java.io.IOException;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -52,7 +51,8 @@ public class AlbumRestController {
     @PreAuthorize("permitAll()")
     @GetMapping(value = "/additional-info/{id}")
     public ResponseEntity<AlbumAdditionalInfoDTO> albumAdditionalInfo(@PathVariable("id") Long id) {
-        AlbumAdditionalInfoDTO albumAdditionalInfoDTO = this.albumService.findAdditionalInfoById(id);
+        AlbumAdditionalInfoDTO albumAdditionalInfoDTO = this.albumService
+            .findAdditionalInfoById(id);
         return new ResponseEntity<>(albumAdditionalInfoDTO, HttpStatus.OK);
     }
 
@@ -75,7 +75,7 @@ public class AlbumRestController {
     @PostMapping(value = "/upload")
     public ResponseEntity<AlbumDTO> createAlbum(@Valid @RequestPart("album") AlbumDTO album,
         @RequestPart(value = "cover", required = false)
-            MultipartFile file) throws IOException {
+            MultipartFile file) {
         AlbumDTO albumDTO = this.albumService.uploadAndSaveAlbum(file, album);
         return new ResponseEntity<>(albumDTO, HttpStatus.OK);
     }

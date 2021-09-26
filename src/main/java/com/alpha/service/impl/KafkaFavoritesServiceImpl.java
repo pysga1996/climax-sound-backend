@@ -1,10 +1,10 @@
 package com.alpha.service.impl;
 
 import com.alpha.config.general.KafkaConfig;
-import com.alpha.constant.SchedulerConstants.LikeConfig;
-import com.alpha.constant.SchedulerConstants.ListeningConfig;
-import com.alpha.repositories.LikeRepository;
-import com.alpha.service.LikeService;
+import com.alpha.constant.EntityType;
+import com.alpha.constant.SchedulerConstants;
+import com.alpha.repositories.FavoritesRepository;
+import com.alpha.service.FavoritesService;
 import com.alpha.service.UserService;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -26,6 +27,7 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author thanhvt
@@ -36,10 +38,12 @@ import org.springframework.stereotype.Service;
 @Log4j2
 @Service
 @ConditionalOnBean({KafkaConfig.class})
-public class KafkaLikeServiceImpl implements LikeService {
+public class KafkaFavoritesServiceImpl implements FavoritesService {
 
-    private final LikeRepository likeRepository;
+    @Getter
+    private final FavoritesRepository favoritesRepository;
 
+    @Getter
     private final UserService userService;
 
     private final KafkaTemplate<String, String> kafkaTemplate;
@@ -52,12 +56,12 @@ public class KafkaLikeServiceImpl implements LikeService {
     private String topicPrefix;
 
     @Autowired
-    public KafkaLikeServiceImpl(LikeRepository likeRepository,
+    public KafkaFavoritesServiceImpl(FavoritesRepository favoritesRepository,
         UserService userService,
         KafkaTemplate<String, String> kafkaTemplate,
         ConsumerFactory<String, String> consumerFactory,
         RedisTemplate<String, String> redisTemplate) {
-        this.likeRepository = likeRepository;
+        this.favoritesRepository = favoritesRepository;
         this.userService = userService;
         this.kafkaTemplate = kafkaTemplate;
         this.consumer = consumerFactory.createConsumer();
@@ -79,25 +83,25 @@ public class KafkaLikeServiceImpl implements LikeService {
     @Async
     @Override
     public void writeLikesToQueue(String username, Long id,
-        boolean isLiked, LikeConfig likeConfig) {
-        String record = String.format("%s_%d_%b", username, id, isLiked);
-        String topic = this.topicPrefix + likeConfig.getTable();
+        boolean isLiked, EntityType type) {
+        String record = String.format("%s_%s_%d_%b", type.name(), username, id, isLiked);
+        String topic = this.topicPrefix + "likes";
         log.info("Send like to topic {}: {}", topic, record);
         this.kafkaTemplate.send(topic, record);
     }
 
     @Override
-    public void writeListenToQueue(String username, Long id, ListeningConfig listeningConfig) {
+    public void writeListenToQueue(String username, Long id, EntityType type) {
         String record = String.format("%s_%d", username, id);
-        String topic = this.topicPrefix + listeningConfig.getTable();
+        String topic = this.topicPrefix + "listening";
         log.info("Send listening to topic {}: {}", topic, record);
-        this.kafkaTemplate.send(this.topicPrefix + listeningConfig.getTable(), record);
+        this.kafkaTemplate.send(this.topicPrefix + SchedulerConstants.LISTENING_TOPIC, record);
     }
 
     @Override
-    public void insertLikesToDb(LikeConfig likeConfig) {
+    public void insertLikesToDb() {
         try {
-            String topic = this.topicPrefix + likeConfig.getTable();
+            String topic = this.topicPrefix + SchedulerConstants.LIKES_TOPIC;
             log.info("Start insert likes from topic {} to database...", topic);
             this.consumer.subscribe(Collections.singletonList(topic));
             ConsumerRecords<String, String> records = this.consumer
@@ -107,7 +111,7 @@ public class KafkaLikeServiceImpl implements LikeService {
                 buffer.add(record.value());
             }
             if (!buffer.isEmpty()) {
-                this.likeRepository.updateLikesInBatch(buffer, likeConfig);
+                this.favoritesRepository.updateLikesInBatch(buffer);
                 this.consumer.commitSync();
                 buffer.clear();
             }
@@ -119,9 +123,9 @@ public class KafkaLikeServiceImpl implements LikeService {
     }
 
     @Override
-    public void updateListeningToDb(ListeningConfig listeningConfig) {
+    public void updateListeningToDb() {
         try {
-            String topic = this.topicPrefix + listeningConfig.getTable();
+            String topic = this.topicPrefix + SchedulerConstants.LISTENING_TOPIC;
             log.info("Start insert listening from topic {} to database...", topic);
             this.consumer.subscribe(Collections.singletonList(topic));
             ConsumerRecords<String, String> records = this.consumer
@@ -131,7 +135,7 @@ public class KafkaLikeServiceImpl implements LikeService {
                 buffer.add(record.value());
             }
             if (!buffer.isEmpty()) {
-                this.likeRepository.updateListeningInBatch(buffer, listeningConfig);
+                this.favoritesRepository.updateListeningInBatch(buffer);
                 this.consumer.commitSync();
                 buffer.clear();
             }
@@ -143,27 +147,65 @@ public class KafkaLikeServiceImpl implements LikeService {
     }
 
     @Override
-    public void updateListeningCountToDb(ListeningConfig listeningConfig) {
-        log.info("Start synchronize listening count to database...");
-        Set<String> queues = this.redisTemplate.opsForSet().members("song_listening_queue");
+    @Transactional
+    public void updateLikesCountToDb(EntityType type) {
+        log.debug("Start synchronize likes count to database...");
+        String cacheQueue = getLikesCacheQueue(type);
+        if (cacheQueue == null) {
+            return;
+        }
+        Set<String> queues = this.redisTemplate.opsForSet().members(cacheQueue);
         if (queues != null && !queues.isEmpty()) {
-            Map<String, String> idListeningCountMap = queues.stream().collect(Collectors
+            Map<String, String> idLikesCountMap = queues.stream().collect(Collectors
                 .toMap(e -> e, e -> String
-                    .valueOf(this.likeRepository.getSongListeningCount(Long.parseLong(e)))));
-            this.likeRepository.updateListeningCountInBatch(idListeningCountMap, listeningConfig);
-            this.redisTemplate.opsForSet().remove("song_listening_queue", queues.toArray());
+                    .valueOf(this.favoritesRepository.getListeningCount(Long.parseLong(e), type))));
+            this.favoritesRepository
+                .updateLikesCountInBatch(idLikesCountMap, type);
+            this.redisTemplate.opsForSet().remove(cacheQueue, queues.toArray());
         }
     }
 
     @Override
-    public void like(Long id, LikeConfig likeConfig, boolean isLiked) {
-        String username = userService.getCurrentUsername();
-        this.likeRepository.setUserSongLikeToCache(username, id, isLiked);
-        this.writeLikesToQueue(username, id, isLiked, likeConfig);
+    public void updateListeningCountToDb(EntityType type) {
+        log.info("Start synchronize listening count to database...");
+        Set<String> queues = this.redisTemplate.opsForSet()
+            .members(SchedulerConstants.LISTENING_CACHE);
+        if (queues != null && !queues.isEmpty()) {
+            Map<String, String> idListeningCountMap = queues.stream().collect(Collectors
+                .toMap(e -> e, e -> String
+                    .valueOf(this.favoritesRepository.getListeningCount(Long.parseLong(e), type))));
+            this.favoritesRepository
+                .updateListeningCountInBatch(idListeningCountMap, type);
+            this.redisTemplate.opsForSet()
+                .remove(SchedulerConstants.LISTENING_CACHE, queues.toArray());
+        }
     }
 
     @Override
-    public void listen(Long id, ListeningConfig listeningConfig, String username) {
+    public void like(Long id, boolean isLiked, EntityType type) {
+        String username = userService.getCurrentUsername();
+        this.favoritesRepository.setUserLikeToCache(username, id, type, isLiked);
+        this.writeLikesToQueue(username, id, isLiked, type);
+        String cacheQueue = getLikesCacheQueue(type);
+        if (cacheQueue == null) {
+            return;
+        }
+        this.redisTemplate.opsForSet().add(cacheQueue, String.valueOf(id));
+    }
 
+    @Override
+    @Transactional
+    public void listen(Long id, EntityType type) {
+        if (this.userService.isAuthenticated()) {
+            this.writeListenToQueue(this.userService.getCurrentUsername(), id, type);
+        }
+        // TODO
+        Long listeningCount = this.favoritesRepository.getListeningCount(id, type);
+        this.favoritesRepository.setListeningCountToCache(id, ++listeningCount, type);
+        String cacheQueue = getListeningCacheQueue(type);
+        if (cacheQueue == null) {
+            return;
+        }
+        this.redisTemplate.opsForSet().add(cacheQueue, String.valueOf(id));
     }
 }

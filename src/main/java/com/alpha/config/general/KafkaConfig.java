@@ -1,6 +1,6 @@
 package com.alpha.config.general;
 
-import com.alpha.constant.SchedulerConstants.LikeConfig;
+import com.alpha.constant.SchedulerConstants;
 import java.util.Map;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -74,19 +74,14 @@ public class KafkaConfig {
 
     @Bean
     @Profile({"poweredge"})
-    public NewTopic userSongLikeTopic() {
-        return new NewTopic(this.topicPrefix + LikeConfig.SONG.getTable(), 3, (short) 1);
+    public NewTopic userLikesTopic() {
+        return new NewTopic(this.topicPrefix + SchedulerConstants.LIKES_TOPIC, 3, (short) 1);
     }
 
     @Bean
     @Profile({"poweredge"})
-    public NewTopic userAlbumLikeTopic() {
-        return new NewTopic(this.topicPrefix + LikeConfig.ALBUM.getTable(), 3, (short) 1);
+    public NewTopic userListeningTopic() {
+        return new NewTopic(this.topicPrefix + SchedulerConstants.LISTENING_TOPIC, 3, (short) 1);
     }
 
-    @Bean
-    @Profile({"poweredge"})
-    public NewTopic userArtistLikeTopic() {
-        return new NewTopic(this.topicPrefix + LikeConfig.ARTIST.getTable(), 3, (short) 1);
-    }
 }

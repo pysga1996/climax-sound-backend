@@ -3,14 +3,14 @@ package com.alpha.service;
 import com.alpha.model.dto.ArtistDTO;
 import com.alpha.model.dto.ArtistSearchDTO;
 import java.io.IOException;
-import java.util.Optional;
+import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface ArtistService {
 
-    Optional<ArtistDTO> findById(Long id);
+    ArtistDTO findById(Long id);
 
     ArtistDTO findByName(String name);
 
@@ -23,4 +23,6 @@ public interface ArtistService {
     ArtistDTO update(Long id, ArtistDTO artist, MultipartFile multipartFile) throws IOException;
 
     void deleteById(Long id);
+
+    Map<Long, Boolean> getUserArtistLikeMap(Map<Long, Boolean> artistIdMap);
 }

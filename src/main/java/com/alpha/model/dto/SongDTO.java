@@ -1,6 +1,6 @@
 package com.alpha.model.dto;
 
-import com.alpha.repositories.BaseRepository.HasArtists;
+import com.alpha.constant.EntityType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -22,7 +22,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"comments", "albums", "users",
     "playlists", "uploader"}, allowGetters = true, ignoreUnknown = true)
-public class SongDTO implements HasArtists {
+public class SongDTO implements MediaDTO {
 
     private Long rn;
 
@@ -48,6 +48,8 @@ public class SongDTO implements HasArtists {
 
     private Long listeningFrequency = 0L;
 
+    private Long likeCount = 0L;
+
     private Boolean liked;
 
     private String lyric;
@@ -64,9 +66,6 @@ public class SongDTO implements HasArtists {
     @JsonManagedReference("song-genre")
     private Collection<GenreDTO> genres;
 
-    @JsonBackReference(value = "user-favoriteSongs")
-    private Collection<UserInfoDTO> users;
-
     private UserInfoDTO uploader;
 
     @JsonBackReference(value = "playlist-song")
@@ -79,8 +78,6 @@ public class SongDTO implements HasArtists {
     private ThemeDTO theme;
 
     private Duration duration;
-
-    private Long likeCount;
 
     @JsonProperty(access = Access.WRITE_ONLY)
     private SongAdditionalInfoDTO additionalInfo;
@@ -100,5 +97,11 @@ public class SongDTO implements HasArtists {
         private CountryDTO country;
 
         private ThemeDTO theme;
+    }
+
+
+    @Override
+    public EntityType getType() {
+        return EntityType.SONG;
     }
 }

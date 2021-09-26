@@ -1,6 +1,6 @@
 package com.alpha.config.general;
 
-import com.alpha.constant.CommentType;
+import com.alpha.constant.EntityType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import java.util.List;
@@ -44,10 +44,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addConverter(new StringToCommentTypeConverter());
     }
 
-    public static class StringToCommentTypeConverter implements Converter<String, CommentType> {
+    public static class StringToCommentTypeConverter implements Converter<String, EntityType> {
         @Override
-        public CommentType convert(String source) {
-            return CommentType.fromValue(source.toUpperCase());
+        public EntityType convert(String source) {
+            return EntityType.fromValue(source.toUpperCase());
         }
     }
 //    @Bean
