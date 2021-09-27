@@ -119,7 +119,7 @@ public class FileFavoritesServiceImpl implements FavoritesService {
     public void writeListenToQueue(String username, Long id, EntityType type) {
         try (FileLock ignored = this.listeningFileChannel
             .lock(0, Long.MAX_VALUE, false)) {
-            String line = String.format("%s_%d", username, id) + System.lineSeparator();
+            String line = String.format("%s_%s_%d", type.name(), username, id) + System.lineSeparator();
             ByteBuffer buff = ByteBuffer.wrap(line.getBytes(StandardCharsets.UTF_8));
             this.listeningFileChannel.write(buff);
         } catch (IOException e) {

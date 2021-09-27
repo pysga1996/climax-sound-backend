@@ -85,7 +85,7 @@ public class KafkaFavoritesServiceImpl implements FavoritesService {
     public void writeLikesToQueue(String username, Long id,
         boolean isLiked, EntityType type) {
         String record = String.format("%s_%s_%d_%b", type.name(), username, id, isLiked);
-        String topic = this.topicPrefix + "likes";
+        String topic = this.topicPrefix + SchedulerConstants.LIKES_TOPIC;
         log.info("Send like to topic {}: {}", topic, record);
         this.kafkaTemplate.send(topic, record);
     }
@@ -93,9 +93,9 @@ public class KafkaFavoritesServiceImpl implements FavoritesService {
     @Override
     public void writeListenToQueue(String username, Long id, EntityType type) {
         String record = String.format("%s_%s_%d", type.name(), username, id);
-        String topic = this.topicPrefix + "listening";
+        String topic = this.topicPrefix + SchedulerConstants.LISTENING_TOPIC;
         log.info("Send listening to topic {}: {}", topic, record);
-        this.kafkaTemplate.send(this.topicPrefix + SchedulerConstants.LISTENING_TOPIC, record);
+        this.kafkaTemplate.send(topic, record);
     }
 
     @Override
