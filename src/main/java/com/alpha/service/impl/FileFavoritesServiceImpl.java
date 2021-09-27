@@ -130,7 +130,7 @@ public class FileFavoritesServiceImpl implements FavoritesService {
     @Override
     @Transactional
     public void insertLikesToDb() {
-        log.debug("Start synchronize likes record to database...");
+        log.info("Start synchronize likes record to database...");
         Path dir = Paths.get(SchedulerConstants.QUEUE_BASE_DIR);
         Path filePath = dir.resolve(SchedulerConstants.LIKES_QUEUE_FILE);
         try (Stream<String> lines = Files.lines(filePath)) {
@@ -145,12 +145,13 @@ public class FileFavoritesServiceImpl implements FavoritesService {
         } catch (IOException e) {
             log.error(e);
         }
+        log.info("End synchronize likes record to database...");
     }
 
     @Override
     @Transactional
     public void updateListeningToDb() {
-        log.debug("Start synchronize listening record to database...");
+        log.info("Start synchronize listening record to database...");
         Path dir = Paths.get(SchedulerConstants.QUEUE_BASE_DIR);
         Path filePath = dir.resolve(SchedulerConstants.LISTENING_QUEUE_FILE);
         try (Stream<String> lines = Files.lines(filePath)) {
@@ -165,12 +166,13 @@ public class FileFavoritesServiceImpl implements FavoritesService {
         } catch (IOException e) {
             log.error(e);
         }
+        log.info("End synchronize listening record to database...");
     }
 
     @Override
     @Transactional
     public void updateLikesCountToDb(EntityType type) {
-        log.debug("Start synchronize likes count to database...");
+        log.info("Start synchronize likes count to database...");
         String cacheQueue = getLikesCacheQueue(type);
         if (cacheQueue == null) {
             return;
@@ -184,12 +186,13 @@ public class FileFavoritesServiceImpl implements FavoritesService {
                 .updateLikesCountInBatch(idLikesCountMap, type);
             this.redisTemplate.opsForSet().remove(cacheQueue, queues.toArray());
         }
+        log.info("End synchronize likes count to database...");
     }
 
     @Override
     @Transactional
     public void updateListeningCountToDb(EntityType type) {
-        log.debug("Start synchronize listening count to database...");
+        log.info("Start synchronize listening count to database...");
         String cacheQueue = getListeningCacheQueue(type);
         if (cacheQueue == null) {
             return;
@@ -203,6 +206,7 @@ public class FileFavoritesServiceImpl implements FavoritesService {
                 .updateListeningCountInBatch(idListeningCountMap, type);
             this.redisTemplate.opsForSet().remove(cacheQueue, queues.toArray());
         }
+        log.info("End synchronize listening count to database...");
     }
 
     @Override

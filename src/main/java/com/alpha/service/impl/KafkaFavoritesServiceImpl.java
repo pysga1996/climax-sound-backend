@@ -92,7 +92,7 @@ public class KafkaFavoritesServiceImpl implements FavoritesService {
 
     @Override
     public void writeListenToQueue(String username, Long id, EntityType type) {
-        String record = String.format("%s_%d", username, id);
+        String record = String.format("%s_%s_%d", type.name(), username, id);
         String topic = this.topicPrefix + "listening";
         log.info("Send listening to topic {}: {}", topic, record);
         this.kafkaTemplate.send(this.topicPrefix + SchedulerConstants.LISTENING_TOPIC, record);
@@ -179,6 +179,7 @@ public class KafkaFavoritesServiceImpl implements FavoritesService {
             this.redisTemplate.opsForSet()
                 .remove(SchedulerConstants.LISTENING_CACHE, queues.toArray());
         }
+        log.info("End synchronize listening count to database...");
     }
 
     @Override
