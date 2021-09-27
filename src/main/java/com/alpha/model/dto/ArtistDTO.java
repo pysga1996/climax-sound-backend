@@ -4,6 +4,8 @@ import com.alpha.constant.EntityType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import java.util.Collection;
 import java.util.Date;
 import javax.validation.constraints.NotBlank;
@@ -55,11 +57,13 @@ public class ArtistDTO implements MediaDTO {
     private Collection<AlbumDTO> albums;
 
     @Override
+    @JsonIgnore
     public Collection<ArtistDTO> getArtists() {
         return null;
     }
 
     @Override
+    @JsonIgnore
     public EntityType getType() {
         return EntityType.ARTIST;
     }

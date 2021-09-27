@@ -101,6 +101,7 @@ public class SongDTO implements MediaDTO {
 
 
     @Override
+    @JsonIgnore
     public EntityType getType() {
         return EntityType.SONG;
     }

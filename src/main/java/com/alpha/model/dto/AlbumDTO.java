@@ -1,6 +1,7 @@
 package com.alpha.model.dto;
 
 import com.alpha.constant.EntityType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import java.time.Duration;
@@ -79,6 +80,7 @@ public class AlbumDTO implements MediaDTO {
     }
 
     @Override
+    @JsonIgnore
     public EntityType getType() {
         return EntityType.ALBUM;
     }
