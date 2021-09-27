@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class AlbumDTO implements MediaDTO {
@@ -31,8 +32,10 @@ public class AlbumDTO implements MediaDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date releaseDate;
 
+    @Builder.Default
     private Long listeningFrequency = 0L;
 
+    @Builder.Default
     private Long likeCount = 0L;
 
     private Boolean liked;

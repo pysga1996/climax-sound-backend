@@ -36,10 +36,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(onlyExplicitlyIncluded = true)
-@Builder(toBuilder = true)
 @Entity
 @Table(name = "song")
 public class Song extends Media {

@@ -44,9 +44,11 @@ public interface FavoritesService {
         if (atomicLong.get() != 0L) {
             UserFavorites userFavorites = this.getFavoritesRepository()
                 .getUserFavorites(currentUsername, mediaDTO.getId(), type);
-            this.getFavoritesRepository()
-                .setUserLikeToCache(currentUsername, mediaDTO.getId(), type,
-                    userFavorites.isLiked());
+            if (userFavorites != null) {
+                this.getFavoritesRepository()
+                    .setUserLikeToCache(currentUsername, mediaDTO.getId(), type,
+                        userFavorites.isLiked());
+            }
         }
         mediaDTO.setLiked(isLiked);
     }

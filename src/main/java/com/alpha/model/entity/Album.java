@@ -23,6 +23,7 @@ import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,6 +38,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -62,10 +64,12 @@ public class Album extends Media {
     @ToString.Include
     private Date releaseDate;
 
+    @Builder.Default
     @Column(name = "listening_frequency")
     @ColumnDefault("0")
     private Long listeningFrequency = 0L;
 
+    @Builder.Default
     @Column(name = "like_count")
     @ColumnDefault("0")
     private Long likeCount = 0L;

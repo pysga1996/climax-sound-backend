@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"comments", "albums", "users",
@@ -44,10 +45,13 @@ public class SongDTO implements MediaDTO {
     @JsonManagedReference(value = "song-comment")
     private Collection<CommentDTO> comments;
 
+    @Builder.Default
     private Long displayRating = 0L;
 
+    @Builder.Default
     private Long listeningFrequency = 0L;
 
+    @Builder.Default
     private Long likeCount = 0L;
 
     private Boolean liked;

@@ -20,6 +20,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -34,6 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
+@Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -70,6 +72,7 @@ public class Artist extends Media {
     @Transient
     private Boolean liked;
 
+    @Builder.Default
     @Column(name = "like_count")
     @ColumnDefault("0")
     private Long likeCount = 0L;
