@@ -66,6 +66,7 @@ public class CloudinaryStorageServiceImpl extends StorageService {
     public ResourceInfo upload(MultipartFile multipartFile, Media media) {
         ResourceInfo resourceInfo = media.generateResource(multipartFile);
         try {
+            this.deleteOldResources(resourceInfo, StorageType.CLOUDINARY);
             File tmpDir = new File(servletContext.getRealPath("/") + this.tempFolder);
             if (!tmpDir.exists()) {
                 log.info("Created temp folder? {}", tmpDir.mkdir());

@@ -123,11 +123,8 @@ public class ArtistServiceImpl implements ArtistService {
         Optional<Artist> oldArtist = this.artistRepository.findById(id);
         if (oldArtist.isPresent()) {
             if (multipartFile != null) {
-                ResourceInfo oldResourceInfo = this.resourceInfoRepository
-                    .findByMediaIdAndStorageTypeAndMediaRefAndStatus(id, this.storageType,
-                        MediaRef.ARTIST_AVATAR, Status.ACTIVE).orElse(null);
                 ResourceInfo resourceInfo = this.storageService
-                    .upload(multipartFile, oldArtist.get(), oldResourceInfo);
+                    .upload(multipartFile, oldArtist.get());
                 oldArtist.get().setAvatarResource(resourceInfo);
                 artist.setAvatarUrl(this.storageService.getFullUrl(resourceInfo));
             }

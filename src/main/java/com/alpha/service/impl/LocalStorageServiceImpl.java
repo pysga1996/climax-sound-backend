@@ -79,12 +79,14 @@ public class LocalStorageServiceImpl extends StorageService {
     public ResourceInfo upload(MultipartFile multipartFile, Media media) {
         ResourceInfo resourceInfo = media.generateResource(multipartFile);
         try {
+            this.deleteOldResources(resourceInfo, StorageType.LOCAL);
             String blobName = resourceInfo.getFolder() + "/" + resourceInfo.getFileName();
             // Copy file to the target location (Replacing existing file with the same title)
             Path targetLocation = this.storageLocation.resolve(blobName);
             resourceInfo.setStoragePath(blobName);
-            Files.copy(multipartFile.getInputStream(), targetLocation,
+            long bytes = Files.copy(multipartFile.getInputStream(), targetLocation,
                 StandardCopyOption.REPLACE_EXISTING);
+            log.info("{} bytes copied", bytes);
 //              ServletUriComponentsBuilder.fromCurrentContextPath()
             String uri = UriComponentsBuilder.newInstance()
                 .path(this.rootUri)

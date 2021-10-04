@@ -168,12 +168,8 @@ public class AlbumServiceImpl implements AlbumService {
         if (oldAlbum.isPresent()) {
             Album album = oldAlbum.get();
             if (file != null) {
-                ResourceInfo oldResourceInfo = this.resourceInfoRepository
-                    .findByMediaIdAndStorageTypeAndMediaRefAndStatus(album.getId(),
-                        this.storageService.getStorageType(), MediaRef.ALBUM_COVER, Status.ACTIVE)
-                    .orElse(null);
                 ResourceInfo resourceInfo = this.storageService
-                    .upload(file, album, oldResourceInfo);
+                    .upload(file, album);
                 album.setCoverResource(resourceInfo);
                 albumDTO.setCoverUrl(this.storageService.getFullUrl(resourceInfo));
             }

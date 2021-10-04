@@ -6,7 +6,7 @@ import com.alpha.model.dto.ResourceInfoDTO;
 import com.alpha.model.entity.Media;
 import com.alpha.model.entity.ResourceInfo;
 import com.alpha.repositories.ResourceInfoRepository;
-import java.util.Optional;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,29 +17,22 @@ public abstract class StorageService {
 
     public abstract ResourceInfo upload(MultipartFile multipartFile, Media media);
 
-    public ResourceInfo upload(MultipartFile multipartFile, Media media,
-        ResourceInfo oldResourceInfo) {
-        ResourceInfo newResourceInfo = this.upload(multipartFile, media);
-        if (oldResourceInfo != null) {
-            this.delete(oldResourceInfo);
-            oldResourceInfo.setStatus(Status.REMOVED);
-            this.getResourceInfoRepository().save(oldResourceInfo);
-        }
-        return newResourceInfo;
+    public void deleteOldResources(ResourceInfo resourceInfo, StorageType storageType) {
+        List<ResourceInfo> resourceInfoList = this.getResourceInfoRepository()
+            .findAllByMediaIdAndStorageTypeAndMediaRefAndStatus(resourceInfo.getMediaId(),
+                storageType,
+                resourceInfo.getMediaRef(), Status.ACTIVE);
+        resourceInfoList.forEach(this::deleteResourceInfo);
     }
 
     public void saveResourceInfo(ResourceInfo resourceInfo, StorageType storageType) {
-        ResourceInfoRepository repository = this.getResourceInfoRepository();
-        Optional<ResourceInfo> resourceInfoOptional = repository
-            .findByMediaIdAndStorageTypeAndMediaRefAndStatus(resourceInfo.getMediaId(), storageType,
-                resourceInfo.getMediaRef(), Status.ACTIVE);
-        resourceInfoOptional.ifPresent(info -> resourceInfo.setId(info.getId()));
-        repository.saveAndFlush(resourceInfo);
+        this.getResourceInfoRepository().saveAndFlush(resourceInfo);
     }
 
     public void deleteResourceInfo(ResourceInfo resourceInfo) {
         this.delete(resourceInfo);
         resourceInfo.setStatus(Status.REMOVED);
+        this.getResourceInfoRepository().save(resourceInfo);
 //        this.getResourceInfoRepository().delete(resourceInfo);
     }
 

@@ -187,12 +187,8 @@ public class UserServiceImpl implements UserService {
             Map<String, Object> profileJson = this.objectMapper.readValue(userInfo.getProfile(), Map.class);
             Map<String, Object> updatedProfileJson = this.objectMapper.readValue(profile, Map.class);
             profileJson.putAll(updatedProfileJson);
-            ResourceInfo oldResourceInfo = this.resourceInfoRepository
-                .findByUsernameAndStorageTypeAndMediaRefAndStatus(username,
-                    this.storageService.getStorageType(), MediaRef.USER_AVATAR, Status.ACTIVE)
-                .orElse(null);
             ResourceInfo newResourceInfo = this.storageService
-                .upload(avatar, userInfo, oldResourceInfo);
+                .upload(avatar, userInfo);
             profileJson.put("avatar_url", this.storageService.getFullUrl(newResourceInfo));
             String mergedUserProfile = this.objectMapper.writeValueAsString(profileJson);
             userInfo.setProfile(mergedUserProfile);

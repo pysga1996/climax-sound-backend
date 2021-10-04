@@ -158,12 +158,8 @@ public class SongServiceImpl implements SongService {
         if (oldSong.isPresent()) {
             Song song = oldSong.get();
             if (file != null) {
-                ResourceInfo oldResourceInfo = this.resourceInfoRepository
-                    .findByMediaIdAndStorageTypeAndMediaRefAndStatus(song.getId(),
-                        this.storageService.getStorageType(), MediaRef.SONG_AUDIO, Status.ACTIVE)
-                    .orElse(null);
                 ResourceInfo resourceInfo = this.storageService
-                    .upload(file, song, oldResourceInfo);
+                    .upload(file, song);
                 song.setAudioResource(resourceInfo);
                 songDTO.setUrl(this.storageService.getFullUrl(resourceInfo));
             }

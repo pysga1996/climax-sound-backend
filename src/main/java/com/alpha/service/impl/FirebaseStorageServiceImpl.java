@@ -57,6 +57,7 @@ public class FirebaseStorageServiceImpl extends StorageService {
         ResourceInfo resourceInfo = media.generateResource(multipartFile);
         Bucket bucket = storageClient.bucket();
         try {
+            this.deleteOldResources(resourceInfo, StorageType.FIREBASE);
             InputStream fileInputStream = multipartFile.getInputStream();
             String blobString = resourceInfo.getFolder() + "/" + resourceInfo.getFileName();
             Blob blob = bucket.create(blobString, fileInputStream,
