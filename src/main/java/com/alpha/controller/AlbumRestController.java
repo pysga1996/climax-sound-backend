@@ -64,13 +64,6 @@ public class AlbumRestController {
         return new ResponseEntity<>(filteredAlbumList, HttpStatus.OK);
     }
 
-    @PatchMapping(value = "/listen")
-    public ResponseEntity<AlbumDTO> listenToAlbum(
-        @RequestBody Long albumId) {
-        AlbumDTO album = this.albumService.listenToAlbum(albumId);
-        return new ResponseEntity<>(album, HttpStatus.OK);
-    }
-
     @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/upload")
     public ResponseEntity<AlbumDTO> createAlbum(@Valid @RequestPart("album") AlbumDTO album,

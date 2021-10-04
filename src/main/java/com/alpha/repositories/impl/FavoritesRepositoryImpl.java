@@ -57,7 +57,7 @@ public class FavoritesRepositoryImpl extends BaseRepository implements Favorites
     @Override
     public void updateLikesInBatch(List<String> records) {
         int upsertCount = this
-            .batchInsertUpdateDelete(SchedulerConstants.UPSERT_LIKES_SQL, records, (statement, record, i) -> {
+            .executeInsertUpdateDeleteInBatch(SchedulerConstants.UPSERT_LIKES_SQL, records, (statement, record, i) -> {
                 String[] lineArr = record.split("_");
                 log.debug("Line {}: {}", i, record);
                 statement.setString(1, lineArr[1]);
@@ -74,7 +74,7 @@ public class FavoritesRepositoryImpl extends BaseRepository implements Favorites
 
     @Override
     public void updateListeningInBatch(List<String> records) {
-        int upsertCount = this.batchInsertUpdateDelete(SchedulerConstants.INSERT_LISTENING_SQL, records,
+        int upsertCount = this.executeInsertUpdateDeleteInBatch(SchedulerConstants.INSERT_LISTENING_SQL, records,
             (statement, record, i) -> {
                 String[] lineArr = record.split("_");
                 log.debug("Line {}: {}", i, record);
@@ -99,7 +99,7 @@ public class FavoritesRepositoryImpl extends BaseRepository implements Favorites
         }
         if (sql == null) return;
         int updateCount = this
-            .batchInsertUpdateDelete(sql,
+            .executeInsertUpdateDeleteInBatch(sql,
                 listeningCountMap.entrySet(), (statement, record, i) -> {
                     log.debug("Likes update line {}: id {} - count {}", i, record.getKey(),
                         record.getValue());
@@ -123,7 +123,7 @@ public class FavoritesRepositoryImpl extends BaseRepository implements Favorites
         }
         if (sql == null) return;
         int updateCount = this
-            .batchInsertUpdateDelete(sql,
+            .executeInsertUpdateDeleteInBatch(sql,
                 listeningCountMap.entrySet(), (statement, record, i) -> {
                     log.debug("Listening update line {}: id {} - count {}", i, record.getKey(),
                         record.getValue());

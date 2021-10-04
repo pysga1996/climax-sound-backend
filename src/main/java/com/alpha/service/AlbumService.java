@@ -28,6 +28,4 @@ public interface AlbumService {
     void updateSongList(Long albumId, List<AlbumUpdateDTO> songDTOList);
 
     AlbumDTO update(MultipartFile file, AlbumDTO album, Long id);
-
-    AlbumDTO listenToAlbum(Long albumId);
 }

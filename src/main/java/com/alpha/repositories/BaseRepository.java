@@ -4,13 +4,18 @@ import com.alpha.model.dto.ArtistDTO;
 import com.alpha.model.dto.MediaDTO;
 import com.alpha.util.helper.DataTypeComparer;
 import java.math.BigInteger;
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.Tuple;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.Session;
 import org.springframework.data.domain.Page;
@@ -78,7 +83,69 @@ public abstract class BaseRepository {
 
     protected abstract EntityManager getEntityManager();
 
-    protected final <E> int batchInsertUpdateDelete(String sql, Collection<E> list,
+    @FunctionalInterface
+    public interface ProcSetupCallback<T> {
+
+        Object[] accept(T inputObj);
+    }
+
+    public <T> void executeProcedureInBatch(String procName, List<T> objList,
+        ProcSetupCallback<T> setupCallback) {
+        Session session = this.getEntityManager().unwrap(Session.class);
+        session.doWork(connection -> {
+            PreparedStatement preparedStatement = null;
+            try {
+                int i = 0;
+                do {
+                    Object[] params = setupCallback.accept(objList.get(i));
+                    if (preparedStatement == null) {
+                        String sql = this.generateSql(procName, params);
+                        preparedStatement = connection.prepareStatement(sql);
+                        continue;
+                    }
+                    this.setupParams(preparedStatement, params);
+                    preparedStatement.addBatch();
+                    if (i % 20 == 0) {
+                        preparedStatement.executeBatch();
+                    }
+                    i++;
+                } while (i < objList.size());
+                preparedStatement.executeBatch();
+            } finally {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            }
+        });
+    }
+
+    private String generateSql(String procName, Object[] params) {
+        StringBuilder sqlBuilder = new StringBuilder("call ")
+            .append(procName)
+            .append("(");
+        List<String> questionMarkList = new ArrayList<>();
+        for (int i = 0; i < params.length; i++) {
+            questionMarkList.add("?");
+        }
+        sqlBuilder
+            .append(String.join(",", questionMarkList))
+            .append(")");
+        return sqlBuilder.toString();
+    }
+
+    @SneakyThrows
+    private void setupParams(PreparedStatement preparedStatement, Object[] params) {
+        for (int i = 0; i < params.length; i++) {
+            if (params[i] == null) {
+                preparedStatement.setNull(i + 1, Types.NULL);
+            } else {
+                preparedStatement
+                    .setObject(i + 1, params[i]);
+            }
+        }
+    }
+
+    protected final <E> int executeInsertUpdateDeleteInBatch(String sql, Collection<E> list,
         StatementParamsSetupCallback<PreparedStatement, E, SQLException> paramsCallback) {
         Session hibernateSession = this.getEntityManager().unwrap(Session.class);
         hibernateSession.doWork(connection -> {

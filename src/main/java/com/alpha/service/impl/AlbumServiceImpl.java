@@ -185,15 +185,6 @@ public class AlbumServiceImpl implements AlbumService {
         }
     }
 
-    @Override
-    public AlbumDTO listenToAlbum(Long albumId) {
-        // TODO add listening queue
-//        Optional<AlbumDTO> optionalAlbumDTO = this.albumRepository.findMediaListNative(albumId);
-//        return optionalAlbumDTO
-//            .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy album"));
-        return null;
-    }
-
     private void patchAlbumUploadToEntity(AlbumDTO albumDTO, Album album) {
         album.setId(albumDTO.getId());
         album.setTitle(albumDTO.getTitle());

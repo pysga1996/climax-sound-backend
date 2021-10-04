@@ -30,7 +30,7 @@ public class PlaylistRepositoryImpl extends BaseRepository implements PlaylistRe
             + "ON CONFLICT ON CONSTRAINT playlist_song_pk\n"
             + "DO \n"
             + "UPDATE SET song_id = ? WHERE playlist_song.playlist_id = ?";
-        int addedCount = this.batchInsertUpdateDelete(sql, songIds, (statement, songId, i) -> {
+        int addedCount = this.executeInsertUpdateDeleteInBatch(sql, songIds, (statement, songId, i) -> {
             log.debug("Insert song #{} - {} to playlist {}", i, songId, playlistId);
             statement.setLong(1, playlistId);
             statement.setLong(2, songId);
@@ -43,7 +43,7 @@ public class PlaylistRepositoryImpl extends BaseRepository implements PlaylistRe
     @Override
     public void removeFromPlaylist(String username, Long playlistId, List<Long> songIds) {
         String sql = "DELETE FROM playlist_song WHERE playlist_id = :id and song_id = :songId";
-        int removedCount = this.batchInsertUpdateDelete(sql, songIds, (statement, songId, i) -> {
+        int removedCount = this.executeInsertUpdateDeleteInBatch(sql, songIds, (statement, songId, i) -> {
             log.debug("Delete song #{} - {} from playlist {}", i, songId, playlistId);
             statement.setLong(1, playlistId);
             statement.setLong(2, songId);

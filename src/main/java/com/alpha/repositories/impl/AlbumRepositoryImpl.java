@@ -4,7 +4,6 @@ import com.alpha.model.dto.AlbumDTO;
 import com.alpha.model.dto.AlbumDTO.AlbumAdditionalInfoDTO;
 import com.alpha.model.dto.AlbumSearchDTO;
 import com.alpha.model.dto.AlbumUpdateDTO;
-import com.alpha.model.dto.AlbumUpdateDTO.UpdateMode;
 import com.alpha.model.dto.CountryDTO;
 import com.alpha.model.dto.GenreDTO;
 import com.alpha.model.dto.TagDTO;
@@ -20,7 +19,6 @@ import java.sql.Types;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import lombok.Getter;
@@ -125,7 +123,7 @@ public class AlbumRepositoryImpl extends BaseRepository implements AlbumReposito
                     }
                     break;
                 case "3_tag":
-                    long tagId= rs.getLong("id");
+                    long tagId = rs.getLong("id");
                     if (tagId != 0) {
                         TagDTO tagDTO = new TagDTO();
                         tagDTO.setId(tagId);
@@ -198,7 +196,7 @@ public class AlbumRepositoryImpl extends BaseRepository implements AlbumReposito
             throw new RuntimeException(throwable);
         }
     }
-    
+
     @Override
     @SneakyThrows
     public AlbumAdditionalInfoDTO findAdditionalInfo(Long id) {
@@ -218,26 +216,30 @@ public class AlbumRepositoryImpl extends BaseRepository implements AlbumReposito
 
     @Override
     public void updateSongList(Long albumId, List<AlbumUpdateDTO> albumUpdateDTOList) {
-        List<AlbumUpdateDTO> insertRelList = albumUpdateDTOList.stream()
-            .filter(e -> e.getMode() == UpdateMode.CREATE).collect(
-                Collectors.toList());
-        List<AlbumUpdateDTO> deleteRelList = albumUpdateDTOList.stream()
-            .filter(e -> e.getMode() == UpdateMode.DELETE).collect(
-                Collectors.toList());
-        String sqlInsert = "INSERT INTO album_song (album_id, song_id, \"order\")\n"
-            + "VALUES (?, ?, ?)\n"
-            + "    ON CONFLICT ON CONSTRAINT album_song_pk\n"
-            + "    DO NOTHING";
-        this.batchInsertUpdateDelete(sqlInsert, insertRelList, ((statement, element, index) -> {
-            statement.setLong(1, albumId);
-            statement.setLong(2, element.getSongId());
-            statement.setLong(3, element.getOrder());
-        }));
-        String sqlDelete = "DELETE FROM album_song WHERE album_id = ? AND song_id = ?";
-        this.batchInsertUpdateDelete(sqlDelete, deleteRelList, ((statement, element, index) -> {
-            statement.setLong(1, albumId);
-            statement.setLong(2, element.getSongId());
-        }));
+//        List<AlbumUpdateDTO> insertRelList = albumUpdateDTOList.stream()
+//            .filter(e -> e.getMode() == UpdateMode.CREATE).collect(
+//                Collectors.toList());
+//        List<AlbumUpdateDTO> deleteRelList = albumUpdateDTOList.stream()
+//            .filter(e -> e.getMode() == UpdateMode.DELETE).collect(
+//                Collectors.toList());
+//        String sqlInsert = "INSERT INTO album_song (album_id, song_id, \"order\")\n"
+//            + "VALUES (?, ?, ?)\n"
+//            + "    ON CONFLICT ON CONSTRAINT album_song_pk\n"
+//            + "    DO NOTHING";
+//        this.executeInsertUpdateDeleteInBatch(sqlInsert, insertRelList, ((statement, element, index) -> {
+//            statement.setLong(1, albumId);
+//            statement.setLong(2, element.getSongId());
+//            statement.setLong(3, element.getOrdinalNumber());
+//        }));
+//        String sqlDelete = "DELETE FROM album_song WHERE album_id = ? AND song_id = ?";
+//        this.executeInsertUpdateDeleteInBatch(sqlDelete, deleteRelList, ((statement, element, index) -> {
+//            statement.setLong(1, albumId);
+//            statement.setLong(2, element.getSongId());
+//        }));
+        this.executeProcedureInBatch("UPDATE_ALBUM_SONG_LIST", albumUpdateDTOList, albumUpdateDTO ->
+            new Object[]{albumId, albumUpdateDTO.getSongId(), albumUpdateDTO.getOrdinalNumber(),
+                albumUpdateDTO.getMode().name()}
+        );
     }
 
 }

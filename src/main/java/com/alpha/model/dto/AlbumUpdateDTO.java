@@ -1,5 +1,7 @@
 package com.alpha.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import lombok.Data;
 
 /**
@@ -13,11 +15,12 @@ public class AlbumUpdateDTO {
 
     private Long songId;
 
-    private Short order;
+    private Short ordinalNumber;
 
     private UpdateMode mode;
 
+    @JsonFormat(shape = Shape.STRING)
     public enum UpdateMode {
-        CREATE,DELETE
+        CREATE,UPDATE,DELETE,VIEW
     }
 }
