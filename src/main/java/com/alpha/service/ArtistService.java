@@ -4,7 +4,6 @@ import com.alpha.elastic.model.ArtistEs;
 import com.alpha.model.dto.ArtistDTO;
 import com.alpha.model.dto.ArtistSearchDTO;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +13,7 @@ public interface ArtistService {
 
     ArtistDTO findById(Long id);
 
-    List<ArtistEs> findByName(String name);
+    Page<ArtistEs> findByName(String name, Pageable pageable);
 
     Page<ArtistDTO> findByConditions(Pageable pageable, ArtistSearchDTO artistSearchDTO);
 

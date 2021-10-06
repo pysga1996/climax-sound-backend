@@ -30,7 +30,7 @@ public class ArtistEs extends MediaEs {
     @Field(type = FieldType.Text, name = "name")
     private String name;
 
-    @Field(type = FieldType.Text, name = "unaccentTitle")
+    @Field(type = FieldType.Text, name = "unaccentName")
     private String unaccentName;
 
     @JsonProperty(access = Access.READ_ONLY)

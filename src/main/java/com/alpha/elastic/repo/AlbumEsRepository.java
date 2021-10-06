@@ -1,8 +1,9 @@
 package com.alpha.elastic.repo;
 
 import com.alpha.elastic.model.AlbumEs;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
-import org.springframework.stereotype.Repository;
 
 /**
  * @author thanhvt
@@ -10,7 +11,8 @@ import org.springframework.stereotype.Repository;
  * @project vengeance
  * @since 1.0
  **/
-@Repository
-public interface AlbumEsRepository extends ElasticsearchRepository<AlbumEs, Long> {
+public interface AlbumEsRepository extends ElasticsearchRepository<AlbumEs, Long>,
+    AlbumEsRepositoryCustom {
 
+    Page<AlbumEs> findFirst10ByUnaccentTitleContainingIgnoreCase(String name, Pageable pageable);
 }

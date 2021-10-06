@@ -4,6 +4,8 @@ import com.alpha.constant.EntityType;
 import com.alpha.constant.MediaRef;
 import com.alpha.constant.RoleConstants;
 import com.alpha.constant.Status;
+import com.alpha.elastic.model.AlbumEs;
+import com.alpha.elastic.repo.AlbumEsRepository;
 import com.alpha.mapper.AlbumMapper;
 import com.alpha.mapper.ArtistMapper;
 import com.alpha.mapper.UserInfoMapper;
@@ -33,6 +35,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
+import lombok.SneakyThrows;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,10 +44,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+@Log4j2
 @Service
 public class AlbumServiceImpl implements AlbumService {
 
     private final AlbumRepository albumRepository;
+
+    private final AlbumEsRepository albumEsRepository;
 
     private final ResourceInfoRepository resourceInfoRepository;
 
@@ -63,12 +70,14 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Autowired
     public AlbumServiceImpl(AlbumRepository albumRepository,
+        AlbumEsRepository albumEsRepository,
         ResourceInfoRepository resourceInfoRepository,
         TagRepository tagRepository, AlbumMapper albumMapper,
         ArtistMapper artistMapper, UserInfoMapper userInfoMapper,
         UserService userService, StorageService storageService,
         FavoritesService favoritesService) {
         this.albumRepository = albumRepository;
+        this.albumEsRepository = albumEsRepository;
         this.resourceInfoRepository = resourceInfoRepository;
         this.tagRepository = tagRepository;
         this.albumMapper = albumMapper;
@@ -107,6 +116,19 @@ public class AlbumServiceImpl implements AlbumService {
     @Transactional(readOnly = true)
     public Page<AlbumDTO> findAll(Pageable pageable) {
         return this.albumRepository.findAllByConditions(pageable, new AlbumSearchDTO());
+    }
+
+    @Override
+    @SneakyThrows
+    @Transactional(readOnly = true)
+    public Page<AlbumEs> findAllByName(String name, Pageable pageable) {
+        String phrase = StringAccentRemover.removeStringAccent(name);
+        log.info("Phrase {}", phrase);
+        return this.albumEsRepository.findPageByName(name, pageable)
+            .map(e -> {
+                e.setCoverUrl(this.storageService.getFullUrl(e.getResourceMap()));
+                return e;
+            });
     }
 
     @Override

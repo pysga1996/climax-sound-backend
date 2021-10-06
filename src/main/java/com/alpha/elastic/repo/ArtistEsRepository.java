@@ -1,9 +1,9 @@
 package com.alpha.elastic.repo;
 
 import com.alpha.elastic.model.ArtistEs;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
-import org.springframework.stereotype.Repository;
 
 /**
  * @author thanhvt
@@ -11,9 +11,9 @@ import org.springframework.stereotype.Repository;
  * @project vengeance
  * @since 1.0
  **/
-@Repository
-public interface ArtistEsRepository extends ElasticsearchRepository<ArtistEs, Long> {
+public interface ArtistEsRepository extends ElasticsearchRepository<ArtistEs, Long>,
+    ArtistEsRepositoryCustom {
 
-    List<ArtistEs> findFirst10ByUnaccentNameContainingIgnoreCase(String name);
+    Page<ArtistEs> findFirst10ByUnaccentNameContainingIgnoreCase(String name, Pageable pageable);
 
 }

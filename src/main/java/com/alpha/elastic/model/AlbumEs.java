@@ -1,6 +1,8 @@
 package com.alpha.elastic.model;
 
 import com.alpha.model.entity.Album;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,6 +31,9 @@ public class AlbumEs extends MediaEs {
 
     @Field(type = FieldType.Text, name = "unaccentTitle")
     private String unaccentTitle;
+
+    @JsonProperty(access = Access.READ_ONLY)
+    private String coverUrl;
 
     @Field(type = FieldType.Object, name = "resourceMap")
     private ResourceMapEs resourceMap;

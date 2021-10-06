@@ -5,6 +5,8 @@ import com.alpha.constant.EntityType;
 import com.alpha.constant.MediaRef;
 import com.alpha.constant.RoleConstants;
 import com.alpha.constant.Status;
+import com.alpha.elastic.model.SongEs;
+import com.alpha.elastic.repo.SongEsRepository;
 import com.alpha.mapper.ArtistMapper;
 import com.alpha.mapper.SongMapper;
 import com.alpha.mapper.UserInfoMapper;
@@ -34,6 +36,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,6 +51,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class SongServiceImpl implements SongService {
 
     private final SongRepository songRepository;
+
+    private final SongEsRepository songEsRepository;
 
     private final TagRepository tagRepository;
 
@@ -69,12 +74,14 @@ public class SongServiceImpl implements SongService {
     private StorageType storageType;
 
     @Autowired
-    public SongServiceImpl(SongRepository songRepository, UserService userService,
+    public SongServiceImpl(SongRepository songRepository,
+        SongEsRepository songEsRepository, UserService userService,
         TagRepository tagRepository, ResourceInfoRepository resourceInfoRepository,
         StorageService storageService, SongMapper songMapper,
         ArtistMapper artistMapper, UserInfoMapper userInfoMapper,
         FavoritesService favoritesService) {
         this.songRepository = songRepository;
+        this.songEsRepository = songEsRepository;
         this.userService = userService;
         this.tagRepository = tagRepository;
         this.resourceInfoRepository = resourceInfoRepository;
@@ -92,6 +99,15 @@ public class SongServiceImpl implements SongService {
             .findAllConditions(pageable, new SongSearchDTO());
         this.favoritesService.setLikes(songDTOPage, EntityType.SONG);
         return songDTOPage;
+    }
+
+    @Override
+    @SneakyThrows
+    @Transactional(readOnly = true)
+    public Page<SongEs> findAllByName(String name, Pageable pageable) {
+        String phrase = StringAccentRemover.removeStringAccent(name);
+        log.info("Phrase {}", phrase);
+        return this.songEsRepository.findPageByName(name, pageable);
     }
 
     @Override

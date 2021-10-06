@@ -20,11 +20,10 @@ import com.alpha.service.StorageService;
 import com.alpha.service.UserService;
 import com.alpha.util.formatter.StringAccentRemover;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -81,7 +80,8 @@ public class ArtistServiceImpl implements ArtistService {
                 .findByMediaIdAndStorageTypeAndMediaRefAndStatus(artist.getId(), this.storageType,
                     MediaRef.ARTIST_AVATAR, Status.ACTIVE);
             optionalResourceInfo.ifPresent(
-                resourceInfo -> artistDTO.setAvatarUrl(this.storageService.getFullUrl(resourceInfo)));
+                resourceInfo -> artistDTO
+                    .setAvatarUrl(this.storageService.getFullUrl(resourceInfo)));
             this.favoritesService.setLike(artistDTO, EntityType.ARTIST);
             return artistDTO;
         } else {
@@ -90,13 +90,17 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
+    @SneakyThrows
     @Transactional(readOnly = true)
-    public List<ArtistEs> findByName(String name) {
+    public Page<ArtistEs> findByName(String name, Pageable pageable) {
         String phrase = StringAccentRemover.removeStringAccent(name);
-        return this.artistEsRepository.findFirst10ByUnaccentNameContainingIgnoreCase(phrase)
-            .stream()
-            .peek(e -> e.setAvatarUrl(this.storageService.getFullUrl(e.getResourceMap())))
-            .collect(Collectors.toList());
+        log.info("Phrase {}", phrase);
+        return this.artistEsRepository
+            .findPageByName(phrase, pageable)
+            .map(e -> {
+                e.setAvatarUrl(this.storageService.getFullUrl(e.getResourceMap()));
+                return e;
+            });
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.alpha.service;
 
+import com.alpha.elastic.model.SongEs;
 import com.alpha.model.dto.SongDTO;
 import com.alpha.model.dto.SongDTO.SongAdditionalInfoDTO;
 import com.alpha.model.dto.SongSearchDTO;
@@ -13,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 public interface SongService {
 
     Page<SongDTO> findAll(Pageable pageable);
+
+    Page<SongEs> findAllByName(String name, Pageable pageable);
 
     Page<SongDTO> findAllByConditions(Pageable pageable, SongSearchDTO songSearchDTO);
 

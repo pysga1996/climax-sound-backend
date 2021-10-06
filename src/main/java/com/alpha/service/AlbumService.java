@@ -1,5 +1,6 @@
 package com.alpha.service;
 
+import com.alpha.elastic.model.AlbumEs;
 import com.alpha.model.dto.AlbumDTO;
 import com.alpha.model.dto.AlbumDTO.AlbumAdditionalInfoDTO;
 import com.alpha.model.dto.AlbumSearchDTO;
@@ -17,6 +18,8 @@ public interface AlbumService {
 
     Page<AlbumDTO> findAll(Pageable pageable);
 
+    Page<AlbumEs> findAllByName(String name, Pageable pageable);
+
     Page<AlbumDTO> findAllByConditions(Pageable pageable, AlbumSearchDTO albumSearchDTO);
 
     void create(AlbumDTO album);
@@ -28,4 +31,5 @@ public interface AlbumService {
     void updateSongList(Long albumId, List<AlbumUpdateDTO> songDTOList);
 
     AlbumDTO update(MultipartFile file, AlbumDTO album, Long id);
+
 }

@@ -1,5 +1,6 @@
 package com.alpha.controller;
 
+import com.alpha.elastic.model.SongEs;
 import com.alpha.model.dto.SongDTO;
 import com.alpha.model.dto.SongDTO.SongAdditionalInfoDTO;
 import com.alpha.model.dto.SongSearchDTO;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,6 +61,14 @@ public class SongRestController {
     public ResponseEntity<Page<SongDTO>> search(@ModelAttribute SongSearchDTO songSearchDTO,
         Pageable pageable) {
         Page<SongDTO> songList = this.songService.findAllByConditions(pageable, songSearchDTO);
+        return new ResponseEntity<>(songList, HttpStatus.OK);
+    }
+
+    @PreAuthorize("permitAll()")
+    @GetMapping(value = "/es-search")
+    public ResponseEntity<Page<SongEs>> search(@RequestParam(value = "name") String name,
+        Pageable pageable) {
+        Page<SongEs> songList = this.songService.findAllByName(name, pageable);
         return new ResponseEntity<>(songList, HttpStatus.OK);
     }
 
