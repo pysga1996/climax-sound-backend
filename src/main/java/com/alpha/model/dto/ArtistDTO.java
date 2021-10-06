@@ -49,6 +49,14 @@ public class ArtistDTO implements MediaDTO {
 
     private UserInfoDTO uploader;
 
+    private Date createTime;
+
+    private Date updateTime;
+
+    private Integer status;
+
+    private Integer sync;
+
     @JsonBackReference(value = "song-artist")
     private Collection<SongDTO> songs;
 

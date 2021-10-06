@@ -58,6 +58,18 @@ public class SongDTO implements MediaDTO {
 
     private String lyric;
 
+    private Duration duration;
+
+    private UserInfoDTO uploader;
+
+    private Date createTime;
+
+    private Date updateTime;
+
+    private Integer status;
+
+    private Integer sync;
+
     @JsonManagedReference(value = "song-artist")
     private Collection<ArtistDTO> artists;
 
@@ -70,8 +82,6 @@ public class SongDTO implements MediaDTO {
     @JsonManagedReference("song-genre")
     private Collection<GenreDTO> genres;
 
-    private UserInfoDTO uploader;
-
     @JsonBackReference(value = "playlist-song")
     private Collection<PlaylistDTO> playlists;
 
@@ -81,7 +91,6 @@ public class SongDTO implements MediaDTO {
     @JsonManagedReference("song-theme")
     private ThemeDTO theme;
 
-    private Duration duration;
 
     @JsonProperty(access = Access.WRITE_ONLY)
     private SongAdditionalInfoDTO additionalInfo;

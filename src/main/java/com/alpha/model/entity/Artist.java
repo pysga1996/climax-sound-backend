@@ -82,6 +82,18 @@ public class Artist extends Media {
     @NotFound(action = NotFoundAction.IGNORE)
     private UserInfo uploader;
 
+    @Column(name = "create_time")
+    private Date createTime;
+
+    @Column(name = "update_time")
+    private Date updateTime;
+
+    @Column(name = "status")
+    private Integer status;
+
+    @Column(name = "sync")
+    private Integer sync;
+
     //    @JsonBackReference(value = "song-artist")
     @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.SUBSELECT)

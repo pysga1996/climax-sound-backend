@@ -1,10 +1,11 @@
 package com.alpha.controller;
 
+import com.alpha.elastic.model.ArtistEs;
 import com.alpha.model.dto.ArtistDTO;
 import com.alpha.model.dto.ArtistSearchDTO;
 import com.alpha.service.ArtistService;
 import java.io.IOException;
-import java.util.Optional;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,6 +40,13 @@ public class ArtistRestController {
     public ResponseEntity<Page<ArtistDTO>> searchArtistByName(Pageable pageable,
         @ModelAttribute ArtistSearchDTO artistSearchDTO) {
         Page<ArtistDTO> artistList = this.artistService.findByConditions(pageable, artistSearchDTO);
+        return new ResponseEntity<>(artistList, HttpStatus.OK);
+    }
+
+    @PreAuthorize("permitAll()")
+    @GetMapping(value = "/es-search")
+    public ResponseEntity<List<ArtistEs>> searchArtistByName(@RequestParam(value = "name") String name) {
+        List<ArtistEs> artistList = this.artistService.findByName(name);
         return new ResponseEntity<>(artistList, HttpStatus.OK);
     }
 

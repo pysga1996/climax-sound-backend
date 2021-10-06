@@ -107,6 +107,11 @@ spring:
       enabled: false
       options:
         topic-prefix: ""
+  elasticsearch:
+    rest:
+      uris: ${ES_URL:}
+      username: ${ES_USERNAME:}
+      password: ${ES_PASSWORD:}
 storage:
   storage-type: firebase
   temp: ${TEMP_DIR:}

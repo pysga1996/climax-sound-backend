@@ -17,6 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -42,6 +44,12 @@ import org.springframework.web.multipart.MultipartFile;
 @ToString(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "song")
+@NamedEntityGraph(
+    name = "song-artist",
+    attributeNodes = {
+        @NamedAttributeNode("artists")
+    }
+)
 public class Song extends Media {
 
     @Transient
@@ -87,6 +95,18 @@ public class Song extends Media {
     @Column(name = "like_count")
     @ColumnDefault("0")
     private Long likeCount = 0L;
+
+    @Column(name = "create_time")
+    private Date createTime;
+
+    @Column(name = "update_time")
+    private Date updateTime;
+
+    @Column(name = "status")
+    private Integer status;
+
+    @Column(name = "sync")
+    private Integer sync;
 
     //    @Column(columnDefinition = "LONGTEXT")
     @Column(columnDefinition = "TEXT")

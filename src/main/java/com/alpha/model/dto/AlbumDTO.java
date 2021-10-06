@@ -46,6 +46,20 @@ public class AlbumDTO implements MediaDTO {
 
     private String description;
 
+    private CountryDTO country;
+
+    private ThemeDTO theme;
+
+    private UserInfoDTO uploader;
+
+    private Date createTime;
+
+    private Date updateTime;
+
+    private Integer status;
+
+    private Integer sync;
+
     private ResourceInfoDTO coverResource;
 
     private Collection<GenreDTO> genres;
@@ -55,12 +69,6 @@ public class AlbumDTO implements MediaDTO {
     private Collection<ArtistDTO> artists;
 
     private Collection<TagDTO> tags;
-
-    private CountryDTO country;
-
-    private ThemeDTO theme;
-
-    private UserInfoDTO uploader;
 
     @JsonProperty(access = Access.WRITE_ONLY)
     private AlbumAdditionalInfoDTO additionalInfo;

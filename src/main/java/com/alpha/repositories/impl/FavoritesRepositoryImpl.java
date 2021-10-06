@@ -78,9 +78,9 @@ public class FavoritesRepositoryImpl extends BaseRepository implements Favorites
             (statement, record, i) -> {
                 String[] lineArr = record.split("_");
                 log.debug("Line {}: {}", i, record);
-                statement.setString(1, lineArr[0]);
-                statement.setLong(2, Long.parseLong(lineArr[1]));
-                statement.setString(3, lineArr[2]);
+                statement.setString(1, lineArr[1]);
+                statement.setLong(2, Long.parseLong(lineArr[2]));
+                statement.setString(3, lineArr[0]);
             });
         log.info("Upsert listening count: {}", upsertCount);
     }

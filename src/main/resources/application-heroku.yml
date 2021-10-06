@@ -98,6 +98,11 @@ spring:
         username: ${CLOUDKARAFKA_USERNAME:}
         password: ${CLOUDKARAFKA_PASSWORD:}
         topic-prefix: ${CLOUDKARAFKA_TOPIC_PREFIX:}
+  elasticsearch:
+    rest:
+      uris: ${ES_URL:}
+      username: ${ES_USERNAME:}
+      password: ${ES_PASSWORD:}
 storage:
   storage-type: cloudinary
   temp: ${TEMP_DIR:}

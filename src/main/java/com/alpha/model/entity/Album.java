@@ -85,6 +85,18 @@ public class Album extends Media {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "create_time")
+    private Date createTime;
+
+    @Column(name = "update_time")
+    private Date updateTime;
+
+    @Column(name = "status")
+    private Integer status;
+
+    @Column(name = "sync")
+    private Integer sync;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "album_genre",

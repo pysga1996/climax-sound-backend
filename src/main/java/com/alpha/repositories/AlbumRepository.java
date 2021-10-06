@@ -1,6 +1,7 @@
 package com.alpha.repositories;
 
 import com.alpha.model.entity.Album;
+import java.util.Date;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,8 @@ public interface AlbumRepository extends JpaRepository<Album, Long>, AlbumReposi
 
     @NonNull
     Page<Album> findAll(@NonNull Pageable pageable);
+
+    Page<Album> findAllBySync(Integer sync, Pageable pageable);
 
     @Procedure(procedureName = "DELETE_ALBUM")
     void deleteByIdProc(@Param("p_id") Long id);

@@ -2,6 +2,7 @@ package com.alpha.repositories;
 
 import com.alpha.model.entity.Artist;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,6 +15,8 @@ public interface ArtistRepository extends JpaRepository<Artist, Long>, ArtistRep
 
     //    @Query(value = "SELECT * FROM album WHERE BINARY title=:title", nativeQuery = true)
     Artist findByName(String name);
+
+    Page<Artist> findAllBySync(Integer sync, Pageable pageable);
 
     Page<Artist> findAllByNameContaining(String name, Pageable pageable);
 

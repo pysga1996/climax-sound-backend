@@ -4,6 +4,8 @@ import com.alpha.config.properties.StorageProperty.StorageType;
 import com.alpha.constant.EntityType;
 import com.alpha.constant.MediaRef;
 import com.alpha.constant.Status;
+import com.alpha.elastic.model.ArtistEs;
+import com.alpha.elastic.repo.ArtistEsRepository;
 import com.alpha.mapper.ArtistMapper;
 import com.alpha.model.dto.ArtistDTO;
 import com.alpha.model.dto.ArtistSearchDTO;
@@ -18,8 +20,10 @@ import com.alpha.service.StorageService;
 import com.alpha.service.UserService;
 import com.alpha.util.formatter.StringAccentRemover;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +43,8 @@ public class ArtistServiceImpl implements ArtistService {
 
     private final ArtistRepository artistRepository;
 
+    private final ArtistEsRepository artistEsRepository;
+
     private final ResourceInfoRepository resourceInfoRepository;
 
     private final ArtistMapper artistMapper;
@@ -51,10 +57,12 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Autowired
     public ArtistServiceImpl(ArtistRepository artistRepository,
+        ArtistEsRepository artistEsRepository,
         ResourceInfoRepository resourceInfoRepository,
         ArtistMapper artistMapper, StorageService storageService,
         UserService userService, FavoritesService favoritesService) {
         this.artistRepository = artistRepository;
+        this.artistEsRepository = artistEsRepository;
         this.resourceInfoRepository = resourceInfoRepository;
         this.artistMapper = artistMapper;
         this.storageService = storageService;
@@ -83,8 +91,12 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     @Transactional(readOnly = true)
-    public ArtistDTO findByName(String name) {
-        return this.artistMapper.entityToDto(artistRepository.findByName(name));
+    public List<ArtistEs> findByName(String name) {
+        String phrase = StringAccentRemover.removeStringAccent(name);
+        return this.artistEsRepository.findFirst10ByUnaccentNameContainingIgnoreCase(phrase)
+            .stream()
+            .peek(e -> e.setAvatarUrl(this.storageService.getFullUrl(e.getResourceMap())))
+            .collect(Collectors.toList());
     }
 
     @Override

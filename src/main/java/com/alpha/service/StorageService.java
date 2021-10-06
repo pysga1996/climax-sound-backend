@@ -2,6 +2,7 @@ package com.alpha.service;
 
 import com.alpha.config.properties.StorageProperty.StorageType;
 import com.alpha.constant.Status;
+import com.alpha.elastic.model.ResourceMapEs;
 import com.alpha.model.dto.ResourceInfoDTO;
 import com.alpha.model.entity.Media;
 import com.alpha.model.entity.ResourceInfo;
@@ -57,6 +58,22 @@ public abstract class StorageService {
 
     public String getFullUrl(ResourceInfoDTO resourceInfoDTO) {
         return this.getBaseUrl() + resourceInfoDTO.getUri();
+    }
+
+    public String getFullUrl(ResourceMapEs resourceMapEs) {
+        String url = "";
+        switch (this.getStorageType()) {
+            case FIREBASE:
+                url = resourceMapEs.getFirebaseUrl();
+                break;
+            case CLOUDINARY:
+                url = resourceMapEs.getCloudinaryUrl();
+                break;
+            case LOCAL:
+                url = resourceMapEs.getLocalUri();
+                break;
+        }
+        return this.getBaseUrl() + url;
     }
 
 }
