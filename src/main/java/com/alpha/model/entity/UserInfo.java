@@ -3,7 +3,7 @@ package com.alpha.model.entity;
 import com.alpha.constant.Folder;
 import com.alpha.constant.MediaRef;
 import com.alpha.constant.MediaType;
-import com.alpha.constant.Status;
+import com.alpha.constant.EntityStatus;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -62,7 +62,7 @@ public class UserInfo extends Media {
             .extension(ext)
             .folder(Folder.AVATAR)
             .fileName(fileName)
-            .status(Status.INACTIVE)
+            .status(EntityStatus.INACTIVE)
             .mediaType(MediaType.IMAGE)
             .mediaRef(MediaRef.USER_AVATAR)
             .build();

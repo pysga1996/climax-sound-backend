@@ -4,7 +4,6 @@ import com.alpha.model.dto.UserInfoDTO;
 import com.alpha.service.UserService;
 import java.util.Map;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +22,6 @@ public class UserRestController {
 
     private final UserService userService;
 
-    @Autowired
     public UserRestController(UserService userService) {
         this.userService = userService;
     }

@@ -1,7 +1,7 @@
 package com.alpha.scheduler;
 
 import com.alpha.constant.MediaRef;
-import com.alpha.constant.Status;
+import com.alpha.constant.EntityStatus;
 import com.alpha.elastic.model.AlbumEs;
 import com.alpha.elastic.model.ArtistEs;
 import com.alpha.elastic.model.MediaEs;
@@ -117,7 +117,7 @@ public class ElasticScheduler {
         List<Long> mediaIds = mediaEsList.stream().map(MediaEs::getId)
             .collect(Collectors.toList());
         Map<Long, ResourceMapEs> resourceMapEsMap = this.resourceInfoRepository
-            .findAllByMediaIdInAndMediaRefAndStatus(mediaIds, mediaRef, Status.ACTIVE)
+            .findAllByMediaIdInAndMediaRefAndStatus(mediaIds, mediaRef, EntityStatus.ACTIVE)
             .stream()
             .collect(Collectors.groupingBy(ResourceInfo::getMediaId))
             .entrySet()

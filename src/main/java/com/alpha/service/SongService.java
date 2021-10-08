@@ -15,7 +15,7 @@ public interface SongService {
 
     Page<SongDTO> findAll(Pageable pageable);
 
-    Page<SongEs> findAllByName(String name, Pageable pageable);
+    Page<SongEs> findPageByName(String name, Pageable pageable);
 
     Page<SongDTO> findAllByConditions(Pageable pageable, SongSearchDTO songSearchDTO);
 
@@ -23,7 +23,7 @@ public interface SongService {
 
     SongAdditionalInfoDTO findAdditionalInfoById(Long id);
 
-    SongDTO uploadAndSaveSong(MultipartFile file, SongDTO songDTO);
+    SongDTO upload(MultipartFile file, SongDTO songDTO);
 
     SongDTO update(Long id, SongDTO songDTO, MultipartFile multipartFile) throws IOException;
 

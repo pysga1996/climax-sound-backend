@@ -13,7 +13,7 @@ public interface ArtistService {
 
     ArtistDTO findById(Long id);
 
-    Page<ArtistEs> findByName(String name, Pageable pageable);
+    Page<ArtistEs> findPageByName(String name, Pageable pageable);
 
     Page<ArtistDTO> findByConditions(Pageable pageable, ArtistSearchDTO artistSearchDTO);
 

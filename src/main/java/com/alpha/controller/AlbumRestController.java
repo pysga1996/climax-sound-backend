@@ -5,8 +5,6 @@ import com.alpha.model.dto.AlbumDTO;
 import com.alpha.model.dto.AlbumDTO.AlbumAdditionalInfoDTO;
 import com.alpha.model.dto.AlbumSearchDTO;
 import com.alpha.model.dto.AlbumUpdateDTO;
-import com.alpha.model.dto.SongDTO;
-import com.alpha.model.dto.SongSearchDTO;
 import com.alpha.service.AlbumService;
 import java.util.List;
 import javax.validation.Valid;
@@ -49,7 +47,7 @@ public class AlbumRestController {
     @GetMapping(value = "/es-search")
     public ResponseEntity<Page<AlbumEs>> search(@RequestParam(value = "name") String name,
         Pageable pageable) {
-        Page<AlbumEs> songList = this.albumService.findAllByName(name, pageable);
+        Page<AlbumEs> songList = this.albumService.findPageByName(name, pageable);
         return new ResponseEntity<>(songList, HttpStatus.OK);
     }
 
@@ -80,7 +78,7 @@ public class AlbumRestController {
     public ResponseEntity<AlbumDTO> createAlbum(@Valid @RequestPart("album") AlbumDTO album,
         @RequestPart(value = "cover", required = false)
             MultipartFile file) {
-        AlbumDTO albumDTO = this.albumService.uploadAndSaveAlbum(file, album);
+        AlbumDTO albumDTO = this.albumService.upload(file, album);
         return new ResponseEntity<>(albumDTO, HttpStatus.OK);
     }
 

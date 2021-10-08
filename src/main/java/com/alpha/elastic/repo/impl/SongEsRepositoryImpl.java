@@ -2,6 +2,7 @@ package com.alpha.elastic.repo.impl;
 
 import com.alpha.elastic.model.SongEs;
 import com.alpha.elastic.repo.SongEsRepositoryCustom;
+import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,12 @@ public class SongEsRepositoryImpl implements SongEsRepositoryCustom {
         BoolQueryBuilder boolQueryBuilder2 = QueryBuilders.boolQuery();
         String[] tokens = name.split("\\s+");
         for (String token : tokens) {
-            boolQueryBuilder.must(QueryBuilders.wildcardQuery("unaccentTitle", "*" + token + "*"));
+            boolQueryBuilder
+                .should(QueryBuilders
+                    .wildcardQuery("unaccentTitle", "*" + token + "*"));
+            boolQueryBuilder2
+                .should(QueryBuilders
+                    .wildcardQuery("artists.unaccentName", "*" + token + "*"));
         }
         boolQueryBuilder.should(QueryBuilders.nestedQuery("artists", boolQueryBuilder2, ScoreMode.None));
         SearchHits<SongEs> searchHits = this.elasticsearchRestTemplate

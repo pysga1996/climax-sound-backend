@@ -3,7 +3,7 @@ package com.alpha.service.impl;
 import com.alpha.config.properties.StorageProperty.StorageType;
 import com.alpha.constant.EntityType;
 import com.alpha.constant.MediaRef;
-import com.alpha.constant.Status;
+import com.alpha.constant.EntityStatus;
 import com.alpha.elastic.model.ArtistEs;
 import com.alpha.elastic.repo.ArtistEsRepository;
 import com.alpha.mapper.ArtistMapper;
@@ -20,6 +20,7 @@ import com.alpha.service.StorageService;
 import com.alpha.service.UserService;
 import com.alpha.util.formatter.StringAccentRemover;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
@@ -71,6 +72,12 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     @Transactional(readOnly = true)
+    public Page<ArtistDTO> findAll(Pageable pageable) {
+        return this.artistRepository.findByConditions(pageable, new ArtistSearchDTO());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public ArtistDTO findById(Long id) {
         Optional<Artist> optionalArtist = this.artistRepository.findById(id);
         if (optionalArtist.isPresent()) {
@@ -78,7 +85,7 @@ public class ArtistServiceImpl implements ArtistService {
             ArtistDTO artistDTO = this.artistMapper.entityToDto(artist);
             Optional<ResourceInfo> optionalResourceInfo = this.resourceInfoRepository
                 .findByMediaIdAndStorageTypeAndMediaRefAndStatus(artist.getId(), this.storageType,
-                    MediaRef.ARTIST_AVATAR, Status.ACTIVE);
+                    MediaRef.ARTIST_AVATAR, EntityStatus.ACTIVE);
             optionalResourceInfo.ifPresent(
                 resourceInfo -> artistDTO
                     .setAvatarUrl(this.storageService.getFullUrl(resourceInfo)));
@@ -92,7 +99,7 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     @SneakyThrows
     @Transactional(readOnly = true)
-    public Page<ArtistEs> findByName(String name, Pageable pageable) {
+    public Page<ArtistEs> findPageByName(String name, Pageable pageable) {
         String phrase = StringAccentRemover.removeStringAccent(name);
         log.info("Phrase {}", phrase);
 //        return this.artistEsRepository
@@ -117,43 +124,45 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     @Transactional
-    public ArtistDTO create(ArtistDTO artist, MultipartFile multipartFile) {
+    public ArtistDTO create(ArtistDTO artistDTO, MultipartFile multipartFile) {
         UserInfo currentUser = this.userService.getCurrentUserInfo();
-        String unaccentName = StringAccentRemover.removeStringAccent(artist.getName());
-        Artist artistToSave = this.artistMapper.dtoToEntity(artist);
-        artistToSave.setLikeCount(0L);
-        artistToSave.setUploader(currentUser);
-        this.artistRepository.saveAndFlush(artistToSave);
-        ResourceInfo resourceInfo = this.storageService.upload(multipartFile, artistToSave);
-        artist.setId(artistToSave.getId());
-        artist.setName(artistToSave.getName());
-        artist.setUnaccentName(unaccentName.toLowerCase());
-        artist.setAvatarUrl(this.storageService.getFullUrl(resourceInfo));
-        return artist;
+        Artist artist = Artist.builder()
+            .name(artistDTO.getName())
+            .unaccentName(StringAccentRemover.removeStringAccent(artistDTO.getName()))
+            .likeCount(0L)
+            .uploader(currentUser)
+            .status(EntityStatus.ACTIVE)
+            .createTime(new Date())
+            .sync(0)
+            .build();
+        this.artistRepository.saveAndFlush(artist);
+        ResourceInfo resourceInfo = this.storageService.upload(multipartFile, artist);
+        artistDTO.setId(artist.getId());
+        artistDTO.setUnaccentName(artist.getUnaccentName());
+        artistDTO.setAvatarUrl(this.storageService.getFullUrl(resourceInfo));
+        return artistDTO;
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public Page<ArtistDTO> findAll(Pageable pageable) {
-        return this.artistRepository.findByConditions(pageable, new ArtistSearchDTO());
-    }
 
     @Override
     @Transactional
-    public ArtistDTO update(Long id, ArtistDTO artist, MultipartFile multipartFile)
+    public ArtistDTO update(Long id, ArtistDTO artistDTO, MultipartFile multipartFile)
         throws IOException {
         Optional<Artist> oldArtist = this.artistRepository.findById(id);
         if (oldArtist.isPresent()) {
+            Artist artist = oldArtist.get();
             if (multipartFile != null) {
                 ResourceInfo resourceInfo = this.storageService
-                    .upload(multipartFile, oldArtist.get());
-                oldArtist.get().setAvatarResource(resourceInfo);
-                artist.setAvatarUrl(this.storageService.getFullUrl(resourceInfo));
+                    .upload(multipartFile, artist);
+                artist.setAvatarResource(resourceInfo);
+                artistDTO.setAvatarUrl(this.storageService.getFullUrl(resourceInfo));
             }
-            oldArtist.get().setName(artist.getName());
-            oldArtist.get()
-                .setUnaccentName(StringAccentRemover.removeStringAccent(artist.getName()));
-            return artist;
+            artist.setName(artistDTO.getName());
+            artist.setUnaccentName(StringAccentRemover.removeStringAccent(artistDTO.getName()));
+            artist.setUpdateTime(new Date());
+            artist.setSync(0);
+            artistDTO.setUnaccentName(artist.getUnaccentName());
+            return artistDTO;
         } else {
             throw new RuntimeException("Artist does not exist");
         }
@@ -169,4 +178,5 @@ public class ArtistServiceImpl implements ArtistService {
     public Map<Long, Boolean> getUserArtistLikeMap(Map<Long, Boolean> artistIdMap) {
         return null;
     }
+
 }

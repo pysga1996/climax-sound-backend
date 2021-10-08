@@ -1,5 +1,7 @@
 package com.alpha.util.formatter;
 
+import java.util.Locale;
+
 public class StringAccentRemover {
 
     public static String removeStringAccent(String str) {
@@ -18,6 +20,6 @@ public class StringAccentRemover {
         newString = newString.replaceAll("Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ", "U");
         newString = newString.replaceAll("Ỳ|Ý|Ỵ|Ỷ|Ỹ", "Y");
         newString = newString.replaceAll("Đ", "D");
-        return newString;
+        return newString.toLowerCase(Locale.ROOT);
     }
 }

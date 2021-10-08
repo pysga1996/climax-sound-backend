@@ -119,8 +119,6 @@ spring:
   elasticsearch:
     rest:
       uris: ${ES_URL:}
-      username: ${ES_USERNAME:}
-      password: ${ES_PASSWORD:}
 storage:
   storage-type: local
   temp: ${TEMP_DIR:}

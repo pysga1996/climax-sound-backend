@@ -1,7 +1,7 @@
 package com.alpha.service.impl;
 
 import com.alpha.config.properties.StorageProperty.StorageType;
-import com.alpha.constant.Status;
+import com.alpha.constant.EntityStatus;
 import com.alpha.model.entity.Media;
 import com.alpha.model.entity.ResourceInfo;
 import com.alpha.repositories.ResourceInfoRepository;
@@ -96,7 +96,7 @@ public class CloudinaryStorageServiceImpl extends StorageService {
             String mediaUrl = (String) uploadResult.get("secure_url");
             resourceInfo.setUri(mediaUrl);
             resourceInfo.setStorageType(StorageType.CLOUDINARY);
-            resourceInfo.setStatus(Status.ACTIVE);
+            resourceInfo.setStatus(EntityStatus.ACTIVE);
             this.saveResourceInfo(resourceInfo, StorageType.CLOUDINARY);
             return resourceInfo;
         } catch (IOException ex) {

@@ -3,18 +3,16 @@ package com.alpha.service.impl;
 import com.alpha.constant.EntityType;
 import com.alpha.constant.MediaRef;
 import com.alpha.constant.RoleConstants;
-import com.alpha.constant.Status;
+import com.alpha.constant.EntityStatus;
 import com.alpha.elastic.model.AlbumEs;
 import com.alpha.elastic.repo.AlbumEsRepository;
 import com.alpha.mapper.AlbumMapper;
 import com.alpha.mapper.ArtistMapper;
-import com.alpha.mapper.UserInfoMapper;
 import com.alpha.model.dto.AlbumDTO;
 import com.alpha.model.dto.AlbumDTO.AlbumAdditionalInfoDTO;
 import com.alpha.model.dto.AlbumSearchDTO;
 import com.alpha.model.dto.AlbumUpdateDTO;
 import com.alpha.model.dto.TagDTO;
-import com.alpha.model.dto.UserInfoDTO;
 import com.alpha.model.entity.Album;
 import com.alpha.model.entity.Artist;
 import com.alpha.model.entity.ResourceInfo;
@@ -29,6 +27,7 @@ import com.alpha.service.StorageService;
 import com.alpha.service.UserService;
 import com.alpha.util.formatter.StringAccentRemover;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -60,8 +59,6 @@ public class AlbumServiceImpl implements AlbumService {
 
     private final ArtistMapper artistMapper;
 
-    private final UserInfoMapper userInfoMapper;
-
     private final UserService userService;
 
     private final StorageService storageService;
@@ -73,16 +70,14 @@ public class AlbumServiceImpl implements AlbumService {
         AlbumEsRepository albumEsRepository,
         ResourceInfoRepository resourceInfoRepository,
         TagRepository tagRepository, AlbumMapper albumMapper,
-        ArtistMapper artistMapper, UserInfoMapper userInfoMapper,
-        UserService userService, StorageService storageService,
-        FavoritesService favoritesService) {
+        ArtistMapper artistMapper, UserService userService,
+        StorageService storageService, FavoritesService favoritesService) {
         this.albumRepository = albumRepository;
         this.albumEsRepository = albumEsRepository;
         this.resourceInfoRepository = resourceInfoRepository;
         this.tagRepository = tagRepository;
         this.albumMapper = albumMapper;
         this.artistMapper = artistMapper;
-        this.userInfoMapper = userInfoMapper;
         this.userService = userService;
         this.storageService = storageService;
         this.favoritesService = favoritesService;
@@ -95,7 +90,7 @@ public class AlbumServiceImpl implements AlbumService {
         if (albumOptional.isPresent()) {
             Optional<ResourceInfo> oldResourceInfo = this.resourceInfoRepository
                 .findByMediaIdAndStorageTypeAndMediaRefAndStatus(id,
-                    this.storageService.getStorageType(), MediaRef.ALBUM_COVER, Status.ACTIVE);
+                    this.storageService.getStorageType(), MediaRef.ALBUM_COVER, EntityStatus.ACTIVE);
             AlbumDTO albumDTO = this.albumMapper.entityToDtoPure(albumOptional.get());
             oldResourceInfo.ifPresent(
                 resourceInfo -> albumDTO.setCoverUrl(this.storageService.getFullUrl(resourceInfo)));
@@ -121,7 +116,7 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     @SneakyThrows
     @Transactional(readOnly = true)
-    public Page<AlbumEs> findAllByName(String name, Pageable pageable) {
+    public Page<AlbumEs> findPageByName(String name, Pageable pageable) {
         String phrase = StringAccentRemover.removeStringAccent(name);
         log.info("Phrase {}", phrase);
 //        return this.albumEsRepository.findAll(pageable)
@@ -157,28 +152,25 @@ public class AlbumServiceImpl implements AlbumService {
 
     @Override
     @Transactional
-    public AlbumDTO uploadAndSaveAlbum(MultipartFile file, AlbumDTO albumDTO) {
-        Album album = new Album();
-        album.setListeningFrequency(0L);
-        album.setLikeCount(0L);
+    public AlbumDTO upload(MultipartFile file, AlbumDTO albumDTO) {
+        UserInfo userInfo = this.userService.getCurrentUserInfo();
+        Album album = Album.builder()
+            .listeningFrequency(0L)
+            .likeCount(0L)
+            .uploader(userInfo)
+            .createTime(new Date())
+            .sync(0)
+            .build();
         this.patchAlbumUploadToEntity(albumDTO, album);
-        UserInfoDTO userInfoDTO = this.userService.getCurrentUserInfoDTO();
-        UserInfo userInfo = this.userInfoMapper.dtoToEntity(userInfoDTO);
-        album.setUploader(userInfo);
         this.albumRepository.saveAndFlush(album);
-        albumDTO.setId(album.getId());
         if (file != null) {
             ResourceInfo resourceInfo = this.storageService.upload(file, album);
+            album.setCoverResource(resourceInfo);
             albumDTO.setCoverUrl(this.storageService.getFullUrl(resourceInfo));
         }
+        albumDTO.setId(album.getId());
+        albumDTO.setUnaccentTitle(album.getUnaccentTitle());
         return albumDTO;
-    }
-
-    @Override
-    @Transactional
-    public void updateSongList(Long albumId, List<AlbumUpdateDTO> songDTOList) {
-        Optional<Album> album = this.albumRepository.findById(albumId);
-        album.ifPresent(value -> this.albumRepository.updateSongList(albumId, songDTOList));
     }
 
     @Override
@@ -201,11 +193,21 @@ public class AlbumServiceImpl implements AlbumService {
                 albumDTO.setCoverUrl(this.storageService.getFullUrl(resourceInfo));
             }
             this.patchAlbumUploadToEntity(albumDTO, album);
+            album.setUpdateTime(new Date());
+            album.setSync(0);
             this.albumRepository.save(album);
+            albumDTO.setUnaccentTitle(album.getUnaccentTitle());
             return albumDTO;
         } else {
             throw new EntityNotFoundException("Album not existed or user is not the owner");
         }
+    }
+
+    @Override
+    @Transactional
+    public void updateSongList(Long albumId, List<AlbumUpdateDTO> songDTOList) {
+        Optional<Album> album = this.albumRepository.findById(albumId);
+        album.ifPresent(value -> this.albumRepository.updateSongList(albumId, songDTOList));
     }
 
     private void patchAlbumUploadToEntity(AlbumDTO albumDTO, Album album) {

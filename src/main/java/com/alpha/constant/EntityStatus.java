@@ -12,33 +12,33 @@ import javax.persistence.AttributeConverter;
  * @project vengeance
  * @since 1.0
  **/
-public enum Status {
+public enum EntityStatus {
     INACTIVE(0),
     ACTIVE(1),
     REMOVED(2);
 
-    private static final Map<Integer, Status> statusMap = new HashMap<>();
+    private static final Map<Integer, EntityStatus> statusMap = new HashMap<>();
 
     static {
-        for (Status status : Status.values()) {
+        for (EntityStatus status : EntityStatus.values()) {
             statusMap.put(status.value, status);
         }
     }
 
     private final int value;
 
-    Status(int value) {
+    EntityStatus(int value) {
         this.value = value;
     }
 
     @JsonCreator
-    public static Status fromValue(Integer integer) {
+    public static EntityStatus fromValue(Integer integer) {
         if (integer == null) {
-            return Status.INACTIVE;
+            return EntityStatus.INACTIVE;
         }
-        Status gender = statusMap.get(integer);
+        EntityStatus gender = statusMap.get(integer);
         if (gender == null) {
-            return Status.INACTIVE;
+            return EntityStatus.INACTIVE;
         }
         return gender;
     }
@@ -48,19 +48,19 @@ public enum Status {
         return value;
     }
 
-    public static class StatusAttributeConverter implements AttributeConverter<Status, Integer> {
+    public static class StatusAttributeConverter implements AttributeConverter<EntityStatus, Integer> {
 
         @Override
-        public Integer convertToDatabaseColumn(Status attribute) {
+        public Integer convertToDatabaseColumn(EntityStatus attribute) {
             if (attribute == null) {
-                return Status.INACTIVE.value;
+                return EntityStatus.INACTIVE.value;
             }
             return attribute.value;
         }
 
         @Override
-        public Status convertToEntityAttribute(Integer dbData) {
-            return Status.fromValue(dbData);
+        public EntityStatus convertToEntityAttribute(Integer dbData) {
+            return EntityStatus.fromValue(dbData);
         }
     }
 }

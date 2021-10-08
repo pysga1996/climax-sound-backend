@@ -1,7 +1,7 @@
 package com.alpha.service;
 
 import com.alpha.config.properties.StorageProperty.StorageType;
-import com.alpha.constant.Status;
+import com.alpha.constant.EntityStatus;
 import com.alpha.elastic.model.ResourceMapEs;
 import com.alpha.model.dto.ResourceInfoDTO;
 import com.alpha.model.entity.Media;
@@ -22,7 +22,7 @@ public abstract class StorageService {
         List<ResourceInfo> resourceInfoList = this.getResourceInfoRepository()
             .findAllByMediaIdAndStorageTypeAndMediaRefAndStatus(resourceInfo.getMediaId(),
                 storageType,
-                resourceInfo.getMediaRef(), Status.ACTIVE);
+                resourceInfo.getMediaRef(), EntityStatus.ACTIVE);
         resourceInfoList.forEach(this::deleteResourceInfo);
     }
 
@@ -32,7 +32,7 @@ public abstract class StorageService {
 
     public void deleteResourceInfo(ResourceInfo resourceInfo) {
         this.delete(resourceInfo);
-        resourceInfo.setStatus(Status.REMOVED);
+        resourceInfo.setStatus(EntityStatus.REMOVED);
         this.getResourceInfoRepository().save(resourceInfo);
 //        this.getResourceInfoRepository().delete(resourceInfo);
     }

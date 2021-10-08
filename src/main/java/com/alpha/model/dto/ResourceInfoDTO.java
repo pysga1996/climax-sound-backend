@@ -3,7 +3,7 @@ package com.alpha.model.dto;
 import com.alpha.config.properties.StorageProperty.StorageType;
 import com.alpha.constant.MediaRef;
 import com.alpha.constant.MediaType;
-import com.alpha.constant.Status;
+import com.alpha.constant.EntityStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -45,5 +45,5 @@ public class ResourceInfoDTO {
 
     private MediaRef mediaRef;
 
-    private Status status;
+    private EntityStatus status;
 }

@@ -3,6 +3,8 @@ package com.alpha.elastic.model;
 import com.alpha.model.entity.Album;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -46,6 +48,8 @@ public class AlbumEs extends MediaEs {
             .id(album.getId())
             .title(album.getTitle())
             .unaccentTitle(album.getUnaccentTitle())
+            .artists(
+                album.getArtists().stream().map(ArtistEs::fromArtist).collect(Collectors.toList()))
             .build();
     }
 }

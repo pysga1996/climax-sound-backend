@@ -44,7 +44,7 @@ public class SongRestController {
     public ResponseEntity<SongDTO> uploadSong(
         @Valid @RequestPart("song") SongDTO songDTO,
         @RequestPart("audio") MultipartFile file) {
-        SongDTO createdSongDTO = this.songService.uploadAndSaveSong(file, songDTO);
+        SongDTO createdSongDTO = this.songService.upload(file, songDTO);
         log.info("Upload song successfully!");
         return new ResponseEntity<>(createdSongDTO, HttpStatus.OK);
     }
@@ -68,7 +68,7 @@ public class SongRestController {
     @GetMapping(value = "/es-search")
     public ResponseEntity<Page<SongEs>> search(@RequestParam(value = "name") String name,
         Pageable pageable) {
-        Page<SongEs> songList = this.songService.findAllByName(name, pageable);
+        Page<SongEs> songList = this.songService.findPageByName(name, pageable);
         return new ResponseEntity<>(songList, HttpStatus.OK);
     }
 

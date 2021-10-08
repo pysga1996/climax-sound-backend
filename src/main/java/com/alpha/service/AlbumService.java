@@ -18,7 +18,7 @@ public interface AlbumService {
 
     Page<AlbumDTO> findAll(Pageable pageable);
 
-    Page<AlbumEs> findAllByName(String name, Pageable pageable);
+    Page<AlbumEs> findPageByName(String name, Pageable pageable);
 
     Page<AlbumDTO> findAllByConditions(Pageable pageable, AlbumSearchDTO albumSearchDTO);
 
@@ -26,7 +26,7 @@ public interface AlbumService {
 
     void deleteById(Long id);
 
-    AlbumDTO uploadAndSaveAlbum(MultipartFile file, AlbumDTO album);
+    AlbumDTO upload(MultipartFile file, AlbumDTO album);
 
     void updateSongList(Long albumId, List<AlbumUpdateDTO> songDTOList);
 

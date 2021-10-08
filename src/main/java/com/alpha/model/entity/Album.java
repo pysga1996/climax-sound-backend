@@ -3,11 +3,12 @@ package com.alpha.model.entity;
 import com.alpha.constant.Folder;
 import com.alpha.constant.MediaRef;
 import com.alpha.constant.MediaType;
-import com.alpha.constant.Status;
+import com.alpha.constant.EntityStatus;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,6 +18,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -43,6 +46,12 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @Entity
 @Table(name = "album")
+@NamedEntityGraph(
+    name = "album-artist",
+    attributeNodes = {
+        @NamedAttributeNode("artists")
+    }
+)
 public class Album extends Media {
 
     @Transient
@@ -92,7 +101,8 @@ public class Album extends Media {
     private Date updateTime;
 
     @Column(name = "status")
-    private Integer status;
+    @Convert(converter = EntityStatus.StatusAttributeConverter.class)
+    private EntityStatus status;
 
     @Column(name = "sync")
     private Integer sync;
@@ -168,7 +178,7 @@ public class Album extends Media {
             .extension(ext)
             .folder(Folder.COVER)
             .fileName(fileName)
-            .status(Status.INACTIVE)
+            .status(EntityStatus.INACTIVE)
             .mediaType(MediaType.IMAGE)
             .mediaRef(MediaRef.ALBUM_COVER)
             .build();

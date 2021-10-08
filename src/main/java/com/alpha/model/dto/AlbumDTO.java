@@ -1,6 +1,7 @@
 package com.alpha.model.dto;
 
 import com.alpha.constant.EntityType;
+import com.alpha.constant.EntityStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -57,7 +58,7 @@ public class AlbumDTO implements MediaDTO {
 
     private Date updateTime;
 
-    private Integer status;
+    private EntityStatus status;
 
     private Integer sync;
 

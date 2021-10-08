@@ -1,6 +1,7 @@
 package com.alpha.model.dto;
 
 import com.alpha.constant.EntityType;
+import com.alpha.constant.EntityStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -56,7 +57,7 @@ public class ArtistDTO implements MediaDTO {
 
     private Date updateTime;
 
-    private Integer status;
+    private EntityStatus status;
 
     private Integer sync;
 

@@ -1,13 +1,14 @@
 package com.alpha.model.entity;
 
+import com.alpha.constant.EntityStatus;
 import com.alpha.constant.Folder;
 import com.alpha.constant.MediaRef;
 import com.alpha.constant.MediaType;
-import com.alpha.constant.Status;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -103,7 +104,8 @@ public class Song extends Media {
     private Date updateTime;
 
     @Column(name = "status")
-    private Integer status;
+    @Convert(converter = EntityStatus.StatusAttributeConverter.class)
+    private EntityStatus status;
 
     @Column(name = "sync")
     private Integer sync;
@@ -183,7 +185,7 @@ public class Song extends Media {
             .extension(ext)
             .folder(Folder.AUDIO)
             .fileName(fileName)
-            .status(Status.INACTIVE)
+            .status(EntityStatus.INACTIVE)
             .mediaType(MediaType.AUDIO)
             .mediaRef(MediaRef.SONG_AUDIO)
             .build();

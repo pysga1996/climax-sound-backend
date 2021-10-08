@@ -3,7 +3,7 @@ package com.alpha.model.entity;
 import com.alpha.config.properties.StorageProperty.StorageType;
 import com.alpha.constant.MediaRef;
 import com.alpha.constant.MediaType;
-import com.alpha.constant.Status;
+import com.alpha.constant.EntityStatus;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -84,6 +84,6 @@ public class ResourceInfo {
     private MediaRef mediaRef;
 
     @Column(name = "status")
-    @Convert(converter = Status.StatusAttributeConverter.class)
-    private Status status;
+    @Convert(converter = EntityStatus.StatusAttributeConverter.class)
+    private EntityStatus status;
 }

@@ -5,11 +5,9 @@ import com.alpha.model.dto.ArtistDTO;
 import com.alpha.model.dto.ArtistSearchDTO;
 import com.alpha.service.ArtistService;
 import java.io.IOException;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -48,7 +46,7 @@ public class ArtistRestController {
     @GetMapping(value = "/es-search")
     public ResponseEntity<Page<ArtistEs>> searchArtistByName(@RequestParam(value = "name") String name,
         Pageable pageable) {
-        Page<ArtistEs> artistList = this.artistService.findByName(name, pageable);
+        Page<ArtistEs> artistList = this.artistService.findPageByName(name, pageable);
         return new ResponseEntity<>(artistList, HttpStatus.OK);
     }
 

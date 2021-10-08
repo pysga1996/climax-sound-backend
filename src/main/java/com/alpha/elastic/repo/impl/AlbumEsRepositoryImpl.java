@@ -1,8 +1,8 @@
 package com.alpha.elastic.repo.impl;
 
 import com.alpha.elastic.model.AlbumEs;
-import com.alpha.elastic.model.SongEs;
 import com.alpha.elastic.repo.AlbumEsRepositoryCustom;
+import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.NestedQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -40,7 +40,12 @@ public class AlbumEsRepositoryImpl implements AlbumEsRepositoryCustom {
         BoolQueryBuilder boolQueryBuilder2 = QueryBuilders.boolQuery();
         String[] tokens = name.split("\\s+");
         for (String token : tokens) {
-            boolQueryBuilder.must(QueryBuilders.wildcardQuery("unaccentTitle", "*" + token + "*"));
+            boolQueryBuilder
+                .should(QueryBuilders
+                    .wildcardQuery("unaccentTitle", "*" + token + "*"));
+            boolQueryBuilder2
+                .should(QueryBuilders
+                    .wildcardQuery("artists.unaccentName", "*" + token + "*"));
         }
         boolQueryBuilder.should(QueryBuilders.nestedQuery("artists", boolQueryBuilder2, ScoreMode.None));
         SearchHits<AlbumEs> searchHits = this.elasticsearchRestTemplate

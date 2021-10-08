@@ -4,17 +4,15 @@ import com.alpha.config.properties.StorageProperty.StorageType;
 import com.alpha.constant.EntityType;
 import com.alpha.constant.MediaRef;
 import com.alpha.constant.RoleConstants;
-import com.alpha.constant.Status;
+import com.alpha.constant.EntityStatus;
 import com.alpha.elastic.model.SongEs;
 import com.alpha.elastic.repo.SongEsRepository;
 import com.alpha.mapper.ArtistMapper;
 import com.alpha.mapper.SongMapper;
-import com.alpha.mapper.UserInfoMapper;
 import com.alpha.model.dto.SongDTO;
 import com.alpha.model.dto.SongDTO.SongAdditionalInfoDTO;
 import com.alpha.model.dto.SongSearchDTO;
 import com.alpha.model.dto.TagDTO;
-import com.alpha.model.dto.UserInfoDTO;
 import com.alpha.model.entity.Artist;
 import com.alpha.model.entity.ResourceInfo;
 import com.alpha.model.entity.Song;
@@ -30,6 +28,7 @@ import com.alpha.service.UserService;
 import com.alpha.util.formatter.StringAccentRemover;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -64,8 +63,6 @@ public class SongServiceImpl implements SongService {
 
     private final ArtistMapper artistMapper;
 
-    private final UserInfoMapper userInfoMapper;
-
     private final UserService userService;
 
     private final FavoritesService favoritesService;
@@ -78,8 +75,7 @@ public class SongServiceImpl implements SongService {
         SongEsRepository songEsRepository, UserService userService,
         TagRepository tagRepository, ResourceInfoRepository resourceInfoRepository,
         StorageService storageService, SongMapper songMapper,
-        ArtistMapper artistMapper, UserInfoMapper userInfoMapper,
-        FavoritesService favoritesService) {
+        ArtistMapper artistMapper, FavoritesService favoritesService) {
         this.songRepository = songRepository;
         this.songEsRepository = songEsRepository;
         this.userService = userService;
@@ -88,7 +84,6 @@ public class SongServiceImpl implements SongService {
         this.storageService = storageService;
         this.songMapper = songMapper;
         this.artistMapper = artistMapper;
-        this.userInfoMapper = userInfoMapper;
         this.favoritesService = favoritesService;
     }
 
@@ -104,7 +99,7 @@ public class SongServiceImpl implements SongService {
     @Override
     @SneakyThrows
     @Transactional(readOnly = true)
-    public Page<SongEs> findAllByName(String name, Pageable pageable) {
+    public Page<SongEs> findPageByName(String name, Pageable pageable) {
         String phrase = StringAccentRemover.removeStringAccent(name);
         log.info("Phrase {}", phrase);
 //        return this.songEsRepository.findAll(pageable);
@@ -127,7 +122,7 @@ public class SongServiceImpl implements SongService {
         if (optionalSong.isPresent()) {
             Optional<ResourceInfo> optionalResourceInfo = this.resourceInfoRepository
                 .findByMediaIdAndStorageTypeAndMediaRefAndStatus(id, this.storageType,
-                    MediaRef.SONG_AUDIO, Status.ACTIVE);
+                    MediaRef.SONG_AUDIO, EntityStatus.ACTIVE);
             SongDTO songDTO = this.songMapper.entityToDto(optionalSong.get());
             this.favoritesService.setLike(songDTO, EntityType.SONG);
             optionalResourceInfo.ifPresent(
@@ -146,17 +141,21 @@ public class SongServiceImpl implements SongService {
 
     @Override
     @Transactional
-    public SongDTO uploadAndSaveSong(MultipartFile file, SongDTO songDTO) {
-        Song song = new Song();
-        song.setListeningFrequency(0L);
-        song.setLikeCount(0L);
+    public SongDTO upload(MultipartFile file, SongDTO songDTO) {
+        UserInfo userInfo = this.userService.getCurrentUserInfo();
+        Song song = Song.builder()
+            .listeningFrequency(0L)
+            .likeCount(0L)
+            .uploader(userInfo)
+            .createTime(new Date())
+            .status(EntityStatus.ACTIVE)
+            .sync(0)
+            .build();
         this.patchSongUploadToEntity(songDTO, song);
-        UserInfoDTO userInfoDTO = this.userService.getCurrentUserInfoDTO();
-        UserInfo userInfo = this.userInfoMapper.dtoToEntity(userInfoDTO);
-        song.setUploader(userInfo);
         this.songRepository.saveAndFlush(song);
         ResourceInfo resourceInfo = this.storageService.upload(file, song);
         songDTO.setUrl(this.storageService.getFullUrl(resourceInfo));
+        songDTO.setUnaccentTitle(song.getUnaccentTitle());
         songDTO.setId(song.getId());
         return songDTO;
     }
@@ -181,7 +180,10 @@ public class SongServiceImpl implements SongService {
                 songDTO.setUrl(this.storageService.getFullUrl(resourceInfo));
             }
             this.patchSongUploadToEntity(songDTO, song);
+            song.setUpdateTime(new Date());
+            song.setSync(0);
             this.songRepository.save(song);
+            songDTO.setUnaccentTitle(song.getUnaccentTitle());
             return songDTO;
         } else {
             throw new EntityNotFoundException("Song does not existed or user is not the owner");
@@ -197,7 +199,7 @@ public class SongServiceImpl implements SongService {
             Optional<ResourceInfo> resourceInfoOptional = this.resourceInfoRepository
                 .findByMediaIdAndStorageTypeAndMediaRefAndStatus(song.get().getId(),
                     this.storageType,
-                    MediaRef.SONG_AUDIO, Status.ACTIVE);
+                    MediaRef.SONG_AUDIO, EntityStatus.ACTIVE);
             resourceInfoOptional.ifPresent(this.storageService::delete);
         }
     }
@@ -243,5 +245,6 @@ public class SongServiceImpl implements SongService {
             song.setTags(mergedTagList);
             song.setTheme(additionalInfoSong.getTheme());
         }
+        song.setSync(0);
     }
 }

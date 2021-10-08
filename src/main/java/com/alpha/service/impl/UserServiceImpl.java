@@ -2,7 +2,7 @@ package com.alpha.service.impl;
 
 import com.alpha.constant.MediaRef;
 import com.alpha.constant.RoleConstants;
-import com.alpha.constant.Status;
+import com.alpha.constant.EntityStatus;
 import com.alpha.mapper.UserInfoMapper;
 import com.alpha.model.dto.UserInfoDTO;
 import com.alpha.model.entity.ResourceInfo;
@@ -165,7 +165,7 @@ public class UserServiceImpl implements UserService {
                 .readValue(userInfoOptional.get().getProfile(), Map.class);
             Optional<ResourceInfo> optionalResourceInfo = this.resourceInfoRepository
                 .findByUsernameAndStorageTypeAndMediaRefAndStatus(username,
-                    this.storageService.getStorageType(), MediaRef.USER_AVATAR, Status.ACTIVE);
+                    this.storageService.getStorageType(), MediaRef.USER_AVATAR, EntityStatus.ACTIVE);
             optionalResourceInfo.ifPresent(resourceInfo -> profileJson
                 .put("avatar_url", this.storageService.getFullUrl(resourceInfo)));
             return profileJson;
