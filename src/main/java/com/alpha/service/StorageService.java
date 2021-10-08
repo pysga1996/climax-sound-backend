@@ -61,6 +61,7 @@ public abstract class StorageService {
     }
 
     public String getFullUrl(ResourceMapEs resourceMapEs) {
+        if (resourceMapEs == null) return "";
         String url = "";
         switch (this.getStorageType()) {
             case FIREBASE:

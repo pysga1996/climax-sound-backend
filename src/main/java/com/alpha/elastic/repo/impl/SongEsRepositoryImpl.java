@@ -33,12 +33,14 @@ public class SongEsRepositoryImpl implements SongEsRepositoryCustom {
 
     @Override
     public Page<SongEs> findPageByName(String name, Pageable pageable) {
-        NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
+        NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder().withPageable(pageable);
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        BoolQueryBuilder boolQueryBuilder2 = QueryBuilders.boolQuery();
         String[] tokens = name.split("\\s+");
         for (String token : tokens) {
             boolQueryBuilder.must(QueryBuilders.wildcardQuery("unaccentTitle", "*" + token + "*"));
         }
+        boolQueryBuilder.should(QueryBuilders.nestedQuery("artists", boolQueryBuilder2, ScoreMode.None));
         SearchHits<SongEs> searchHits = this.elasticsearchRestTemplate
             .search(queryBuilder.withQuery(boolQueryBuilder).build(), SongEs.class);
         return SearchHitSupport.searchPageFor(searchHits, pageable).map(SearchHit::getContent);

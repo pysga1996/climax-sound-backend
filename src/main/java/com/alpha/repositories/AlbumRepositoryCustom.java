@@ -4,6 +4,7 @@ import com.alpha.model.dto.AlbumDTO;
 import com.alpha.model.dto.AlbumDTO.AlbumAdditionalInfoDTO;
 import com.alpha.model.dto.AlbumSearchDTO;
 import com.alpha.model.dto.AlbumUpdateDTO;
+import com.alpha.model.dto.UpdateSyncOption;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,4 +23,5 @@ public interface AlbumRepositoryCustom {
 
     void updateSongList(Long albumId, List<AlbumUpdateDTO> albumUpdateDTOList);
 
+    int markForSync(UpdateSyncOption option);
 }

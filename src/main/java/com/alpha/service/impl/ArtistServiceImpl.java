@@ -95,6 +95,12 @@ public class ArtistServiceImpl implements ArtistService {
     public Page<ArtistEs> findByName(String name, Pageable pageable) {
         String phrase = StringAccentRemover.removeStringAccent(name);
         log.info("Phrase {}", phrase);
+//        return this.artistEsRepository
+//            .findAll(pageable)
+//            .map(e -> {
+//                e.setAvatarUrl(this.storageService.getFullUrl(e.getResourceMap()));
+//                return e;
+//            });
         return this.artistEsRepository
             .findPageByName(phrase, pageable)
             .map(e -> {

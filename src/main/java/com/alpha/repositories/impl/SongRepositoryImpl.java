@@ -7,7 +7,10 @@ import com.alpha.model.dto.SongDTO.SongAdditionalInfoDTO;
 import com.alpha.model.dto.SongSearchDTO;
 import com.alpha.model.dto.TagDTO;
 import com.alpha.model.dto.ThemeDTO;
+import com.alpha.model.dto.UpdateSyncOption;
 import com.alpha.model.dto.UserInfoDTO;
+import com.alpha.model.entity.Song;
+import com.alpha.model.entity.Song_;
 import com.alpha.repositories.BaseRepository;
 import com.alpha.repositories.SongRepositoryCustom;
 import com.alpha.service.StorageService;
@@ -21,6 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
@@ -221,5 +228,26 @@ public class SongRepositoryImpl extends BaseRepository implements SongRepository
             log.error(throwable);
             throw new RuntimeException(throwable);
         }
+    }
+
+    @Override
+    public int markForSync(UpdateSyncOption option) {
+        CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+        CriteriaUpdate<Song> criteriaUpdate = cb.createCriteriaUpdate(Song.class);
+        Root<Song> root =  criteriaUpdate.from(Song.class);
+        criteriaUpdate
+            .set(root.get(Song_.SYNC), 0);
+        List<Predicate> conditions = new ArrayList<>();
+        if (option.getId() != null) {
+            conditions.add(cb.equal(root.get(Song_.ID), option.getId()));
+        }
+        if (option.getCreateTime() != null) {
+            conditions.add(cb.greaterThan(root.get(Song_.CREATE_TIME), option.getCreateTime()));
+        }
+        if (option.getUpdateTime() != null) {
+            conditions.add(cb.greaterThan(root.get(Song_.UPDATE_TIME), option.getUpdateTime()));
+        }
+        criteriaUpdate.where(conditions.toArray(new Predicate[] {}));
+        return entityManager.createQuery(criteriaUpdate).executeUpdate();
     }
 }

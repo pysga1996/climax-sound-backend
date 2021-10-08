@@ -124,6 +124,11 @@ public class AlbumServiceImpl implements AlbumService {
     public Page<AlbumEs> findAllByName(String name, Pageable pageable) {
         String phrase = StringAccentRemover.removeStringAccent(name);
         log.info("Phrase {}", phrase);
+//        return this.albumEsRepository.findAll(pageable)
+//            .map(e -> {
+//                e.setCoverUrl(this.storageService.getFullUrl(e.getResourceMap()));
+//                return e;
+//            });
         return this.albumEsRepository.findPageByName(name, pageable)
             .map(e -> {
                 e.setCoverUrl(this.storageService.getFullUrl(e.getResourceMap()));

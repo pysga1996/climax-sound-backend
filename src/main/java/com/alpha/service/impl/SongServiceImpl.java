@@ -107,6 +107,7 @@ public class SongServiceImpl implements SongService {
     public Page<SongEs> findAllByName(String name, Pageable pageable) {
         String phrase = StringAccentRemover.removeStringAccent(name);
         log.info("Phrase {}", phrase);
+//        return this.songEsRepository.findAll(pageable);
         return this.songEsRepository.findPageByName(name, pageable);
     }
 

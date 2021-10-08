@@ -4,6 +4,7 @@ import com.alpha.elastic.model.AlbumEs;
 import com.alpha.elastic.model.SongEs;
 import com.alpha.elastic.repo.AlbumEsRepositoryCustom;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.NestedQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,10 +37,12 @@ public class AlbumEsRepositoryImpl implements AlbumEsRepositoryCustom {
     public Page<AlbumEs> findPageByName(String name, Pageable pageable) {
         NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        BoolQueryBuilder boolQueryBuilder2 = QueryBuilders.boolQuery();
         String[] tokens = name.split("\\s+");
         for (String token : tokens) {
             boolQueryBuilder.must(QueryBuilders.wildcardQuery("unaccentTitle", "*" + token + "*"));
         }
+        boolQueryBuilder.should(QueryBuilders.nestedQuery("artists", boolQueryBuilder2, ScoreMode.None));
         SearchHits<AlbumEs> searchHits = this.elasticsearchRestTemplate
             .search(queryBuilder.withQuery(boolQueryBuilder).build(), AlbumEs.class);
         return SearchHitSupport.searchPageFor(searchHits, pageable).map(SearchHit::getContent);

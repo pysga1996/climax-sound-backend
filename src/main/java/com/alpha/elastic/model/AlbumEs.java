@@ -38,6 +38,9 @@ public class AlbumEs extends MediaEs {
     @Field(type = FieldType.Object, name = "resourceMap")
     private ResourceMapEs resourceMap;
 
+    @Field(type = FieldType.Nested, name = "artists", includeInParent = true)
+    private List<ArtistEs> artists;
+
     public static AlbumEs fromAlbum(Album album) {
         return AlbumEs.builder()
             .id(album.getId())

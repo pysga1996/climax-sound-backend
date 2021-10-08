@@ -30,4 +30,6 @@ public final class RoleConstants {
     public static final String TAG_MANAGEMENT = "tag-management";
 
     public static final String THEME_MANAGEMENT = "theme-management";
+
+    public static final String ELASTIC_SEARCH_MANAGEMENT = "elastic-search-management";
 }

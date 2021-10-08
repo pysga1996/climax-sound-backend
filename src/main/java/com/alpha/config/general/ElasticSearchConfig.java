@@ -1,11 +1,10 @@
 package com.alpha.config.general;
 
 import org.elasticsearch.client.RestHighLevelClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.elasticsearch.client.ClientConfiguration;
-import org.springframework.data.elasticsearch.client.RestClients;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
@@ -21,6 +20,13 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 @ComponentScan(basePackages = { "com.alpha.elastic.model" })
 public class ElasticSearchConfig {
 
+    private final RestHighLevelClient restHighLevelClient;
+
+    @Autowired
+    public ElasticSearchConfig(RestHighLevelClient restHighLevelClient) {
+        this.restHighLevelClient = restHighLevelClient;
+    }
+
 //    @Bean
 //    public RestHighLevelClient client() {
 //        ClientConfiguration clientConfiguration
@@ -31,8 +37,9 @@ public class ElasticSearchConfig {
 //        return RestClients.create(clientConfiguration).rest();
 //    }
 
+
 //    @Bean
 //    public ElasticsearchOperations elasticsearchTemplate() {
-//        return new ElasticsearchRestTemplate(client());
+//        return new ElasticsearchRestTemplate(restHighLevelClient, );
 //    }
 }

@@ -8,6 +8,11 @@ import com.alpha.model.dto.CountryDTO;
 import com.alpha.model.dto.GenreDTO;
 import com.alpha.model.dto.TagDTO;
 import com.alpha.model.dto.ThemeDTO;
+import com.alpha.model.dto.UpdateSyncOption;
+import com.alpha.model.entity.Album;
+import com.alpha.model.entity.Album_;
+import com.alpha.model.entity.Song;
+import com.alpha.model.entity.Song_;
 import com.alpha.repositories.AlbumRepositoryCustom;
 import com.alpha.repositories.BaseRepository;
 import com.alpha.service.StorageService;
@@ -21,6 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
@@ -216,30 +225,30 @@ public class AlbumRepositoryImpl extends BaseRepository implements AlbumReposito
 
     @Override
     public void updateSongList(Long albumId, List<AlbumUpdateDTO> albumUpdateDTOList) {
-//        List<AlbumUpdateDTO> insertRelList = albumUpdateDTOList.stream()
-//            .filter(e -> e.getMode() == UpdateMode.CREATE).collect(
-//                Collectors.toList());
-//        List<AlbumUpdateDTO> deleteRelList = albumUpdateDTOList.stream()
-//            .filter(e -> e.getMode() == UpdateMode.DELETE).collect(
-//                Collectors.toList());
-//        String sqlInsert = "INSERT INTO album_song (album_id, song_id, \"order\")\n"
-//            + "VALUES (?, ?, ?)\n"
-//            + "    ON CONFLICT ON CONSTRAINT album_song_pk\n"
-//            + "    DO NOTHING";
-//        this.executeInsertUpdateDeleteInBatch(sqlInsert, insertRelList, ((statement, element, index) -> {
-//            statement.setLong(1, albumId);
-//            statement.setLong(2, element.getSongId());
-//            statement.setLong(3, element.getOrdinalNumber());
-//        }));
-//        String sqlDelete = "DELETE FROM album_song WHERE album_id = ? AND song_id = ?";
-//        this.executeInsertUpdateDeleteInBatch(sqlDelete, deleteRelList, ((statement, element, index) -> {
-//            statement.setLong(1, albumId);
-//            statement.setLong(2, element.getSongId());
-//        }));
         this.executeProcedureInBatch("UPDATE_ALBUM_SONG_LIST", albumUpdateDTOList, albumUpdateDTO ->
             new Object[]{albumId, albumUpdateDTO.getSongId(), albumUpdateDTO.getOrdinalNumber(),
                 albumUpdateDTO.getMode().name()}
         );
     }
 
+    @Override
+    public int markForSync(UpdateSyncOption option) {
+        CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+        CriteriaUpdate<Album> criteriaUpdate = cb.createCriteriaUpdate(Album.class);
+        Root<Album> root =  criteriaUpdate.from(Album.class);
+        criteriaUpdate
+            .set(root.get(Album_.SYNC), 0);
+        List<Predicate> conditions = new ArrayList<>();
+        if (option.getId() != null) {
+            conditions.add(cb.equal(root.get(Album_.ID), option.getId()));
+        }
+        if (option.getCreateTime() != null) {
+            conditions.add(cb.greaterThan(root.get(Album_.CREATE_TIME), option.getCreateTime()));
+        }
+        if (option.getUpdateTime() != null) {
+            conditions.add(cb.greaterThan(root.get(Album_.UPDATE_TIME), option.getUpdateTime()));
+        }
+        criteriaUpdate.where(conditions.toArray(new Predicate[] {}));
+        return entityManager.createQuery(criteriaUpdate).executeUpdate();
+    }
 }

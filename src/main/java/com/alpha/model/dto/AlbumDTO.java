@@ -50,6 +50,7 @@ public class AlbumDTO implements MediaDTO {
 
     private ThemeDTO theme;
 
+    @JsonProperty(access = Access.READ_ONLY)
     private UserInfoDTO uploader;
 
     private Date createTime;

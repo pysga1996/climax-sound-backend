@@ -60,6 +60,7 @@ public class SongDTO implements MediaDTO {
 
     private Duration duration;
 
+    @JsonProperty(access = Access.READ_ONLY)
     private UserInfoDTO uploader;
 
     private Date createTime;

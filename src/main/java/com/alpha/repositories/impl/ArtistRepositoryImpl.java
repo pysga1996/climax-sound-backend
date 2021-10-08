@@ -2,6 +2,9 @@ package com.alpha.repositories.impl;
 
 import com.alpha.model.dto.ArtistDTO;
 import com.alpha.model.dto.ArtistSearchDTO;
+import com.alpha.model.dto.UpdateSyncOption;
+import com.alpha.model.entity.Artist;
+import com.alpha.model.entity.Artist_;
 import com.alpha.repositories.ArtistRepositoryCustom;
 import com.alpha.repositories.BaseRepository;
 import com.alpha.service.StorageService;
@@ -13,6 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.Session;
@@ -122,5 +129,26 @@ public class ArtistRepositoryImpl extends BaseRepository implements ArtistReposi
             log.error(throwable);
             throw new RuntimeException(throwable);
         }
+    }
+
+    @Override
+    public int markForSync(UpdateSyncOption option) {
+        CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+        CriteriaUpdate<Artist> criteriaUpdate = cb.createCriteriaUpdate(Artist.class);
+        Root<Artist> root =  criteriaUpdate.from(Artist.class);
+        criteriaUpdate
+            .set(root.get(Artist_.SYNC), 0);
+        List<Predicate> conditions = new ArrayList<>();
+        if (option.getId() != null) {
+            conditions.add(cb.equal(root.get(Artist_.ID), option.getId()));
+        }
+        if (option.getCreateTime() != null) {
+            conditions.add(cb.greaterThan(root.get(Artist_.CREATE_TIME), option.getCreateTime()));
+        }
+        if (option.getUpdateTime() != null) {
+            conditions.add(cb.greaterThan(root.get(Artist_.UPDATE_TIME), option.getUpdateTime()));
+        }
+        criteriaUpdate.where(conditions.toArray(new Predicate[] {}));
+        return entityManager.createQuery(criteriaUpdate).executeUpdate();
     }
 }

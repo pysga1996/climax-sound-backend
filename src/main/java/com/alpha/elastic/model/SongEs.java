@@ -32,10 +32,16 @@ public class SongEs extends MediaEs {
     @Field(type = FieldType.Text, name = "unaccentTitle")
     private String unaccentTitle;
 
+    @Field(type = FieldType.Long, name = "listeningFrequency")
+    private Long listeningFrequency;
+
+    @Field(type = FieldType.Long, name = "duration")
+    private Long duration;
+
     @Field(type = FieldType.Object, name = "resourceMap")
     private ResourceMapEs resourceMap;
 
-    @Field(type = FieldType.Nested, includeInParent = true)
+    @Field(type = FieldType.Nested, name = "artists", includeInParent = true)
     private List<ArtistEs> artists;
 
     public static SongEs fromSong(Song song) {
@@ -43,6 +49,8 @@ public class SongEs extends MediaEs {
             .id(song.getId())
             .title(song.getTitle())
             .unaccentTitle(song.getUnaccentTitle())
+            .listeningFrequency(song.getListeningFrequency())
+            .duration(song.getDuration().getSeconds())
             .artists(
                 song.getArtists().stream().map(ArtistEs::fromArtist).collect(Collectors.toList()))
             .build();

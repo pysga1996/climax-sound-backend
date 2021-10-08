@@ -166,7 +166,7 @@ public class Song extends Media {
     @NotFound(action = NotFoundAction.IGNORE)
     private Theme theme;
 
-    //    @Convert(converter = DurationConverter.class)
+    @Convert(converter = DurationConverter.class)
     private Duration duration;
 
     @Override

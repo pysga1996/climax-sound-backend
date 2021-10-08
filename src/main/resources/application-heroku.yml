@@ -8,6 +8,11 @@ logging:
     org:
       hibernate:
         SQL_SLOW: INFO
+      springframework:
+        data:
+          elasticsearch:
+            client:
+              WIRE: TRACE
   config: classpath:log4j-spring.xml
 server:
   servlet:
