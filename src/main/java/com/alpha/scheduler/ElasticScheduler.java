@@ -109,15 +109,15 @@ public class ElasticScheduler {
     public void synchronizeSong() {
         log.info("Synchronize songs to ES start!");
         Pageable pageable = PageRequest.of(0, 20);
-        List<SongEs> artistEsList = this.songRepository.findAllBySync(0, pageable)
+        List<SongEs> songEsList = this.songRepository.findAllBySync(0, pageable)
             .toList()
             .stream()
             .peek(e -> e.setSync(1))
             .map(SongEs::fromSong)
             .collect(Collectors.toList());
-        this.attachTags(artistEsList, AlbumEs.class);
-        this.processResourceMap(artistEsList, MediaRef.SONG_AUDIO);
-        this.songEsRepository.saveAll(artistEsList);
+        this.attachTags(songEsList, SongEs.class);
+        this.processResourceMap(songEsList, MediaRef.SONG_AUDIO);
+        this.songEsRepository.saveAll(songEsList);
         log.info("Synchronize songs to ES end!");
     }
 
