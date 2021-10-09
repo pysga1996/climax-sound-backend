@@ -97,7 +97,7 @@ public class LocalStorageServiceImpl extends StorageService {
             resourceInfo.setUri(uri);
             resourceInfo.setStorageType(StorageType.LOCAL);
             resourceInfo.setStatus(ModelStatus.ACTIVE);
-            this.saveResourceInfo(resourceInfo, StorageType.LOCAL);
+            this.saveResourceInfo(resourceInfo);
             return resourceInfo;
         } catch (IOException ex) {
             log.error("Could not store file {}. Please try again!", resourceInfo.getFileName(), ex);

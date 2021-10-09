@@ -36,4 +36,9 @@ public interface ResourceInfoRepository extends JpaRepository<ResourceInfo, Long
         StorageType storageType,
         MediaRef mediaRef,
         ModelStatus status);
+
+    List<ResourceInfo> findAllByUsernameAndStorageTypeAndMediaRefAndStatus(String username,
+        StorageType storageType,
+        MediaRef mediaRef,
+        ModelStatus status);
 }

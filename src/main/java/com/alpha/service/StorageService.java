@@ -19,14 +19,22 @@ public abstract class StorageService {
     public abstract ResourceInfo upload(MultipartFile multipartFile, Media media);
 
     public void deleteOldResources(ResourceInfo resourceInfo, StorageType storageType) {
-        List<ResourceInfo> resourceInfoList = this.getResourceInfoRepository()
-            .findAllByMediaIdAndStorageTypeAndMediaRefAndStatus(resourceInfo.getMediaId(),
-                storageType,
-                resourceInfo.getMediaRef(), ModelStatus.ACTIVE);
+        List<ResourceInfo> resourceInfoList;
+        if (resourceInfo.getMediaId() != null) {
+            resourceInfoList= this.getResourceInfoRepository()
+                .findAllByMediaIdAndStorageTypeAndMediaRefAndStatus(resourceInfo.getMediaId(),
+                    storageType,
+                    resourceInfo.getMediaRef(), ModelStatus.ACTIVE);
+        } else {
+            resourceInfoList = this.getResourceInfoRepository()
+                .findAllByUsernameAndStorageTypeAndMediaRefAndStatus(resourceInfo.getUsername(),
+                    storageType,
+                    resourceInfo.getMediaRef(), ModelStatus.ACTIVE);
+        }
         resourceInfoList.forEach(this::deleteResourceInfo);
     }
 
-    public void saveResourceInfo(ResourceInfo resourceInfo, StorageType storageType) {
+    public void saveResourceInfo(ResourceInfo resourceInfo) {
         this.getResourceInfoRepository().saveAndFlush(resourceInfo);
     }
 

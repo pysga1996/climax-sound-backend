@@ -2,7 +2,6 @@ package com.alpha.controller;
 
 import com.alpha.model.dto.CountryDTO;
 import com.alpha.service.CountryService;
-import java.util.Optional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -31,13 +29,11 @@ public class CountryRestController {
         this.countryService = countryService;
     }
 
-    @PreAuthorize("hasAuthority(@Authority.COUNTRY_MANAGEMENT)")
     @GetMapping("/list")
     public ResponseEntity<Page<CountryDTO>> songList(Pageable pageable) {
         return ResponseEntity.ok(this.countryService.findAll(pageable));
     }
 
-    @PreAuthorize("hasAuthority(@Authority.COUNTRY_MANAGEMENT)")
     @GetMapping(value = "/detail/{id}")
     public ResponseEntity<CountryDTO> songDetail(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(this.countryService.findById(id));

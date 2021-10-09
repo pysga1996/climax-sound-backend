@@ -70,7 +70,7 @@ public class FirebaseStorageServiceImpl extends StorageService {
             resourceInfo.setUri(mediaLink);
             resourceInfo.setStorageType(StorageType.FIREBASE);
             resourceInfo.setStatus(ModelStatus.ACTIVE);
-            this.saveResourceInfo(resourceInfo, StorageType.FIREBASE);
+            this.saveResourceInfo(resourceInfo);
             return resourceInfo;
         } catch (IOException ex) {
             log.error("Could not store file {}. Please try again!",
