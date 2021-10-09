@@ -113,16 +113,28 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     @Transactional
-    public void clearIndex(String indexName) {
+    public void clearIndex(String indexName, Long id) {
         switch (indexName) {
             case "song":
-                this.songEsRepository.deleteAll();
+                if (id != null) {
+                    this.songEsRepository.deleteById(id);
+                } else {
+                    this.songEsRepository.deleteAll();
+                }
                 break;
             case "album":
-                this.albumEsRepository.deleteAll();
+                if (id != null) {
+                    this.albumEsRepository.deleteById(id);
+                } else {
+                    this.albumEsRepository.deleteAll();
+                }
                 break;
             case "artist":
-                this.artistEsRepository.deleteAll();
+                if (id != null) {
+                    this.artistEsRepository.deleteById(id);
+                } else {
+                    this.artistEsRepository.deleteAll();
+                }
                 break;
             default:
                 throw new UnsupportedOperationException("Unsupported index!");

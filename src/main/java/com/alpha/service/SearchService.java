@@ -17,7 +17,7 @@ public interface SearchService {
 
     void reloadMapping(String indexName);
 
-    void clearIndex(String indexName);
+    void clearIndex(String indexName, Long id);
 
     void resetIndex(String indexName);
 

@@ -231,13 +231,15 @@ public class SongServiceImpl implements SongService {
                 .stream()
                 .collect(Collectors.toMap(TagDTO::getName, e -> false));
             Set<String> tagNames = tagMap.keySet();
-            List<Tag> existedTagList = this.tagRepository.findAllByNameIn(tagNames);
+            List<Tag> existedTagList = this.tagRepository
+                .findAllByNameInAndStatus(tagNames, ModelStatus.ACTIVE);
             existedTagList.forEach(tag -> tagMap.put(tag.getName(), true));
             List<Tag> nonExistedTagList = tagMap
                 .entrySet()
                 .stream()
                 .filter(e -> !e.getValue())
-                .map(e -> Tag.builder().name(e.getKey()).build())
+                .map(e -> Tag.builder().name(e.getKey()).createTime(new Date())
+                    .status(ModelStatus.ACTIVE).build())
                 .collect(Collectors.toList());
             this.tagRepository.saveAll(nonExistedTagList);
             List<Tag> mergedTagList = new ArrayList<>(existedTagList);

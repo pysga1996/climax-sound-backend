@@ -1,5 +1,6 @@
 package com.alpha.repositories;
 
+import com.alpha.constant.ModelStatus;
 import com.alpha.model.entity.Tag;
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +17,7 @@ public interface TagRepository extends JpaRepository<Tag, Long>, TagRepositoryCu
     //    @Query(value = "SELECT * FROM tag WHERE BINARY title=:title", nativeQuery = true)
     Optional<Tag> findByName(String name);
 
-    List<Tag> findAllByNameIn(Set<String> tagNames);
+    List<Tag> findAllByNameInAndStatus(Set<String> tagNames, ModelStatus modelStatus);
 
     Page<Tag> findAllByOrderByUpdateTimeDescCreateTimeDesc(Pageable pageable);
 

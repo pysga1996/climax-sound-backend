@@ -2,8 +2,8 @@ package com.alpha.service.impl;
 
 import com.alpha.constant.EntityType;
 import com.alpha.constant.MediaRef;
-import com.alpha.constant.RoleConstants;
 import com.alpha.constant.ModelStatus;
+import com.alpha.constant.RoleConstants;
 import com.alpha.elastic.model.AlbumEs;
 import com.alpha.elastic.repo.AlbumEsRepository;
 import com.alpha.mapper.AlbumMapper;
@@ -220,24 +220,26 @@ public class AlbumServiceImpl implements AlbumService {
         List<Artist> artistList = this.artistMapper
             .dtoToEntityListPure(new ArrayList<>(albumDTO.getArtists()));
         album.setArtists(artistList);
-        AlbumAdditionalInfoDTO adlbumAdditionalInfoDTO = albumDTO.getAdditionalInfo();
-        if (adlbumAdditionalInfoDTO != null) {
+        AlbumAdditionalInfoDTO albumAdditionalInfoDTO = albumDTO.getAdditionalInfo();
+        if (albumAdditionalInfoDTO != null) {
             Album additionalInfoAlbum = this.albumMapper
-                .dtoToEntityAdditional(adlbumAdditionalInfoDTO);
+                .dtoToEntityAdditional(albumAdditionalInfoDTO);
             album.setCountry(additionalInfoAlbum.getCountry());
             album.setDescription(additionalInfoAlbum.getDescription());
             album.setGenres(additionalInfoAlbum.getGenres());
-            Map<String, Boolean> tagMap = adlbumAdditionalInfoDTO.getTags()
+            Map<String, Boolean> tagMap = albumAdditionalInfoDTO.getTags()
                 .stream()
                 .collect(Collectors.toMap(TagDTO::getName, e -> false));
             Set<String> tagNames = tagMap.keySet();
-            List<Tag> existedTagList = this.tagRepository.findAllByNameIn(tagNames);
+            List<Tag> existedTagList = this.tagRepository
+                .findAllByNameInAndStatus(tagNames, ModelStatus.ACTIVE);
             existedTagList.forEach(tag -> tagMap.put(tag.getName(), true));
             List<Tag> nonExistedTagList = tagMap
                 .entrySet()
                 .stream()
                 .filter(e -> !e.getValue())
-                .map(e -> Tag.builder().name(e.getKey()).build())
+                .map(e -> Tag.builder().name(e.getKey()).createTime(new Date())
+                    .status(ModelStatus.ACTIVE).build())
                 .collect(Collectors.toList());
             this.tagRepository.saveAll(nonExistedTagList);
             List<Tag> mergedTagList = new ArrayList<>(existedTagList);

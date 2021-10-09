@@ -60,8 +60,8 @@ public class SearchRestController {
 
     @PreAuthorize("hasAuthority(@Authority.ELASTIC_SEARCH_MANAGEMENT)")
     @DeleteMapping("/clear")
-    public ResponseEntity<Void> clearIndex(@RequestParam(value = "index-name") String indexName) {
-        this.searchService.clearIndex(indexName);
+    public ResponseEntity<Void> clearIndex(@RequestParam(value = "index-name") String indexName, @RequestParam(value = "id") Long id) {
+        this.searchService.clearIndex(indexName, id);
         return ResponseEntity.ok().build();
     }
 
