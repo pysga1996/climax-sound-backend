@@ -1,5 +1,6 @@
 package com.alpha.model.dto;
 
+import com.alpha.constant.ModelStatus;
 import com.fasterxml.jackson.annotation.JsonRawValue;
 import java.util.Date;
 import lombok.AllArgsConstructor;
@@ -28,5 +29,5 @@ public class UserInfoDTO {
 
     private Date updateTime;
 
-    private Integer status;
+    private ModelStatus status;
 }

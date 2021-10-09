@@ -1,9 +1,11 @@
 package com.alpha.model.entity;
 
 import com.alpha.constant.EntityType;
+import com.alpha.constant.ModelStatus;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -31,7 +33,7 @@ import org.hibernate.validator.constraints.Length;
 @ToString(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "comment")
-@Where(clause = "status=1")
+@Where(clause = "status = 1")
 public class Comment {
 
     @Id
@@ -67,5 +69,6 @@ public class Comment {
     private Date updateTime;
 
     @Column(name = "status")
-    private Integer status;
+    @Convert(converter = ModelStatus.StatusAttributeConverter.class)
+    private ModelStatus status;
 }

@@ -1,6 +1,7 @@
 package com.alpha.service.impl;
 
 import com.alpha.constant.EntityType;
+import com.alpha.constant.ModelStatus;
 import com.alpha.mapper.CommentMapper;
 import com.alpha.model.dto.CommentDTO;
 import com.alpha.model.entity.Album;
@@ -97,7 +98,7 @@ public class CommentServiceImpl implements CommentService {
         Comment commentToSave = this.commentMapper.dtoToEntity(commentDTO);
         commentToSave.setCreateTime(new Date());
         commentToSave.setUserInfo(userInfo);
-        commentToSave.setStatus(1);
+        commentToSave.setStatus(ModelStatus.ACTIVE);
         this.commentRepository.saveAndFlush(commentToSave);
         return this.commentMapper.entityToDtoPure(commentToSave);
     }
@@ -124,7 +125,7 @@ public class CommentServiceImpl implements CommentService {
             .findByIdAndEntityTypeAndUserInfo(id, type, currentUserInfo);
         if (optionalComment.isPresent()) {
             Comment comment = optionalComment.get();
-            comment.setStatus(0);
+            comment.setStatus(ModelStatus.INACTIVE);
             comment.setUpdateTime(new Date());
             this.commentRepository.saveAndFlush(optionalComment.get());
         } else {

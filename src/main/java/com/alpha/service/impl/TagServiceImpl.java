@@ -1,5 +1,6 @@
 package com.alpha.service.impl;
 
+import com.alpha.constant.ModelStatus;
 import com.alpha.mapper.TagMapper;
 import com.alpha.model.dto.TagDTO;
 import com.alpha.model.entity.Tag;
@@ -64,7 +65,7 @@ public class TagServiceImpl implements TagService {
         }
         Tag createdTag = this.tagMapper.dtoToEntity(tagDTO);
         createdTag.setCreateTime(new Date());
-        createdTag.setStatus(1);
+        createdTag.setStatus(ModelStatus.ACTIVE);
         createdTag = this.tagRepository.saveAndFlush(createdTag);
         return this.tagMapper.entityToDto(createdTag);
     }
@@ -90,6 +91,14 @@ public class TagServiceImpl implements TagService {
     @Override
     @Transactional
     public void deleteById(Long id) {
-        this.tagRepository.deleteById(id);
+        Optional<Tag> optionalTag = this.tagRepository.findById(id);
+        if (optionalTag.isPresent()) {
+            Tag country = optionalTag.get();
+            country.setStatus(ModelStatus.INACTIVE);
+            country.setUpdateTime(new Date());
+            this.tagRepository.saveAndFlush(optionalTag.get());
+        } else {
+            throw new EntityNotFoundException("Tag not found!");
+        }
     }
 }

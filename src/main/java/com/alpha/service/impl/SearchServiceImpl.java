@@ -18,11 +18,13 @@ import com.alpha.service.SongService;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.log4j.Log4j2;
+import org.elasticsearch.ElasticsearchStatusException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.IndexOperations;
 import org.springframework.data.elasticsearch.core.document.Document;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,7 +61,8 @@ public class SearchServiceImpl implements SearchService {
 
     @Autowired
     public SearchServiceImpl(
-        ElasticsearchOperations elasticsearchOperations, SongService songService,
+        ElasticsearchOperations elasticsearchOperations,
+        SongService songService,
         ArtistService artistService, AlbumService albumService,
         SongEsRepository songEsRepository,
         AlbumEsRepository albumEsRepository,
@@ -93,19 +96,15 @@ public class SearchServiceImpl implements SearchService {
     @Override
     @Transactional
     public void reloadMapping(String indexName) {
-        Document mapping;
         switch (indexName) {
             case "song":
-                mapping = this.elasticsearchOperations.indexOps(SongEs.class).createMapping();
-                this.elasticsearchOperations.indexOps(SongEs.class).putMapping(mapping);
+                this.tryUpdateOrReset(indexName, SongEs.class);
                 break;
             case "album":
-                mapping = this.elasticsearchOperations.indexOps(AlbumEs.class).createMapping();
-                this.elasticsearchOperations.indexOps(AlbumEs.class).putMapping(mapping);
+                this.tryUpdateOrReset(indexName, AlbumEs.class);
                 break;
             case "artist":
-                mapping = this.elasticsearchOperations.indexOps(ArtistEs.class).createMapping();
-                this.elasticsearchOperations.indexOps(ArtistEs.class).putMapping(mapping);
+                this.tryUpdateOrReset(indexName, ArtistEs.class);
                 break;
             default:
                 throw new UnsupportedOperationException("Unsupported index!");
@@ -127,6 +126,47 @@ public class SearchServiceImpl implements SearchService {
                 break;
             default:
                 throw new UnsupportedOperationException("Unsupported index!");
+        }
+    }
+
+    @Override
+    @Transactional
+    public void resetIndex(String indexName) {
+        switch (indexName) {
+            case "song":
+                this.recreateIndex(indexName, SongEs.class);
+                break;
+            case "album":
+                this.recreateIndex(indexName, AlbumEs.class);
+                break;
+            case "artist":
+                this.recreateIndex(indexName, ArtistEs.class);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unsupported index!");
+        }
+    }
+
+    private void tryUpdateOrReset(String indexName, Class<? extends MediaEs> clazz) {
+        try {
+            IndexOperations indexOperations = this.elasticsearchOperations.indexOps(clazz);
+            Document document = indexOperations.createMapping();
+            indexOperations.putMapping(document);
+        } catch (ElasticsearchStatusException indexNotFoundException) {
+            log.error(indexNotFoundException);
+            this.recreateIndex(indexName, clazz);
+        }
+    }
+
+    private void recreateIndex(String indexName, Class<? extends MediaEs> clazz) {
+        IndexOperations indexOperations = this.elasticsearchOperations.indexOps(clazz);
+        indexOperations.delete();
+        boolean result = this.elasticsearchOperations.indexOps(clazz).createWithMapping();
+        if (result) {
+            this.markForSync(indexName, new UpdateSyncOption());
+        } else {
+            log.error("Cannot create index for {}", indexName);
+            throw new RuntimeException(String.format("Cannot create index for %s", indexName));
         }
     }
 

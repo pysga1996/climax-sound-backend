@@ -1,8 +1,8 @@
 package com.alpha.model.dto;
 
+import com.alpha.constant.ModelStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.Collection;
 import java.util.Date;
 import javax.validation.constraints.NotBlank;
@@ -24,10 +24,13 @@ public class ThemeDTO {
     @JsonBackReference("song-theme")
     private Collection<SongDTO> songs;
 
+    @JsonBackReference("album-theme")
+    private Collection<AlbumDTO> albums;
+
     private Date createTime;
 
     private Date updateTime;
 
-    private Integer status;
+    private ModelStatus status;
 
 }

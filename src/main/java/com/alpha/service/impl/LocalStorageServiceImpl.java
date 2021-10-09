@@ -2,7 +2,7 @@ package com.alpha.service.impl;
 
 import com.alpha.config.properties.LocalStorageProperty;
 import com.alpha.config.properties.StorageProperty.StorageType;
-import com.alpha.constant.EntityStatus;
+import com.alpha.constant.ModelStatus;
 import com.alpha.model.entity.Media;
 import com.alpha.model.entity.ResourceInfo;
 import com.alpha.repositories.ResourceInfoRepository;
@@ -96,7 +96,7 @@ public class LocalStorageServiceImpl extends StorageService {
                 .path(resourceInfo.getFileName()).toUriString();
             resourceInfo.setUri(uri);
             resourceInfo.setStorageType(StorageType.LOCAL);
-            resourceInfo.setStatus(EntityStatus.ACTIVE);
+            resourceInfo.setStatus(ModelStatus.ACTIVE);
             this.saveResourceInfo(resourceInfo, StorageType.LOCAL);
             return resourceInfo;
         } catch (IOException ex) {

@@ -1,6 +1,7 @@
 package com.alpha.repositories;
 
 import com.alpha.model.entity.Country;
+import com.alpha.model.entity.UserInfo;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

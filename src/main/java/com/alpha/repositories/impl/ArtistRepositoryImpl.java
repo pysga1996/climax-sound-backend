@@ -1,5 +1,6 @@
 package com.alpha.repositories.impl;
 
+import com.alpha.constant.ModelStatus;
 import com.alpha.model.dto.ArtistDTO;
 import com.alpha.model.dto.ArtistSearchDTO;
 import com.alpha.model.dto.UpdateSyncOption;
@@ -139,6 +140,7 @@ public class ArtistRepositoryImpl extends BaseRepository implements ArtistReposi
         criteriaUpdate
             .set(root.get(Artist_.SYNC), 0);
         List<Predicate> conditions = new ArrayList<>();
+        conditions.add(cb.equal(root.get(Artist_.STATUS), ModelStatus.ACTIVE));
         if (option.getId() != null) {
             conditions.add(cb.equal(root.get(Artist_.ID), option.getId()));
         }

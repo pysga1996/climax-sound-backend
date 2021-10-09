@@ -1,5 +1,6 @@
 package com.alpha.repositories.impl;
 
+import com.alpha.constant.ModelStatus;
 import com.alpha.model.dto.CountryDTO;
 import com.alpha.model.dto.GenreDTO;
 import com.alpha.model.dto.SongDTO;
@@ -176,7 +177,7 @@ public class SongRepositoryImpl extends BaseRepository implements SongRepository
                 if (songSearchDTO.getPlaylistId() == null) {
                     function.setNull(6, Types.NUMERIC); // p_playlist_id
                 } else {
-                    function.setLong(6, songSearchDTO.getAlbumId());
+                    function.setLong(6, songSearchDTO.getPlaylistId());
                 }
                 if (songSearchDTO.getUsernameFavorite() == null) {
                     function.setNull(7, Types.VARCHAR); // p_username_fav
@@ -238,6 +239,7 @@ public class SongRepositoryImpl extends BaseRepository implements SongRepository
         criteriaUpdate
             .set(root.get(Song_.SYNC), 0);
         List<Predicate> conditions = new ArrayList<>();
+        conditions.add(cb.equal(root.get(Song_.STATUS), ModelStatus.ACTIVE));
         if (option.getId() != null) {
             conditions.add(cb.equal(root.get(Song_.ID), option.getId()));
         }

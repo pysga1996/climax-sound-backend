@@ -11,4 +11,6 @@ public abstract class MediaEs {
     public abstract Long getId();
 
     public abstract void setResourceMap(ResourceMapEs resourceMapEs);
+
+    public void setTags(String[] tags) {}
 }

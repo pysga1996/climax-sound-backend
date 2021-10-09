@@ -3,7 +3,7 @@ package com.alpha.model.entity;
 import com.alpha.constant.Folder;
 import com.alpha.constant.MediaRef;
 import com.alpha.constant.MediaType;
-import com.alpha.constant.EntityStatus;
+import com.alpha.constant.ModelStatus;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
@@ -36,6 +36,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -46,6 +47,7 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @Entity
 @Table(name = "album")
+@Where(clause = "status = 1")
 @NamedEntityGraph(
     name = "album-artist",
     attributeNodes = {
@@ -101,8 +103,8 @@ public class Album extends Media {
     private Date updateTime;
 
     @Column(name = "status")
-    @Convert(converter = EntityStatus.StatusAttributeConverter.class)
-    private EntityStatus status;
+    @Convert(converter = ModelStatus.StatusAttributeConverter.class)
+    private ModelStatus status;
 
     @Column(name = "sync")
     private Integer sync;
@@ -153,13 +155,15 @@ public class Album extends Media {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "country_id")
+    @NotFound(action = NotFoundAction.IGNORE)
     private Country country;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "theme_id")
+    @NotFound(action = NotFoundAction.IGNORE)
     private Theme theme;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "username", referencedColumnName = "username")
     @NotFound(action = NotFoundAction.IGNORE)
     private UserInfo uploader;
@@ -178,7 +182,7 @@ public class Album extends Media {
             .extension(ext)
             .folder(Folder.COVER)
             .fileName(fileName)
-            .status(EntityStatus.INACTIVE)
+            .status(ModelStatus.INACTIVE)
             .mediaType(MediaType.IMAGE)
             .mediaRef(MediaRef.ALBUM_COVER)
             .build();

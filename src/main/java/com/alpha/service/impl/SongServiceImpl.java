@@ -3,8 +3,8 @@ package com.alpha.service.impl;
 import com.alpha.config.properties.StorageProperty.StorageType;
 import com.alpha.constant.EntityType;
 import com.alpha.constant.MediaRef;
+import com.alpha.constant.ModelStatus;
 import com.alpha.constant.RoleConstants;
-import com.alpha.constant.EntityStatus;
 import com.alpha.elastic.model.SongEs;
 import com.alpha.elastic.repo.SongEsRepository;
 import com.alpha.mapper.ArtistMapper;
@@ -122,7 +122,7 @@ public class SongServiceImpl implements SongService {
         if (optionalSong.isPresent()) {
             Optional<ResourceInfo> optionalResourceInfo = this.resourceInfoRepository
                 .findByMediaIdAndStorageTypeAndMediaRefAndStatus(id, this.storageType,
-                    MediaRef.SONG_AUDIO, EntityStatus.ACTIVE);
+                    MediaRef.SONG_AUDIO, ModelStatus.ACTIVE);
             SongDTO songDTO = this.songMapper.entityToDto(optionalSong.get());
             this.favoritesService.setLike(songDTO, EntityType.SONG);
             optionalResourceInfo.ifPresent(
@@ -148,7 +148,7 @@ public class SongServiceImpl implements SongService {
             .likeCount(0L)
             .uploader(userInfo)
             .createTime(new Date())
-            .status(EntityStatus.ACTIVE)
+            .status(ModelStatus.ACTIVE)
             .sync(0)
             .build();
         this.patchSongUploadToEntity(songDTO, song);
@@ -199,7 +199,7 @@ public class SongServiceImpl implements SongService {
             Optional<ResourceInfo> resourceInfoOptional = this.resourceInfoRepository
                 .findByMediaIdAndStorageTypeAndMediaRefAndStatus(song.get().getId(),
                     this.storageType,
-                    MediaRef.SONG_AUDIO, EntityStatus.ACTIVE);
+                    MediaRef.SONG_AUDIO, ModelStatus.ACTIVE);
             resourceInfoOptional.ifPresent(this.storageService::delete);
         }
     }

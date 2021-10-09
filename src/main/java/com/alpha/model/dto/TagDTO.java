@@ -1,5 +1,6 @@
 package com.alpha.model.dto;
 
+import com.alpha.constant.ModelStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Collection;
@@ -30,5 +31,5 @@ public class TagDTO {
 
     private Date updateTime;
 
-    private Integer status;
+    private ModelStatus status;
 }

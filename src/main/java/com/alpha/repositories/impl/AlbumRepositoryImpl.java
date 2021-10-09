@@ -1,5 +1,6 @@
 package com.alpha.repositories.impl;
 
+import com.alpha.constant.ModelStatus;
 import com.alpha.model.dto.AlbumDTO;
 import com.alpha.model.dto.AlbumDTO.AlbumAdditionalInfoDTO;
 import com.alpha.model.dto.AlbumSearchDTO;
@@ -239,6 +240,7 @@ public class AlbumRepositoryImpl extends BaseRepository implements AlbumReposito
         criteriaUpdate
             .set(root.get(Album_.SYNC), 0);
         List<Predicate> conditions = new ArrayList<>();
+        conditions.add(cb.equal(root.get(Album_.STATUS), ModelStatus.ACTIVE));
         if (option.getId() != null) {
             conditions.add(cb.equal(root.get(Album_.ID), option.getId()));
         }

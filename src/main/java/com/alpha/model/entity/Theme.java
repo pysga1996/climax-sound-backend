@@ -1,8 +1,10 @@
 package com.alpha.model.entity;
 
+import com.alpha.constant.ModelStatus;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -18,6 +20,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Where;
 
 
 @Data
@@ -26,6 +29,7 @@ import org.hibernate.annotations.FetchMode;
 @ToString(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "theme")
+@Where(clause = "status = 1")
 public class Theme {
 
     @Id
@@ -43,6 +47,10 @@ public class Theme {
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
 
+    @OneToMany(mappedBy = "theme", fetch = FetchType.LAZY)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private Collection<Album> albums;
+
     @Column(name = "create_time")
     private Date createTime;
 
@@ -50,6 +58,7 @@ public class Theme {
     private Date updateTime;
 
     @Column(name = "status")
-    private Integer status;
+    @Convert(converter = ModelStatus.StatusAttributeConverter.class)
+    private ModelStatus status;
 
 }

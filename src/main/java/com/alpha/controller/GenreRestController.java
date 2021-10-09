@@ -28,7 +28,6 @@ public class GenreRestController {
         this.genreService = genreService;
     }
 
-    @PreAuthorize("hasAuthority(@Authority.GENRE_MANAGEMENT)")
     @GetMapping("/list")
     public ResponseEntity<Page<GenreDTO>> genreList(Pageable pageable) {
         return ResponseEntity.ok(this.genreService.findAll(pageable));

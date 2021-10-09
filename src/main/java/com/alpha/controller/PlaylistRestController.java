@@ -59,7 +59,7 @@ public class PlaylistRestController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/detail/{id}")
     public ResponseEntity<PlaylistDTO> playlistDetail(@PathVariable("id") Long id) {
-        PlaylistDTO playlist = playlistService.findById(id);
+        PlaylistDTO playlist = playlistService.detail(id);
         return new ResponseEntity<>(playlist, HttpStatus.OK);
     }
 

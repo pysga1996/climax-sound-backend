@@ -42,6 +42,9 @@ public class SongEsRepositoryImpl implements SongEsRepositoryCustom {
             boolQueryBuilder
                 .should(QueryBuilders
                     .wildcardQuery("unaccentTitle", "*" + token + "*"));
+            boolQueryBuilder
+                .should(QueryBuilders
+                    .termQuery("tags", token));
             boolQueryBuilder2
                 .should(QueryBuilders
                     .wildcardQuery("artists.unaccentName", "*" + token + "*"));

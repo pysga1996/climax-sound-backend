@@ -15,10 +15,6 @@ public interface PlaylistRepository extends JpaRepository<Playlist, Long>,
 
     boolean existsPlaylistByTitleAndUsername(String title, String username);
 
-    @Query("SELECT p FROM Playlist p LEFT JOIN FETCH p.songs WHERE p.id=:id")
-    @NonNull
-    Optional<Playlist> findById(@NonNull @Param("id") Long id);
-
     Optional<Playlist> findByIdAndUsername(Long id, String username);
 
     Page<Playlist> findAllByUsernameAndSongsNotContains(String username, Song song,

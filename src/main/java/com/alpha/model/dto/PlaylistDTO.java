@@ -1,7 +1,9 @@
 package com.alpha.model.dto;
 
+import com.alpha.constant.ModelStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Collection;
+import java.util.Date;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +21,12 @@ public class PlaylistDTO {
     private String title;
 
     private String username;
+
+    private Date createTime;
+
+    private Date updateTime;
+
+    private ModelStatus status;
 
     private Collection<SongDTO> songs;
 }

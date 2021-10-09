@@ -1,5 +1,6 @@
 package com.alpha.service.impl;
 
+import com.alpha.constant.ModelStatus;
 import com.alpha.mapper.ThemeMapper;
 import com.alpha.model.dto.ThemeDTO;
 import com.alpha.model.entity.Theme;
@@ -64,7 +65,7 @@ public class ThemeServiceImpl implements ThemeService {
         }
         Theme theme = this.themeMapper.dtoToEntity(themeDTO);
         theme.setCreateTime(new Date());
-        theme.setStatus(1);
+        theme.setStatus(ModelStatus.ACTIVE);
         this.themeRepository.saveAndFlush(theme);
         return this.themeMapper.entityToDto(theme);
     }
@@ -90,6 +91,14 @@ public class ThemeServiceImpl implements ThemeService {
     @Override
     @Transactional
     public void delete(Integer id) {
-        this.themeRepository.deleteById(id);
+        Optional<Theme> optionalTheme = this.themeRepository.findById(id);
+        if (optionalTheme.isPresent()) {
+            Theme theme = optionalTheme.get();
+            theme.setStatus(ModelStatus.INACTIVE);
+            theme.setUpdateTime(new Date());
+            this.themeRepository.saveAndFlush(optionalTheme.get());
+        } else {
+            throw new EntityNotFoundException("Theme not found!");
+        }
     }
 }

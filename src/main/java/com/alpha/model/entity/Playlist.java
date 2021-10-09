@@ -1,6 +1,8 @@
 package com.alpha.model.entity;
 
+import com.alpha.constant.ModelStatus;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,6 +21,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Where;
 
 @Data
 @AllArgsConstructor
@@ -26,6 +29,7 @@ import org.hibernate.annotations.FetchMode;
 @ToString(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "playlist")
+@Where(clause = "status = 1")
 public class Playlist {
 
     @Id
@@ -45,6 +49,15 @@ public class Playlist {
     @ToString.Include
     private String username;
 
+    @Column(name = "create_time")
+    private Date createTime;
+
+    @Column(name = "update_time")
+    private Date updateTime;
+
+    @Column(name = "status")
+    private ModelStatus status;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "playlist_song",
@@ -54,4 +67,5 @@ public class Playlist {
             name = "song_id", referencedColumnName = "id"))
     @Fetch(value = FetchMode.SUBSELECT)
     private Collection<Song> songs;
+
 }

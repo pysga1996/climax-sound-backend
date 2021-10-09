@@ -3,7 +3,7 @@ package com.alpha.service.impl;
 import com.alpha.config.properties.StorageProperty.StorageType;
 import com.alpha.constant.EntityType;
 import com.alpha.constant.MediaRef;
-import com.alpha.constant.EntityStatus;
+import com.alpha.constant.ModelStatus;
 import com.alpha.elastic.model.ArtistEs;
 import com.alpha.elastic.repo.ArtistEsRepository;
 import com.alpha.mapper.ArtistMapper;
@@ -85,7 +85,7 @@ public class ArtistServiceImpl implements ArtistService {
             ArtistDTO artistDTO = this.artistMapper.entityToDto(artist);
             Optional<ResourceInfo> optionalResourceInfo = this.resourceInfoRepository
                 .findByMediaIdAndStorageTypeAndMediaRefAndStatus(artist.getId(), this.storageType,
-                    MediaRef.ARTIST_AVATAR, EntityStatus.ACTIVE);
+                    MediaRef.ARTIST_AVATAR, ModelStatus.ACTIVE);
             optionalResourceInfo.ifPresent(
                 resourceInfo -> artistDTO
                     .setAvatarUrl(this.storageService.getFullUrl(resourceInfo)));
@@ -128,13 +128,13 @@ public class ArtistServiceImpl implements ArtistService {
         UserInfo currentUser = this.userService.getCurrentUserInfo();
         Artist artist = Artist.builder()
             .name(artistDTO.getName())
-            .unaccentName(StringAccentRemover.removeStringAccent(artistDTO.getName()))
             .likeCount(0L)
             .uploader(currentUser)
-            .status(EntityStatus.ACTIVE)
+            .status(ModelStatus.ACTIVE)
             .createTime(new Date())
             .sync(0)
             .build();
+        this.patchArtist(artistDTO, artist);
         this.artistRepository.saveAndFlush(artist);
         ResourceInfo resourceInfo = this.storageService.upload(multipartFile, artist);
         artistDTO.setId(artist.getId());
@@ -157,10 +157,10 @@ public class ArtistServiceImpl implements ArtistService {
                 artist.setAvatarResource(resourceInfo);
                 artistDTO.setAvatarUrl(this.storageService.getFullUrl(resourceInfo));
             }
-            artist.setName(artistDTO.getName());
-            artist.setUnaccentName(StringAccentRemover.removeStringAccent(artistDTO.getName()));
+            this.patchArtist(artistDTO, artist);
             artist.setUpdateTime(new Date());
             artist.setSync(0);
+            this.artistRepository.save(artist);
             artistDTO.setUnaccentName(artist.getUnaccentName());
             return artistDTO;
         } else {
@@ -177,6 +177,13 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public Map<Long, Boolean> getUserArtistLikeMap(Map<Long, Boolean> artistIdMap) {
         return null;
+    }
+
+    private void patchArtist(ArtistDTO artistDTO, Artist artist) {
+        artist.setName(artistDTO.getName());
+        artist.setUnaccentName(StringAccentRemover.removeStringAccent(artistDTO.getName()));
+        artist.setBirthDate(artistDTO.getBirthDate());
+        artist.setBiography(artistDTO.getBiography());
     }
 
 }

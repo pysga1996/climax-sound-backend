@@ -1,7 +1,7 @@
 package com.alpha.scheduler;
 
+import com.alpha.constant.ModelStatus;
 import com.alpha.constant.MediaRef;
-import com.alpha.constant.EntityStatus;
 import com.alpha.elastic.model.AlbumEs;
 import com.alpha.elastic.model.ArtistEs;
 import com.alpha.elastic.model.MediaEs;
@@ -15,9 +15,11 @@ import com.alpha.repositories.AlbumRepository;
 import com.alpha.repositories.ArtistRepository;
 import com.alpha.repositories.ResourceInfoRepository;
 import com.alpha.repositories.SongRepository;
+import com.alpha.repositories.TagRepository;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.PageRequest;
@@ -50,12 +52,15 @@ public class ElasticScheduler {
 
     private final ResourceInfoRepository resourceInfoRepository;
 
+    private final TagRepository tagRepository;
+
     public ElasticScheduler(SongRepository songRepository,
         SongEsRepository songEsRepository, AlbumRepository albumRepository,
         AlbumEsRepository albumEsRepository,
         ArtistRepository artistRepository,
         ArtistEsRepository artistEsRepository,
-        ResourceInfoRepository resourceInfoRepository) {
+        ResourceInfoRepository resourceInfoRepository,
+        TagRepository tagRepository) {
         this.songRepository = songRepository;
         this.songEsRepository = songEsRepository;
         this.albumRepository = albumRepository;
@@ -63,6 +68,7 @@ public class ElasticScheduler {
         this.artistRepository = artistRepository;
         this.artistEsRepository = artistEsRepository;
         this.resourceInfoRepository = resourceInfoRepository;
+        this.tagRepository = tagRepository;
     }
 
     @Scheduled(fixedDelay = 300000) // 5 min
@@ -76,6 +82,7 @@ public class ElasticScheduler {
             .peek(e -> e.setSync(1))
             .map(AlbumEs::fromAlbum)
             .collect(Collectors.toList());
+        this.attachTags(albumEsList, AlbumEs.class);
         this.processResourceMap(albumEsList, MediaRef.ALBUM_COVER);
         this.albumEsRepository.saveAll(albumEsList);
         log.info("Synchronize albums to ES end!");
@@ -108,16 +115,38 @@ public class ElasticScheduler {
             .peek(e -> e.setSync(1))
             .map(SongEs::fromSong)
             .collect(Collectors.toList());
+        this.attachTags(artistEsList, AlbumEs.class);
         this.processResourceMap(artistEsList, MediaRef.SONG_AUDIO);
         this.songEsRepository.saveAll(artistEsList);
         log.info("Synchronize songs to ES end!");
+    }
+
+    private void attachTags(List<? extends MediaEs> mediaEsList, Class<? extends MediaEs> clazz) {
+        Map<Long, Set<String>> tagMap = null;
+        if (clazz == SongEs.class) {
+            tagMap = this.tagRepository
+                .retrieveTagsOfSongIds(mediaEsList.stream().map(MediaEs::getId).collect(
+                    Collectors.toList()));
+        } else if (clazz == AlbumEs.class) {
+            tagMap = this.tagRepository
+                .retrieveTagsOfAlbumIds(mediaEsList.stream().map(MediaEs::getId).collect(
+                    Collectors.toList()));
+        }
+        if (tagMap != null) {
+            final Map<Long, Set<String>> tagMapSub = tagMap;
+            mediaEsList.forEach(e -> {
+                Set<String> tagList = tagMapSub.get(e.getId());
+                String[] tags = tagList != null ? tagList.toArray(new String[]{}) : new String[]{};
+                e.setTags(tags);
+            });
+        }
     }
 
     private void processResourceMap(List<? extends MediaEs> mediaEsList, MediaRef mediaRef) {
         List<Long> mediaIds = mediaEsList.stream().map(MediaEs::getId)
             .collect(Collectors.toList());
         Map<Long, ResourceMapEs> resourceMapEsMap = this.resourceInfoRepository
-            .findAllByMediaIdInAndMediaRefAndStatus(mediaIds, mediaRef, EntityStatus.ACTIVE)
+            .findAllByMediaIdInAndMediaRefAndStatus(mediaIds, mediaRef, ModelStatus.ACTIVE)
             .stream()
             .collect(Collectors.groupingBy(ResourceInfo::getMediaId))
             .entrySet()

@@ -2,7 +2,7 @@ package com.alpha.repositories;
 
 import com.alpha.config.properties.StorageProperty.StorageType;
 import com.alpha.constant.MediaRef;
-import com.alpha.constant.EntityStatus;
+import com.alpha.constant.ModelStatus;
 import com.alpha.model.entity.ResourceInfo;
 import java.util.List;
 import java.util.Optional;
@@ -21,19 +21,19 @@ public interface ResourceInfoRepository extends JpaRepository<ResourceInfo, Long
     Optional<ResourceInfo> findByMediaIdAndStorageTypeAndMediaRefAndStatus(Long mediaId,
         StorageType storageType,
         MediaRef mediaRef,
-        EntityStatus status);
+        ModelStatus status);
 
     List<ResourceInfo> findAllByMediaIdAndStorageTypeAndMediaRefAndStatus(Long mediaId,
         StorageType storageType,
         MediaRef mediaRef,
-        EntityStatus status);
+        ModelStatus status);
 
     List<ResourceInfo> findAllByMediaIdInAndMediaRefAndStatus(List<Long> mediaIds,
         MediaRef mediaRef,
-        EntityStatus status);
+        ModelStatus status);
 
     Optional<ResourceInfo> findByUsernameAndStorageTypeAndMediaRefAndStatus(String username,
         StorageType storageType,
         MediaRef mediaRef,
-        EntityStatus status);
+        ModelStatus status);
 }

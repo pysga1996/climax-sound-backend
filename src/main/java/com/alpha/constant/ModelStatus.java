@@ -12,33 +12,33 @@ import javax.persistence.AttributeConverter;
  * @project vengeance
  * @since 1.0
  **/
-public enum EntityStatus {
+public enum ModelStatus {
     INACTIVE(0),
     ACTIVE(1),
     REMOVED(2);
 
-    private static final Map<Integer, EntityStatus> statusMap = new HashMap<>();
+    private static final Map<Integer, ModelStatus> statusMap = new HashMap<>();
 
     static {
-        for (EntityStatus status : EntityStatus.values()) {
+        for (ModelStatus status : ModelStatus.values()) {
             statusMap.put(status.value, status);
         }
     }
 
     private final int value;
 
-    EntityStatus(int value) {
+    ModelStatus(int value) {
         this.value = value;
     }
 
     @JsonCreator
-    public static EntityStatus fromValue(Integer integer) {
+    public static ModelStatus fromValue(Integer integer) {
         if (integer == null) {
-            return EntityStatus.INACTIVE;
+            return ModelStatus.INACTIVE;
         }
-        EntityStatus gender = statusMap.get(integer);
+        ModelStatus gender = statusMap.get(integer);
         if (gender == null) {
-            return EntityStatus.INACTIVE;
+            return ModelStatus.INACTIVE;
         }
         return gender;
     }
@@ -48,19 +48,19 @@ public enum EntityStatus {
         return value;
     }
 
-    public static class StatusAttributeConverter implements AttributeConverter<EntityStatus, Integer> {
+    public static class StatusAttributeConverter implements AttributeConverter<ModelStatus, Integer> {
 
         @Override
-        public Integer convertToDatabaseColumn(EntityStatus attribute) {
+        public Integer convertToDatabaseColumn(ModelStatus attribute) {
             if (attribute == null) {
-                return EntityStatus.INACTIVE.value;
+                return ModelStatus.INACTIVE.value;
             }
             return attribute.value;
         }
 
         @Override
-        public EntityStatus convertToEntityAttribute(Integer dbData) {
-            return EntityStatus.fromValue(dbData);
+        public ModelStatus convertToEntityAttribute(Integer dbData) {
+            return ModelStatus.fromValue(dbData);
         }
     }
 }

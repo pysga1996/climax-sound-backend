@@ -1,5 +1,6 @@
 package com.alpha.service.impl;
 
+import com.alpha.constant.ModelStatus;
 import com.alpha.mapper.CountryMapper;
 import com.alpha.model.dto.CountryDTO;
 import com.alpha.model.entity.Country;
@@ -75,7 +76,7 @@ public class CountryServiceImpl implements CountryService {
         }
         Country createCountry = this.countryMapper.dtoToEntity(countryDTO);
         createCountry.setCreateTime(new Date());
-        createCountry.setStatus(1);
+        createCountry.setStatus(ModelStatus.ACTIVE);
         createCountry = this.countryRepository.saveAndFlush(createCountry);
         return this.countryMapper.entityToDto(createCountry);
     }
@@ -101,6 +102,14 @@ public class CountryServiceImpl implements CountryService {
     @Override
     @Transactional
     public void deleteById(Integer id) {
-        this.countryRepository.deleteById(id);
+        Optional<Country> optionalCountry = this.countryRepository.findById(id);
+        if (optionalCountry.isPresent()) {
+            Country country = optionalCountry.get();
+            country.setStatus(ModelStatus.INACTIVE);
+            country.setUpdateTime(new Date());
+            this.countryRepository.saveAndFlush(optionalCountry.get());
+        } else {
+            throw new EntityNotFoundException("Country not found!");
+        }
     }
 }

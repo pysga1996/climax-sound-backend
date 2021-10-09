@@ -3,7 +3,7 @@ package com.alpha.service.impl;
 import com.alpha.constant.EntityType;
 import com.alpha.constant.MediaRef;
 import com.alpha.constant.RoleConstants;
-import com.alpha.constant.EntityStatus;
+import com.alpha.constant.ModelStatus;
 import com.alpha.elastic.model.AlbumEs;
 import com.alpha.elastic.repo.AlbumEsRepository;
 import com.alpha.mapper.AlbumMapper;
@@ -90,7 +90,7 @@ public class AlbumServiceImpl implements AlbumService {
         if (albumOptional.isPresent()) {
             Optional<ResourceInfo> oldResourceInfo = this.resourceInfoRepository
                 .findByMediaIdAndStorageTypeAndMediaRefAndStatus(id,
-                    this.storageService.getStorageType(), MediaRef.ALBUM_COVER, EntityStatus.ACTIVE);
+                    this.storageService.getStorageType(), MediaRef.ALBUM_COVER, ModelStatus.ACTIVE);
             AlbumDTO albumDTO = this.albumMapper.entityToDtoPure(albumOptional.get());
             oldResourceInfo.ifPresent(
                 resourceInfo -> albumDTO.setCoverUrl(this.storageService.getFullUrl(resourceInfo)));
@@ -159,6 +159,7 @@ public class AlbumServiceImpl implements AlbumService {
             .likeCount(0L)
             .uploader(userInfo)
             .createTime(new Date())
+            .status(ModelStatus.ACTIVE)
             .sync(0)
             .build();
         this.patchAlbumUploadToEntity(albumDTO, album);

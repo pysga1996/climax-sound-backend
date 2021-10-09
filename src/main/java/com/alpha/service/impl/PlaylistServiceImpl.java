@@ -1,5 +1,6 @@
 package com.alpha.service.impl;
 
+import com.alpha.constant.ModelStatus;
 import com.alpha.mapper.PlaylistMapper;
 import com.alpha.model.dto.PlaylistDTO;
 import com.alpha.model.dto.SongDTO;
@@ -10,6 +11,7 @@ import com.alpha.repositories.SongRepository;
 import com.alpha.service.PlaylistService;
 import com.alpha.service.UserService;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -56,7 +58,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     @Transactional(readOnly = true)
-    public PlaylistDTO findById(Long id) {
+    public PlaylistDTO detail(Long id) {
         String username = this.userService.getCurrentUsername();
         return this.playlistRepository.findByIdAndUsername(id, username)
             .map(this.playlistMapper::entityToDto)
@@ -96,6 +98,8 @@ public class PlaylistServiceImpl implements PlaylistService {
         playlistDTO.setUsername(username);
         Playlist newPlaylist = this.playlistMapper.dtoToEntity(playlistDTO);
         newPlaylist.setUsername(username);
+        newPlaylist.setCreateTime(new Date());
+        newPlaylist.setStatus(ModelStatus.ACTIVE);
         newPlaylist = this.playlistRepository.saveAndFlush(newPlaylist);
         return this.playlistMapper.entityToDtoPure(newPlaylist);
     }
@@ -107,7 +111,10 @@ public class PlaylistServiceImpl implements PlaylistService {
         Optional<Playlist> optionalPlaylist = this.playlistRepository
             .findByIdAndUsername(id, username);
         if (optionalPlaylist.isPresent()) {
-            optionalPlaylist.get().setTitle(playlistDTO.getTitle());
+            Playlist playlist = optionalPlaylist.get();
+            playlist.setTitle(playlistDTO.getTitle());
+            playlist.setUpdateTime(new Date());
+            this.playlistRepository.save(playlist);
         } else {
             throw new EntityNotFoundException("Playlist not found");
         }
@@ -116,7 +123,16 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Override
     @Transactional
     public void deleteById(Long id) {
-        playlistRepository.deleteById(id);
+        String username = this.userService.getCurrentUsername();
+        Optional<Playlist> optionalPlaylist = this.playlistRepository.findByIdAndUsername(id, username);
+        if (optionalPlaylist.isPresent()) {
+            Playlist playlist = optionalPlaylist.get();
+            playlist.setStatus(ModelStatus.INACTIVE);
+            playlist.setUpdateTime(new Date());
+            this.playlistRepository.saveAndFlush(optionalPlaylist.get());
+        } else {
+            throw new EntityNotFoundException("Playlist not found!");
+        }
     }
 
     @Override

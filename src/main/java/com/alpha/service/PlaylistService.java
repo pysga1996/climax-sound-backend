@@ -9,7 +9,7 @@ public interface PlaylistService {
 
     boolean checkSongExistence(PlaylistDTO playlistDTO, Long songId);
 
-    PlaylistDTO findById(Long id);
+    PlaylistDTO detail(Long id);
 
     Page<PlaylistDTO> getPlaylistListToAdd(Long songId, Pageable pageable);
 

@@ -1,8 +1,9 @@
 package com.alpha.model.dto;
 
 import com.alpha.constant.EntityType;
-import com.alpha.constant.EntityStatus;
+import com.alpha.constant.ModelStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import java.time.Duration;
@@ -47,10 +48,6 @@ public class AlbumDTO implements MediaDTO {
 
     private String description;
 
-    private CountryDTO country;
-
-    private ThemeDTO theme;
-
     @JsonProperty(access = Access.READ_ONLY)
     private UserInfoDTO uploader;
 
@@ -58,18 +55,28 @@ public class AlbumDTO implements MediaDTO {
 
     private Date updateTime;
 
-    private EntityStatus status;
+    private ModelStatus status;
 
     private Integer sync;
 
     private ResourceInfoDTO coverResource;
 
+    @JsonManagedReference(value = "album-country")
+    private CountryDTO country;
+
+    @JsonManagedReference(value = "album-country")
+    private ThemeDTO theme;
+
+    @JsonManagedReference(value = "album-genre")
     private Collection<GenreDTO> genres;
 
+    @JsonManagedReference(value = "album-song")
     private Collection<SongDTO> songs;
 
+    @JsonManagedReference(value = "album-artist")
     private Collection<ArtistDTO> artists;
 
+    @JsonManagedReference(value = "album-tag")
     private Collection<TagDTO> tags;
 
     @JsonProperty(access = Access.WRITE_ONLY)

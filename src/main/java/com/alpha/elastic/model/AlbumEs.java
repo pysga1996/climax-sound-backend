@@ -1,6 +1,7 @@
 package com.alpha.elastic.model;
 
 import com.alpha.model.entity.Album;
+import com.alpha.model.entity.Tag;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.Setting;
 
 /**
  * @author thanhvt
@@ -23,6 +25,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 @EqualsAndHashCode(callSuper = true)
 @Builder
 @Document(indexName = "album")
+@Setting(settingPath = "/elastic_setting/lowercase_normalizer.json")
 public class AlbumEs extends MediaEs {
 
     @Id
@@ -37,6 +40,9 @@ public class AlbumEs extends MediaEs {
     @JsonProperty(access = Access.READ_ONLY)
     private String coverUrl;
 
+    @Field(type = FieldType.Keyword, name = "tags", normalizer = "lowercase_normalizer")
+    private String[] tags;
+
     @Field(type = FieldType.Object, name = "resourceMap")
     private ResourceMapEs resourceMap;
 
@@ -50,6 +56,8 @@ public class AlbumEs extends MediaEs {
             .unaccentTitle(album.getUnaccentTitle())
             .artists(
                 album.getArtists().stream().map(ArtistEs::fromArtist).collect(Collectors.toList()))
+            .tags(album.getTags().parallelStream().map(Tag::getName).collect(Collectors.toList())
+                .toArray(new String[]{}))
             .build();
     }
 }

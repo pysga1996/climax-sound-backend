@@ -1,7 +1,9 @@
 package com.alpha.service.impl;
 
+import com.alpha.constant.ModelStatus;
 import com.alpha.mapper.GenreMapper;
 import com.alpha.model.dto.GenreDTO;
+import com.alpha.model.entity.Country;
 import com.alpha.model.entity.Genre;
 import com.alpha.repositories.GenreRepository;
 import com.alpha.service.GenreService;
@@ -67,7 +69,7 @@ public class GenreServiceImpl implements GenreService {
         }
         Genre createGenre = this.genreMapper.dtoToEntity(genreDTO);
         createGenre.setCreateTime(new Date());
-        createGenre.setStatus(1);
+        createGenre.setStatus(ModelStatus.ACTIVE);
         createGenre = this.genreRepository.saveAndFlush(createGenre);
         return this.genreMapper.entityToDto(createGenre);
     }
@@ -93,6 +95,14 @@ public class GenreServiceImpl implements GenreService {
     @Override
     @Transactional
     public void delete(Integer id) {
-        this.genreRepository.deleteById(id);
+        Optional<Genre> optionalGenre = this.genreRepository.findById(id);
+        if (optionalGenre.isPresent()) {
+            Genre genre = optionalGenre.get();
+            genre.setStatus(ModelStatus.INACTIVE);
+            genre.setUpdateTime(new Date());
+            this.genreRepository.saveAndFlush(optionalGenre.get());
+        } else {
+            throw new EntityNotFoundException("Genre not found!");
+        }
     }
 }

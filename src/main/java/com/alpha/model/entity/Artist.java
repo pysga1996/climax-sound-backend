@@ -3,7 +3,7 @@ package com.alpha.model.entity;
 import com.alpha.constant.Folder;
 import com.alpha.constant.MediaRef;
 import com.alpha.constant.MediaType;
-import com.alpha.constant.EntityStatus;
+import com.alpha.constant.ModelStatus;
 import com.alpha.util.formatter.StringAccentRemover;
 import java.util.Collection;
 import java.util.Date;
@@ -32,6 +32,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+import org.hibernate.annotations.Where;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
@@ -41,6 +42,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @Entity
 @Table(name = "artist")
+@Where(clause = "status = 1")
 public class Artist extends Media {
 
     @Transient
@@ -90,8 +92,8 @@ public class Artist extends Media {
     private Date updateTime;
 
     @Column(name = "status")
-    @Convert(converter = EntityStatus.StatusAttributeConverter.class)
-    private EntityStatus status;
+    @Convert(converter = ModelStatus.StatusAttributeConverter.class)
+    private ModelStatus status;
 
     @Column(name = "sync")
     private Integer sync;
@@ -127,7 +129,7 @@ public class Artist extends Media {
             .extension(ext)
             .folder(Folder.AVATAR)
             .fileName(fileName)
-            .status(EntityStatus.INACTIVE)
+            .status(ModelStatus.INACTIVE)
             .mediaType(MediaType.IMAGE)
             .mediaRef(MediaRef.ARTIST_AVATAR)
             .build();

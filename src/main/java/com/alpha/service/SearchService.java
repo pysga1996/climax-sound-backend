@@ -19,6 +19,8 @@ public interface SearchService {
 
     void clearIndex(String indexName);
 
+    void resetIndex(String indexName);
+
     void markForSync(String name, UpdateSyncOption indexName);
 
 }

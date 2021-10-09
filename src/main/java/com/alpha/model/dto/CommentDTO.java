@@ -1,6 +1,7 @@
 package com.alpha.model.dto;
 
 import com.alpha.constant.EntityType;
+import com.alpha.constant.ModelStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Date;
 import javax.validation.constraints.NotBlank;
@@ -31,5 +32,5 @@ public class CommentDTO {
 
     private Date updateTime;
 
-    private Integer status;
+    private ModelStatus status;
 }

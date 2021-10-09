@@ -1,8 +1,10 @@
 package com.alpha.model.entity;
 
+import com.alpha.constant.ModelStatus;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -18,6 +20,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Where;
 
 @Data
 @AllArgsConstructor
@@ -25,6 +28,7 @@ import org.hibernate.annotations.FetchMode;
 @ToString(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "country")
+@Where(clause = "status = 1")
 public class Country {
 
     @Id
@@ -53,6 +57,7 @@ public class Country {
     private Date updateTime;
 
     @Column(name = "status")
-    private Integer status;
+    @Convert(converter = ModelStatus.StatusAttributeConverter.class)
+    private ModelStatus status;
 
 }

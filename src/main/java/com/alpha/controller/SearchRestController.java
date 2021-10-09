@@ -64,4 +64,11 @@ public class SearchRestController {
         this.searchService.clearIndex(indexName);
         return ResponseEntity.ok().build();
     }
+
+    @PreAuthorize("hasAuthority(@Authority.ELASTIC_SEARCH_MANAGEMENT)")
+    @DeleteMapping("/reset")
+    public ResponseEntity<Void> resetIndex(@RequestParam(value = "index-name") String indexName) {
+        this.searchService.resetIndex(indexName);
+        return ResponseEntity.ok().build();
+    }
 }
