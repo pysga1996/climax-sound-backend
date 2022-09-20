@@ -59,10 +59,10 @@ public abstract class StorageService {
         return this.getStorageType() == StorageType.LOCAL ? this.getHttpServletRequest()
             .getHeader("base-url") : "";
     }
-
     public String getFullUrl(ResourceInfo resourceInfo) {
         return this.getBaseUrl() + resourceInfo.getUri();
     }
+
 
     public String getFullUrl(ResourceInfoDTO resourceInfoDTO) {
         return this.getBaseUrl() + resourceInfoDTO.getUri();

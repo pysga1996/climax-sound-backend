@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: alpha-sound-service
+  cloud:
+    config:
+      #      uri: ${CONFIG_URI:}
+      discovery:
+        service-id: phi-config-service
+        enabled: true
+      username: ${CONFIG_USERNAME:}
+      password: ${CONFIG_PASSWORD:}
+      label: ${CONFIG_GIT_BRANCH:}
+    loadbalancer:
+      ribbon:
+        enabled: false
+eureka:
+  instance:
+    hostname: alpha-sound.vengeance.svc.cluster.local
+  #    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVICE_URL:}
+    fetch-registry: true
+    register-with-eureka: true

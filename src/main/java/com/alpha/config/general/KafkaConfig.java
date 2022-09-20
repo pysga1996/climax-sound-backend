@@ -22,7 +22,7 @@ import org.springframework.kafka.core.ProducerFactory;
  * @since 1.0
  **/
 @Configuration
-@Profile({"heroku", "poweredge"})
+@Profile({"heroku", "poweredge", "k8s"})
 public class KafkaConfig {
 
     @Value(value = "${spring.kafka.jaas.options.username:}")
@@ -73,13 +73,13 @@ public class KafkaConfig {
     }
 
     @Bean
-    @Profile({"poweredge"})
+    @Profile({"heroku", "poweredge", "k8s"})
     public NewTopic userLikesTopic() {
         return new NewTopic(this.topicPrefix + SchedulerConstants.LIKES_TOPIC, 3, (short) 1);
     }
 
     @Bean
-    @Profile({"poweredge"})
+    @Profile({"heroku", "poweredge", "k8s"})
     public NewTopic userListeningTopic() {
         return new NewTopic(this.topicPrefix + SchedulerConstants.LISTENING_TOPIC, 3, (short) 1);
     }

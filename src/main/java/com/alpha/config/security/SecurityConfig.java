@@ -127,8 +127,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .cors()
             .and()
             .oauth2ResourceServer(httpSecurityOAuth2ResourceServerConfigurer -> {
-                if (CloudPlatform.HEROKU.isActive(this.env) || Arrays
-                    .asList(this.env.getActiveProfiles()).contains("poweredge")) {
+                if (CloudPlatform.HEROKU.isActive(this.env) || !Arrays
+                    .asList(this.env.getActiveProfiles()).contains("default")) {
                     httpSecurityOAuth2ResourceServerConfigurer.jwt(jwtConfigurer -> {
                         jwtConfigurer.decoder(customJwtDecoder());
                         jwtConfigurer.jwtAuthenticationConverter(jwtAuthenticationTokenConverter());
