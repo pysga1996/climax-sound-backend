@@ -1,12 +1,12 @@
 # Alpha Sound Service
 
-## Deployment url: 
+## Deployment Url: 
 
 https://alpha-sound-service.herokuapp.com/
 
 ## Technology Stack
 
-- Spring Cloud
+- Spring Cloud 2020.0.x
 - Spring Boot 2.4.0
 - Spring Security OAuth2
 - Elasticsearch 7.15 (search)
