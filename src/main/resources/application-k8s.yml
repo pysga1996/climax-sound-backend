@@ -15,7 +15,7 @@ logging:
               WIRE: TRACE
   config: classpath:log4j-spring.xml
 server:
-  port: 8086
+  port: 80
   servlet:
     context-path: /
     encoding:
@@ -123,9 +123,9 @@ storage:
     upload-root-uri: ${UPLOAD_ROOT_URI}
     upload-dir: ${UPLOAD_DIR:}
 custom:
-  http-port: 8085
-  https-port: 8086
-  security-policy: CONFIDENTIAL
+  http-port: 80
+  https-port: 443
+  security-policy: NONE
   connector-scheme: http
   trust-store-password: ${SSL_TRUSTSTORE_PASSWORD:}
   trust-store-type: JKS
