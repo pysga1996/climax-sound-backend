@@ -113,7 +113,7 @@ spring:
     rest:
       uris: ${ES_URL:}
 storage:
-  storage-type: local
+  storage-type: cloudinary
   temp: ${TEMP_DIR:}
   cloudinary:
     url: ${CLOUDINARY_URL:}
