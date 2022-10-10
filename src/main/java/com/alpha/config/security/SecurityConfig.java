@@ -112,11 +112,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        if (CloudPlatform.HEROKU.isActive(this.env)) {
+            http.requiresChannel()
+                    // Heroku https config
+                    .requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null)
+                    .requiresSecure();
+        }
         http
-            .requiresChannel()
-            // Heroku https config
-            .requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null)
-            .requiresSecure().and()
             .authorizeRequests()
             .antMatchers("/api/admin/**").access("hasRole('ADMIN')")
             .antMatchers("/oauth/token", "/api/login", "/api/register", "/api/song/download/**",
@@ -146,6 +148,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .frameOptions().sameOrigin().disable()
             .authorizeRequests().accessDecisionManager(accessDecisionManager())
             .anyRequest()
-            .permitAll().and();
+            .permitAll();
     }
 }

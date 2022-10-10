@@ -22,6 +22,8 @@ server:
       charset: UTF-8
       enabled: true
       force: true
+  ssl:
+    enabled: false
 spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
@@ -92,7 +94,7 @@ spring:
     database: ${REDIS_DB:}
     password: ${REDIS_PASSWORD:}
   kafka:
-    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:}'
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:}
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
@@ -120,7 +122,7 @@ storage:
     storage-bucket: ${FIREBASE_STORAGE_BUCKET:}
     credentials: ${FIREBASE_CREDENTIALS:}
   local:
-    upload-root-uri: ${UPLOAD_ROOT_URI}
+    upload-root-uri: ${UPLOAD_ROOT_URI:}
     upload-dir: ${UPLOAD_DIR:}
 custom:
   http-port: 80

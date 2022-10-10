@@ -25,6 +25,7 @@ import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.http.client.ClientHttpRequestFactory;
@@ -132,10 +133,7 @@ public class SSLConfig {
         }
     }
 
-    @Bean
-    @Primary
-    @LoadBalanced
-    public RestOperations restTemplate(RestTemplateBuilder rtb) {
+    private RestOperations restTemplateBase(RestTemplateBuilder rtb) {
         RestTemplate restTemplate = rtb.build();
         if (CloudPlatform.HEROKU.isActive(this.env) || !Arrays
                 .asList(this.env.getActiveProfiles()).contains("default")) {
@@ -144,11 +142,24 @@ public class SSLConfig {
             log.info("Not Heroku/Docker/Kubernetes, rest template is setting up SSL");
             HttpClient httpClient = HttpClients.custom().setSSLContext(this.customSSL()).build();
             ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(
-                httpClient);
+                    httpClient);
             restTemplate.setRequestFactory(requestFactory);
         }
         restTemplate.getInterceptors()
-            .add(new BasicAuthenticationInterceptor(clientId, clientSecret));
+                .add(new BasicAuthenticationInterceptor(clientId, clientSecret));
         return restTemplate;
+    }
+
+    @Bean("restTemplate")
+    @Profile("!k8s")
+    @LoadBalanced
+    public RestOperations restTemplateWithLb(RestTemplateBuilder rtb) {
+        return this.restTemplateBase(rtb);
+    }
+
+    @Bean("restTemplate")
+    @Profile("k8s")
+    public RestOperations restTemplateNoLb(RestTemplateBuilder rtb) {
+        return this.restTemplateBase(rtb);
     }
 }
