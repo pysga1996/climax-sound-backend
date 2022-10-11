@@ -126,7 +126,7 @@ public class SongServiceImpl implements SongService {
             SongDTO songDTO = this.songMapper.entityToDto(optionalSong.get());
             this.favoritesService.setLike(songDTO, EntityType.SONG);
             optionalResourceInfo.ifPresent(
-                resourceInfo -> songDTO.setUrl(this.storageService.getFullUrl(resourceInfo)));
+                resourceInfo -> songDTO.setUrl(resourceInfo.getUri()));
             return songDTO;
         } else {
             throw new EntityNotFoundException("Không tìm thấy bài hát");
@@ -154,7 +154,7 @@ public class SongServiceImpl implements SongService {
         this.patchSongUploadToEntity(songDTO, song);
         this.songRepository.saveAndFlush(song);
         ResourceInfo resourceInfo = this.storageService.upload(file, song);
-        songDTO.setUrl(this.storageService.getFullUrl(resourceInfo));
+        songDTO.setUrl(resourceInfo.getUri());
         songDTO.setUnaccentTitle(song.getUnaccentTitle());
         songDTO.setId(song.getId());
         return songDTO;
@@ -177,7 +177,7 @@ public class SongServiceImpl implements SongService {
                 ResourceInfo resourceInfo = this.storageService
                     .upload(file, song);
                 song.setAudioResource(resourceInfo);
-                songDTO.setUrl(this.storageService.getFullUrl(resourceInfo));
+                songDTO.setUrl(resourceInfo.getUri());
             }
             this.patchSongUploadToEntity(songDTO, song);
             song.setUpdateTime(new Date());

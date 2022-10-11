@@ -1,7 +1,6 @@
 package com.alpha.elastic.repo;
 
 import com.alpha.elastic.model.AlbumEs;
-import com.alpha.elastic.model.SongEs;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

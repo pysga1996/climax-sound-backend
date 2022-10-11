@@ -88,7 +88,7 @@ public class ArtistServiceImpl implements ArtistService {
                     MediaRef.ARTIST_AVATAR, ModelStatus.ACTIVE);
             optionalResourceInfo.ifPresent(
                 resourceInfo -> artistDTO
-                    .setAvatarUrl(this.storageService.getFullUrl(resourceInfo)));
+                    .setAvatarUrl(resourceInfo.getUri()));
             this.favoritesService.setLike(artistDTO, EntityType.ARTIST);
             return artistDTO;
         } else {
@@ -139,7 +139,7 @@ public class ArtistServiceImpl implements ArtistService {
         ResourceInfo resourceInfo = this.storageService.upload(multipartFile, artist);
         artistDTO.setId(artist.getId());
         artistDTO.setUnaccentName(artist.getUnaccentName());
-        artistDTO.setAvatarUrl(this.storageService.getFullUrl(resourceInfo));
+        artistDTO.setAvatarUrl(resourceInfo.getUri());
         return artistDTO;
     }
 
@@ -155,7 +155,7 @@ public class ArtistServiceImpl implements ArtistService {
                 ResourceInfo resourceInfo = this.storageService
                     .upload(multipartFile, artist);
                 artist.setAvatarResource(resourceInfo);
-                artistDTO.setAvatarUrl(this.storageService.getFullUrl(resourceInfo));
+                artistDTO.setAvatarUrl(resourceInfo.getUri());
             }
             this.patchArtist(artistDTO, artist);
             artist.setUpdateTime(new Date());

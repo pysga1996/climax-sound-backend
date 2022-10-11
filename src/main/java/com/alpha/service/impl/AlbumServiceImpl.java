@@ -93,7 +93,7 @@ public class AlbumServiceImpl implements AlbumService {
                     this.storageService.getStorageType(), MediaRef.ALBUM_COVER, ModelStatus.ACTIVE);
             AlbumDTO albumDTO = this.albumMapper.entityToDtoPure(albumOptional.get());
             oldResourceInfo.ifPresent(
-                resourceInfo -> albumDTO.setCoverUrl(this.storageService.getFullUrl(resourceInfo)));
+                resourceInfo -> albumDTO.setCoverUrl(resourceInfo.getUri()));
             this.favoritesService.setLike(albumDTO, EntityType.ALBUM);
             return albumDTO;
         } else {
@@ -167,7 +167,7 @@ public class AlbumServiceImpl implements AlbumService {
         if (file != null) {
             ResourceInfo resourceInfo = this.storageService.upload(file, album);
             album.setCoverResource(resourceInfo);
-            albumDTO.setCoverUrl(this.storageService.getFullUrl(resourceInfo));
+            albumDTO.setCoverUrl(resourceInfo.getUri());
         }
         albumDTO.setId(album.getId());
         albumDTO.setUnaccentTitle(album.getUnaccentTitle());
@@ -191,7 +191,7 @@ public class AlbumServiceImpl implements AlbumService {
                 ResourceInfo resourceInfo = this.storageService
                     .upload(file, album);
                 album.setCoverResource(resourceInfo);
-                albumDTO.setCoverUrl(this.storageService.getFullUrl(resourceInfo));
+                albumDTO.setCoverUrl(resourceInfo.getUri());
             }
             this.patchAlbumUploadToEntity(albumDTO, album);
             album.setUpdateTime(new Date());

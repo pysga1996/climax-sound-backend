@@ -3,14 +3,14 @@ package com.alpha.service;
 import com.alpha.config.properties.StorageProperty.StorageType;
 import com.alpha.constant.ModelStatus;
 import com.alpha.elastic.model.ResourceMapEs;
-import com.alpha.model.dto.ResourceInfoDTO;
 import com.alpha.model.entity.Media;
 import com.alpha.model.entity.ResourceInfo;
 import com.alpha.repositories.ResourceInfoRepository;
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 public abstract class StorageService {
 
@@ -55,19 +55,6 @@ public abstract class StorageService {
 
     public abstract StorageType getStorageType();
 
-    public String getBaseUrl() {
-        return this.getStorageType() == StorageType.LOCAL ? this.getHttpServletRequest()
-            .getHeader("base-url") : "";
-    }
-    public String getFullUrl(ResourceInfo resourceInfo) {
-        return this.getBaseUrl() + resourceInfo.getUri();
-    }
-
-
-    public String getFullUrl(ResourceInfoDTO resourceInfoDTO) {
-        return this.getBaseUrl() + resourceInfoDTO.getUri();
-    }
-
     public String getFullUrl(ResourceMapEs resourceMapEs) {
         if (resourceMapEs == null) return "";
         String url = "";
@@ -82,7 +69,7 @@ public abstract class StorageService {
                 url = resourceMapEs.getLocalUri();
                 break;
         }
-        return this.getBaseUrl() + url;
+        return url;
     }
 
 }

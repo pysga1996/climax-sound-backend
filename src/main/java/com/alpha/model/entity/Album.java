@@ -171,7 +171,7 @@ public class Album extends Media {
     @Override
     public ResourceInfo generateResource(MultipartFile file) {
         if (id == null) {
-            throw new RuntimeException("Media host id is null!!");
+            throw new IllegalArgumentException("Media host id is null!!");
         }
         String ext = this.getExtension(file);
         String fileName = MediaRef.ALBUM_COVER.name() + " - " + id + " - " + this

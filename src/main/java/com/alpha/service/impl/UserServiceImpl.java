@@ -167,7 +167,7 @@ public class UserServiceImpl implements UserService {
                 .findByUsernameAndStorageTypeAndMediaRefAndStatus(username,
                     this.storageService.getStorageType(), MediaRef.USER_AVATAR, ModelStatus.ACTIVE);
             optionalResourceInfo.ifPresent(resourceInfo -> profileJson
-                .put("avatar_url", this.storageService.getFullUrl(resourceInfo)));
+                .put("avatar_url", resourceInfo.getUri()));
             return profileJson;
         } else {
             throw new EntityNotFoundException("User not found");
@@ -189,7 +189,7 @@ public class UserServiceImpl implements UserService {
             profileJson.putAll(updatedProfileJson);
             ResourceInfo newResourceInfo = this.storageService
                 .upload(avatar, userInfo);
-            profileJson.put("avatar_url", this.storageService.getFullUrl(newResourceInfo));
+            profileJson.put("avatar_url", newResourceInfo.getUri());
             String mergedUserProfile = this.objectMapper.writeValueAsString(profileJson);
             userInfo.setProfile(mergedUserProfile);
             userInfo.setUpdateTime(new Date());

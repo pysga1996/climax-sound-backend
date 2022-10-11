@@ -28,21 +28,21 @@ public class ApiErrorHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiError handleAllException(Exception ex, WebRequest request) {
-        log.error("Exception: ", ex);
+        log.error("General Exception: ", ex);
         return new ApiError(9999, ex.getLocalizedMessage());
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
     public ApiError handleAllException(AccessDeniedException ex, WebRequest request) {
-        log.error("Exception: ", ex);
+        log.error("Access Denied Exception: ", ex);
         return new ApiError(3500, ex.getLocalizedMessage());
     }
 
     @ExceptionHandler(BusinessException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ApiError handleBusinessException(BusinessException ex, WebRequest request) {
-        log.error("Exception: ", ex);
+        log.error("Business Exception: ", ex);
         return new ApiError(ex.getCode(), ex.getLocalizedMessage());
     }
 
@@ -64,7 +64,7 @@ public class ApiErrorHandler {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ApiError handleInvalidTokenException(InvalidBearerTokenException ex,
         WebRequest request) {
-        log.error("Exception: ", ex);
+        log.error("Invalod Token Exception: ", ex);
         return new ApiError(2000, ex.getLocalizedMessage());
     }
 

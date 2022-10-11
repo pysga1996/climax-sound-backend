@@ -44,7 +44,7 @@ public class CustomCorsFilter implements Filter {
         response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS,
             String.join(",", methodsAllowed));
         response.setHeader(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "3600");
-        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "base-url,Authorization,Content-Type");
+//        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "Authorization,Content-Type");
         response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
 
         if (HttpMethod.OPTIONS.name().equalsIgnoreCase(request.getMethod())) {

@@ -1,12 +1,11 @@
 package com.alpha.service;
 
-import com.alpha.elastic.model.MediaEs;
 import com.alpha.model.dto.UserInfoDTO;
 import com.alpha.model.entity.UserInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import java.util.Map;
-import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Map;
 
 public interface UserService {
 

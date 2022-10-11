@@ -83,7 +83,7 @@ public class ArtistRepositoryImpl extends BaseRepository implements ArtistReposi
                 .prepareCall(
                     "{ ? = call find_artist_by_conditions(?,?,?,?,?,?,?,?,?,?) }")) {
                 function.registerOutParameter(1, Types.REF_CURSOR);
-                function.setString(2, this.storageService.getBaseUrl()); // p_base_url
+                function.setString(2, ""); // p_base_url
                 function
                     .setString(3, this.storageService.getStorageType().name()); // p_storage_type
                 if (artistSearchDTO.getSongId() == null) {

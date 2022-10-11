@@ -4,7 +4,6 @@ import com.alpha.elastic.model.AlbumEs;
 import com.alpha.elastic.repo.AlbumEsRepositoryCustom;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.NestedQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

@@ -1,36 +1,14 @@
 package com.alpha.repositories.impl;
 
 import com.alpha.constant.ModelStatus;
-import com.alpha.model.dto.AlbumDTO;
+import com.alpha.model.dto.*;
 import com.alpha.model.dto.AlbumDTO.AlbumAdditionalInfoDTO;
-import com.alpha.model.dto.AlbumSearchDTO;
-import com.alpha.model.dto.AlbumUpdateDTO;
-import com.alpha.model.dto.CountryDTO;
-import com.alpha.model.dto.GenreDTO;
-import com.alpha.model.dto.TagDTO;
-import com.alpha.model.dto.ThemeDTO;
-import com.alpha.model.dto.UpdateSyncOption;
 import com.alpha.model.entity.Album;
 import com.alpha.model.entity.Album_;
-import com.alpha.model.entity.Song;
-import com.alpha.model.entity.Song_;
 import com.alpha.repositories.AlbumRepositoryCustom;
 import com.alpha.repositories.BaseRepository;
 import com.alpha.service.StorageService;
 import com.alpha.util.helper.DataTypeComparer;
-import java.sql.CallableStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaUpdate;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
@@ -40,6 +18,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author thanhvt
@@ -158,7 +150,7 @@ public class AlbumRepositoryImpl extends BaseRepository implements AlbumReposito
                 .prepareCall(
                     "{ ? = call find_album_by_conditions(?,?,?,?,?,?,?,?,?,?) }")) {
                 function.registerOutParameter(1, Types.REF_CURSOR);
-                function.setString(2, this.storageService.getBaseUrl()); // p_base_url
+                function.setString(2, ""); // p_base_url
                 function
                     .setString(3, this.storageService.getStorageType().name()); // p_storage_type
                 if (albumSearchDTO.getArtistId() == null) {
