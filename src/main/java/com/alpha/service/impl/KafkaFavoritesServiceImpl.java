@@ -8,17 +8,15 @@ import com.alpha.service.FavoritesService;
 import com.alpha.service.UserService;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.OffsetAndMetadata;
+import org.apache.kafka.common.TopicPartition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -107,8 +105,11 @@ public class KafkaFavoritesServiceImpl implements FavoritesService {
             ConsumerRecords<String, String> records = this.consumer
                 .poll(Duration.of(10, ChronoUnit.SECONDS));
             List<String> buffer = new ArrayList<>();
+//            Map<TopicPartition, OffsetAndMetadata> mapTopicOffset = new HashMap<>();
             for (ConsumerRecord<String, String> record : records) {
                 buffer.add(record.value());
+//                mapTopicOffset.put(new TopicPartition(record.topic(), record.partition()),
+//                        new OffsetAndMetadata(record.offset(), record.leaderEpoch(), record.value()));
             }
             if (!buffer.isEmpty()) {
                 this.favoritesRepository.updateLikesInBatch(buffer);
