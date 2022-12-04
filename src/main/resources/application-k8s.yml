@@ -28,7 +28,7 @@ spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
   datasource:
-    driver-class-name: ${SPRING_DATASOURCE_DRIVER-CLASS-NAME:}
+    driver-class-name: org.postgresql.Driver
     hikari:
       connectionTimeout: 30000
       idleTimeout: 100000
