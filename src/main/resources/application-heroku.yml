@@ -16,7 +16,7 @@ logging:
   config: classpath:log4j-spring.xml
 server:
   servlet:
-    context-path: /alpha-sound
+    context-path: /alpha-sound-service
     encoding:
       charset: UTF-8
       enabled: true
@@ -25,7 +25,7 @@ spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
   datasource:
-    driver-class-name: org.postgresql.Driver
+    driver-class-name: org.mariadb.jdbc.Driver
     hikari:
       connectionTimeout: 30000
       idleTimeout: 100000

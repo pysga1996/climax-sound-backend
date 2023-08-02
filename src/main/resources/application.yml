@@ -17,25 +17,16 @@ logging:
 server:
   port: 8086
   servlet:
-    context-path: /alpha-sound
+    context-path: /alpha-sound-service
     encoding:
       charset: UTF-8
       enabled: true
       force: true
-  ssl:
-    enabled: true
-    enabled-protocols: TLSv1.2
-    key-alias: ${SSL_KEY_ALIAS:}
-    key-password: ${SSL_KEY_PASSWORD:}
-    key-store: classpath:vengeance.jks
-    key-store-password: ${SSL_KEYSTORE_PASSWORD:}
-    key-store-type: JKS
-    protocol: TLS
 spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
   datasource:
-    driver-class-name: org.postgresql.Driver
+    driver-class-name: org.mariadb.jdbc.Driver
     hikari:
       connectionTimeout: 30000
       idleTimeout: 100000

@@ -3,16 +3,20 @@ spring:
     name: alpha-sound-service
   cloud:
     config:
-      #      uri: ${CONFIG_URI:}
-      discovery:
-        service-id: phi-config-service
-        enabled: true
+      uri: ${CONFIG_URI:}
+#      discovery:
+#        service-id: phi-config-service
+#        enabled: true
       username: ${CONFIG_USERNAME:}
       password: ${CONFIG_PASSWORD:}
       label: ${CONFIG_GIT_BRANCH:}
 eureka:
   instance:
     hostname: localhost
+    secure-port-enabled: false
+    secure-port: 443
+    non-secure-port-enabled: true
+    non-secure-port: 8086
   #    prefer-ip-address: true
   client:
     serviceUrl:
