@@ -1,0 +1,27 @@
+version: '3.2'
+networks:
+  global:
+    external: true
+services:
+  alpha-sound-service:
+    env_file:
+      - './environment/poweredge.env'
+    container_name: alpha-sound-service
+    hostname: alpha-sound-service.vengeance.svc.cluster.local
+      # build:
+      # context: '.'
+    # dockerfile: Dockerfile
+    image: pysga1996/prv_repo:alpha-sound-service
+    expose:
+      - 80
+    ports:
+      - "8086:80"
+    networks:
+      - global
+    volumes:
+      - ./:/app
+    restart: always
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"

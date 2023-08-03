@@ -11,6 +11,8 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.client.RestOperations;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
@@ -61,6 +63,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
         public EntityType convert(String source) {
             return EntityType.fromValue(source.toUpperCase());
         }
+    }
+
+    @Bean
+    public RestOperations restOperations() {
+        return new RestTemplate();
     }
 
 }

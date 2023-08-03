@@ -54,7 +54,7 @@ spring:
             log:
               LOG_QUERIES_SLOWER_THAN_MS: 25
         current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
-        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+        dialect: org.hibernate.dialect.MariaDB103Dialect
         default_schema: alpha_sound
         format_sql: true
         jdbc:
@@ -122,10 +122,4 @@ storage:
   local:
     upload-root-uri: ${UPLOAD_ROOT_URI:}
     upload-dir: ${UPLOAD_DIR:}
-custom:
-  http-port: 80
-  https-port: 443
-  security-policy: NONE
-  connector-scheme: http
-  trust-store-password: ${SSL_TRUSTSTORE_PASSWORD:}
-  trust-store-type: JKS
+
