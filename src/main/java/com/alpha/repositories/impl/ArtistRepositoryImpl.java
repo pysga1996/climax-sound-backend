@@ -9,18 +9,6 @@ import com.alpha.model.entity.Artist_;
 import com.alpha.repositories.ArtistRepositoryCustom;
 import com.alpha.repositories.BaseRepository;
 import com.alpha.service.StorageService;
-import java.sql.CallableStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaUpdate;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.Session;
@@ -29,6 +17,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author thanhvt
@@ -78,50 +78,75 @@ public class ArtistRepositoryImpl extends BaseRepository implements ArtistReposi
     public Page<ArtistDTO> findByConditions(Pageable pageable,
         ArtistSearchDTO artistSearchDTO) {
         Session session = entityManager.unwrap(Session.class);
+//        this code is for PostgresQL
+//        ResultSet rs = session.doReturningWork(connection -> {
+//            try (CallableStatement function = connection
+//                .prepareCall(
+//                    "{ ? = call find_artist_by_conditions(?,?,?,?,?,?,?,?,?,?) }")) {
+//                function.registerOutParameter(1, Types.REF_CURSOR);
+//                function.setString(2, ""); // p_base_url
+//                function
+//                    .setString(3, this.storageService.getStorageType().name()); // p_storage_type
+//                if (artistSearchDTO.getSongId() == null) {
+//                    function.setNull(4, Types.NUMERIC); // p_song_id
+//                } else {
+//                    function.setLong(4, artistSearchDTO.getSongId());
+//                }
+//                if (artistSearchDTO.getAlbumId() == null) {
+//                    function.setNull(5, Types.NUMERIC); // p_album_id
+//                } else {
+//                    function.setLong(5, artistSearchDTO.getAlbumId());
+//                }
+//                if (artistSearchDTO.getUsernameFavorite() == null) {
+//                    function.setNull(6, Types.VARCHAR); // p_username_fav
+//                } else {
+//                    function.setString(6, artistSearchDTO.getUsername());
+//                }
+//                if (artistSearchDTO.getUsername() == null) {
+//                    function.setNull(7, Types.VARCHAR); // p_username
+//                } else {
+//                    function.setString(7, artistSearchDTO.getUsername());
+//                }
+//                if (artistSearchDTO.getPhrase() == null) {
+//                    function.setNull(8, Types.VARCHAR); // p_phrase
+//                } else {
+//                    function.setString(8, artistSearchDTO.getPhrase());
+//                }
+//                function.setInt(9, pageable.getPageSize()); // p_size
+//                function.setInt(10, pageable.getPageNumber()); // p_page
+//                if (pageable.getSort().getOrderFor("like_count") != null) {
+//                    function.setString(11, "like_count");
+//                } else if (pageable.getSort().getOrderFor("birth_date") != null) {
+//                    function.setString(11, "birth_date");
+//                } else {
+//                    function.setString(11, "");
+//                }
+//                function.execute();
+//                return function.getObject(1, ResultSet.class);
+//            }
+//        });
         ResultSet rs = session.doReturningWork(connection -> {
             try (CallableStatement function = connection
-                .prepareCall(
-                    "{ ? = call find_artist_by_conditions(?,?,?,?,?,?,?,?,?,?) }")) {
-                function.registerOutParameter(1, Types.REF_CURSOR);
-                function.setString(2, ""); // p_base_url
+                    .prepareCall(
+                            "{ call find_artist_by_conditions(?,?,?,?,?,?,?,?,?,?) }")) {
+                function.setString("p_base_url", ""); // p_base_url
                 function
-                    .setString(3, this.storageService.getStorageType().name()); // p_storage_type
-                if (artistSearchDTO.getSongId() == null) {
-                    function.setNull(4, Types.NUMERIC); // p_song_id
-                } else {
-                    function.setLong(4, artistSearchDTO.getSongId());
-                }
-                if (artistSearchDTO.getAlbumId() == null) {
-                    function.setNull(5, Types.NUMERIC); // p_album_id
-                } else {
-                    function.setLong(5, artistSearchDTO.getAlbumId());
-                }
-                if (artistSearchDTO.getUsernameFavorite() == null) {
-                    function.setNull(6, Types.VARCHAR); // p_username_fav
-                } else {
-                    function.setString(6, artistSearchDTO.getUsername());
-                }
-                if (artistSearchDTO.getUsername() == null) {
-                    function.setNull(7, Types.VARCHAR); // p_username
-                } else {
-                    function.setString(7, artistSearchDTO.getUsername());
-                }
-                if (artistSearchDTO.getPhrase() == null) {
-                    function.setNull(8, Types.VARCHAR); // p_phrase
-                } else {
-                    function.setString(8, artistSearchDTO.getPhrase());
-                }
-                function.setInt(9, pageable.getPageSize()); // p_size
-                function.setInt(10, pageable.getPageNumber()); // p_page
+                        .setString("p_storage_type", this.storageService.getStorageType().name()); // p_storage_type
+                function.setLong("p_song_id", artistSearchDTO.getSongId());
+                function.setLong("p_album_id", artistSearchDTO.getAlbumId());
+                function.setString("p_username_fav", artistSearchDTO.getUsername());
+                function.setString("p_username", artistSearchDTO.getUsername());
+                function.setString("p_phrase", artistSearchDTO.getPhrase());
+                function.setInt("p_size", pageable.getPageSize()); // p_size
+                function.setInt("p_page", pageable.getPageNumber()); // p_page
                 if (pageable.getSort().getOrderFor("like_count") != null) {
-                    function.setString(11, "like_count");
+                    function.setString("p_sort", "like_count");
                 } else if (pageable.getSort().getOrderFor("birth_date") != null) {
-                    function.setString(11, "birth_date");
+                    function.setString("p_sort", "birth_date");
                 } else {
-                    function.setString(11, "");
+                    function.setString("p_sort", "");
                 }
-                function.execute();
-                return function.getObject(1, ResultSet.class);
+                return function.executeQuery();
             }
         });
         try {

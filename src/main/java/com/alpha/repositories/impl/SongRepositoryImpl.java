@@ -1,35 +1,14 @@
 package com.alpha.repositories.impl;
 
 import com.alpha.constant.ModelStatus;
-import com.alpha.model.dto.CountryDTO;
-import com.alpha.model.dto.GenreDTO;
-import com.alpha.model.dto.SongDTO;
+import com.alpha.model.dto.*;
 import com.alpha.model.dto.SongDTO.SongAdditionalInfoDTO;
-import com.alpha.model.dto.SongSearchDTO;
-import com.alpha.model.dto.TagDTO;
-import com.alpha.model.dto.ThemeDTO;
-import com.alpha.model.dto.UpdateSyncOption;
-import com.alpha.model.dto.UserInfoDTO;
 import com.alpha.model.entity.Song;
 import com.alpha.model.entity.Song_;
 import com.alpha.repositories.BaseRepository;
 import com.alpha.repositories.SongRepositoryCustom;
 import com.alpha.service.StorageService;
 import com.alpha.util.helper.DataTypeComparer;
-import java.sql.CallableStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaUpdate;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
@@ -39,6 +18,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author thanhvt
@@ -156,12 +149,13 @@ public class SongRepositoryImpl extends BaseRepository implements SongRepository
     @Override
     @SneakyThrows
     public Page<SongDTO> findAllConditions(Pageable pageable, SongSearchDTO songSearchDTO) {
+
         Session session = entityManager.unwrap(Session.class);
-        AtomicReference<ResultSet> rsHolder = new AtomicReference<>();
-        session.doWork(connection -> {
-            try (CallableStatement function = connection
-                .prepareCall(
-                    "{ ? = call find_song_by_conditions(?,?,?,?,?,?,?,?,?,?,?) }")) {
+//        this code is for PostgresQL
+//        session.doReturningWork(connection -> {
+//            try (CallableStatement function = connection
+//                .prepareCall(
+//                    "{ ? = call find_song_by_conditions(?,?,?,?,?,?,?,?,?,?,?) }")) {
 //                function.registerOutParameter(1, Types.REF_CURSOR);
 //                function.setString(2, ""); // p_base_url
 //                function
@@ -207,7 +201,11 @@ public class SongRepositoryImpl extends BaseRepository implements SongRepository
 //                }
 //                function.execute();
 //                return function.getObject(1, ResultSet.class);
-
+//      });
+        ResultSet rs = session.doReturningWork(connection -> {
+            try (CallableStatement function = connection
+                    .prepareCall(
+                            "{ call find_song_by_conditions(?,?,?,?,?,?,?,?,?,?,?) }")) {
                 function.setString("p_base_url", ""); // p_base_url
                 function.setString("p_storage_type", this.storageService.getStorageType().name()); // p_storage_type
                 if (songSearchDTO.getArtistId() == null) {
@@ -249,27 +247,37 @@ public class SongRepositoryImpl extends BaseRepository implements SongRepository
                 } else {
                     function.setString("p_sort", "");
                 }
-                rsHolder.set(function.executeQuery());
+                return function.executeQuery();
             }
         });
-        return this.extractResult(rsHolder.get(), pageable);
+        return this.extractResult(rs, pageable);
     }
 
     @Override
     public SongAdditionalInfoDTO findAdditionalInfo(Long id) {
         Session session = entityManager.unwrap(Session.class);
-        ResultSet rs = session.doReturningWork(connection -> {
-            try (CallableStatement function = connection
-                .prepareCall(
-                    "{ ? = call find_song_additional_info(?) }")) {
+//        this code is for PostgresQL
+//        Session session = entityManager.unwrap(Session.class);
+//        ResultSet rs = session.doReturningWork(connection -> {
+//            try (CallableStatement function = connection
+//                .prepareCall(
+//                    "{ ? = call find_song_additional_info(?) }")) {
 //                function.registerOutParameter(1, Types.REF_CURSOR);
 //                function.setLong(2, id); // p_song_id
 //                function.execute();
 //                return function.getObject(1, ResultSet.class);
+//
+//            }
+//        });
+        ResultSet rs = session.doReturningWork(connection -> {
+            try (CallableStatement function = connection
+                    .prepareCall(
+                            "{ call find_song_additional_info(?) }")) {
                 function.setLong("p_song_id", id);
                 return function.executeQuery();
             }
         });
+
         try {
             return this.extractResult(rs);
         } catch (SQLException throwable) {

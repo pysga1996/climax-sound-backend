@@ -28,7 +28,6 @@ import javax.persistence.criteria.Root;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -145,50 +144,76 @@ public class AlbumRepositoryImpl extends BaseRepository implements AlbumReposito
     public Page<AlbumDTO> findAllByConditions(Pageable pageable,
         AlbumSearchDTO albumSearchDTO) {
         Session session = entityManager.unwrap(Session.class);
+//        this code is for PostresQL
+//        ResultSet rs = session.doReturningWork(connection -> {
+//            try (CallableStatement function = connection
+//                .prepareCall(
+//                    "{ ? = call find_album_by_conditions(?,?,?,?,?,?,?,?,?,?) }")) {
+//                function.registerOutParameter(1, Types.REF_CURSOR);
+//                function.setString(2, ""); // p_base_url
+//                function
+//                    .setString(3, this.storageService.getStorageType().name()); // p_storage_type
+//                if (albumSearchDTO.getArtistId() == null) {
+//                    function.setNull(4, Types.NUMERIC); // p_artist_id
+//                } else {
+//                    function.setLong(4, albumSearchDTO.getArtistId());
+//                }
+//                if (albumSearchDTO.getAlbumId() == null) {
+//                    function.setNull(5, Types.NUMERIC); // p_album_id
+//                } else {
+//                    function.setLong(5, albumSearchDTO.getAlbumId());
+//                }
+//                if (albumSearchDTO.getUsernameFavorite() == null) {
+//                    function.setNull(6, Types.VARCHAR); // p_username_fav
+//                } else {
+//                    function.setString(6, albumSearchDTO.getUsername());
+//                }
+//                if (albumSearchDTO.getUsername() == null) {
+//                    function.setNull(7, Types.VARCHAR); // p_username
+//                } else {
+//                    function.setString(7, albumSearchDTO.getUsername());
+//                }
+//                if (albumSearchDTO.getPhrase() == null) {
+//                    function.setNull(8, Types.VARCHAR); // p_phrase
+//                } else {
+//                    function.setString(8, albumSearchDTO.getPhrase());
+//                }
+//                function.setInt(9, pageable.getPageSize()); // p_size
+//                function.setInt(10, pageable.getPageNumber()); // p_page
+//                if (pageable.getSort().getOrderFor("listening_frequency") != null) {
+//                    function.setString(11, "listening_frequency");
+//                } else if (pageable.getSort().getOrderFor("release_date") != null) {
+//                    function.setString(11, "release_date");
+//                } else {
+//                    function.setString(11, "");
+//                }
+//                function.execute();
+//                return function.getObject(1, ResultSet.class);
+//            }
+//        });
         ResultSet rs = session.doReturningWork(connection -> {
             try (CallableStatement function = connection
-                .prepareCall(
-                    "{ ? = call find_album_by_conditions(?,?,?,?,?,?,?,?,?,?) }")) {
-                function.registerOutParameter(1, Types.REF_CURSOR);
-                function.setString(2, ""); // p_base_url
+                    .prepareCall(
+                            "{ call find_album_by_conditions(?,?,?,?,?,?,?,?,?,?) }")) {
+                function.setString("p_base_url", ""); // p_base_url
                 function
-                    .setString(3, this.storageService.getStorageType().name()); // p_storage_type
-                if (albumSearchDTO.getArtistId() == null) {
-                    function.setNull(4, Types.NUMERIC); // p_artist_id
-                } else {
-                    function.setLong(4, albumSearchDTO.getArtistId());
-                }
-                if (albumSearchDTO.getAlbumId() == null) {
-                    function.setNull(5, Types.NUMERIC); // p_album_id
-                } else {
-                    function.setLong(5, albumSearchDTO.getAlbumId());
-                }
-                if (albumSearchDTO.getUsernameFavorite() == null) {
-                    function.setNull(6, Types.VARCHAR); // p_username_fav
-                } else {
-                    function.setString(6, albumSearchDTO.getUsername());
-                }
-                if (albumSearchDTO.getUsername() == null) {
-                    function.setNull(7, Types.VARCHAR); // p_username
-                } else {
-                    function.setString(7, albumSearchDTO.getUsername());
-                }
-                if (albumSearchDTO.getPhrase() == null) {
-                    function.setNull(8, Types.VARCHAR); // p_phrase
-                } else {
-                    function.setString(8, albumSearchDTO.getPhrase());
-                }
-                function.setInt(9, pageable.getPageSize()); // p_size
-                function.setInt(10, pageable.getPageNumber()); // p_page
+                        .setString("p_storage_type", this.storageService.getStorageType().name()); // p_storage_type
+                function.setLong("p_artist_id", albumSearchDTO.getArtistId());
+                function.setLong("p_album_id", albumSearchDTO.getAlbumId());
+                function.setString("p_username_fav", albumSearchDTO.getUsername());
+                function.setString("p_username", albumSearchDTO.getUsername());
+                function.setString("p_phrase", albumSearchDTO.getPhrase());
+                function.setInt("p_size", pageable.getPageSize()); // p_size
+                function.setInt("p_page", pageable.getPageNumber()); // p_page
                 if (pageable.getSort().getOrderFor("listening_frequency") != null) {
-                    function.setString(11, "listening_frequency");
+                    function.setString("p_sort", "listening_frequency");
                 } else if (pageable.getSort().getOrderFor("release_date") != null) {
-                    function.setString(11, "release_date");
+                    function.setString("p_sort", "release_date");
                 } else {
-                    function.setString(11, "");
+                    function.setString("p_sort", "");
                 }
-                function.execute();
-                return function.getObject(1, ResultSet.class);
+
+                return function.executeQuery();
             }
         });
         try {
@@ -203,14 +228,23 @@ public class AlbumRepositoryImpl extends BaseRepository implements AlbumReposito
     @SneakyThrows
     public AlbumAdditionalInfoDTO findAdditionalInfo(Long id) {
         Session session = entityManager.unwrap(Session.class);
+//        this code is for PostgresQL
+//        ResultSet rs = session.doReturningWork(connection -> {
+//            try (CallableStatement function = connection
+//                .prepareCall(
+//                    "{ ? = call find_album_additional_info(?) }")) {
+//                function.registerOutParameter(1, Types.REF_CURSOR);
+//                function.setLong(2, id); // p_song_id
+//                function.execute();
+//                return function.getObject(1, ResultSet.class);
+//            }
+//        });
         ResultSet rs = session.doReturningWork(connection -> {
             try (CallableStatement function = connection
-                .prepareCall(
-                    "{ ? = call find_album_additional_info(?) }")) {
-                function.registerOutParameter(1, Types.REF_CURSOR);
-                function.setLong(2, id); // p_song_id
-                function.execute();
-                return function.getObject(1, ResultSet.class);
+                    .prepareCall(
+                            "{ call find_album_additional_info(?) }")) {
+                function.setLong("p_song_id", id); // p_song_id
+                return function.executeQuery();
             }
         });
         return this.extractResult(rs);
