@@ -23,6 +23,7 @@ import java.sql.Types;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -156,58 +157,102 @@ public class SongRepositoryImpl extends BaseRepository implements SongRepository
     @SneakyThrows
     public Page<SongDTO> findAllConditions(Pageable pageable, SongSearchDTO songSearchDTO) {
         Session session = entityManager.unwrap(Session.class);
-        ResultSet rs = session.doReturningWork(connection -> {
+        AtomicReference<ResultSet> rsHolder = new AtomicReference<>();
+        session.doWork(connection -> {
             try (CallableStatement function = connection
                 .prepareCall(
                     "{ ? = call find_song_by_conditions(?,?,?,?,?,?,?,?,?,?,?) }")) {
-                function.registerOutParameter(1, Types.REF_CURSOR);
-                function.setString(2, ""); // p_base_url
-                function
-                    .setString(3, this.storageService.getStorageType().name()); // p_storage_type
+//                function.registerOutParameter(1, Types.REF_CURSOR);
+//                function.setString(2, ""); // p_base_url
+//                function
+//                    .setString(3, this.storageService.getStorageType().name()); // p_storage_type
+//                if (songSearchDTO.getArtistId() == null) {
+//                    function.setNull(4, Types.NUMERIC); // p_artist_id
+//                } else {
+//                    function.setLong(4, songSearchDTO.getArtistId());
+//                }
+//                if (songSearchDTO.getAlbumId() == null) {
+//                    function.setNull(5, Types.NUMERIC); // p_album_id
+//                } else {
+//                    function.setLong(5, songSearchDTO.getAlbumId());
+//                }
+//                if (songSearchDTO.getPlaylistId() == null) {
+//                    function.setNull(6, Types.NUMERIC); // p_playlist_id
+//                } else {
+//                    function.setLong(6, songSearchDTO.getPlaylistId());
+//                }
+//                if (songSearchDTO.getUsernameFavorite() == null) {
+//                    function.setNull(7, Types.VARCHAR); // p_username_fav
+//                } else {
+//                    function.setString(7, songSearchDTO.getUsername());
+//                }
+//                if (songSearchDTO.getUsername() == null) {
+//                    function.setNull(8, Types.VARCHAR); // p_username
+//                } else {
+//                    function.setString(8, songSearchDTO.getUsername());
+//                }
+//                if (songSearchDTO.getPhrase() == null) {
+//                    function.setNull(9, Types.VARCHAR); // p_phrase
+//                } else {
+//                    function.setString(9, songSearchDTO.getPhrase());
+//                }
+//                function.setInt(10, pageable.getPageSize()); // p_size
+//                function.setInt(11, pageable.getPageNumber()); // p_page
+//                if (pageable.getSort().getOrderFor("listening_frequency") != null) {
+//                    function.setString(12, "listening_frequency");
+//                } else if (pageable.getSort().getOrderFor("release_date") != null) {
+//                    function.setString(12, "release_date");
+//                } else {
+//                    function.setString(12, "");
+//                }
+//                function.execute();
+//                return function.getObject(1, ResultSet.class);
+
+                function.setString("p_base_url", ""); // p_base_url
+                function.setString("p_storage_type", this.storageService.getStorageType().name()); // p_storage_type
                 if (songSearchDTO.getArtistId() == null) {
-                    function.setNull(4, Types.NUMERIC); // p_artist_id
+                    function.setNull("p_artist_id", Types.NUMERIC); // p_artist_id
                 } else {
-                    function.setLong(4, songSearchDTO.getArtistId());
+                    function.setLong("p_artist_id", songSearchDTO.getArtistId());
                 }
                 if (songSearchDTO.getAlbumId() == null) {
-                    function.setNull(5, Types.NUMERIC); // p_album_id
+                    function.setNull("p_album_id", Types.NUMERIC); // p_album_id
                 } else {
-                    function.setLong(5, songSearchDTO.getAlbumId());
+                    function.setLong("p_album_id", songSearchDTO.getAlbumId());
                 }
                 if (songSearchDTO.getPlaylistId() == null) {
-                    function.setNull(6, Types.NUMERIC); // p_playlist_id
+                    function.setNull("p_playlist_id", Types.NUMERIC); // p_playlist_id
                 } else {
-                    function.setLong(6, songSearchDTO.getPlaylistId());
+                    function.setLong("p_playlist_id", songSearchDTO.getPlaylistId());
                 }
                 if (songSearchDTO.getUsernameFavorite() == null) {
-                    function.setNull(7, Types.VARCHAR); // p_username_fav
+                    function.setNull("p_username_fav", Types.VARCHAR); // p_username_fav
                 } else {
-                    function.setString(7, songSearchDTO.getUsername());
+                    function.setString("p_username_fav", songSearchDTO.getUsername());
                 }
                 if (songSearchDTO.getUsername() == null) {
-                    function.setNull(8, Types.VARCHAR); // p_username
+                    function.setNull("p_username", Types.VARCHAR); // p_username
                 } else {
-                    function.setString(8, songSearchDTO.getUsername());
+                    function.setString("p_username", songSearchDTO.getUsername());
                 }
                 if (songSearchDTO.getPhrase() == null) {
-                    function.setNull(9, Types.VARCHAR); // p_phrase
+                    function.setNull("p_phrase", Types.VARCHAR); // p_phrase
                 } else {
-                    function.setString(9, songSearchDTO.getPhrase());
+                    function.setString("p_phrase", songSearchDTO.getPhrase());
                 }
-                function.setInt(10, pageable.getPageSize()); // p_size
-                function.setInt(11, pageable.getPageNumber()); // p_page
+                function.setInt("p_size", pageable.getPageSize()); // p_size
+                function.setInt("p_page", pageable.getPageNumber()); // p_page
                 if (pageable.getSort().getOrderFor("listening_frequency") != null) {
-                    function.setString(12, "listening_frequency");
+                    function.setString("p_sort", "listening_frequency");
                 } else if (pageable.getSort().getOrderFor("release_date") != null) {
-                    function.setString(12, "release_date");
+                    function.setString("p_sort", "release_date");
                 } else {
-                    function.setString(12, "");
+                    function.setString("p_sort", "");
                 }
-                function.execute();
-                return function.getObject(1, ResultSet.class);
+                rsHolder.set(function.executeQuery());
             }
         });
-        return this.extractResult(rs, pageable);
+        return this.extractResult(rsHolder.get(), pageable);
     }
 
     @Override
@@ -217,10 +262,12 @@ public class SongRepositoryImpl extends BaseRepository implements SongRepository
             try (CallableStatement function = connection
                 .prepareCall(
                     "{ ? = call find_song_additional_info(?) }")) {
-                function.registerOutParameter(1, Types.REF_CURSOR);
-                function.setLong(2, id); // p_song_id
-                function.execute();
-                return function.getObject(1, ResultSet.class);
+//                function.registerOutParameter(1, Types.REF_CURSOR);
+//                function.setLong(2, id); // p_song_id
+//                function.execute();
+//                return function.getObject(1, ResultSet.class);
+                function.setLong("p_song_id", id);
+                return function.executeQuery();
             }
         });
         try {
