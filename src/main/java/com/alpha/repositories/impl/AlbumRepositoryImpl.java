@@ -255,7 +255,7 @@ public class AlbumRepositoryImpl extends BaseRepository implements AlbumReposito
 //                .prepareCall(
 //                    "{ ? = call find_album_additional_info(?) }")) {
 //                function.registerOutParameter(1, Types.REF_CURSOR);
-//                function.setLong(2, id); // p_song_id
+//                function.setLong(2, id); // p_album_id
 //                function.execute();
 //                return function.getObject(1, ResultSet.class);
 //            }
@@ -264,7 +264,7 @@ public class AlbumRepositoryImpl extends BaseRepository implements AlbumReposito
             try (CallableStatement function = connection
                     .prepareCall(
                             "{ call find_album_additional_info(?) }")) {
-                function.setLong("p_song_id", id); // p_song_id
+                function.setLong("p_album_id", id); // p_song_id
                 return function.executeQuery();
             }
         });
