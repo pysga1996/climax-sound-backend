@@ -647,10 +647,10 @@ create table user_favorites
 
 create table user_info
 (
-    profile     longtext not null,
+    profile     json not null,
     username    char(50)                  not null
         primary key,
-    setting     longtext null,
+    setting     json null,
     create_time timestamp                 null,
     update_time timestamp                 null,
     status      int          default 1    null
