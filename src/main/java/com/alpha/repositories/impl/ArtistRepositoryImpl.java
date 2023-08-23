@@ -27,6 +27,7 @@ import javax.persistence.criteria.Root;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,11 +133,31 @@ public class ArtistRepositoryImpl extends BaseRepository implements ArtistReposi
                 function.setString("p_base_url", ""); // p_base_url
                 function
                         .setString("p_storage_type", this.storageService.getStorageType().name()); // p_storage_type
-                function.setLong("p_song_id", artistSearchDTO.getSongId());
-                function.setLong("p_album_id", artistSearchDTO.getAlbumId());
-                function.setString("p_username_fav", artistSearchDTO.getUsername());
-                function.setString("p_username", artistSearchDTO.getUsername());
-                function.setString("p_phrase", artistSearchDTO.getPhrase());
+                if (artistSearchDTO.getSongId() == null) {
+                    function.setNull("p_song_id", Types.NUMERIC); // p_song_id
+                } else {
+                    function.setLong("p_song_id", artistSearchDTO.getSongId());
+                }
+                if (artistSearchDTO.getAlbumId() == null) {
+                    function.setNull("p_album_id", Types.NUMERIC); // p_album_id
+                } else {
+                    function.setLong("p_album_id", artistSearchDTO.getAlbumId());
+                }
+                if (artistSearchDTO.getUsernameFavorite() == null) {
+                    function.setNull("p_username_fav", Types.VARCHAR); // p_username_fav
+                } else {
+                    function.setString("p_username_fav", artistSearchDTO.getUsername());
+                }
+                if (artistSearchDTO.getUsername() == null) {
+                    function.setNull("p_username", Types.VARCHAR); // p_username
+                } else {
+                    function.setString("p_username", artistSearchDTO.getUsername());
+                }
+                if (artistSearchDTO.getPhrase() == null) {
+                    function.setNull("p_phrase", Types.VARCHAR); // p_phrase
+                } else {
+                    function.setString("p_phrase", artistSearchDTO.getPhrase());
+                }
                 function.setInt("p_size", pageable.getPageSize()); // p_size
                 function.setInt("p_page", pageable.getPageNumber()); // p_page
                 if (pageable.getSort().getOrderFor("like_count") != null) {

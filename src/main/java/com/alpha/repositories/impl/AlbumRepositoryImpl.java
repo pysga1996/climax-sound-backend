@@ -28,6 +28,7 @@ import javax.persistence.criteria.Root;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -198,11 +199,31 @@ public class AlbumRepositoryImpl extends BaseRepository implements AlbumReposito
                 function.setString("p_base_url", ""); // p_base_url
                 function
                         .setString("p_storage_type", this.storageService.getStorageType().name()); // p_storage_type
-                function.setLong("p_artist_id", albumSearchDTO.getArtistId());
-                function.setLong("p_album_id", albumSearchDTO.getAlbumId());
-                function.setString("p_username_fav", albumSearchDTO.getUsername());
-                function.setString("p_username", albumSearchDTO.getUsername());
-                function.setString("p_phrase", albumSearchDTO.getPhrase());
+                if (albumSearchDTO.getArtistId() == null) {
+                    function.setNull("p_artist_id", Types.NUMERIC); // p_artist_id
+                } else {
+                    function.setLong("p_artist_id", albumSearchDTO.getArtistId());
+                }
+                if (albumSearchDTO.getAlbumId() == null) {
+                    function.setNull("p_album_id", Types.NUMERIC); // p_album_id
+                } else {
+                    function.setLong("p_album_id", albumSearchDTO.getAlbumId());
+                }
+                if (albumSearchDTO.getUsernameFavorite() == null) {
+                    function.setNull("p_username_fav", Types.VARCHAR); // p_username_fav
+                } else {
+                    function.setString("p_username_fav", albumSearchDTO.getUsername());
+                }
+                if (albumSearchDTO.getUsername() == null) {
+                    function.setNull("p_username", Types.VARCHAR); // p_username
+                } else {
+                    function.setString("p_username", albumSearchDTO.getUsername());
+                }
+                if (albumSearchDTO.getPhrase() == null) {
+                    function.setNull("p_phrase", Types.VARCHAR); // p_phrase
+                } else {
+                    function.setString("p_phrase", albumSearchDTO.getPhrase());
+                }
                 function.setInt("p_size", pageable.getPageSize()); // p_size
                 function.setInt("p_page", pageable.getPageNumber()); // p_page
                 if (pageable.getSort().getOrderFor("listening_frequency") != null) {
